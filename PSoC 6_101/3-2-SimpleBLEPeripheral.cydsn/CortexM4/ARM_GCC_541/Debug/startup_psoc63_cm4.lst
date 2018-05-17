@@ -1,0 +1,699 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 1
+
+
+   1              	# 1 "armgcc\\startup\\startup_psoc63_cm4.S"
+   1              	/**************************************************************************//**
+   0              	
+   0              	
+   0              	
+   2              	 * @file     startup_psoc63_cm4.s
+   3              	 * @brief    CMSIS Core Device Startup File for
+   4              	 *           ARMCM4 Device Series
+   5              	 * @version  V5.00
+   6              	 * @date     02. March 2016
+   7              	 ******************************************************************************/
+   8              	/*
+   9              	 * Copyright (c) 2009-2016 ARM Limited. All rights reserved.
+  10              	 *
+  11              	 * SPDX-License-Identifier: Apache-2.0
+  12              	 *
+  13              	 * Licensed under the Apache License, Version 2.0 (the License); you may
+  14              	 * not use this file except in compliance with the License.
+  15              	 * You may obtain a copy of the License at
+  16              	 *
+  17              	 * www.apache.org/licenses/LICENSE-2.0
+  18              	 *
+  19              	 * Unless required by applicable law or agreed to in writing, software
+  20              	 * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  21              	 * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  22              	 * See the License for the specific language governing permissions and
+  23              	 * limitations under the License.
+  24              	 */
+  25              	
+  26              	    /* Address of the NMI handler */
+  27              	    #define CY_NMI_HANLDER_ADDR         0x0000000D
+  28              	
+  29              	    /* The CPU VTOR register */
+  30              	    #define CY_CPU_VTOR_ADDR             0xE000ED08
+  31              	
+  32              	    /* Copy flash vectors and data section to RAM */
+  33              	    #define __STARTUP_COPY_MULTIPLE
+  34              	
+  35              	    /* Clear single BSS section */
+  36              	    #define __STARTUP_CLEAR_BSS
+  37              	
+  38              	    .syntax    unified
+  39              	    .arch    armv7-m
+  40              	
+  41              	    .section .stack
+  42              	    .align    3
+  43              	#ifdef __STACK_SIZE
+  44              	    .equ    Stack_Size, __STACK_SIZE
+  45              	#else
+  46              	    .equ    Stack_Size, 0x00001000
+  47              	#endif
+  48              	    .globl    __StackTop
+  49              	    .globl    __StackLimit
+  50              	__StackLimit:
+  51 0000 00000000 	    .space    Stack_Size
+  51      00000000 
+  51      00000000 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 2
+
+
+  51      00000000 
+  51      00000000 
+  52              	    .size    __StackLimit, . - __StackLimit
+  53              	__StackTop:
+  54              	    .size    __StackTop, . - __StackTop
+  55              	
+  56              	    .section .heap
+  57              	    .align    3
+  58              	#ifdef __HEAP_SIZE
+  59              	    .equ    Heap_Size, __HEAP_SIZE
+  60              	#else
+  61              	    .equ    Heap_Size, 0x00000400
+  62              	#endif
+  63              	    .globl    __HeapBase
+  64              	    .globl    __HeapLimit
+  65              	__HeapBase:
+  66              	    .if    Heap_Size
+  67 0000 00000000 	    .space    Heap_Size
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  68              	    .endif
+  69              	    .size    __HeapBase, . - __HeapBase
+  70              	__HeapLimit:
+  71              	    .size    __HeapLimit, . - __HeapLimit
+  72              	
+  73              	    .section .vectors
+  74              	    .align 2
+  75              	    .globl    __Vectors
+  76              	__Vectors:
+  77 0000 00000000 	    .long    __StackTop            /* Top of Stack */
+  78 0004 00000000 	    .long    Reset_Handler         /* Reset Handler */
+  79 0008 0D000000 	    .long    CY_NMI_HANLDER_ADDR   /* NMI Handler */
+  80 000c 00000000 	    .long    HardFault_Handler     /* Hard Fault Handler */
+  81 0010 00000000 	    .long    MemManage_Handler     /* MPU Fault Handler */
+  82 0014 00000000 	    .long    BusFault_Handler      /* Bus Fault Handler */
+  83 0018 00000000 	    .long    UsageFault_Handler    /* Usage Fault Handler */
+  84 001c 00000000 	    .long    0                     /* Reserved */
+  85 0020 00000000 	    .long    0                     /* Reserved */
+  86 0024 00000000 	    .long    0                     /* Reserved */
+  87 0028 00000000 	    .long    0                     /* Reserved */
+  88 002c 00000000 	    .long    SVC_Handler           /* SVCall Handler */
+  89 0030 00000000 	    .long    DebugMon_Handler      /* Debug Monitor Handler */
+  90 0034 00000000 	    .long    0                     /* Reserved */
+  91 0038 00000000 	    .long    PendSV_Handler        /* PendSV Handler */
+  92 003c 00000000 	    .long    SysTick_Handler       /* SysTick Handler */
+  93              	
+  94              	     /* External interrupts                             Description */
+  95 0040 00000000 	    .long    ioss_interrupts_gpio_0_IRQHandler       /* GPIO Port Interrupt #0 */
+  96 0044 00000000 	    .long    ioss_interrupts_gpio_1_IRQHandler       /* GPIO Port Interrupt #1 */
+  97 0048 00000000 	    .long    ioss_interrupts_gpio_2_IRQHandler       /* GPIO Port Interrupt #2 */
+  98 004c 00000000 	    .long    ioss_interrupts_gpio_3_IRQHandler       /* GPIO Port Interrupt #3 */
+  99 0050 00000000 	    .long    ioss_interrupts_gpio_4_IRQHandler       /* GPIO Port Interrupt #4 */
+ 100 0054 00000000 	    .long    ioss_interrupts_gpio_5_IRQHandler       /* GPIO Port Interrupt #5 */
+ 101 0058 00000000 	    .long    ioss_interrupts_gpio_6_IRQHandler       /* GPIO Port Interrupt #6 */
+ 102 005c 00000000 	    .long    ioss_interrupts_gpio_7_IRQHandler       /* GPIO Port Interrupt #7 */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 3
+
+
+ 103 0060 00000000 	    .long    ioss_interrupts_gpio_8_IRQHandler       /* GPIO Port Interrupt #8 */
+ 104 0064 00000000 	    .long    ioss_interrupts_gpio_9_IRQHandler       /* GPIO Port Interrupt #9 */
+ 105 0068 00000000 	    .long    ioss_interrupts_gpio_10_IRQHandler      /* GPIO Port Interrupt #10 */
+ 106 006c 00000000 	    .long    ioss_interrupts_gpio_11_IRQHandler      /* GPIO Port Interrupt #11 */
+ 107 0070 00000000 	    .long    ioss_interrupts_gpio_12_IRQHandler      /* GPIO Port Interrupt #12 */
+ 108 0074 00000000 	    .long    ioss_interrupts_gpio_13_IRQHandler      /* GPIO Port Interrupt #13 */
+ 109 0078 00000000 	    .long    ioss_interrupts_gpio_14_IRQHandler      /* GPIO Port Interrupt #14 */
+ 110 007c 00000000 	    .long    ioss_interrupt_gpio_IRQHandler          /* GPIO All Ports */
+ 111 0080 00000000 	    .long    ioss_interrupt_vdd_IRQHandler           /* GPIO Supply Detect Interrupt */
+ 112 0084 00000000 	    .long    lpcomp_interrupt_IRQHandler             /* Low Power Comparator Interrupt */
+ 113 0088 00000000 	    .long    scb_8_interrupt_IRQHandler              /* Serial Communication Block #8 (DeepSleep ca
+ 114 008c 00000000 	    .long    srss_interrupt_mcwdt_0_IRQHandler       /* Multi Counter Watchdog Timer interrupt */
+ 115 0090 00000000 	    .long    srss_interrupt_mcwdt_1_IRQHandler       /* Multi Counter Watchdog Timer interrupt */
+ 116 0094 00000000 	    .long    srss_interrupt_backup_IRQHandler        /* Backup domain interrupt */
+ 117 0098 00000000 	    .long    srss_interrupt_IRQHandler               /* Other combined Interrupts for SRSS (LVD, WD
+ 118 009c 00000000 	    .long    pass_interrupt_ctbs_IRQHandler          /* CTBm Interrupt (all CTBms) */
+ 119 00a0 00000000 	    .long    bless_interrupt_IRQHandler              /* Bluetooth Radio interrupt */
+ 120 00a4 00000000 	    .long    cpuss_interrupts_ipc_0_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 121 00a8 00000000 	    .long    cpuss_interrupts_ipc_1_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 122 00ac 00000000 	    .long    cpuss_interrupts_ipc_2_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 123 00b0 00000000 	    .long    cpuss_interrupts_ipc_3_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 124 00b4 00000000 	    .long    cpuss_interrupts_ipc_4_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 125 00b8 00000000 	    .long    cpuss_interrupts_ipc_5_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 126 00bc 00000000 	    .long    cpuss_interrupts_ipc_6_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 127 00c0 00000000 	    .long    cpuss_interrupts_ipc_7_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 128 00c4 00000000 	    .long    cpuss_interrupts_ipc_8_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 129 00c8 00000000 	    .long    cpuss_interrupts_ipc_9_IRQHandler       /* CPUSS Inter Process Communication Interrupt
+ 130 00cc 00000000 	    .long    cpuss_interrupts_ipc_10_IRQHandler      /* CPUSS Inter Process Communication Interrupt
+ 131 00d0 00000000 	    .long    cpuss_interrupts_ipc_11_IRQHandler      /* CPUSS Inter Process Communication Interrupt
+ 132 00d4 00000000 	    .long    cpuss_interrupts_ipc_12_IRQHandler      /* CPUSS Inter Process Communication Interrupt
+ 133 00d8 00000000 	    .long    cpuss_interrupts_ipc_13_IRQHandler      /* CPUSS Inter Process Communication Interrupt
+ 134 00dc 00000000 	    .long    cpuss_interrupts_ipc_14_IRQHandler      /* CPUSS Inter Process Communication Interrupt
+ 135 00e0 00000000 	    .long    cpuss_interrupts_ipc_15_IRQHandler      /* CPUSS Inter Process Communication Interrupt
+ 136 00e4 00000000 	    .long    scb_0_interrupt_IRQHandler              /* Serial Communication Block #0 */
+ 137 00e8 00000000 	    .long    scb_1_interrupt_IRQHandler              /* Serial Communication Block #1 */
+ 138 00ec 00000000 	    .long    scb_2_interrupt_IRQHandler              /* Serial Communication Block #2 */
+ 139 00f0 00000000 	    .long    scb_3_interrupt_IRQHandler              /* Serial Communication Block #3 */
+ 140 00f4 00000000 	    .long    scb_4_interrupt_IRQHandler              /* Serial Communication Block #4 */
+ 141 00f8 00000000 	    .long    scb_5_interrupt_IRQHandler              /* Serial Communication Block #5 */
+ 142 00fc 00000000 	    .long    scb_6_interrupt_IRQHandler              /* Serial Communication Block #6 */
+ 143 0100 00000000 	    .long    scb_7_interrupt_IRQHandler              /* Serial Communication Block #7 */
+ 144 0104 00000000 	    .long    csd_interrupt_IRQHandler                /* CSD (Capsense) interrupt */
+ 145 0108 00000000 	    .long    cpuss_interrupts_dw0_0_IRQHandler       /* CPUSS DataWire #0, Channel #0 */
+ 146 010c 00000000 	    .long    cpuss_interrupts_dw0_1_IRQHandler       /* CPUSS DataWire #0, Channel #1 */
+ 147 0110 00000000 	    .long    cpuss_interrupts_dw0_2_IRQHandler       /* CPUSS DataWire #0, Channel #2 */
+ 148 0114 00000000 	    .long    cpuss_interrupts_dw0_3_IRQHandler       /* CPUSS DataWire #0, Channel #3 */
+ 149 0118 00000000 	    .long    cpuss_interrupts_dw0_4_IRQHandler       /* CPUSS DataWire #0, Channel #4 */
+ 150 011c 00000000 	    .long    cpuss_interrupts_dw0_5_IRQHandler       /* CPUSS DataWire #0, Channel #5 */
+ 151 0120 00000000 	    .long    cpuss_interrupts_dw0_6_IRQHandler       /* CPUSS DataWire #0, Channel #6 */
+ 152 0124 00000000 	    .long    cpuss_interrupts_dw0_7_IRQHandler       /* CPUSS DataWire #0, Channel #7 */
+ 153 0128 00000000 	    .long    cpuss_interrupts_dw0_8_IRQHandler       /* CPUSS DataWire #0, Channel #8 */
+ 154 012c 00000000 	    .long    cpuss_interrupts_dw0_9_IRQHandler       /* CPUSS DataWire #0, Channel #9 */
+ 155 0130 00000000 	    .long    cpuss_interrupts_dw0_10_IRQHandler      /* CPUSS DataWire #0, Channel #10 */
+ 156 0134 00000000 	    .long    cpuss_interrupts_dw0_11_IRQHandler      /* CPUSS DataWire #0, Channel #11 */
+ 157 0138 00000000 	    .long    cpuss_interrupts_dw0_12_IRQHandler      /* CPUSS DataWire #0, Channel #12 */
+ 158 013c 00000000 	    .long    cpuss_interrupts_dw0_13_IRQHandler      /* CPUSS DataWire #0, Channel #13 */
+ 159 0140 00000000 	    .long    cpuss_interrupts_dw0_14_IRQHandler      /* CPUSS DataWire #0, Channel #14 */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 4
+
+
+ 160 0144 00000000 	    .long    cpuss_interrupts_dw0_15_IRQHandler      /* CPUSS DataWire #0, Channel #15 */
+ 161 0148 00000000 	    .long    cpuss_interrupts_dw1_0_IRQHandler       /* CPUSS DataWire #1, Channel #0 */
+ 162 014c 00000000 	    .long    cpuss_interrupts_dw1_1_IRQHandler       /* CPUSS DataWire #1, Channel #1 */
+ 163 0150 00000000 	    .long    cpuss_interrupts_dw1_2_IRQHandler       /* CPUSS DataWire #1, Channel #2 */
+ 164 0154 00000000 	    .long    cpuss_interrupts_dw1_3_IRQHandler       /* CPUSS DataWire #1, Channel #3 */
+ 165 0158 00000000 	    .long    cpuss_interrupts_dw1_4_IRQHandler       /* CPUSS DataWire #1, Channel #4 */
+ 166 015c 00000000 	    .long    cpuss_interrupts_dw1_5_IRQHandler       /* CPUSS DataWire #1, Channel #5 */
+ 167 0160 00000000 	    .long    cpuss_interrupts_dw1_6_IRQHandler       /* CPUSS DataWire #1, Channel #6 */
+ 168 0164 00000000 	    .long    cpuss_interrupts_dw1_7_IRQHandler       /* CPUSS DataWire #1, Channel #7 */
+ 169 0168 00000000 	    .long    cpuss_interrupts_dw1_8_IRQHandler       /* CPUSS DataWire #1, Channel #8 */
+ 170 016c 00000000 	    .long    cpuss_interrupts_dw1_9_IRQHandler       /* CPUSS DataWire #1, Channel #9 */
+ 171 0170 00000000 	    .long    cpuss_interrupts_dw1_10_IRQHandler      /* CPUSS DataWire #1, Channel #10 */
+ 172 0174 00000000 	    .long    cpuss_interrupts_dw1_11_IRQHandler      /* CPUSS DataWire #1, Channel #11 */
+ 173 0178 00000000 	    .long    cpuss_interrupts_dw1_12_IRQHandler      /* CPUSS DataWire #1, Channel #12 */
+ 174 017c 00000000 	    .long    cpuss_interrupts_dw1_13_IRQHandler      /* CPUSS DataWire #1, Channel #13 */
+ 175 0180 00000000 	    .long    cpuss_interrupts_dw1_14_IRQHandler      /* CPUSS DataWire #1, Channel #14 */
+ 176 0184 00000000 	    .long    cpuss_interrupts_dw1_15_IRQHandler      /* CPUSS DataWire #1, Channel #15 */
+ 177 0188 00000000 	    .long    cpuss_interrupts_fault_0_IRQHandler     /* CPUSS Fault Structure Interrupt #0 */
+ 178 018c 00000000 	    .long    cpuss_interrupts_fault_1_IRQHandler     /* CPUSS Fault Structure Interrupt #1 */
+ 179 0190 00000000 	    .long    cpuss_interrupt_crypto_IRQHandler       /* CRYPTO Accelerator Interrupt */
+ 180 0194 00000000 	    .long    cpuss_interrupt_fm_IRQHandler           /* FLASH Macro Interrupt */
+ 181 0198 00000000 	    .long    cpuss_interrupts_cm0_cti_0_IRQHandler   /* CM0+ CTI #0 */
+ 182 019c 00000000 	    .long    cpuss_interrupts_cm0_cti_1_IRQHandler   /* CM0+ CTI #1 */
+ 183 01a0 00000000 	    .long    cpuss_interrupts_cm4_cti_0_IRQHandler   /* CM4 CTI #0 */
+ 184 01a4 00000000 	    .long    cpuss_interrupts_cm4_cti_1_IRQHandler   /* CM4 CTI #1 */
+ 185 01a8 00000000 	    .long    tcpwm_0_interrupts_0_IRQHandler         /* TCPWM #0, Counter #0 */
+ 186 01ac 00000000 	    .long    tcpwm_0_interrupts_1_IRQHandler         /* TCPWM #0, Counter #1 */
+ 187 01b0 00000000 	    .long    tcpwm_0_interrupts_2_IRQHandler         /* TCPWM #0, Counter #2 */
+ 188 01b4 00000000 	    .long    tcpwm_0_interrupts_3_IRQHandler         /* TCPWM #0, Counter #3 */
+ 189 01b8 00000000 	    .long    tcpwm_0_interrupts_4_IRQHandler         /* TCPWM #0, Counter #4 */
+ 190 01bc 00000000 	    .long    tcpwm_0_interrupts_5_IRQHandler         /* TCPWM #0, Counter #5 */
+ 191 01c0 00000000 	    .long    tcpwm_0_interrupts_6_IRQHandler         /* TCPWM #0, Counter #6 */
+ 192 01c4 00000000 	    .long    tcpwm_0_interrupts_7_IRQHandler         /* TCPWM #0, Counter #7 */
+ 193 01c8 00000000 	    .long    tcpwm_1_interrupts_0_IRQHandler         /* TCPWM #1, Counter #0 */
+ 194 01cc 00000000 	    .long    tcpwm_1_interrupts_1_IRQHandler         /* TCPWM #1, Counter #1 */
+ 195 01d0 00000000 	    .long    tcpwm_1_interrupts_2_IRQHandler         /* TCPWM #1, Counter #2 */
+ 196 01d4 00000000 	    .long    tcpwm_1_interrupts_3_IRQHandler         /* TCPWM #1, Counter #3 */
+ 197 01d8 00000000 	    .long    tcpwm_1_interrupts_4_IRQHandler         /* TCPWM #1, Counter #4 */
+ 198 01dc 00000000 	    .long    tcpwm_1_interrupts_5_IRQHandler         /* TCPWM #1, Counter #5 */
+ 199 01e0 00000000 	    .long    tcpwm_1_interrupts_6_IRQHandler         /* TCPWM #1, Counter #6 */
+ 200 01e4 00000000 	    .long    tcpwm_1_interrupts_7_IRQHandler         /* TCPWM #1, Counter #7 */
+ 201 01e8 00000000 	    .long    tcpwm_1_interrupts_8_IRQHandler         /* TCPWM #1, Counter #8 */
+ 202 01ec 00000000 	    .long    tcpwm_1_interrupts_9_IRQHandler         /* TCPWM #1, Counter #9 */
+ 203 01f0 00000000 	    .long    tcpwm_1_interrupts_10_IRQHandler        /* TCPWM #1, Counter #10 */
+ 204 01f4 00000000 	    .long    tcpwm_1_interrupts_11_IRQHandler        /* TCPWM #1, Counter #11 */
+ 205 01f8 00000000 	    .long    tcpwm_1_interrupts_12_IRQHandler        /* TCPWM #1, Counter #12 */
+ 206 01fc 00000000 	    .long    tcpwm_1_interrupts_13_IRQHandler        /* TCPWM #1, Counter #13 */
+ 207 0200 00000000 	    .long    tcpwm_1_interrupts_14_IRQHandler        /* TCPWM #1, Counter #14 */
+ 208 0204 00000000 	    .long    tcpwm_1_interrupts_15_IRQHandler        /* TCPWM #1, Counter #15 */
+ 209 0208 00000000 	    .long    tcpwm_1_interrupts_16_IRQHandler        /* TCPWM #1, Counter #16 */
+ 210 020c 00000000 	    .long    tcpwm_1_interrupts_17_IRQHandler        /* TCPWM #1, Counter #17 */
+ 211 0210 00000000 	    .long    tcpwm_1_interrupts_18_IRQHandler        /* TCPWM #1, Counter #18 */
+ 212 0214 00000000 	    .long    tcpwm_1_interrupts_19_IRQHandler        /* TCPWM #1, Counter #19 */
+ 213 0218 00000000 	    .long    tcpwm_1_interrupts_20_IRQHandler        /* TCPWM #1, Counter #20 */
+ 214 021c 00000000 	    .long    tcpwm_1_interrupts_21_IRQHandler        /* TCPWM #1, Counter #21 */
+ 215 0220 00000000 	    .long    tcpwm_1_interrupts_22_IRQHandler        /* TCPWM #1, Counter #22 */
+ 216 0224 00000000 	    .long    tcpwm_1_interrupts_23_IRQHandler        /* TCPWM #1, Counter #23 */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 5
+
+
+ 217 0228 00000000 	    .long    udb_interrupts_0_IRQHandler             /* UDB Interrupt #0 */
+ 218 022c 00000000 	    .long    udb_interrupts_1_IRQHandler             /* UDB Interrupt #1 */
+ 219 0230 00000000 	    .long    udb_interrupts_2_IRQHandler             /* UDB Interrupt #2 */
+ 220 0234 00000000 	    .long    udb_interrupts_3_IRQHandler             /* UDB Interrupt #3 */
+ 221 0238 00000000 	    .long    udb_interrupts_4_IRQHandler             /* UDB Interrupt #4 */
+ 222 023c 00000000 	    .long    udb_interrupts_5_IRQHandler             /* UDB Interrupt #5 */
+ 223 0240 00000000 	    .long    udb_interrupts_6_IRQHandler             /* UDB Interrupt #6 */
+ 224 0244 00000000 	    .long    udb_interrupts_7_IRQHandler             /* UDB Interrupt #7 */
+ 225 0248 00000000 	    .long    udb_interrupts_8_IRQHandler             /* UDB Interrupt #8 */
+ 226 024c 00000000 	    .long    udb_interrupts_9_IRQHandler             /* UDB Interrupt #9 */
+ 227 0250 00000000 	    .long    udb_interrupts_10_IRQHandler            /* UDB Interrupt #10 */
+ 228 0254 00000000 	    .long    udb_interrupts_11_IRQHandler            /* UDB Interrupt #11 */
+ 229 0258 00000000 	    .long    udb_interrupts_12_IRQHandler            /* UDB Interrupt #12 */
+ 230 025c 00000000 	    .long    udb_interrupts_13_IRQHandler            /* UDB Interrupt #13 */
+ 231 0260 00000000 	    .long    udb_interrupts_14_IRQHandler            /* UDB Interrupt #14 */
+ 232 0264 00000000 	    .long    udb_interrupts_15_IRQHandler            /* UDB Interrupt #15 */
+ 233 0268 00000000 	    .long    pass_interrupt_sar_IRQHandler           /* SAR ADC interrupt */
+ 234 026c 00000000 	    .long    audioss_interrupt_i2s_IRQHandler        /* I2S Audio interrupt */
+ 235 0270 00000000 	    .long    audioss_interrupt_pdm_IRQHandler        /* PDM/PCM Audio interrupt */
+ 236 0274 00000000 	    .long    profile_interrupt_IRQHandler            /* Energy Profiler interrupt */
+ 237 0278 00000000 	    .long    smif_interrupt_IRQHandler               /* Serial Memory Interface interrupt */
+ 238 027c 00000000 	    .long    usb_interrupt_hi_IRQHandler             /* USB Interrupt */
+ 239 0280 00000000 	    .long    usb_interrupt_med_IRQHandler            /* USB Interrupt */
+ 240 0284 00000000 	    .long    usb_interrupt_lo_IRQHandler             /* USB Interrupt */
+ 241 0288 00000000 	    .long    pass_interrupt_dacs_IRQHandler          /* Consolidated interrrupt for all DACs */
+ 242              	
+ 243              	
+ 244              	    .size    __Vectors, . - __Vectors
+ 245              	    .equ    __VectorsSize, . - __Vectors
+ 246              	
+ 247              	    .section .ram_vectors
+ 248              	    .align 2
+ 249              	    .globl __ramVectors
+ 250              	__ramVectors:
+ 251 0000 00000000 	    .space  __VectorsSize
+ 251      00000000 
+ 251      00000000 
+ 251      00000000 
+ 251      00000000 
+ 252              	    .size   __ramVectors, . - __ramVectors
+ 253              	
+ 254              	
+ 255              	    .text
+ 256              	    .thumb
+ 257              	    .thumb_func
+ 258              	    .align  2
+ 259              	
+ 260              	    /* Device startup customization */
+ 261              	    .weak   Cy_OnResetUser
+ 262              	    .func   Cy_OnResetUser, Cy_OnResetUser
+ 263              	    .type   Cy_OnResetUser, %function
+ 264              	Cy_OnResetUser:
+ 265 0000 7047     	    bx lr
+ 266              	    .size   Cy_OnResetUser, . - Cy_OnResetUser
+ 267              	    .endfunc
+ 268              	
+ 269              	    /* Saves and disables the interrupts */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 6
+
+
+ 270              	    .global Cy_SaveIRQ
+ 271              	    .func   Cy_SaveIRQ, Cy_SaveIRQ
+ 272              	    .type   Cy_SaveIRQ, %function
+ 273              	Cy_SaveIRQ:
+ 274 0002 EFF31080 	    mrs r0, PRIMASK
+ 275 0006 72B6     	    cpsid i
+ 276 0008 7047     	    bx lr
+ 277              	    .size   Cy_SaveIRQ, . - Cy_SaveIRQ
+ 278              	    .endfunc
+ 279              	
+ 280              	    /* Restores the interrupts */
+ 281              	    .global Cy_RestoreIRQ
+ 282              	    .func   Cy_RestoreIRQ, Cy_RestoreIRQ
+ 283              	    .type   Cy_RestoreIRQ, %function
+ 284              	Cy_RestoreIRQ:
+ 285 000a 80F31088 	    msr PRIMASK, r0
+ 286 000e 7047     	    bx lr
+ 287              	    .size   Cy_RestoreIRQ, . - Cy_RestoreIRQ
+ 288              	    .endfunc
+ 289              	
+ 290              	    /* Reset handler */
+ 291              	    .weak    Reset_Handler
+ 292              	    .type    Reset_Handler, %function
+ 293              	Reset_Handler:
+ 294              	
+ 295 0010 FFF7FEFF 	    bl Cy_OnResetUser
+ 296 0014 72B6     	    cpsid i
+ 297              	
+ 298              	/*  Firstly it copies data from read only memory to RAM. There are two schemes
+ 299              	 *  to copy. One can copy more than one sections. Another can only copy
+ 300              	 *  one section.  The former scheme needs more instructions and read-only
+ 301              	 *  data to implement than the latter.
+ 302              	 *  Macro __STARTUP_COPY_MULTIPLE is used to choose between two schemes.  */
+ 303              	
+ 304              	#ifdef __STARTUP_COPY_MULTIPLE
+ 305              	/*  Multiple sections scheme.
+ 306              	 *
+ 307              	 *  Between symbol address __copy_table_start__ and __copy_table_end__,
+ 308              	 *  there are array of triplets, each of which specify:
+ 309              	 *    offset 0: LMA of start of a section to copy from
+ 310              	 *    offset 4: VMA of start of a section to copy to
+ 311              	 *    offset 8: size of the section to copy. Must be multiply of 4
+ 312              	 *
+ 313              	 *  All addresses must be aligned to 4 bytes boundary.
+ 314              	 */
+ 315 0016 114C     	    ldr    r4, =__copy_table_start__
+ 316 0018 114D     	    ldr    r5, =__copy_table_end__
+ 317              	
+ 318              	.L_loop0:
+ 319 001a AC42     	    cmp    r4, r5
+ 320 001c 09DA     	    bge    .L_loop0_done
+ 321 001e 2168     	    ldr    r1, [r4]
+ 322 0020 6268     	    ldr    r2, [r4, #4]
+ 323 0022 A368     	    ldr    r3, [r4, #8]
+ 324              	
+ 325              	.L_loop0_0:
+ 326 0024 043B     	    subs    r3, #4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 7
+
+
+ 327 0026 A2BF     	    ittt    ge
+ 328 0028 C858     	    ldrge    r0, [r1, r3]
+ 329 002a D050     	    strge    r0, [r2, r3]
+ 330 002c FAE7     	    bge    .L_loop0_0
+ 331              	
+ 332 002e 0C34     	    adds    r4, #12
+ 333 0030 F3E7     	    b    .L_loop0
+ 334              	
+ 335              	.L_loop0_done:
+ 336              	#else
+ 337              	/*  Single section scheme.
+ 338              	 *
+ 339              	 *  The ranges of copy from/to are specified by following symbols
+ 340              	 *    __etext: LMA of start of the section to copy from. Usually end of text
+ 341              	 *    __data_start__: VMA of start of the section to copy to
+ 342              	 *    __data_end__: VMA of end of the section to copy to
+ 343              	 *
+ 344              	 *  All addresses must be aligned to 4 bytes boundary.
+ 345              	 */
+ 346              	    ldr    r1, =__etext
+ 347              	    ldr    r2, =__data_start__
+ 348              	    ldr    r3, =__data_end__
+ 349              	
+ 350              	.L_loop1:
+ 351              	    cmp    r2, r3
+ 352              	    ittt    lt
+ 353              	    ldrlt    r0, [r1], #4
+ 354              	    strlt    r0, [r2], #4
+ 355              	    blt    .L_loop1
+ 356              	#endif /*__STARTUP_COPY_MULTIPLE */
+ 357              	
+ 358              	/*  This part of work usually is done in C library startup code. Otherwise,
+ 359              	 *  define this macro to enable it in this startup.
+ 360              	 *
+ 361              	 *  There are two schemes too. One can clear multiple BSS sections. Another
+ 362              	 *  can only clear one section. The former is more size expensive than the
+ 363              	 *  latter.
+ 364              	 *
+ 365              	 *  Define macro __STARTUP_CLEAR_BSS_MULTIPLE to choose the former.
+ 366              	 *  Otherwise efine macro __STARTUP_CLEAR_BSS to choose the later.
+ 367              	 */
+ 368              	#ifdef __STARTUP_CLEAR_BSS_MULTIPLE
+ 369              	/*  Multiple sections scheme.
+ 370              	 *
+ 371              	 *  Between symbol address __copy_table_start__ and __copy_table_end__,
+ 372              	 *  there are array of tuples specifying:
+ 373              	 *    offset 0: Start of a BSS section
+ 374              	 *    offset 4: Size of this BSS section. Must be multiply of 4
+ 375              	 */
+ 376              	    ldr    r3, =__zero_table_start__
+ 377              	    ldr    r4, =__zero_table_end__
+ 378              	
+ 379              	.L_loop2:
+ 380              	    cmp    r3, r4
+ 381              	    bge    .L_loop2_done
+ 382              	    ldr    r1, [r3]
+ 383              	    ldr    r2, [r3, #4]
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 8
+
+
+ 384              	    movs    r0, 0
+ 385              	
+ 386              	.L_loop2_0:
+ 387              	    subs    r2, #4
+ 388              	    itt    ge
+ 389              	    strge    r0, [r1, r2]
+ 390              	    bge    .L_loop2_0
+ 391              	
+ 392              	    adds    r3, #8
+ 393              	    b    .L_loop2
+ 394              	.L_loop2_done:
+ 395              	#elif defined (__STARTUP_CLEAR_BSS)
+ 396              	/*  Single BSS section scheme.
+ 397              	 *
+ 398              	 *  The BSS section is specified by following symbols
+ 399              	 *    __bss_start__: start of the BSS section.
+ 400              	 *    __bss_end__: end of the BSS section.
+ 401              	 *
+ 402              	 *  Both addresses must be aligned to 4 bytes boundary.
+ 403              	 */
+ 404 0032 0C49     	    ldr    r1, =__bss_start__
+ 405 0034 0C4A     	    ldr    r2, =__bss_end__
+ 406              	
+ 407 0036 0020     	    movs    r0, 0
+ 408              	.L_loop3:
+ 409 0038 9142     	    cmp    r1, r2
+ 410 003a BCBF     	    itt    lt
+ 411 003c 41F8040B 	    strlt    r0, [r1], #4
+ 412 0040 FAE7     	    blt    .L_loop3
+ 413              	#endif /* __STARTUP_CLEAR_BSS_MULTIPLE || __STARTUP_CLEAR_BSS */
+ 414              	
+ 415              	    /* Update Vector Table Offset Register. */
+ 416 0042 0A48     	    ldr r0, =__ramVectors
+ 417 0044 0A49     	     ldr r1, =CY_CPU_VTOR_ADDR
+ 418 0046 0860     	    str r0, [r1]
+ 419 0048 BFF34F8F 	    dsb 0xF
+ 420              	
+ 421              	        /* Enable the FPU if used */
+ 422 004c FFF7FEFF 	        bl Cy_SystemInitFpuEnable
+ 423              	
+ 424              	#ifndef __NO_SYSTEM_INIT
+ 425 0050 FFF7FEFF 	    bl    SystemInit
+ 426              	#endif
+ 427              	
+ 428 0054 FFF7FEFF 	    bl    main
+ 429              	
+ 430              	    /* Should never get here */
+ 431 0058 FEE7     	    b   .
+ 432              	
+ 433 005a 00000000 	    .pool
+ 433      00000000 
+ 433      00000000 
+ 433      00000000 
+ 433      00000000 
+ 434              	    .size    Reset_Handler, . - Reset_Handler
+ 435              	
+ 436              	    .align    1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 9
+
+
+ 437              	    .thumb_func
+ 438              	    .weak    Default_Handler
+ 439              	    .type    Default_Handler, %function
+ 440              	Default_Handler:
+ 441 0074 FEE7     	    b    .
+ 442              	    .size    Default_Handler, . - Default_Handler
+ 443              	
+ 444              	
+ 445              	    .weak    Cy_SysLib_FaultHandler
+ 446              	    .type    Cy_SysLib_FaultHandler, %function
+ 447              	Cy_SysLib_FaultHandler:
+ 448 0076 FEE7     	    b    .
+ 449              	    .size    Cy_SysLib_FaultHandler, . - Cy_SysLib_FaultHandler
+ 450              	
+ 451              	    .type Fault_Handler, %function
+ 452              	Fault_Handler:
+ 453              	    /* Storing LR content for Creator call stack trace */
+ 454 0078 00B5     	    push {LR}
+ 455 007a 0420     	    movs r0, #4
+ 456 007c 7146     	    mov r1, LR
+ 457 007e 0842     	    tst r0, r1
+ 458 0080 02D0     	    beq .L_MSP
+ 459 0082 EFF30980 	    mrs r0, PSP
+ 460 0086 01E0     	    b .L_API_call
+ 461              	.L_MSP:
+ 462 0088 EFF30880 	    mrs r0, MSP
+ 463              	.L_API_call:
+ 464              	    /* Compensation of stack pointer address due to pushing 4 bytes of LR */
+ 465 008c 0430     	    adds r0, r0, #4
+ 466 008e FFF7FEFF 	    bl Cy_SysLib_FaultHandler
+ 467 0092 FEE7     	    b   .
+ 468              	    .size    Fault_Handler, . - Fault_Handler
+ 469              	
+ 470              	.macro    def_fault_Handler    fault_handler_name
+ 471              	    .weak    \fault_handler_name
+ 472              	    .set    \fault_handler_name, Fault_Handler
+ 473              	    .endm
+ 474              	
+ 475              	/*    Macro to define default handlers. Default handler
+ 476              	 *    will be weak symbol and just dead loops. They can be
+ 477              	 *    overwritten by other handlers */
+ 478              	    .macro    def_irq_handler    handler_name
+ 479              	    .weak    \handler_name
+ 480              	    .set    \handler_name, Default_Handler
+ 481              	    .endm
+ 482              	
+ 483              	    def_irq_handler    NMI_Handler
+ 484              	
+ 485              	    def_fault_Handler HardFault_Handler
+ 486              	    def_fault_Handler MemManage_Handler
+ 487              	    def_fault_Handler BusFault_Handler
+ 488              	    def_fault_Handler UsageFault_Handler
+ 489              	
+ 490              	    def_irq_handler    SVC_Handler
+ 491              	    def_irq_handler    DebugMon_Handler
+ 492              	    def_irq_handler    PendSV_Handler
+ 493              	    def_irq_handler    SysTick_Handler
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 10
+
+
+ 494              	
+ 495              	    def_irq_handler  ioss_interrupts_gpio_0_IRQHandler       /* GPIO Port Interrupt #0 */
+ 496              	    def_irq_handler  ioss_interrupts_gpio_1_IRQHandler       /* GPIO Port Interrupt #1 */
+ 497              	    def_irq_handler  ioss_interrupts_gpio_2_IRQHandler       /* GPIO Port Interrupt #2 */
+ 498              	    def_irq_handler  ioss_interrupts_gpio_3_IRQHandler       /* GPIO Port Interrupt #3 */
+ 499              	    def_irq_handler  ioss_interrupts_gpio_4_IRQHandler       /* GPIO Port Interrupt #4 */
+ 500              	    def_irq_handler  ioss_interrupts_gpio_5_IRQHandler       /* GPIO Port Interrupt #5 */
+ 501              	    def_irq_handler  ioss_interrupts_gpio_6_IRQHandler       /* GPIO Port Interrupt #6 */
+ 502              	    def_irq_handler  ioss_interrupts_gpio_7_IRQHandler       /* GPIO Port Interrupt #7 */
+ 503              	    def_irq_handler  ioss_interrupts_gpio_8_IRQHandler       /* GPIO Port Interrupt #8 */
+ 504              	    def_irq_handler  ioss_interrupts_gpio_9_IRQHandler       /* GPIO Port Interrupt #9 */
+ 505              	    def_irq_handler  ioss_interrupts_gpio_10_IRQHandler      /* GPIO Port Interrupt #10 */
+ 506              	    def_irq_handler  ioss_interrupts_gpio_11_IRQHandler      /* GPIO Port Interrupt #11 */
+ 507              	    def_irq_handler  ioss_interrupts_gpio_12_IRQHandler      /* GPIO Port Interrupt #12 */
+ 508              	    def_irq_handler  ioss_interrupts_gpio_13_IRQHandler      /* GPIO Port Interrupt #13 */
+ 509              	    def_irq_handler  ioss_interrupts_gpio_14_IRQHandler      /* GPIO Port Interrupt #14 */
+ 510              	    def_irq_handler  ioss_interrupt_gpio_IRQHandler          /* GPIO All Ports */
+ 511              	    def_irq_handler  ioss_interrupt_vdd_IRQHandler           /* GPIO Supply Detect Interrupt */
+ 512              	    def_irq_handler  lpcomp_interrupt_IRQHandler             /* Low Power Comparator Interrupt */
+ 513              	    def_irq_handler  scb_8_interrupt_IRQHandler              /* Serial Communication Block #8 (Deep
+ 514              	    def_irq_handler  srss_interrupt_mcwdt_0_IRQHandler       /* Multi Counter Watchdog Timer interr
+ 515              	    def_irq_handler  srss_interrupt_mcwdt_1_IRQHandler       /* Multi Counter Watchdog Timer interr
+ 516              	    def_irq_handler  srss_interrupt_backup_IRQHandler        /* Backup domain interrupt */
+ 517              	    def_irq_handler  srss_interrupt_IRQHandler               /* Other combined Interrupts for SRSS 
+ 518              	    def_irq_handler  pass_interrupt_ctbs_IRQHandler          /* CTBm Interrupt (all CTBms) */
+ 519              	    def_irq_handler  bless_interrupt_IRQHandler              /* Bluetooth Radio interrupt */
+ 520              	    def_irq_handler  cpuss_interrupts_ipc_0_IRQHandler       /* CPUSS Inter Process Communication I
+ 521              	    def_irq_handler  cpuss_interrupts_ipc_1_IRQHandler       /* CPUSS Inter Process Communication I
+ 522              	    def_irq_handler  cpuss_interrupts_ipc_2_IRQHandler       /* CPUSS Inter Process Communication I
+ 523              	    def_irq_handler  cpuss_interrupts_ipc_3_IRQHandler       /* CPUSS Inter Process Communication I
+ 524              	    def_irq_handler  cpuss_interrupts_ipc_4_IRQHandler       /* CPUSS Inter Process Communication I
+ 525              	    def_irq_handler  cpuss_interrupts_ipc_5_IRQHandler       /* CPUSS Inter Process Communication I
+ 526              	    def_irq_handler  cpuss_interrupts_ipc_6_IRQHandler       /* CPUSS Inter Process Communication I
+ 527              	    def_irq_handler  cpuss_interrupts_ipc_7_IRQHandler       /* CPUSS Inter Process Communication I
+ 528              	    def_irq_handler  cpuss_interrupts_ipc_8_IRQHandler       /* CPUSS Inter Process Communication I
+ 529              	    def_irq_handler  cpuss_interrupts_ipc_9_IRQHandler       /* CPUSS Inter Process Communication I
+ 530              	    def_irq_handler  cpuss_interrupts_ipc_10_IRQHandler      /* CPUSS Inter Process Communication I
+ 531              	    def_irq_handler  cpuss_interrupts_ipc_11_IRQHandler      /* CPUSS Inter Process Communication I
+ 532              	    def_irq_handler  cpuss_interrupts_ipc_12_IRQHandler      /* CPUSS Inter Process Communication I
+ 533              	    def_irq_handler  cpuss_interrupts_ipc_13_IRQHandler      /* CPUSS Inter Process Communication I
+ 534              	    def_irq_handler  cpuss_interrupts_ipc_14_IRQHandler      /* CPUSS Inter Process Communication I
+ 535              	    def_irq_handler  cpuss_interrupts_ipc_15_IRQHandler      /* CPUSS Inter Process Communication I
+ 536              	    def_irq_handler  scb_0_interrupt_IRQHandler              /* Serial Communication Block #0 */
+ 537              	    def_irq_handler  scb_1_interrupt_IRQHandler              /* Serial Communication Block #1 */
+ 538              	    def_irq_handler  scb_2_interrupt_IRQHandler              /* Serial Communication Block #2 */
+ 539              	    def_irq_handler  scb_3_interrupt_IRQHandler              /* Serial Communication Block #3 */
+ 540              	    def_irq_handler  scb_4_interrupt_IRQHandler              /* Serial Communication Block #4 */
+ 541              	    def_irq_handler  scb_5_interrupt_IRQHandler              /* Serial Communication Block #5 */
+ 542              	    def_irq_handler  scb_6_interrupt_IRQHandler              /* Serial Communication Block #6 */
+ 543              	    def_irq_handler  scb_7_interrupt_IRQHandler              /* Serial Communication Block #7 */
+ 544              	    def_irq_handler  csd_interrupt_IRQHandler                /* CSD (Capsense) interrupt */
+ 545              	    def_irq_handler  cpuss_interrupts_dw0_0_IRQHandler       /* CPUSS DataWire #0, Channel #0 */
+ 546              	    def_irq_handler  cpuss_interrupts_dw0_1_IRQHandler       /* CPUSS DataWire #0, Channel #1 */
+ 547              	    def_irq_handler  cpuss_interrupts_dw0_2_IRQHandler       /* CPUSS DataWire #0, Channel #2 */
+ 548              	    def_irq_handler  cpuss_interrupts_dw0_3_IRQHandler       /* CPUSS DataWire #0, Channel #3 */
+ 549              	    def_irq_handler  cpuss_interrupts_dw0_4_IRQHandler       /* CPUSS DataWire #0, Channel #4 */
+ 550              	    def_irq_handler  cpuss_interrupts_dw0_5_IRQHandler       /* CPUSS DataWire #0, Channel #5 */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 11
+
+
+ 551              	    def_irq_handler  cpuss_interrupts_dw0_6_IRQHandler       /* CPUSS DataWire #0, Channel #6 */
+ 552              	    def_irq_handler  cpuss_interrupts_dw0_7_IRQHandler       /* CPUSS DataWire #0, Channel #7 */
+ 553              	    def_irq_handler  cpuss_interrupts_dw0_8_IRQHandler       /* CPUSS DataWire #0, Channel #8 */
+ 554              	    def_irq_handler  cpuss_interrupts_dw0_9_IRQHandler       /* CPUSS DataWire #0, Channel #9 */
+ 555              	    def_irq_handler  cpuss_interrupts_dw0_10_IRQHandler      /* CPUSS DataWire #0, Channel #10 */
+ 556              	    def_irq_handler  cpuss_interrupts_dw0_11_IRQHandler      /* CPUSS DataWire #0, Channel #11 */
+ 557              	    def_irq_handler  cpuss_interrupts_dw0_12_IRQHandler      /* CPUSS DataWire #0, Channel #12 */
+ 558              	    def_irq_handler  cpuss_interrupts_dw0_13_IRQHandler      /* CPUSS DataWire #0, Channel #13 */
+ 559              	    def_irq_handler  cpuss_interrupts_dw0_14_IRQHandler      /* CPUSS DataWire #0, Channel #14 */
+ 560              	    def_irq_handler  cpuss_interrupts_dw0_15_IRQHandler      /* CPUSS DataWire #0, Channel #15 */
+ 561              	    def_irq_handler  cpuss_interrupts_dw1_0_IRQHandler       /* CPUSS DataWire #1, Channel #0 */
+ 562              	    def_irq_handler  cpuss_interrupts_dw1_1_IRQHandler       /* CPUSS DataWire #1, Channel #1 */
+ 563              	    def_irq_handler  cpuss_interrupts_dw1_2_IRQHandler       /* CPUSS DataWire #1, Channel #2 */
+ 564              	    def_irq_handler  cpuss_interrupts_dw1_3_IRQHandler       /* CPUSS DataWire #1, Channel #3 */
+ 565              	    def_irq_handler  cpuss_interrupts_dw1_4_IRQHandler       /* CPUSS DataWire #1, Channel #4 */
+ 566              	    def_irq_handler  cpuss_interrupts_dw1_5_IRQHandler       /* CPUSS DataWire #1, Channel #5 */
+ 567              	    def_irq_handler  cpuss_interrupts_dw1_6_IRQHandler       /* CPUSS DataWire #1, Channel #6 */
+ 568              	    def_irq_handler  cpuss_interrupts_dw1_7_IRQHandler       /* CPUSS DataWire #1, Channel #7 */
+ 569              	    def_irq_handler  cpuss_interrupts_dw1_8_IRQHandler       /* CPUSS DataWire #1, Channel #8 */
+ 570              	    def_irq_handler  cpuss_interrupts_dw1_9_IRQHandler       /* CPUSS DataWire #1, Channel #9 */
+ 571              	    def_irq_handler  cpuss_interrupts_dw1_10_IRQHandler      /* CPUSS DataWire #1, Channel #10 */
+ 572              	    def_irq_handler  cpuss_interrupts_dw1_11_IRQHandler      /* CPUSS DataWire #1, Channel #11 */
+ 573              	    def_irq_handler  cpuss_interrupts_dw1_12_IRQHandler      /* CPUSS DataWire #1, Channel #12 */
+ 574              	    def_irq_handler  cpuss_interrupts_dw1_13_IRQHandler      /* CPUSS DataWire #1, Channel #13 */
+ 575              	    def_irq_handler  cpuss_interrupts_dw1_14_IRQHandler      /* CPUSS DataWire #1, Channel #14 */
+ 576              	    def_irq_handler  cpuss_interrupts_dw1_15_IRQHandler      /* CPUSS DataWire #1, Channel #15 */
+ 577              	    def_irq_handler  cpuss_interrupts_fault_0_IRQHandler     /* CPUSS Fault Structure Interrupt #0 
+ 578              	    def_irq_handler  cpuss_interrupts_fault_1_IRQHandler     /* CPUSS Fault Structure Interrupt #1 
+ 579              	    def_irq_handler  cpuss_interrupt_crypto_IRQHandler       /* CRYPTO Accelerator Interrupt */
+ 580              	    def_irq_handler  cpuss_interrupt_fm_IRQHandler           /* FLASH Macro Interrupt */
+ 581              	    def_irq_handler  cpuss_interrupts_cm0_cti_0_IRQHandler   /* CM0+ CTI #0 */
+ 582              	    def_irq_handler  cpuss_interrupts_cm0_cti_1_IRQHandler   /* CM0+ CTI #1 */
+ 583              	    def_irq_handler  cpuss_interrupts_cm4_cti_0_IRQHandler   /* CM4 CTI #0 */
+ 584              	    def_irq_handler  cpuss_interrupts_cm4_cti_1_IRQHandler   /* CM4 CTI #1 */
+ 585              	    def_irq_handler  tcpwm_0_interrupts_0_IRQHandler         /* TCPWM #0, Counter #0 */
+ 586              	    def_irq_handler  tcpwm_0_interrupts_1_IRQHandler         /* TCPWM #0, Counter #1 */
+ 587              	    def_irq_handler  tcpwm_0_interrupts_2_IRQHandler         /* TCPWM #0, Counter #2 */
+ 588              	    def_irq_handler  tcpwm_0_interrupts_3_IRQHandler         /* TCPWM #0, Counter #3 */
+ 589              	    def_irq_handler  tcpwm_0_interrupts_4_IRQHandler         /* TCPWM #0, Counter #4 */
+ 590              	    def_irq_handler  tcpwm_0_interrupts_5_IRQHandler         /* TCPWM #0, Counter #5 */
+ 591              	    def_irq_handler  tcpwm_0_interrupts_6_IRQHandler         /* TCPWM #0, Counter #6 */
+ 592              	    def_irq_handler  tcpwm_0_interrupts_7_IRQHandler         /* TCPWM #0, Counter #7 */
+ 593              	    def_irq_handler  tcpwm_1_interrupts_0_IRQHandler         /* TCPWM #1, Counter #0 */
+ 594              	    def_irq_handler  tcpwm_1_interrupts_1_IRQHandler         /* TCPWM #1, Counter #1 */
+ 595              	    def_irq_handler  tcpwm_1_interrupts_2_IRQHandler         /* TCPWM #1, Counter #2 */
+ 596              	    def_irq_handler  tcpwm_1_interrupts_3_IRQHandler         /* TCPWM #1, Counter #3 */
+ 597              	    def_irq_handler  tcpwm_1_interrupts_4_IRQHandler         /* TCPWM #1, Counter #4 */
+ 598              	    def_irq_handler  tcpwm_1_interrupts_5_IRQHandler         /* TCPWM #1, Counter #5 */
+ 599              	    def_irq_handler  tcpwm_1_interrupts_6_IRQHandler         /* TCPWM #1, Counter #6 */
+ 600              	    def_irq_handler  tcpwm_1_interrupts_7_IRQHandler         /* TCPWM #1, Counter #7 */
+ 601              	    def_irq_handler  tcpwm_1_interrupts_8_IRQHandler         /* TCPWM #1, Counter #8 */
+ 602              	    def_irq_handler  tcpwm_1_interrupts_9_IRQHandler         /* TCPWM #1, Counter #9 */
+ 603              	    def_irq_handler  tcpwm_1_interrupts_10_IRQHandler        /* TCPWM #1, Counter #10 */
+ 604              	    def_irq_handler  tcpwm_1_interrupts_11_IRQHandler        /* TCPWM #1, Counter #11 */
+ 605              	    def_irq_handler  tcpwm_1_interrupts_12_IRQHandler        /* TCPWM #1, Counter #12 */
+ 606              	    def_irq_handler  tcpwm_1_interrupts_13_IRQHandler        /* TCPWM #1, Counter #13 */
+ 607              	    def_irq_handler  tcpwm_1_interrupts_14_IRQHandler        /* TCPWM #1, Counter #14 */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cciSICY4.s 			page 12
+
+
+ 608              	    def_irq_handler  tcpwm_1_interrupts_15_IRQHandler        /* TCPWM #1, Counter #15 */
+ 609              	    def_irq_handler  tcpwm_1_interrupts_16_IRQHandler        /* TCPWM #1, Counter #16 */
+ 610              	    def_irq_handler  tcpwm_1_interrupts_17_IRQHandler        /* TCPWM #1, Counter #17 */
+ 611              	    def_irq_handler  tcpwm_1_interrupts_18_IRQHandler        /* TCPWM #1, Counter #18 */
+ 612              	    def_irq_handler  tcpwm_1_interrupts_19_IRQHandler        /* TCPWM #1, Counter #19 */
+ 613              	    def_irq_handler  tcpwm_1_interrupts_20_IRQHandler        /* TCPWM #1, Counter #20 */
+ 614              	    def_irq_handler  tcpwm_1_interrupts_21_IRQHandler        /* TCPWM #1, Counter #21 */
+ 615              	    def_irq_handler  tcpwm_1_interrupts_22_IRQHandler        /* TCPWM #1, Counter #22 */
+ 616              	    def_irq_handler  tcpwm_1_interrupts_23_IRQHandler        /* TCPWM #1, Counter #23 */
+ 617              	    def_irq_handler  udb_interrupts_0_IRQHandler             /* UDB Interrupt #0 */
+ 618              	    def_irq_handler  udb_interrupts_1_IRQHandler             /* UDB Interrupt #1 */
+ 619              	    def_irq_handler  udb_interrupts_2_IRQHandler             /* UDB Interrupt #2 */
+ 620              	    def_irq_handler  udb_interrupts_3_IRQHandler             /* UDB Interrupt #3 */
+ 621              	    def_irq_handler  udb_interrupts_4_IRQHandler             /* UDB Interrupt #4 */
+ 622              	    def_irq_handler  udb_interrupts_5_IRQHandler             /* UDB Interrupt #5 */
+ 623              	    def_irq_handler  udb_interrupts_6_IRQHandler             /* UDB Interrupt #6 */
+ 624              	    def_irq_handler  udb_interrupts_7_IRQHandler             /* UDB Interrupt #7 */
+ 625              	    def_irq_handler  udb_interrupts_8_IRQHandler             /* UDB Interrupt #8 */
+ 626              	    def_irq_handler  udb_interrupts_9_IRQHandler             /* UDB Interrupt #9 */
+ 627              	    def_irq_handler  udb_interrupts_10_IRQHandler            /* UDB Interrupt #10 */
+ 628              	    def_irq_handler  udb_interrupts_11_IRQHandler            /* UDB Interrupt #11 */
+ 629              	    def_irq_handler  udb_interrupts_12_IRQHandler            /* UDB Interrupt #12 */
+ 630              	    def_irq_handler  udb_interrupts_13_IRQHandler            /* UDB Interrupt #13 */
+ 631              	    def_irq_handler  udb_interrupts_14_IRQHandler            /* UDB Interrupt #14 */
+ 632              	    def_irq_handler  udb_interrupts_15_IRQHandler            /* UDB Interrupt #15 */
+ 633              	    def_irq_handler  pass_interrupt_sar_IRQHandler           /* SAR ADC interrupt */
+ 634              	    def_irq_handler  audioss_interrupt_i2s_IRQHandler        /* I2S Audio interrupt */
+ 635              	    def_irq_handler  audioss_interrupt_pdm_IRQHandler        /* PDM/PCM Audio interrupt */
+ 636              	    def_irq_handler  profile_interrupt_IRQHandler            /* Energy Profiler interrupt */
+ 637              	    def_irq_handler  smif_interrupt_IRQHandler               /* Serial Memory Interface interrupt *
+ 638              	    def_irq_handler  usb_interrupt_hi_IRQHandler             /* USB Interrupt */
+ 639              	    def_irq_handler  usb_interrupt_med_IRQHandler            /* USB Interrupt */
+ 640              	    def_irq_handler  usb_interrupt_lo_IRQHandler             /* USB Interrupt */
+ 641              	    def_irq_handler  pass_interrupt_dacs_IRQHandler          /* Consolidated interrrupt for all DAC
+ 642              	
+ 643              	    .end

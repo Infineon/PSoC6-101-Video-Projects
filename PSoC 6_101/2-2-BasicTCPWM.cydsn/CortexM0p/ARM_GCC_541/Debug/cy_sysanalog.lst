@@ -1,0 +1,1656 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0plus
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"cy_sysanalog.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.Cy_SysAnalog_Init,"ax",%progbits
+  20              		.align	2
+  21              		.global	Cy_SysAnalog_Init
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	Cy_SysAnalog_Init, %function
+  25              	Cy_SysAnalog_Init:
+  26              	.LFB78:
+  27              		.file 1 "Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\sysanalog\\cy_sysanalog.c"
+   1:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** /***************************************************************************//**
+   2:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * \file cy_sysanalog.c
+   3:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * \version 1.0
+   4:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *
+   5:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * Provides the public functions for the API for the SAR driver.
+   6:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *
+   7:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** ********************************************************************************
+   8:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * \copyright
+   9:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * Copyright 2017-2018, Cypress Semiconductor Corporation. All rights reserved.
+  10:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *******************************************************************************/
+  14:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** #include "cy_sysanalog.h"
+  15:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  16:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** #if defined(__cplusplus)
+  17:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** extern "C" {
+  18:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** #endif
+  19:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  20:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** /* Configure the AREF to use the local Vref and local IZTAT. Can be used with \ref Cy_SysAnalog_Ini
+  21:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** const cy_stc_sysanalog_config_t Cy_SysAnalog_Fast_Local =
+  22:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** {
+  23:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.startup    */ CY_SYSANALOG_STARTUP_FAST,
+  24:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.iztat      */ CY_SYSANALOG_IZTAT_SOURCE_LOCAL,
+  25:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.vref       */ CY_SYSANALOG_VREF_SOURCE_LOCAL_1_2V,
+  26:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.deepSleep  */ CY_SYSANALOG_DEEPSLEEP_DISABLE,
+  27:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** };
+  28:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  29:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** /* Configure the AREF to use the SRSS Vref and SRSS IZTAT. Can be used with \ref Cy_SysAnalog_Init.
+  30:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** const cy_stc_sysanalog_config_t Cy_SysAnalog_Fast_SRSS =
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 2
+
+
+  31:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** {
+  32:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.startup    */ CY_SYSANALOG_STARTUP_FAST,
+  33:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.iztat      */ CY_SYSANALOG_IZTAT_SOURCE_SRSS,
+  34:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.vref       */ CY_SYSANALOG_VREF_SOURCE_SRSS,
+  35:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.deepSleep  */ CY_SYSANALOG_DEEPSLEEP_DISABLE,
+  36:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** };
+  37:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  38:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** /* Configure the AREF to use the external Vref and local IZTAT. Can be used with \ref Cy_SysAnalog_
+  39:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** const cy_stc_sysanalog_config_t Cy_SysAnalog_Fast_External =
+  40:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** {
+  41:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.startup    */ CY_SYSANALOG_STARTUP_FAST,
+  42:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.iztat      */ CY_SYSANALOG_IZTAT_SOURCE_LOCAL,
+  43:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.vref       */ CY_SYSANALOG_VREF_SOURCE_EXTERNAL,
+  44:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     /*.deepSleep  */ CY_SYSANALOG_DEEPSLEEP_DISABLE,
+  45:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** };
+  46:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  47:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** /*******************************************************************************
+  48:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * Function Name: Cy_SysAnalog_Init
+  49:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** ****************************************************************************//**
+  50:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *
+  51:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * Initialize the AREF block.
+  52:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *
+  53:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * \param config
+  54:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * Pointer to structure containing configuration data. See \ref cy_stc_sysanalog_config_t
+  55:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *
+  56:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * \return
+  57:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * - \ref CY_SYSANALOG_SUCCESS : initialization complete
+  58:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * - \ref CY_SYSANALOG_BAD_PARAM : input pointers are null, initialization incomplete
+  59:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *
+  60:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * \funcusage
+  61:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *
+  62:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** * \snippet sysanalog_sut_01.cydsn/main_cm0p.c SYSANA_SNIPPET_INIT
+  63:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *
+  64:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** *******************************************************************************/
+  65:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** cy_en_sysanalog_status_t Cy_SysAnalog_Init(const cy_stc_sysanalog_config_t *config)
+  66:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** {
+  28              		.loc 1 66 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 10B5     		push	{r4, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  37 0002 041E     		subs	r4, r0, #0
+  67:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     CY_ASSERT_L1(NULL != config);
+  38              		.loc 1 67 0
+  39 0004 03D1     		bne	.L2
+  40              		.loc 1 67 0 is_stmt 0 discriminator 1
+  41 0006 4321     		movs	r1, #67
+  42 0008 2448     		ldr	r0, .L9
+  43              	.LVL1:
+  44 000a FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+  45              	.LVL2:
+  46              	.L2:
+  68:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 3
+
+
+  69:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     cy_en_sysanalog_status_t result;
+  70:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     uint32_t ctrlReg = CY_SYSANALOG_DEINIT;
+  71:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  72:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     if (NULL == config)
+  47              		.loc 1 72 0 is_stmt 1
+  48 000e 002C     		cmp	r4, #0
+  49 0010 41D0     		beq	.L8
+  73:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     {
+  74:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****         result = CY_SYSANALOG_BAD_PARAM;
+  75:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     }
+  76:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     else
+  77:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     {
+  78:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****         CY_ASSERT_L3(CY_SYSANALOG_STARTUP(config->startup));
+  50              		.loc 1 78 0
+  51 0012 2378     		ldrb	r3, [r4]
+  52 0014 012B     		cmp	r3, #1
+  53 0016 03D9     		bls	.L4
+  54              		.loc 1 78 0 is_stmt 0 discriminator 1
+  55 0018 4E21     		movs	r1, #78
+  56 001a 2048     		ldr	r0, .L9
+  57 001c FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+  58              	.LVL3:
+  59              	.L4:
+  79:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****         CY_ASSERT_L3(CY_SYSANALOG_DEEPSLEEP(config->deepSleep));
+  60              		.loc 1 79 0 is_stmt 1
+  61 0020 E368     		ldr	r3, [r4, #12]
+  62 0022 002B     		cmp	r3, #0
+  63 0024 0FD0     		beq	.L5
+  64              		.loc 1 79 0 is_stmt 0 discriminator 1
+  65 0026 A022     		movs	r2, #160
+  66 0028 D205     		lsls	r2, r2, #23
+  67 002a 9342     		cmp	r3, r2
+  68 002c 0BD0     		beq	.L5
+  69              		.loc 1 79 0 discriminator 2
+  70 002e C022     		movs	r2, #192
+  71 0030 D205     		lsls	r2, r2, #23
+  72 0032 9342     		cmp	r3, r2
+  73 0034 07D0     		beq	.L5
+  74              		.loc 1 79 0 discriminator 3
+  75 0036 E022     		movs	r2, #224
+  76 0038 D205     		lsls	r2, r2, #23
+  77 003a 9342     		cmp	r3, r2
+  78 003c 03D0     		beq	.L5
+  79              		.loc 1 79 0 discriminator 4
+  80 003e 4F21     		movs	r1, #79
+  81 0040 1648     		ldr	r0, .L9
+  82 0042 FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+  83              	.LVL4:
+  84              	.L5:
+  80:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****         CY_ASSERT_L3(CY_SYSANALOG_VREF(config->vref));
+  85              		.loc 1 80 0 is_stmt 1
+  86 0046 A368     		ldr	r3, [r4, #8]
+  87 0048 002B     		cmp	r3, #0
+  88 004a 0BD0     		beq	.L6
+  89              		.loc 1 80 0 is_stmt 0 discriminator 1
+  90 004c 8022     		movs	r2, #128
+  91 004e 5203     		lsls	r2, r2, #13
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 4
+
+
+  92 0050 9342     		cmp	r3, r2
+  93 0052 07D0     		beq	.L6
+  94              		.loc 1 80 0 discriminator 2
+  95 0054 8022     		movs	r2, #128
+  96 0056 9203     		lsls	r2, r2, #14
+  97 0058 9342     		cmp	r3, r2
+  98 005a 03D0     		beq	.L6
+  99              		.loc 1 80 0 discriminator 3
+ 100 005c 5021     		movs	r1, #80
+ 101 005e 0F48     		ldr	r0, .L9
+ 102 0060 FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+ 103              	.LVL5:
+ 104              	.L6:
+  81:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****         CY_ASSERT_L3(CY_SYSANALOG_IZTAT(config->iztat));
+ 105              		.loc 1 81 0 is_stmt 1
+ 106 0064 6368     		ldr	r3, [r4, #4]
+ 107 0066 002B     		cmp	r3, #0
+ 108 0068 07D0     		beq	.L7
+ 109              		.loc 1 81 0 is_stmt 0 discriminator 1
+ 110 006a 8022     		movs	r2, #128
+ 111 006c 5202     		lsls	r2, r2, #9
+ 112 006e 9342     		cmp	r3, r2
+ 113 0070 03D0     		beq	.L7
+ 114              		.loc 1 81 0 discriminator 2
+ 115 0072 5121     		movs	r1, #81
+ 116 0074 0948     		ldr	r0, .L9
+ 117 0076 FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+ 118              	.LVL6:
+ 119              	.L7:
+  82:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  83:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****         ctrlReg = (uint32_t) config->startup \
+ 120              		.loc 1 83 0 is_stmt 1
+ 121 007a 2278     		ldrb	r2, [r4]
+  84:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****                   | CY_SYSANALOG_DEFAULT_BIAS_SCALE \
+ 122              		.loc 1 84 0
+ 123 007c 0423     		movs	r3, #4
+ 124 007e 1343     		orrs	r3, r2
+ 125 0080 DBB2     		uxtb	r3, r3
+  85:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****                   | (uint32_t) config->iztat \
+ 126              		.loc 1 85 0
+ 127 0082 6268     		ldr	r2, [r4, #4]
+ 128 0084 1343     		orrs	r3, r2
+  86:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****                   | (uint32_t) config->vref \
+ 129              		.loc 1 86 0
+ 130 0086 A268     		ldr	r2, [r4, #8]
+ 131 0088 1343     		orrs	r3, r2
+  87:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****                   | (uint32_t) config->deepSleep;
+ 132              		.loc 1 87 0
+ 133 008a E268     		ldr	r2, [r4, #12]
+  83:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****                   | CY_SYSANALOG_DEFAULT_BIAS_SCALE \
+ 134              		.loc 1 83 0
+ 135 008c 1343     		orrs	r3, r2
+ 136              	.LVL7:
+  88:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  89:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****         PASS_AREF->AREF_CTRL = ctrlReg;
+ 137              		.loc 1 89 0
+ 138 008e 044A     		ldr	r2, .L9+4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 5
+
+
+ 139 0090 1360     		str	r3, [r2]
+ 140              	.LVL8:
+  90:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  91:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****         result = CY_SYSANALOG_SUCCESS;
+ 141              		.loc 1 91 0
+ 142 0092 0020     		movs	r0, #0
+ 143 0094 00E0     		b	.L3
+ 144              	.LVL9:
+ 145              	.L8:
+  74:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     }
+ 146              		.loc 1 74 0
+ 147 0096 0348     		ldr	r0, .L9+8
+ 148              	.LVL10:
+ 149              	.L3:
+  92:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     }
+  93:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** 
+  94:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c ****     return result;
+  95:Generated_Source\PSoC6\pdl\drivers\peripheral\sysanalog/cy_sysanalog.c **** }
+ 150              		.loc 1 95 0
+ 151              		@ sp needed
+ 152              	.LVL11:
+ 153 0098 10BD     		pop	{r4, pc}
+ 154              	.L10:
+ 155 009a C046     		.align	2
+ 156              	.L9:
+ 157 009c 00000000 		.word	.LC0
+ 158 00a0 000E1F41 		.word	1092554240
+ 159 00a4 01005E00 		.word	6160385
+ 160              		.cfi_endproc
+ 161              	.LFE78:
+ 162              		.size	Cy_SysAnalog_Init, .-Cy_SysAnalog_Init
+ 163              		.global	Cy_SysAnalog_Fast_External
+ 164              		.global	Cy_SysAnalog_Fast_SRSS
+ 165              		.global	Cy_SysAnalog_Fast_Local
+ 166              		.section	.rodata
+ 167              		.align	2
+ 168              		.type	Cy_SysAnalog_Fast_External, %object
+ 169              		.size	Cy_SysAnalog_Fast_External, 16
+ 170              	Cy_SysAnalog_Fast_External:
+ 171 0000 01       		.byte	1
+ 172 0001 000000   		.space	3
+ 173 0004 00000100 		.word	65536
+ 174 0008 00002000 		.word	2097152
+ 175 000c 00000000 		.word	0
+ 176              		.type	Cy_SysAnalog_Fast_SRSS, %object
+ 177              		.size	Cy_SysAnalog_Fast_SRSS, 16
+ 178              	Cy_SysAnalog_Fast_SRSS:
+ 179 0010 01       		.byte	1
+ 180 0011 000000   		.space	3
+ 181 0014 00000000 		.word	0
+ 182 0018 00000000 		.word	0
+ 183 001c 00000000 		.word	0
+ 184              		.type	Cy_SysAnalog_Fast_Local, %object
+ 185              		.size	Cy_SysAnalog_Fast_Local, 16
+ 186              	Cy_SysAnalog_Fast_Local:
+ 187 0020 01       		.byte	1
+ 188 0021 000000   		.space	3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 6
+
+
+ 189 0024 00000100 		.word	65536
+ 190 0028 00001000 		.word	1048576
+ 191 002c 00000000 		.word	0
+ 192              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 193              		.align	2
+ 194              	.LC0:
+ 195 0000 47656E65 		.ascii	"Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\"
+ 195      72617465 
+ 195      645F536F 
+ 195      75726365 
+ 195      5C50536F 
+ 196 002e 73797361 		.ascii	"sysanalog\\cy_sysanalog.c\000"
+ 196      6E616C6F 
+ 196      675C6379 
+ 196      5F737973 
+ 196      616E616C 
+ 197              		.text
+ 198              	.Letext0:
+ 199              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 200              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 201              		.file 4 "Generated_Source\\PSoC6\\pdl\\devices/psoc6/ip/cyip_pass.h"
+ 202              		.file 5 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/syslib/cy_syslib.h"
+ 203              		.file 6 "Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\sysanalog\\cy_sysanalog.h"
+ 204              		.section	.debug_info,"",%progbits
+ 205              	.Ldebug_info0:
+ 206 0000 00040000 		.4byte	0x400
+ 207 0004 0400     		.2byte	0x4
+ 208 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 209 000a 04       		.byte	0x4
+ 210 000b 01       		.uleb128 0x1
+ 211 000c 9A000000 		.4byte	.LASF59
+ 212 0010 0C       		.byte	0xc
+ 213 0011 55020000 		.4byte	.LASF60
+ 214 0015 70040000 		.4byte	.LASF61
+ 215 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 216 001d 00000000 		.4byte	0
+ 217 0021 00000000 		.4byte	.Ldebug_line0
+ 218 0025 02       		.uleb128 0x2
+ 219 0026 01       		.byte	0x1
+ 220 0027 06       		.byte	0x6
+ 221 0028 42030000 		.4byte	.LASF0
+ 222 002c 02       		.uleb128 0x2
+ 223 002d 01       		.byte	0x1
+ 224 002e 08       		.byte	0x8
+ 225 002f 1D030000 		.4byte	.LASF1
+ 226 0033 02       		.uleb128 0x2
+ 227 0034 02       		.byte	0x2
+ 228 0035 05       		.byte	0x5
+ 229 0036 7F000000 		.4byte	.LASF2
+ 230 003a 02       		.uleb128 0x2
+ 231 003b 02       		.byte	0x2
+ 232 003c 07       		.byte	0x7
+ 233 003d B8030000 		.4byte	.LASF3
+ 234 0041 02       		.uleb128 0x2
+ 235 0042 04       		.byte	0x4
+ 236 0043 05       		.byte	0x5
+ 237 0044 B9020000 		.4byte	.LASF4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 7
+
+
+ 238 0048 03       		.uleb128 0x3
+ 239 0049 3B010000 		.4byte	.LASF9
+ 240 004d 02       		.byte	0x2
+ 241 004e 41       		.byte	0x41
+ 242 004f 53000000 		.4byte	0x53
+ 243 0053 02       		.uleb128 0x2
+ 244 0054 04       		.byte	0x4
+ 245 0055 07       		.byte	0x7
+ 246 0056 1E040000 		.4byte	.LASF5
+ 247 005a 02       		.uleb128 0x2
+ 248 005b 08       		.byte	0x8
+ 249 005c 05       		.byte	0x5
+ 250 005d 47020000 		.4byte	.LASF6
+ 251 0061 02       		.uleb128 0x2
+ 252 0062 08       		.byte	0x8
+ 253 0063 07       		.byte	0x7
+ 254 0064 4E030000 		.4byte	.LASF7
+ 255 0068 04       		.uleb128 0x4
+ 256 0069 04       		.byte	0x4
+ 257 006a 05       		.byte	0x5
+ 258 006b 696E7400 		.ascii	"int\000"
+ 259 006f 02       		.uleb128 0x2
+ 260 0070 04       		.byte	0x4
+ 261 0071 07       		.byte	0x7
+ 262 0072 8C030000 		.4byte	.LASF8
+ 263 0076 03       		.uleb128 0x3
+ 264 0077 65030000 		.4byte	.LASF10
+ 265 007b 03       		.byte	0x3
+ 266 007c 30       		.byte	0x30
+ 267 007d 48000000 		.4byte	0x48
+ 268 0081 02       		.uleb128 0x2
+ 269 0082 08       		.byte	0x8
+ 270 0083 04       		.byte	0x4
+ 271 0084 11030000 		.4byte	.LASF11
+ 272 0088 02       		.uleb128 0x2
+ 273 0089 04       		.byte	0x4
+ 274 008a 07       		.byte	0x7
+ 275 008b 91000000 		.4byte	.LASF12
+ 276 008f 05       		.uleb128 0x5
+ 277 0090 76000000 		.4byte	0x76
+ 278 0094 06       		.uleb128 0x6
+ 279 0095 8F000000 		.4byte	0x8f
+ 280 0099 07       		.uleb128 0x7
+ 281 009a 94000000 		.4byte	0x94
+ 282 009e A9000000 		.4byte	0xa9
+ 283 00a2 08       		.uleb128 0x8
+ 284 00a3 88000000 		.4byte	0x88
+ 285 00a7 3E       		.byte	0x3e
+ 286 00a8 00       		.byte	0
+ 287 00a9 09       		.uleb128 0x9
+ 288 00aa 0001     		.2byte	0x100
+ 289 00ac 04       		.byte	0x4
+ 290 00ad 22       		.byte	0x22
+ 291 00ae CB000000 		.4byte	0xcb
+ 292 00b2 0A       		.uleb128 0xa
+ 293 00b3 76010000 		.4byte	.LASF13
+ 294 00b7 04       		.byte	0x4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 8
+
+
+ 295 00b8 23       		.byte	0x23
+ 296 00b9 8F000000 		.4byte	0x8f
+ 297 00bd 00       		.byte	0
+ 298 00be 0A       		.uleb128 0xa
+ 299 00bf E6040000 		.4byte	.LASF14
+ 300 00c3 04       		.byte	0x4
+ 301 00c4 24       		.byte	0x24
+ 302 00c5 D0000000 		.4byte	0xd0
+ 303 00c9 04       		.byte	0x4
+ 304 00ca 00       		.byte	0
+ 305 00cb 05       		.uleb128 0x5
+ 306 00cc 99000000 		.4byte	0x99
+ 307 00d0 06       		.uleb128 0x6
+ 308 00d1 CB000000 		.4byte	0xcb
+ 309 00d5 03       		.uleb128 0x3
+ 310 00d6 2C010000 		.4byte	.LASF15
+ 311 00da 04       		.byte	0x4
+ 312 00db 25       		.byte	0x25
+ 313 00dc A9000000 		.4byte	0xa9
+ 314 00e0 09       		.uleb128 0x9
+ 315 00e1 200F     		.2byte	0xf20
+ 316 00e3 04       		.byte	0x4
+ 317 00e4 2A       		.byte	0x2a
+ 318 00e5 77010000 		.4byte	0x177
+ 319 00e9 0A       		.uleb128 0xa
+ 320 00ea 2B030000 		.4byte	.LASF16
+ 321 00ee 04       		.byte	0x4
+ 322 00ef 2B       		.byte	0x2b
+ 323 00f0 94000000 		.4byte	0x94
+ 324 00f4 00       		.byte	0
+ 325 00f5 0A       		.uleb128 0xa
+ 326 00f6 E6040000 		.4byte	.LASF14
+ 327 00fa 04       		.byte	0x4
+ 328 00fb 2C       		.byte	0x2c
+ 329 00fc 8D010000 		.4byte	0x18d
+ 330 0100 04       		.byte	0x4
+ 331 0101 0B       		.uleb128 0xb
+ 332 0102 19040000 		.4byte	.LASF17
+ 333 0106 04       		.byte	0x4
+ 334 0107 2D       		.byte	0x2d
+ 335 0108 D5000000 		.4byte	0xd5
+ 336 010c 000E     		.2byte	0xe00
+ 337 010e 0B       		.uleb128 0xb
+ 338 010f DB040000 		.4byte	.LASF18
+ 339 0113 04       		.byte	0x4
+ 340 0114 2E       		.byte	0x2e
+ 341 0115 8F000000 		.4byte	0x8f
+ 342 0119 000F     		.2byte	0xf00
+ 343 011b 0B       		.uleb128 0xb
+ 344 011c C1010000 		.4byte	.LASF19
+ 345 0120 04       		.byte	0x4
+ 346 0121 2F       		.byte	0x2f
+ 347 0122 8F000000 		.4byte	0x8f
+ 348 0126 040F     		.2byte	0xf04
+ 349 0128 0B       		.uleb128 0xb
+ 350 0129 CC010000 		.4byte	.LASF20
+ 351 012d 04       		.byte	0x4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 9
+
+
+ 352 012e 30       		.byte	0x30
+ 353 012f 8F000000 		.4byte	0x8f
+ 354 0133 080F     		.2byte	0xf08
+ 355 0135 0B       		.uleb128 0xb
+ 356 0136 D7010000 		.4byte	.LASF21
+ 357 013a 04       		.byte	0x4
+ 358 013b 31       		.byte	0x31
+ 359 013c 8F000000 		.4byte	0x8f
+ 360 0140 0C0F     		.2byte	0xf0c
+ 361 0142 0B       		.uleb128 0xb
+ 362 0143 07000000 		.4byte	.LASF22
+ 363 0147 04       		.byte	0x4
+ 364 0148 32       		.byte	0x32
+ 365 0149 8F000000 		.4byte	0x8f
+ 366 014d 100F     		.2byte	0xf10
+ 367 014f 0B       		.uleb128 0xb
+ 368 0150 13000000 		.4byte	.LASF23
+ 369 0154 04       		.byte	0x4
+ 370 0155 33       		.byte	0x33
+ 371 0156 8F000000 		.4byte	0x8f
+ 372 015a 140F     		.2byte	0xf14
+ 373 015c 0B       		.uleb128 0xb
+ 374 015d 36030000 		.4byte	.LASF24
+ 375 0161 04       		.byte	0x4
+ 376 0162 34       		.byte	0x34
+ 377 0163 8F000000 		.4byte	0x8f
+ 378 0167 180F     		.2byte	0xf18
+ 379 0169 0B       		.uleb128 0xb
+ 380 016a 37040000 		.4byte	.LASF25
+ 381 016e 04       		.byte	0x4
+ 382 016f 35       		.byte	0x35
+ 383 0170 8F000000 		.4byte	0x8f
+ 384 0174 1C0F     		.2byte	0xf1c
+ 385 0176 00       		.byte	0
+ 386 0177 07       		.uleb128 0x7
+ 387 0178 94000000 		.4byte	0x94
+ 388 017c 88010000 		.4byte	0x188
+ 389 0180 0C       		.uleb128 0xc
+ 390 0181 88000000 		.4byte	0x88
+ 391 0185 7E03     		.2byte	0x37e
+ 392 0187 00       		.byte	0
+ 393 0188 05       		.uleb128 0x5
+ 394 0189 77010000 		.4byte	0x177
+ 395 018d 06       		.uleb128 0x6
+ 396 018e 88010000 		.4byte	0x188
+ 397 0192 03       		.uleb128 0x3
+ 398 0193 46010000 		.4byte	.LASF26
+ 399 0197 04       		.byte	0x4
+ 400 0198 36       		.byte	0x36
+ 401 0199 E0000000 		.4byte	0xe0
+ 402 019d 0D       		.uleb128 0xd
+ 403 019e E6020000 		.4byte	.LASF27
+ 404 01a2 05       		.byte	0x5
+ 405 01a3 C401     		.2byte	0x1c4
+ 406 01a5 A9010000 		.4byte	0x1a9
+ 407 01a9 02       		.uleb128 0x2
+ 408 01aa 01       		.byte	0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 10
+
+
+ 409 01ab 08       		.byte	0x8
+ 410 01ac CB030000 		.4byte	.LASF28
+ 411 01b0 02       		.uleb128 0x2
+ 412 01b1 04       		.byte	0x4
+ 413 01b2 04       		.byte	0x4
+ 414 01b3 41020000 		.4byte	.LASF29
+ 415 01b7 02       		.uleb128 0x2
+ 416 01b8 08       		.byte	0x8
+ 417 01b9 04       		.byte	0x4
+ 418 01ba 30040000 		.4byte	.LASF30
+ 419 01be 0E       		.uleb128 0xe
+ 420 01bf 04       		.byte	0x4
+ 421 01c0 6F000000 		.4byte	0x6f
+ 422 01c4 06       		.byte	0x6
+ 423 01c5 CB       		.byte	0xcb
+ 424 01c6 DA010000 		.4byte	0x1da
+ 425 01ca 0F       		.uleb128 0xf
+ 426 01cb EA030000 		.4byte	.LASF31
+ 427 01cf 00       		.byte	0
+ 428 01d0 10       		.uleb128 0x10
+ 429 01d1 A0010000 		.4byte	.LASF32
+ 430 01d5 01005E00 		.4byte	0x5e0001
+ 431 01d9 00       		.byte	0
+ 432 01da 03       		.uleb128 0x3
+ 433 01db F7040000 		.4byte	.LASF33
+ 434 01df 06       		.byte	0x6
+ 435 01e0 CE       		.byte	0xce
+ 436 01e1 BE010000 		.4byte	0x1be
+ 437 01e5 0E       		.uleb128 0xe
+ 438 01e6 01       		.byte	0x1
+ 439 01e7 2C000000 		.4byte	0x2c
+ 440 01eb 06       		.byte	0x6
+ 441 01ec D8       		.byte	0xd8
+ 442 01ed FE010000 		.4byte	0x1fe
+ 443 01f1 0F       		.uleb128 0xf
+ 444 01f2 BF040000 		.4byte	.LASF34
+ 445 01f6 00       		.byte	0
+ 446 01f7 0F       		.uleb128 0xf
+ 447 01f8 FF030000 		.4byte	.LASF35
+ 448 01fc 01       		.byte	0x1
+ 449 01fd 00       		.byte	0
+ 450 01fe 03       		.uleb128 0x3
+ 451 01ff 43050000 		.4byte	.LASF36
+ 452 0203 06       		.byte	0x6
+ 453 0204 DB       		.byte	0xdb
+ 454 0205 E5010000 		.4byte	0x1e5
+ 455 0209 0E       		.uleb128 0xe
+ 456 020a 04       		.byte	0x4
+ 457 020b 6F000000 		.4byte	0x6f
+ 458 020f 06       		.byte	0x6
+ 459 0210 E5       		.byte	0xe5
+ 460 0211 2E020000 		.4byte	0x22e
+ 461 0215 0F       		.uleb128 0xf
+ 462 0216 F3020000 		.4byte	.LASF37
+ 463 021a 00       		.byte	0
+ 464 021b 10       		.uleb128 0x10
+ 465 021c C2020000 		.4byte	.LASF38
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 11
+
+
+ 466 0220 00001000 		.4byte	0x100000
+ 467 0224 10       		.uleb128 0x10
+ 468 0225 5D000000 		.4byte	.LASF39
+ 469 0229 00002000 		.4byte	0x200000
+ 470 022d 00       		.byte	0
+ 471 022e 03       		.uleb128 0x3
+ 472 022f 6E030000 		.4byte	.LASF40
+ 473 0233 06       		.byte	0x6
+ 474 0234 E9       		.byte	0xe9
+ 475 0235 09020000 		.4byte	0x209
+ 476 0239 0E       		.uleb128 0xe
+ 477 023a 04       		.byte	0x4
+ 478 023b 6F000000 		.4byte	0x6f
+ 479 023f 06       		.byte	0x6
+ 480 0240 F4       		.byte	0xf4
+ 481 0241 55020000 		.4byte	0x255
+ 482 0245 0F       		.uleb128 0xf
+ 483 0246 99030000 		.4byte	.LASF41
+ 484 024a 00       		.byte	0
+ 485 024b 10       		.uleb128 0x10
+ 486 024c 80010000 		.4byte	.LASF42
+ 487 0250 00000100 		.4byte	0x10000
+ 488 0254 00       		.byte	0
+ 489 0255 03       		.uleb128 0x3
+ 490 0256 57010000 		.4byte	.LASF43
+ 491 025a 06       		.byte	0x6
+ 492 025b F7       		.byte	0xf7
+ 493 025c 39020000 		.4byte	0x239
+ 494 0260 11       		.uleb128 0x11
+ 495 0261 04       		.byte	0x4
+ 496 0262 6F000000 		.4byte	0x6f
+ 497 0266 06       		.byte	0x6
+ 498 0267 0301     		.2byte	0x103
+ 499 0269 8F020000 		.4byte	0x28f
+ 500 026d 0F       		.uleb128 0xf
+ 501 026e E2010000 		.4byte	.LASF44
+ 502 0272 00       		.byte	0
+ 503 0273 10       		.uleb128 0x10
+ 504 0274 1F000000 		.4byte	.LASF45
+ 505 0278 00000050 		.4byte	0x50000000
+ 506 027c 10       		.uleb128 0x10
+ 507 027d 3E000000 		.4byte	.LASF46
+ 508 0281 00000060 		.4byte	0x60000000
+ 509 0285 10       		.uleb128 0x10
+ 510 0286 19020000 		.4byte	.LASF47
+ 511 028a 00000070 		.4byte	0x70000000
+ 512 028e 00       		.byte	0
+ 513 028f 0D       		.uleb128 0xd
+ 514 0290 9C020000 		.4byte	.LASF48
+ 515 0294 06       		.byte	0x6
+ 516 0295 0C01     		.2byte	0x10c
+ 517 0297 60020000 		.4byte	0x260
+ 518 029b 12       		.uleb128 0x12
+ 519 029c 10       		.byte	0x10
+ 520 029d 06       		.byte	0x6
+ 521 029e 3001     		.2byte	0x130
+ 522 02a0 D9020000 		.4byte	0x2d9
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 12
+
+
+ 523 02a4 13       		.uleb128 0x13
+ 524 02a5 EF040000 		.4byte	.LASF49
+ 525 02a9 06       		.byte	0x6
+ 526 02aa 3201     		.2byte	0x132
+ 527 02ac FE010000 		.4byte	0x1fe
+ 528 02b0 00       		.byte	0
+ 529 02b1 13       		.uleb128 0x13
+ 530 02b2 ED020000 		.4byte	.LASF50
+ 531 02b6 06       		.byte	0x6
+ 532 02b7 3301     		.2byte	0x133
+ 533 02b9 55020000 		.4byte	0x255
+ 534 02bd 04       		.byte	0x4
+ 535 02be 13       		.uleb128 0x13
+ 536 02bf 10050000 		.4byte	.LASF51
+ 537 02c3 06       		.byte	0x6
+ 538 02c4 3401     		.2byte	0x134
+ 539 02c6 2E020000 		.4byte	0x22e
+ 540 02ca 08       		.byte	0x8
+ 541 02cb 13       		.uleb128 0x13
+ 542 02cc B7010000 		.4byte	.LASF52
+ 543 02d0 06       		.byte	0x6
+ 544 02d1 3501     		.2byte	0x135
+ 545 02d3 8F020000 		.4byte	0x28f
+ 546 02d7 0C       		.byte	0xc
+ 547 02d8 00       		.byte	0
+ 548 02d9 0D       		.uleb128 0xd
+ 549 02da D0030000 		.4byte	.LASF53
+ 550 02de 06       		.byte	0x6
+ 551 02df 3601     		.2byte	0x136
+ 552 02e1 9B020000 		.4byte	0x29b
+ 553 02e5 14       		.uleb128 0x14
+ 554 02e6 5E040000 		.4byte	.LASF62
+ 555 02ea 01       		.byte	0x1
+ 556 02eb 41       		.byte	0x41
+ 557 02ec DA010000 		.4byte	0x1da
+ 558 02f0 00000000 		.4byte	.LFB78
+ 559 02f4 A8000000 		.4byte	.LFE78-.LFB78
+ 560 02f8 01       		.uleb128 0x1
+ 561 02f9 9C       		.byte	0x9c
+ 562 02fa B9030000 		.4byte	0x3b9
+ 563 02fe 15       		.uleb128 0x15
+ 564 02ff 50010000 		.4byte	.LASF63
+ 565 0303 01       		.byte	0x1
+ 566 0304 41       		.byte	0x41
+ 567 0305 B9030000 		.4byte	0x3b9
+ 568 0309 00000000 		.4byte	.LLST0
+ 569 030d 16       		.uleb128 0x16
+ 570 030e 00000000 		.4byte	.LASF54
+ 571 0312 01       		.byte	0x1
+ 572 0313 45       		.byte	0x45
+ 573 0314 DA010000 		.4byte	0x1da
+ 574 0318 2C000000 		.4byte	.LLST1
+ 575 031c 16       		.uleb128 0x16
+ 576 031d 89000000 		.4byte	.LASF55
+ 577 0321 01       		.byte	0x1
+ 578 0322 46       		.byte	0x46
+ 579 0323 76000000 		.4byte	0x76
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 13
+
+
+ 580 0327 4B000000 		.4byte	.LLST2
+ 581 032b 17       		.uleb128 0x17
+ 582 032c 0E000000 		.4byte	.LVL2
+ 583 0330 F7030000 		.4byte	0x3f7
+ 584 0334 48030000 		.4byte	0x348
+ 585 0338 18       		.uleb128 0x18
+ 586 0339 01       		.uleb128 0x1
+ 587 033a 50       		.byte	0x50
+ 588 033b 05       		.uleb128 0x5
+ 589 033c 03       		.byte	0x3
+ 590 033d 00000000 		.4byte	.LC0
+ 591 0341 18       		.uleb128 0x18
+ 592 0342 01       		.uleb128 0x1
+ 593 0343 51       		.byte	0x51
+ 594 0344 02       		.uleb128 0x2
+ 595 0345 08       		.byte	0x8
+ 596 0346 43       		.byte	0x43
+ 597 0347 00       		.byte	0
+ 598 0348 17       		.uleb128 0x17
+ 599 0349 20000000 		.4byte	.LVL3
+ 600 034d F7030000 		.4byte	0x3f7
+ 601 0351 65030000 		.4byte	0x365
+ 602 0355 18       		.uleb128 0x18
+ 603 0356 01       		.uleb128 0x1
+ 604 0357 50       		.byte	0x50
+ 605 0358 05       		.uleb128 0x5
+ 606 0359 03       		.byte	0x3
+ 607 035a 00000000 		.4byte	.LC0
+ 608 035e 18       		.uleb128 0x18
+ 609 035f 01       		.uleb128 0x1
+ 610 0360 51       		.byte	0x51
+ 611 0361 02       		.uleb128 0x2
+ 612 0362 08       		.byte	0x8
+ 613 0363 4E       		.byte	0x4e
+ 614 0364 00       		.byte	0
+ 615 0365 17       		.uleb128 0x17
+ 616 0366 46000000 		.4byte	.LVL4
+ 617 036a F7030000 		.4byte	0x3f7
+ 618 036e 82030000 		.4byte	0x382
+ 619 0372 18       		.uleb128 0x18
+ 620 0373 01       		.uleb128 0x1
+ 621 0374 50       		.byte	0x50
+ 622 0375 05       		.uleb128 0x5
+ 623 0376 03       		.byte	0x3
+ 624 0377 00000000 		.4byte	.LC0
+ 625 037b 18       		.uleb128 0x18
+ 626 037c 01       		.uleb128 0x1
+ 627 037d 51       		.byte	0x51
+ 628 037e 02       		.uleb128 0x2
+ 629 037f 08       		.byte	0x8
+ 630 0380 4F       		.byte	0x4f
+ 631 0381 00       		.byte	0
+ 632 0382 17       		.uleb128 0x17
+ 633 0383 64000000 		.4byte	.LVL5
+ 634 0387 F7030000 		.4byte	0x3f7
+ 635 038b 9F030000 		.4byte	0x39f
+ 636 038f 18       		.uleb128 0x18
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 14
+
+
+ 637 0390 01       		.uleb128 0x1
+ 638 0391 50       		.byte	0x50
+ 639 0392 05       		.uleb128 0x5
+ 640 0393 03       		.byte	0x3
+ 641 0394 00000000 		.4byte	.LC0
+ 642 0398 18       		.uleb128 0x18
+ 643 0399 01       		.uleb128 0x1
+ 644 039a 51       		.byte	0x51
+ 645 039b 02       		.uleb128 0x2
+ 646 039c 08       		.byte	0x8
+ 647 039d 50       		.byte	0x50
+ 648 039e 00       		.byte	0
+ 649 039f 19       		.uleb128 0x19
+ 650 03a0 7A000000 		.4byte	.LVL6
+ 651 03a4 F7030000 		.4byte	0x3f7
+ 652 03a8 18       		.uleb128 0x18
+ 653 03a9 01       		.uleb128 0x1
+ 654 03aa 50       		.byte	0x50
+ 655 03ab 05       		.uleb128 0x5
+ 656 03ac 03       		.byte	0x3
+ 657 03ad 00000000 		.4byte	.LC0
+ 658 03b1 18       		.uleb128 0x18
+ 659 03b2 01       		.uleb128 0x1
+ 660 03b3 51       		.byte	0x51
+ 661 03b4 02       		.uleb128 0x2
+ 662 03b5 08       		.byte	0x8
+ 663 03b6 51       		.byte	0x51
+ 664 03b7 00       		.byte	0
+ 665 03b8 00       		.byte	0
+ 666 03b9 1A       		.uleb128 0x1a
+ 667 03ba 04       		.byte	0x4
+ 668 03bb BF030000 		.4byte	0x3bf
+ 669 03bf 06       		.uleb128 0x6
+ 670 03c0 D9020000 		.4byte	0x2d9
+ 671 03c4 1B       		.uleb128 0x1b
+ 672 03c5 01020000 		.4byte	.LASF56
+ 673 03c9 01       		.byte	0x1
+ 674 03ca 15       		.byte	0x15
+ 675 03cb BF030000 		.4byte	0x3bf
+ 676 03cf 05       		.uleb128 0x5
+ 677 03d0 03       		.byte	0x3
+ 678 03d1 00000000 		.4byte	Cy_SysAnalog_Fast_Local
+ 679 03d5 1B       		.uleb128 0x1b
+ 680 03d6 15050000 		.4byte	.LASF57
+ 681 03da 01       		.byte	0x1
+ 682 03db 1E       		.byte	0x1e
+ 683 03dc BF030000 		.4byte	0x3bf
+ 684 03e0 05       		.uleb128 0x5
+ 685 03e1 03       		.byte	0x3
+ 686 03e2 00000000 		.4byte	Cy_SysAnalog_Fast_SRSS
+ 687 03e6 1B       		.uleb128 0x1b
+ 688 03e7 43040000 		.4byte	.LASF58
+ 689 03eb 01       		.byte	0x1
+ 690 03ec 27       		.byte	0x27
+ 691 03ed BF030000 		.4byte	0x3bf
+ 692 03f1 05       		.uleb128 0x5
+ 693 03f2 03       		.byte	0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 15
+
+
+ 694 03f3 00000000 		.4byte	Cy_SysAnalog_Fast_External
+ 695 03f7 1C       		.uleb128 0x1c
+ 696 03f8 2C050000 		.4byte	.LASF64
+ 697 03fc 2C050000 		.4byte	.LASF64
+ 698 0400 05       		.byte	0x5
+ 699 0401 2A03     		.2byte	0x32a
+ 700 0403 00       		.byte	0
+ 701              		.section	.debug_abbrev,"",%progbits
+ 702              	.Ldebug_abbrev0:
+ 703 0000 01       		.uleb128 0x1
+ 704 0001 11       		.uleb128 0x11
+ 705 0002 01       		.byte	0x1
+ 706 0003 25       		.uleb128 0x25
+ 707 0004 0E       		.uleb128 0xe
+ 708 0005 13       		.uleb128 0x13
+ 709 0006 0B       		.uleb128 0xb
+ 710 0007 03       		.uleb128 0x3
+ 711 0008 0E       		.uleb128 0xe
+ 712 0009 1B       		.uleb128 0x1b
+ 713 000a 0E       		.uleb128 0xe
+ 714 000b 55       		.uleb128 0x55
+ 715 000c 17       		.uleb128 0x17
+ 716 000d 11       		.uleb128 0x11
+ 717 000e 01       		.uleb128 0x1
+ 718 000f 10       		.uleb128 0x10
+ 719 0010 17       		.uleb128 0x17
+ 720 0011 00       		.byte	0
+ 721 0012 00       		.byte	0
+ 722 0013 02       		.uleb128 0x2
+ 723 0014 24       		.uleb128 0x24
+ 724 0015 00       		.byte	0
+ 725 0016 0B       		.uleb128 0xb
+ 726 0017 0B       		.uleb128 0xb
+ 727 0018 3E       		.uleb128 0x3e
+ 728 0019 0B       		.uleb128 0xb
+ 729 001a 03       		.uleb128 0x3
+ 730 001b 0E       		.uleb128 0xe
+ 731 001c 00       		.byte	0
+ 732 001d 00       		.byte	0
+ 733 001e 03       		.uleb128 0x3
+ 734 001f 16       		.uleb128 0x16
+ 735 0020 00       		.byte	0
+ 736 0021 03       		.uleb128 0x3
+ 737 0022 0E       		.uleb128 0xe
+ 738 0023 3A       		.uleb128 0x3a
+ 739 0024 0B       		.uleb128 0xb
+ 740 0025 3B       		.uleb128 0x3b
+ 741 0026 0B       		.uleb128 0xb
+ 742 0027 49       		.uleb128 0x49
+ 743 0028 13       		.uleb128 0x13
+ 744 0029 00       		.byte	0
+ 745 002a 00       		.byte	0
+ 746 002b 04       		.uleb128 0x4
+ 747 002c 24       		.uleb128 0x24
+ 748 002d 00       		.byte	0
+ 749 002e 0B       		.uleb128 0xb
+ 750 002f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 16
+
+
+ 751 0030 3E       		.uleb128 0x3e
+ 752 0031 0B       		.uleb128 0xb
+ 753 0032 03       		.uleb128 0x3
+ 754 0033 08       		.uleb128 0x8
+ 755 0034 00       		.byte	0
+ 756 0035 00       		.byte	0
+ 757 0036 05       		.uleb128 0x5
+ 758 0037 35       		.uleb128 0x35
+ 759 0038 00       		.byte	0
+ 760 0039 49       		.uleb128 0x49
+ 761 003a 13       		.uleb128 0x13
+ 762 003b 00       		.byte	0
+ 763 003c 00       		.byte	0
+ 764 003d 06       		.uleb128 0x6
+ 765 003e 26       		.uleb128 0x26
+ 766 003f 00       		.byte	0
+ 767 0040 49       		.uleb128 0x49
+ 768 0041 13       		.uleb128 0x13
+ 769 0042 00       		.byte	0
+ 770 0043 00       		.byte	0
+ 771 0044 07       		.uleb128 0x7
+ 772 0045 01       		.uleb128 0x1
+ 773 0046 01       		.byte	0x1
+ 774 0047 49       		.uleb128 0x49
+ 775 0048 13       		.uleb128 0x13
+ 776 0049 01       		.uleb128 0x1
+ 777 004a 13       		.uleb128 0x13
+ 778 004b 00       		.byte	0
+ 779 004c 00       		.byte	0
+ 780 004d 08       		.uleb128 0x8
+ 781 004e 21       		.uleb128 0x21
+ 782 004f 00       		.byte	0
+ 783 0050 49       		.uleb128 0x49
+ 784 0051 13       		.uleb128 0x13
+ 785 0052 2F       		.uleb128 0x2f
+ 786 0053 0B       		.uleb128 0xb
+ 787 0054 00       		.byte	0
+ 788 0055 00       		.byte	0
+ 789 0056 09       		.uleb128 0x9
+ 790 0057 13       		.uleb128 0x13
+ 791 0058 01       		.byte	0x1
+ 792 0059 0B       		.uleb128 0xb
+ 793 005a 05       		.uleb128 0x5
+ 794 005b 3A       		.uleb128 0x3a
+ 795 005c 0B       		.uleb128 0xb
+ 796 005d 3B       		.uleb128 0x3b
+ 797 005e 0B       		.uleb128 0xb
+ 798 005f 01       		.uleb128 0x1
+ 799 0060 13       		.uleb128 0x13
+ 800 0061 00       		.byte	0
+ 801 0062 00       		.byte	0
+ 802 0063 0A       		.uleb128 0xa
+ 803 0064 0D       		.uleb128 0xd
+ 804 0065 00       		.byte	0
+ 805 0066 03       		.uleb128 0x3
+ 806 0067 0E       		.uleb128 0xe
+ 807 0068 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 17
+
+
+ 808 0069 0B       		.uleb128 0xb
+ 809 006a 3B       		.uleb128 0x3b
+ 810 006b 0B       		.uleb128 0xb
+ 811 006c 49       		.uleb128 0x49
+ 812 006d 13       		.uleb128 0x13
+ 813 006e 38       		.uleb128 0x38
+ 814 006f 0B       		.uleb128 0xb
+ 815 0070 00       		.byte	0
+ 816 0071 00       		.byte	0
+ 817 0072 0B       		.uleb128 0xb
+ 818 0073 0D       		.uleb128 0xd
+ 819 0074 00       		.byte	0
+ 820 0075 03       		.uleb128 0x3
+ 821 0076 0E       		.uleb128 0xe
+ 822 0077 3A       		.uleb128 0x3a
+ 823 0078 0B       		.uleb128 0xb
+ 824 0079 3B       		.uleb128 0x3b
+ 825 007a 0B       		.uleb128 0xb
+ 826 007b 49       		.uleb128 0x49
+ 827 007c 13       		.uleb128 0x13
+ 828 007d 38       		.uleb128 0x38
+ 829 007e 05       		.uleb128 0x5
+ 830 007f 00       		.byte	0
+ 831 0080 00       		.byte	0
+ 832 0081 0C       		.uleb128 0xc
+ 833 0082 21       		.uleb128 0x21
+ 834 0083 00       		.byte	0
+ 835 0084 49       		.uleb128 0x49
+ 836 0085 13       		.uleb128 0x13
+ 837 0086 2F       		.uleb128 0x2f
+ 838 0087 05       		.uleb128 0x5
+ 839 0088 00       		.byte	0
+ 840 0089 00       		.byte	0
+ 841 008a 0D       		.uleb128 0xd
+ 842 008b 16       		.uleb128 0x16
+ 843 008c 00       		.byte	0
+ 844 008d 03       		.uleb128 0x3
+ 845 008e 0E       		.uleb128 0xe
+ 846 008f 3A       		.uleb128 0x3a
+ 847 0090 0B       		.uleb128 0xb
+ 848 0091 3B       		.uleb128 0x3b
+ 849 0092 05       		.uleb128 0x5
+ 850 0093 49       		.uleb128 0x49
+ 851 0094 13       		.uleb128 0x13
+ 852 0095 00       		.byte	0
+ 853 0096 00       		.byte	0
+ 854 0097 0E       		.uleb128 0xe
+ 855 0098 04       		.uleb128 0x4
+ 856 0099 01       		.byte	0x1
+ 857 009a 0B       		.uleb128 0xb
+ 858 009b 0B       		.uleb128 0xb
+ 859 009c 49       		.uleb128 0x49
+ 860 009d 13       		.uleb128 0x13
+ 861 009e 3A       		.uleb128 0x3a
+ 862 009f 0B       		.uleb128 0xb
+ 863 00a0 3B       		.uleb128 0x3b
+ 864 00a1 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 18
+
+
+ 865 00a2 01       		.uleb128 0x1
+ 866 00a3 13       		.uleb128 0x13
+ 867 00a4 00       		.byte	0
+ 868 00a5 00       		.byte	0
+ 869 00a6 0F       		.uleb128 0xf
+ 870 00a7 28       		.uleb128 0x28
+ 871 00a8 00       		.byte	0
+ 872 00a9 03       		.uleb128 0x3
+ 873 00aa 0E       		.uleb128 0xe
+ 874 00ab 1C       		.uleb128 0x1c
+ 875 00ac 0B       		.uleb128 0xb
+ 876 00ad 00       		.byte	0
+ 877 00ae 00       		.byte	0
+ 878 00af 10       		.uleb128 0x10
+ 879 00b0 28       		.uleb128 0x28
+ 880 00b1 00       		.byte	0
+ 881 00b2 03       		.uleb128 0x3
+ 882 00b3 0E       		.uleb128 0xe
+ 883 00b4 1C       		.uleb128 0x1c
+ 884 00b5 06       		.uleb128 0x6
+ 885 00b6 00       		.byte	0
+ 886 00b7 00       		.byte	0
+ 887 00b8 11       		.uleb128 0x11
+ 888 00b9 04       		.uleb128 0x4
+ 889 00ba 01       		.byte	0x1
+ 890 00bb 0B       		.uleb128 0xb
+ 891 00bc 0B       		.uleb128 0xb
+ 892 00bd 49       		.uleb128 0x49
+ 893 00be 13       		.uleb128 0x13
+ 894 00bf 3A       		.uleb128 0x3a
+ 895 00c0 0B       		.uleb128 0xb
+ 896 00c1 3B       		.uleb128 0x3b
+ 897 00c2 05       		.uleb128 0x5
+ 898 00c3 01       		.uleb128 0x1
+ 899 00c4 13       		.uleb128 0x13
+ 900 00c5 00       		.byte	0
+ 901 00c6 00       		.byte	0
+ 902 00c7 12       		.uleb128 0x12
+ 903 00c8 13       		.uleb128 0x13
+ 904 00c9 01       		.byte	0x1
+ 905 00ca 0B       		.uleb128 0xb
+ 906 00cb 0B       		.uleb128 0xb
+ 907 00cc 3A       		.uleb128 0x3a
+ 908 00cd 0B       		.uleb128 0xb
+ 909 00ce 3B       		.uleb128 0x3b
+ 910 00cf 05       		.uleb128 0x5
+ 911 00d0 01       		.uleb128 0x1
+ 912 00d1 13       		.uleb128 0x13
+ 913 00d2 00       		.byte	0
+ 914 00d3 00       		.byte	0
+ 915 00d4 13       		.uleb128 0x13
+ 916 00d5 0D       		.uleb128 0xd
+ 917 00d6 00       		.byte	0
+ 918 00d7 03       		.uleb128 0x3
+ 919 00d8 0E       		.uleb128 0xe
+ 920 00d9 3A       		.uleb128 0x3a
+ 921 00da 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 19
+
+
+ 922 00db 3B       		.uleb128 0x3b
+ 923 00dc 05       		.uleb128 0x5
+ 924 00dd 49       		.uleb128 0x49
+ 925 00de 13       		.uleb128 0x13
+ 926 00df 38       		.uleb128 0x38
+ 927 00e0 0B       		.uleb128 0xb
+ 928 00e1 00       		.byte	0
+ 929 00e2 00       		.byte	0
+ 930 00e3 14       		.uleb128 0x14
+ 931 00e4 2E       		.uleb128 0x2e
+ 932 00e5 01       		.byte	0x1
+ 933 00e6 3F       		.uleb128 0x3f
+ 934 00e7 19       		.uleb128 0x19
+ 935 00e8 03       		.uleb128 0x3
+ 936 00e9 0E       		.uleb128 0xe
+ 937 00ea 3A       		.uleb128 0x3a
+ 938 00eb 0B       		.uleb128 0xb
+ 939 00ec 3B       		.uleb128 0x3b
+ 940 00ed 0B       		.uleb128 0xb
+ 941 00ee 27       		.uleb128 0x27
+ 942 00ef 19       		.uleb128 0x19
+ 943 00f0 49       		.uleb128 0x49
+ 944 00f1 13       		.uleb128 0x13
+ 945 00f2 11       		.uleb128 0x11
+ 946 00f3 01       		.uleb128 0x1
+ 947 00f4 12       		.uleb128 0x12
+ 948 00f5 06       		.uleb128 0x6
+ 949 00f6 40       		.uleb128 0x40
+ 950 00f7 18       		.uleb128 0x18
+ 951 00f8 9742     		.uleb128 0x2117
+ 952 00fa 19       		.uleb128 0x19
+ 953 00fb 01       		.uleb128 0x1
+ 954 00fc 13       		.uleb128 0x13
+ 955 00fd 00       		.byte	0
+ 956 00fe 00       		.byte	0
+ 957 00ff 15       		.uleb128 0x15
+ 958 0100 05       		.uleb128 0x5
+ 959 0101 00       		.byte	0
+ 960 0102 03       		.uleb128 0x3
+ 961 0103 0E       		.uleb128 0xe
+ 962 0104 3A       		.uleb128 0x3a
+ 963 0105 0B       		.uleb128 0xb
+ 964 0106 3B       		.uleb128 0x3b
+ 965 0107 0B       		.uleb128 0xb
+ 966 0108 49       		.uleb128 0x49
+ 967 0109 13       		.uleb128 0x13
+ 968 010a 02       		.uleb128 0x2
+ 969 010b 17       		.uleb128 0x17
+ 970 010c 00       		.byte	0
+ 971 010d 00       		.byte	0
+ 972 010e 16       		.uleb128 0x16
+ 973 010f 34       		.uleb128 0x34
+ 974 0110 00       		.byte	0
+ 975 0111 03       		.uleb128 0x3
+ 976 0112 0E       		.uleb128 0xe
+ 977 0113 3A       		.uleb128 0x3a
+ 978 0114 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 20
+
+
+ 979 0115 3B       		.uleb128 0x3b
+ 980 0116 0B       		.uleb128 0xb
+ 981 0117 49       		.uleb128 0x49
+ 982 0118 13       		.uleb128 0x13
+ 983 0119 02       		.uleb128 0x2
+ 984 011a 17       		.uleb128 0x17
+ 985 011b 00       		.byte	0
+ 986 011c 00       		.byte	0
+ 987 011d 17       		.uleb128 0x17
+ 988 011e 898201   		.uleb128 0x4109
+ 989 0121 01       		.byte	0x1
+ 990 0122 11       		.uleb128 0x11
+ 991 0123 01       		.uleb128 0x1
+ 992 0124 31       		.uleb128 0x31
+ 993 0125 13       		.uleb128 0x13
+ 994 0126 01       		.uleb128 0x1
+ 995 0127 13       		.uleb128 0x13
+ 996 0128 00       		.byte	0
+ 997 0129 00       		.byte	0
+ 998 012a 18       		.uleb128 0x18
+ 999 012b 8A8201   		.uleb128 0x410a
+ 1000 012e 00       		.byte	0
+ 1001 012f 02       		.uleb128 0x2
+ 1002 0130 18       		.uleb128 0x18
+ 1003 0131 9142     		.uleb128 0x2111
+ 1004 0133 18       		.uleb128 0x18
+ 1005 0134 00       		.byte	0
+ 1006 0135 00       		.byte	0
+ 1007 0136 19       		.uleb128 0x19
+ 1008 0137 898201   		.uleb128 0x4109
+ 1009 013a 01       		.byte	0x1
+ 1010 013b 11       		.uleb128 0x11
+ 1011 013c 01       		.uleb128 0x1
+ 1012 013d 31       		.uleb128 0x31
+ 1013 013e 13       		.uleb128 0x13
+ 1014 013f 00       		.byte	0
+ 1015 0140 00       		.byte	0
+ 1016 0141 1A       		.uleb128 0x1a
+ 1017 0142 0F       		.uleb128 0xf
+ 1018 0143 00       		.byte	0
+ 1019 0144 0B       		.uleb128 0xb
+ 1020 0145 0B       		.uleb128 0xb
+ 1021 0146 49       		.uleb128 0x49
+ 1022 0147 13       		.uleb128 0x13
+ 1023 0148 00       		.byte	0
+ 1024 0149 00       		.byte	0
+ 1025 014a 1B       		.uleb128 0x1b
+ 1026 014b 34       		.uleb128 0x34
+ 1027 014c 00       		.byte	0
+ 1028 014d 03       		.uleb128 0x3
+ 1029 014e 0E       		.uleb128 0xe
+ 1030 014f 3A       		.uleb128 0x3a
+ 1031 0150 0B       		.uleb128 0xb
+ 1032 0151 3B       		.uleb128 0x3b
+ 1033 0152 0B       		.uleb128 0xb
+ 1034 0153 49       		.uleb128 0x49
+ 1035 0154 13       		.uleb128 0x13
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 21
+
+
+ 1036 0155 3F       		.uleb128 0x3f
+ 1037 0156 19       		.uleb128 0x19
+ 1038 0157 02       		.uleb128 0x2
+ 1039 0158 18       		.uleb128 0x18
+ 1040 0159 00       		.byte	0
+ 1041 015a 00       		.byte	0
+ 1042 015b 1C       		.uleb128 0x1c
+ 1043 015c 2E       		.uleb128 0x2e
+ 1044 015d 00       		.byte	0
+ 1045 015e 3F       		.uleb128 0x3f
+ 1046 015f 19       		.uleb128 0x19
+ 1047 0160 3C       		.uleb128 0x3c
+ 1048 0161 19       		.uleb128 0x19
+ 1049 0162 6E       		.uleb128 0x6e
+ 1050 0163 0E       		.uleb128 0xe
+ 1051 0164 03       		.uleb128 0x3
+ 1052 0165 0E       		.uleb128 0xe
+ 1053 0166 3A       		.uleb128 0x3a
+ 1054 0167 0B       		.uleb128 0xb
+ 1055 0168 3B       		.uleb128 0x3b
+ 1056 0169 05       		.uleb128 0x5
+ 1057 016a 00       		.byte	0
+ 1058 016b 00       		.byte	0
+ 1059 016c 00       		.byte	0
+ 1060              		.section	.debug_loc,"",%progbits
+ 1061              	.Ldebug_loc0:
+ 1062              	.LLST0:
+ 1063 0000 00000000 		.4byte	.LVL0
+ 1064 0004 0A000000 		.4byte	.LVL1
+ 1065 0008 0100     		.2byte	0x1
+ 1066 000a 50       		.byte	0x50
+ 1067 000b 0A000000 		.4byte	.LVL1
+ 1068 000f 98000000 		.4byte	.LVL11
+ 1069 0013 0100     		.2byte	0x1
+ 1070 0015 54       		.byte	0x54
+ 1071 0016 98000000 		.4byte	.LVL11
+ 1072 001a A8000000 		.4byte	.LFE78
+ 1073 001e 0400     		.2byte	0x4
+ 1074 0020 F3       		.byte	0xf3
+ 1075 0021 01       		.uleb128 0x1
+ 1076 0022 50       		.byte	0x50
+ 1077 0023 9F       		.byte	0x9f
+ 1078 0024 00000000 		.4byte	0
+ 1079 0028 00000000 		.4byte	0
+ 1080              	.LLST1:
+ 1081 002c 92000000 		.4byte	.LVL8
+ 1082 0030 96000000 		.4byte	.LVL9
+ 1083 0034 0200     		.2byte	0x2
+ 1084 0036 30       		.byte	0x30
+ 1085 0037 9F       		.byte	0x9f
+ 1086 0038 98000000 		.4byte	.LVL10
+ 1087 003c A8000000 		.4byte	.LFE78
+ 1088 0040 0100     		.2byte	0x1
+ 1089 0042 50       		.byte	0x50
+ 1090 0043 00000000 		.4byte	0
+ 1091 0047 00000000 		.4byte	0
+ 1092              	.LLST2:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 22
+
+
+ 1093 004b 0E000000 		.4byte	.LVL2
+ 1094 004f 8E000000 		.4byte	.LVL7
+ 1095 0053 0200     		.2byte	0x2
+ 1096 0055 30       		.byte	0x30
+ 1097 0056 9F       		.byte	0x9f
+ 1098 0057 8E000000 		.4byte	.LVL7
+ 1099 005b 96000000 		.4byte	.LVL9
+ 1100 005f 0100     		.2byte	0x1
+ 1101 0061 53       		.byte	0x53
+ 1102 0062 96000000 		.4byte	.LVL9
+ 1103 0066 98000000 		.4byte	.LVL10
+ 1104 006a 0200     		.2byte	0x2
+ 1105 006c 30       		.byte	0x30
+ 1106 006d 9F       		.byte	0x9f
+ 1107 006e 00000000 		.4byte	0
+ 1108 0072 00000000 		.4byte	0
+ 1109              		.section	.debug_aranges,"",%progbits
+ 1110 0000 1C000000 		.4byte	0x1c
+ 1111 0004 0200     		.2byte	0x2
+ 1112 0006 00000000 		.4byte	.Ldebug_info0
+ 1113 000a 04       		.byte	0x4
+ 1114 000b 00       		.byte	0
+ 1115 000c 0000     		.2byte	0
+ 1116 000e 0000     		.2byte	0
+ 1117 0010 00000000 		.4byte	.LFB78
+ 1118 0014 A8000000 		.4byte	.LFE78-.LFB78
+ 1119 0018 00000000 		.4byte	0
+ 1120 001c 00000000 		.4byte	0
+ 1121              		.section	.debug_ranges,"",%progbits
+ 1122              	.Ldebug_ranges0:
+ 1123 0000 00000000 		.4byte	.LFB78
+ 1124 0004 A8000000 		.4byte	.LFE78
+ 1125 0008 00000000 		.4byte	0
+ 1126 000c 00000000 		.4byte	0
+ 1127              		.section	.debug_line,"",%progbits
+ 1128              	.Ldebug_line0:
+ 1129 0000 56020000 		.section	.debug_str,"MS",%progbits,1
+ 1129      0200EB01 
+ 1129      00000201 
+ 1129      FB0E0D00 
+ 1129      01010101 
+ 1130              	.LASF54:
+ 1131 0000 72657375 		.ascii	"result\000"
+ 1131      6C7400
+ 1132              	.LASF22:
+ 1133 0007 495A5441 		.ascii	"IZTAT_TRIM0\000"
+ 1133      545F5452 
+ 1133      494D3000 
+ 1134              	.LASF23:
+ 1135 0013 495A5441 		.ascii	"IZTAT_TRIM1\000"
+ 1135      545F5452 
+ 1135      494D3100 
+ 1136              	.LASF45:
+ 1137 001f 43595F53 		.ascii	"CY_SYSANALOG_DEEPSLEEP_IPTAT_1\000"
+ 1137      5953414E 
+ 1137      414C4F47 
+ 1137      5F444545 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 23
+
+
+ 1137      50534C45 
+ 1138              	.LASF46:
+ 1139 003e 43595F53 		.ascii	"CY_SYSANALOG_DEEPSLEEP_IPTAT_2\000"
+ 1139      5953414E 
+ 1139      414C4F47 
+ 1139      5F444545 
+ 1139      50534C45 
+ 1140              	.LASF39:
+ 1141 005d 43595F53 		.ascii	"CY_SYSANALOG_VREF_SOURCE_EXTERNAL\000"
+ 1141      5953414E 
+ 1141      414C4F47 
+ 1141      5F565245 
+ 1141      465F534F 
+ 1142              	.LASF2:
+ 1143 007f 73686F72 		.ascii	"short int\000"
+ 1143      7420696E 
+ 1143      7400
+ 1144              	.LASF55:
+ 1145 0089 6374726C 		.ascii	"ctrlReg\000"
+ 1145      52656700 
+ 1146              	.LASF12:
+ 1147 0091 73697A65 		.ascii	"sizetype\000"
+ 1147      74797065 
+ 1147      00
+ 1148              	.LASF59:
+ 1149 009a 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1149      43313120 
+ 1149      352E342E 
+ 1149      31203230 
+ 1149      31363036 
+ 1150 00cd 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0plus -mthumb -"
+ 1150      20726576 
+ 1150      6973696F 
+ 1150      6E203233 
+ 1150      37373135 
+ 1151 0100 67202D4F 		.ascii	"g -Og -ffunction-sections -ffat-lto-objects\000"
+ 1151      67202D66 
+ 1151      66756E63 
+ 1151      74696F6E 
+ 1151      2D736563 
+ 1152              	.LASF15:
+ 1153 012c 50415353 		.ascii	"PASS_AREF_Type\000"
+ 1153      5F415245 
+ 1153      465F5479 
+ 1153      706500
+ 1154              	.LASF9:
+ 1155 013b 5F5F7569 		.ascii	"__uint32_t\000"
+ 1155      6E743332 
+ 1155      5F7400
+ 1156              	.LASF26:
+ 1157 0146 50415353 		.ascii	"PASS_Type\000"
+ 1157      5F547970 
+ 1157      6500
+ 1158              	.LASF63:
+ 1159 0150 636F6E66 		.ascii	"config\000"
+ 1159      696700
+ 1160              	.LASF43:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 24
+
+
+ 1161 0157 63795F65 		.ascii	"cy_en_sysanalog_iztat_source_t\000"
+ 1161      6E5F7379 
+ 1161      73616E61 
+ 1161      6C6F675F 
+ 1161      697A7461 
+ 1162              	.LASF13:
+ 1163 0176 41524546 		.ascii	"AREF_CTRL\000"
+ 1163      5F435452 
+ 1163      4C00
+ 1164              	.LASF42:
+ 1165 0180 43595F53 		.ascii	"CY_SYSANALOG_IZTAT_SOURCE_LOCAL\000"
+ 1165      5953414E 
+ 1165      414C4F47 
+ 1165      5F495A54 
+ 1165      41545F53 
+ 1166              	.LASF32:
+ 1167 01a0 43595F53 		.ascii	"CY_SYSANALOG_BAD_PARAM\000"
+ 1167      5953414E 
+ 1167      414C4F47 
+ 1167      5F424144 
+ 1167      5F504152 
+ 1168              	.LASF52:
+ 1169 01b7 64656570 		.ascii	"deepSleep\000"
+ 1169      536C6565 
+ 1169      7000
+ 1170              	.LASF19:
+ 1171 01c1 56524546 		.ascii	"VREF_TRIM1\000"
+ 1171      5F545249 
+ 1171      4D3100
+ 1172              	.LASF20:
+ 1173 01cc 56524546 		.ascii	"VREF_TRIM2\000"
+ 1173      5F545249 
+ 1173      4D3200
+ 1174              	.LASF21:
+ 1175 01d7 56524546 		.ascii	"VREF_TRIM3\000"
+ 1175      5F545249 
+ 1175      4D3300
+ 1176              	.LASF44:
+ 1177 01e2 43595F53 		.ascii	"CY_SYSANALOG_DEEPSLEEP_DISABLE\000"
+ 1177      5953414E 
+ 1177      414C4F47 
+ 1177      5F444545 
+ 1177      50534C45 
+ 1178              	.LASF56:
+ 1179 0201 43795F53 		.ascii	"Cy_SysAnalog_Fast_Local\000"
+ 1179      7973416E 
+ 1179      616C6F67 
+ 1179      5F466173 
+ 1179      745F4C6F 
+ 1180              	.LASF47:
+ 1181 0219 43595F53 		.ascii	"CY_SYSANALOG_DEEPSLEEP_IPTAT_IZTAT_VREF\000"
+ 1181      5953414E 
+ 1181      414C4F47 
+ 1181      5F444545 
+ 1181      50534C45 
+ 1182              	.LASF29:
+ 1183 0241 666C6F61 		.ascii	"float\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 25
+
+
+ 1183      7400
+ 1184              	.LASF6:
+ 1185 0247 6C6F6E67 		.ascii	"long long int\000"
+ 1185      206C6F6E 
+ 1185      6720696E 
+ 1185      7400
+ 1186              	.LASF60:
+ 1187 0255 47656E65 		.ascii	"Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\"
+ 1187      72617465 
+ 1187      645F536F 
+ 1187      75726365 
+ 1187      5C50536F 
+ 1188 0283 73797361 		.ascii	"sysanalog\\cy_sysanalog.c\000"
+ 1188      6E616C6F 
+ 1188      675C6379 
+ 1188      5F737973 
+ 1188      616E616C 
+ 1189              	.LASF48:
+ 1190 029c 63795F65 		.ascii	"cy_en_sysanalog_deep_sleep_t\000"
+ 1190      6E5F7379 
+ 1190      73616E61 
+ 1190      6C6F675F 
+ 1190      64656570 
+ 1191              	.LASF4:
+ 1192 02b9 6C6F6E67 		.ascii	"long int\000"
+ 1192      20696E74 
+ 1192      00
+ 1193              	.LASF38:
+ 1194 02c2 43595F53 		.ascii	"CY_SYSANALOG_VREF_SOURCE_LOCAL_1_2V\000"
+ 1194      5953414E 
+ 1194      414C4F47 
+ 1194      5F565245 
+ 1194      465F534F 
+ 1195              	.LASF27:
+ 1196 02e6 63686172 		.ascii	"char_t\000"
+ 1196      5F7400
+ 1197              	.LASF50:
+ 1198 02ed 697A7461 		.ascii	"iztat\000"
+ 1198      7400
+ 1199              	.LASF37:
+ 1200 02f3 43595F53 		.ascii	"CY_SYSANALOG_VREF_SOURCE_SRSS\000"
+ 1200      5953414E 
+ 1200      414C4F47 
+ 1200      5F565245 
+ 1200      465F534F 
+ 1201              	.LASF11:
+ 1202 0311 6C6F6E67 		.ascii	"long double\000"
+ 1202      20646F75 
+ 1202      626C6500 
+ 1203              	.LASF1:
+ 1204 031d 756E7369 		.ascii	"unsigned char\000"
+ 1204      676E6564 
+ 1204      20636861 
+ 1204      7200
+ 1205              	.LASF16:
+ 1206 032b 494E5452 		.ascii	"INTR_CAUSE\000"
+ 1206      5F434155 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 26
+
+
+ 1206      534500
+ 1207              	.LASF24:
+ 1208 0336 49505441 		.ascii	"IPTAT_TRIM0\000"
+ 1208      545F5452 
+ 1208      494D3000 
+ 1209              	.LASF0:
+ 1210 0342 7369676E 		.ascii	"signed char\000"
+ 1210      65642063 
+ 1210      68617200 
+ 1211              	.LASF7:
+ 1212 034e 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1212      206C6F6E 
+ 1212      6720756E 
+ 1212      7369676E 
+ 1212      65642069 
+ 1213              	.LASF10:
+ 1214 0365 75696E74 		.ascii	"uint32_t\000"
+ 1214      33325F74 
+ 1214      00
+ 1215              	.LASF40:
+ 1216 036e 63795F65 		.ascii	"cy_en_sysanalog_vref_source_t\000"
+ 1216      6E5F7379 
+ 1216      73616E61 
+ 1216      6C6F675F 
+ 1216      76726566 
+ 1217              	.LASF8:
+ 1218 038c 756E7369 		.ascii	"unsigned int\000"
+ 1218      676E6564 
+ 1218      20696E74 
+ 1218      00
+ 1219              	.LASF41:
+ 1220 0399 43595F53 		.ascii	"CY_SYSANALOG_IZTAT_SOURCE_SRSS\000"
+ 1220      5953414E 
+ 1220      414C4F47 
+ 1220      5F495A54 
+ 1220      41545F53 
+ 1221              	.LASF3:
+ 1222 03b8 73686F72 		.ascii	"short unsigned int\000"
+ 1222      7420756E 
+ 1222      7369676E 
+ 1222      65642069 
+ 1222      6E7400
+ 1223              	.LASF28:
+ 1224 03cb 63686172 		.ascii	"char\000"
+ 1224      00
+ 1225              	.LASF53:
+ 1226 03d0 63795F73 		.ascii	"cy_stc_sysanalog_config_t\000"
+ 1226      74635F73 
+ 1226      7973616E 
+ 1226      616C6F67 
+ 1226      5F636F6E 
+ 1227              	.LASF31:
+ 1228 03ea 43595F53 		.ascii	"CY_SYSANALOG_SUCCESS\000"
+ 1228      5953414E 
+ 1228      414C4F47 
+ 1228      5F535543 
+ 1228      43455353 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 27
+
+
+ 1229              	.LASF35:
+ 1230 03ff 43595F53 		.ascii	"CY_SYSANALOG_STARTUP_FAST\000"
+ 1230      5953414E 
+ 1230      414C4F47 
+ 1230      5F535441 
+ 1230      52545550 
+ 1231              	.LASF17:
+ 1232 0419 41524546 		.ascii	"AREF\000"
+ 1232      00
+ 1233              	.LASF5:
+ 1234 041e 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1234      20756E73 
+ 1234      69676E65 
+ 1234      6420696E 
+ 1234      7400
+ 1235              	.LASF30:
+ 1236 0430 646F7562 		.ascii	"double\000"
+ 1236      6C6500
+ 1237              	.LASF25:
+ 1238 0437 49435441 		.ascii	"ICTAT_TRIM0\000"
+ 1238      545F5452 
+ 1238      494D3000 
+ 1239              	.LASF58:
+ 1240 0443 43795F53 		.ascii	"Cy_SysAnalog_Fast_External\000"
+ 1240      7973416E 
+ 1240      616C6F67 
+ 1240      5F466173 
+ 1240      745F4578 
+ 1241              	.LASF62:
+ 1242 045e 43795F53 		.ascii	"Cy_SysAnalog_Init\000"
+ 1242      7973416E 
+ 1242      616C6F67 
+ 1242      5F496E69 
+ 1242      7400
+ 1243              	.LASF61:
+ 1244 0470 433A5C47 		.ascii	"C:\\Git\\PSoC6-101-Videos\\Projects_ScreenCapture\\"
+ 1244      69745C50 
+ 1244      536F4336 
+ 1244      2D313031 
+ 1244      2D566964 
+ 1245 049f 50536F43 		.ascii	"PSoC 6_101\\2-2-BasicTCPWM.cydsn\000"
+ 1245      20365F31 
+ 1245      30315C32 
+ 1245      2D322D42 
+ 1245      61736963 
+ 1246              	.LASF34:
+ 1247 04bf 43595F53 		.ascii	"CY_SYSANALOG_STARTUP_NORMAL\000"
+ 1247      5953414E 
+ 1247      414C4F47 
+ 1247      5F535441 
+ 1247      52545550 
+ 1248              	.LASF18:
+ 1249 04db 56524546 		.ascii	"VREF_TRIM0\000"
+ 1249      5F545249 
+ 1249      4D3000
+ 1250              	.LASF14:
+ 1251 04e6 52455345 		.ascii	"RESERVED\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc71dWcU.s 			page 28
+
+
+ 1251      52564544 
+ 1251      00
+ 1252              	.LASF49:
+ 1253 04ef 73746172 		.ascii	"startup\000"
+ 1253      74757000 
+ 1254              	.LASF33:
+ 1255 04f7 63795F65 		.ascii	"cy_en_sysanalog_status_t\000"
+ 1255      6E5F7379 
+ 1255      73616E61 
+ 1255      6C6F675F 
+ 1255      73746174 
+ 1256              	.LASF51:
+ 1257 0510 76726566 		.ascii	"vref\000"
+ 1257      00
+ 1258              	.LASF57:
+ 1259 0515 43795F53 		.ascii	"Cy_SysAnalog_Fast_SRSS\000"
+ 1259      7973416E 
+ 1259      616C6F67 
+ 1259      5F466173 
+ 1259      745F5352 
+ 1260              	.LASF64:
+ 1261 052c 43795F53 		.ascii	"Cy_SysLib_AssertFailed\000"
+ 1261      79734C69 
+ 1261      625F4173 
+ 1261      73657274 
+ 1261      4661696C 
+ 1262              	.LASF36:
+ 1263 0543 63795F65 		.ascii	"cy_en_sysanalog_startup_t\000"
+ 1263      6E5F7379 
+ 1263      73616E61 
+ 1263      6C6F675F 
+ 1263      73746172 
+ 1264              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

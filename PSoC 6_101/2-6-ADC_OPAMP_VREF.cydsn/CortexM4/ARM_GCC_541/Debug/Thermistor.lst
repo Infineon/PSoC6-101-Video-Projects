@@ -1,0 +1,2454 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.fpu fpv4-sp-d16
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.thumb
+  15              		.syntax unified
+  16              		.file	"Thermistor.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.Thermistor_GetResistance,"ax",%progbits
+  21              		.align	2
+  22              		.global	Thermistor_GetResistance
+  23              		.thumb
+  24              		.thumb_func
+  25              		.type	Thermistor_GetResistance, %function
+  26              	Thermistor_GetResistance:
+  27              	.LFB535:
+  28              		.file 1 "Thermistor.c"
+   1:Thermistor.c  **** /*******************************************************************************
+   2:Thermistor.c  **** * File Name: Thermistor.c
+   3:Thermistor.c  **** * Version 1.20
+   4:Thermistor.c  **** *
+   5:Thermistor.c  **** * Description:
+   6:Thermistor.c  **** *  This file provides the source code to the API for the ThermistorCalc
+   7:Thermistor.c  **** *  Component.
+   8:Thermistor.c  **** *
+   9:Thermistor.c  **** * Note:
+  10:Thermistor.c  **** *  None.
+  11:Thermistor.c  **** *
+  12:Thermistor.c  **** ********************************************************************************
+  13:Thermistor.c  **** * Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+  14:Thermistor.c  **** * You may use this file only in accordance with the license, terms, conditions,
+  15:Thermistor.c  **** * disclaimers, and limitations in the end user license agreement accompanying
+  16:Thermistor.c  **** * the software package with which this file was provided.
+  17:Thermistor.c  **** *******************************************************************************/
+  18:Thermistor.c  **** 
+  19:Thermistor.c  **** #include "Thermistor.h"
+  20:Thermistor.c  **** 
+  21:Thermistor.c  **** 
+  22:Thermistor.c  **** /*******************************************************************************
+  23:Thermistor.c  **** * Function Name: Thermistor_GetResistance
+  24:Thermistor.c  **** ********************************************************************************
+  25:Thermistor.c  **** *
+  26:Thermistor.c  **** * Summary:
+  27:Thermistor.c  **** *  The digital values of the voltages across the reference resistor and the
+  28:Thermistor.c  **** *  thermistor are passed to this function as parameters. The function returns
+  29:Thermistor.c  **** *  the resistance, based on the voltage values.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 2
+
+
+  30:Thermistor.c  **** *
+  31:Thermistor.c  **** * Parameters:
+  32:Thermistor.c  **** *  vReference: the voltage across the reference resistor;
+  33:Thermistor.c  **** *  vThermistor: the voltage across the thermistor.
+  34:Thermistor.c  **** *  The ratio of these two voltages is used by this function. Therefore, the
+  35:Thermistor.c  **** *  units for both parameters must be the same.
+  36:Thermistor.c  **** *
+  37:Thermistor.c  **** * Return:
+  38:Thermistor.c  **** *  The return value is the resistance across the thermistor. The value returned
+  39:Thermistor.c  **** *  is the resistance in Ohms.
+  40:Thermistor.c  **** *
+  41:Thermistor.c  **** *******************************************************************************/
+  42:Thermistor.c  **** uint32 Thermistor_GetResistance(int16 vReference, int16 vThermistor)
+  43:Thermistor.c  ****                                       
+  44:Thermistor.c  **** {
+  29              		.loc 1 44 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              	.LVL0:
+  45:Thermistor.c  ****     int32 resT;
+  46:Thermistor.c  ****     int16 temp;
+  47:Thermistor.c  **** 
+  48:Thermistor.c  ****     /* Calculate thermistor resistance from the voltages */
+  49:Thermistor.c  ****     resT = Thermistor_REF_RESISTOR * ((int32)vThermistor);
+  35              		.loc 1 49 0
+  36 0000 42F21073 		movw	r3, #10000
+  37 0004 03FB01F1 		mul	r1, r3, r1
+  38              	.LVL1:
+  50:Thermistor.c  ****     if (vReference < 0)
+  39              		.loc 1 50 0
+  40 0008 0028     		cmp	r0, #0
+  41              	.LVL2:
+  42 000a 05DA     		bge	.L2
+  51:Thermistor.c  ****     {
+  52:Thermistor.c  ****         temp = -vReference;
+  43              		.loc 1 52 0
+  44 000c 4342     		negs	r3, r0
+  45              	.LVL3:
+  53:Thermistor.c  ****         temp = (int16)((uint16)((uint16)temp >> 1u));
+  46              		.loc 1 53 0
+  47 000e C3F34E03 		ubfx	r3, r3, #1, #15
+  48              	.LVL4:
+  54:Thermistor.c  ****         temp = -temp;
+  49              		.loc 1 54 0
+  50 0012 5B42     		negs	r3, r3
+  51              	.LVL5:
+  52 0014 1BB2     		sxth	r3, r3
+  53              	.LVL6:
+  54 0016 01E0     		b	.L3
+  55              	.LVL7:
+  56              	.L2:
+  55:Thermistor.c  ****     }
+  56:Thermistor.c  ****     else
+  57:Thermistor.c  ****     {
+  58:Thermistor.c  ****         temp = (int16)((uint16)((uint16)vReference >> 1u));
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 3
+
+
+  57              		.loc 1 58 0
+  58 0018 C0F34E03 		ubfx	r3, r0, #1, #15
+  59              	.LVL8:
+  60              	.L3:
+  59:Thermistor.c  ****     }
+  60:Thermistor.c  ****     resT += temp;
+  61              		.loc 1 60 0
+  62 001c 1944     		add	r1, r1, r3
+  63              	.LVL9:
+  61:Thermistor.c  ****     resT /= vReference;
+  62:Thermistor.c  **** 
+  63:Thermistor.c  ****     /* The ordering of Reference resistor value is specifically designed to keep the result from ov
+  64:Thermistor.c  ****     return ((uint32)((uint32)resT << Thermistor_REF_RES_SHIFT));
+  65:Thermistor.c  **** }
+  64              		.loc 1 65 0
+  65 001e 91FBF0F0 		sdiv	r0, r1, r0
+  66              	.LVL10:
+  67 0022 7047     		bx	lr
+  68              		.cfi_endproc
+  69              	.LFE535:
+  70              		.size	Thermistor_GetResistance, .-Thermistor_GetResistance
+  71              		.global	__aeabi_ui2d
+  72              		.global	__aeabi_d2f
+  73              		.global	__aeabi_f2d
+  74              		.global	__aeabi_dmul
+  75              		.global	__aeabi_dadd
+  76              		.global	__aeabi_ddiv
+  77              		.global	__aeabi_dsub
+  78              		.section	.text.Thermistor_GetTemperature,"ax",%progbits
+  79              		.align	2
+  80              		.global	Thermistor_GetTemperature
+  81              		.thumb
+  82              		.thumb_func
+  83              		.type	Thermistor_GetTemperature, %function
+  84              	Thermistor_GetTemperature:
+  85              	.LFB536:
+  66:Thermistor.c  **** 
+  67:Thermistor.c  **** 
+  68:Thermistor.c  **** /*******************************************************************************
+  69:Thermistor.c  **** * Function Name: Thermistor_GetTemperature
+  70:Thermistor.c  **** ********************************************************************************
+  71:Thermistor.c  **** *
+  72:Thermistor.c  **** * Summary:
+  73:Thermistor.c  **** *  The value of the thermistor resistance is passed to this function as a
+  74:Thermistor.c  **** *  parameter. The function returns the temperature, based on the resistance
+  75:Thermistor.c  **** *  value. The method used to calculate the temperature is dependent on whether
+  76:Thermistor.c  **** *  Equation or LUT was selected in the Customizer.
+  77:Thermistor.c  **** *
+  78:Thermistor.c  **** * Parameters:
+  79:Thermistor.c  **** *  resT: the resistance across the thermistor in Ohms.
+  80:Thermistor.c  **** *
+  81:Thermistor.c  **** * Return:
+  82:Thermistor.c  **** *  The return value is the temperature in 1/100ths of degrees C. For example,
+  83:Thermistor.c  **** *  the return value is 2345, when the actual temperature is 23.45 degrees C.
+  84:Thermistor.c  **** *
+  85:Thermistor.c  **** *******************************************************************************/
+  86:Thermistor.c  **** int16 Thermistor_GetTemperature(uint32 resT) 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 4
+
+
+  87:Thermistor.c  **** {
+  86              		.loc 1 87 0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 8
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              	.LVL11:
+  91 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  92              		.cfi_def_cfa_offset 20
+  93              		.cfi_offset 4, -20
+  94              		.cfi_offset 5, -16
+  95              		.cfi_offset 6, -12
+  96              		.cfi_offset 7, -8
+  97              		.cfi_offset 14, -4
+  98 0002 83B0     		sub	sp, sp, #12
+  99              		.cfi_def_cfa_offset 32
+  88:Thermistor.c  ****     int16 tempTR;
+  89:Thermistor.c  ****     
+  90:Thermistor.c  ****     #if (Thermistor_IMPLEMENTATION == Thermistor_EQUATION_METHOD)
+  91:Thermistor.c  **** 
+  92:Thermistor.c  ****         float32 stEqn;
+  93:Thermistor.c  ****         float32 logrT;
+  94:Thermistor.c  **** 
+  95:Thermistor.c  ****         /* Calculate thermistor resistance from the voltages */
+  96:Thermistor.c  ****         #if(!CY_PSOC3)
+  97:Thermistor.c  ****             logrT = (float32)log((float64)resT);
+ 100              		.loc 1 97 0
+ 101 0004 FFF7FEFF 		bl	__aeabi_ui2d
+ 102              	.LVL12:
+ 103 0008 FFF7FEFF 		bl	log
+ 104              	.LVL13:
+ 105 000c FFF7FEFF 		bl	__aeabi_d2f
+ 106              	.LVL14:
+  98:Thermistor.c  ****         #else
+  99:Thermistor.c  ****             logrT = log((float32)resT);
+ 100:Thermistor.c  ****         #endif  /* (!CY_PSOC3) */
+ 101:Thermistor.c  **** 
+ 102:Thermistor.c  ****         /* Calculate temperature from the resistance of thermistor using Steinhart-Hart Equation */
+ 103:Thermistor.c  ****         #if(!CY_PSOC3)
+ 104:Thermistor.c  ****             stEqn = (float32)(Thermistor_THA + (Thermistor_THB * logrT) + 
+ 107              		.loc 1 104 0
+ 108 0010 FFF7FEFF 		bl	__aeabi_f2d
+ 109              	.LVL15:
+ 110 0014 0646     		mov	r6, r0
+ 111 0016 0F46     		mov	r7, r1
+ 112 0018 27A3     		adr	r3, .L6+32
+ 113 001a D3E90023 		ldrd	r2, [r3]
+ 114 001e FFF7FEFF 		bl	__aeabi_dmul
+ 115              	.LVL16:
+ 116 0022 27A3     		adr	r3, .L6+40
+ 117 0024 D3E90023 		ldrd	r2, [r3]
+ 118 0028 FFF7FEFF 		bl	__aeabi_dadd
+ 119              	.LVL17:
+ 120 002c 0446     		mov	r4, r0
+ 121 002e 0D46     		mov	r5, r1
+ 105:Thermistor.c  ****                              (Thermistor_THC * pow((float64)logrT, (float32)3)));
+ 122              		.loc 1 105 0
+ 123 0030 0022     		movs	r2, #0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 5
+
+
+ 124 0032 1D4B     		ldr	r3, .L6+16
+ 125 0034 3046     		mov	r0, r6
+ 126 0036 3946     		mov	r1, r7
+ 127 0038 FFF7FEFF 		bl	pow
+ 128              	.LVL18:
+ 129 003c 16A3     		adr	r3, .L6
+ 130 003e D3E90023 		ldrd	r2, [r3]
+ 131 0042 FFF7FEFF 		bl	__aeabi_dmul
+ 132              	.LVL19:
+ 104:Thermistor.c  ****                              (Thermistor_THC * pow((float64)logrT, (float32)3)));
+ 133              		.loc 1 104 0
+ 134 0046 0246     		mov	r2, r0
+ 135 0048 0B46     		mov	r3, r1
+ 136 004a 2046     		mov	r0, r4
+ 137 004c 2946     		mov	r1, r5
+ 138 004e FFF7FEFF 		bl	__aeabi_dadd
+ 139              	.LVL20:
+ 140 0052 FFF7FEFF 		bl	__aeabi_d2f
+ 141              	.LVL21:
+ 106:Thermistor.c  ****         #else
+ 107:Thermistor.c  ****             stEqn = (float32)(Thermistor_THA + (Thermistor_THB * logrT) + 
+ 108:Thermistor.c  ****                              (Thermistor_THC * pow(logrT, (float32)3)));
+ 109:Thermistor.c  ****         #endif  /* (!CY_PSOC3) */
+ 110:Thermistor.c  **** 
+ 111:Thermistor.c  ****         tempTR = (int16)((float32)((((1.0 / stEqn) - Thermistor_K2C) * (float32)Thermistor_SCALE) +
+ 142              		.loc 1 111 0
+ 143 0056 FFF7FEFF 		bl	__aeabi_f2d
+ 144              	.LVL22:
+ 145 005a 0246     		mov	r2, r0
+ 146 005c 0B46     		mov	r3, r1
+ 147 005e 0020     		movs	r0, #0
+ 148 0060 1249     		ldr	r1, .L6+20
+ 149 0062 FFF7FEFF 		bl	__aeabi_ddiv
+ 150              	.LVL23:
+ 151 0066 0EA3     		adr	r3, .L6+8
+ 152 0068 D3E90023 		ldrd	r2, [r3]
+ 153 006c FFF7FEFF 		bl	__aeabi_dsub
+ 154              	.LVL24:
+ 155 0070 0022     		movs	r2, #0
+ 156 0072 0F4B     		ldr	r3, .L6+24
+ 157 0074 FFF7FEFF 		bl	__aeabi_dmul
+ 158              	.LVL25:
+ 159 0078 0022     		movs	r2, #0
+ 160 007a 0E4B     		ldr	r3, .L6+28
+ 161 007c FFF7FEFF 		bl	__aeabi_dadd
+ 162              	.LVL26:
+ 163 0080 FFF7FEFF 		bl	__aeabi_d2f
+ 164              	.LVL27:
+ 165 0084 07EE900A 		vmov	s15, r0
+ 166 0088 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 167 008c CDED017A 		vstr.32	s15, [sp, #4]	@ int
+ 168              	.LVL28:
+ 112:Thermistor.c  **** 
+ 113:Thermistor.c  ****     #else /* Thermistor_IMPLEMENTATION == Thermistor_LUT_METHOD */
+ 114:Thermistor.c  **** 
+ 115:Thermistor.c  ****         uint16 mid;
+ 116:Thermistor.c  ****         uint16 first = 0u;
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 6
+
+
+ 117:Thermistor.c  ****         uint16 last = Thermistor_LUT_SIZE - 1u;
+ 118:Thermistor.c  **** 
+ 119:Thermistor.c  ****         /* Calculate temperature from the resistance of thermistor by using the LUT */
+ 120:Thermistor.c  ****         while (first < last)
+ 121:Thermistor.c  ****         {
+ 122:Thermistor.c  ****             mid = (first + last) >> 1u;
+ 123:Thermistor.c  **** 
+ 124:Thermistor.c  ****             if ((0u == mid) || ((Thermistor_LUT_SIZE - 1u) == mid) || (resT == Thermistor_LUT[mid])
+ 125:Thermistor.c  ****             {
+ 126:Thermistor.c  ****                 last = mid;
+ 127:Thermistor.c  ****                 break;
+ 128:Thermistor.c  ****             }
+ 129:Thermistor.c  ****             else if (Thermistor_LUT[mid] > resT)
+ 130:Thermistor.c  ****             {
+ 131:Thermistor.c  ****                 first = mid + 1u;
+ 132:Thermistor.c  ****             }
+ 133:Thermistor.c  ****             else /* (Thermistor_LUT[mid] < resT) */
+ 134:Thermistor.c  ****             {
+ 135:Thermistor.c  ****                 last = mid - 1u;
+ 136:Thermistor.c  ****             }
+ 137:Thermistor.c  ****         }
+ 138:Thermistor.c  **** 
+ 139:Thermistor.c  ****         /* Calculation the closest entry in the LUT */
+ 140:Thermistor.c  ****         if ((Thermistor_LUT[last] > resT) && (last < (Thermistor_LUT_SIZE - 1u)) &&
+ 141:Thermistor.c  ****            ((Thermistor_LUT[last] - resT) > (resT - Thermistor_LUT[last + 1u])))
+ 142:Thermistor.c  ****         {
+ 143:Thermistor.c  ****             last++;
+ 144:Thermistor.c  ****         }
+ 145:Thermistor.c  ****         else if ((Thermistor_LUT[last] < resT) && (last > 0u) &&
+ 146:Thermistor.c  ****                 ((Thermistor_LUT[last - 1u] - resT) < (resT - Thermistor_LUT[last])))
+ 147:Thermistor.c  ****         {
+ 148:Thermistor.c  ****             last--;
+ 149:Thermistor.c  ****         }
+ 150:Thermistor.c  ****         else
+ 151:Thermistor.c  ****         {
+ 152:Thermistor.c  ****             /* Closest entry in the LUT already found */
+ 153:Thermistor.c  ****         }
+ 154:Thermistor.c  **** 
+ 155:Thermistor.c  ****         tempTR = Thermistor_MIN_TEMP + (int16)((uint16)(last * Thermistor_ACCURACY));
+ 156:Thermistor.c  **** 
+ 157:Thermistor.c  ****     #endif /* (Thermistor_IMPLEMENTATION == Thermistor_EQUATION_METHOD) */
+ 158:Thermistor.c  **** 
+ 159:Thermistor.c  ****     return (tempTR);
+ 160:Thermistor.c  **** }
+ 169              		.loc 1 160 0
+ 170 0090 BDF90400 		ldrsh	r0, [sp, #4]
+ 171 0094 03B0     		add	sp, sp, #12
+ 172              		.cfi_def_cfa_offset 20
+ 173              		@ sp needed
+ 174 0096 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 175              	.LVL29:
+ 176              	.L7:
+ 177              		.align	3
+ 178              	.L6:
+ 179 0098 4D33E444 		.word	1155806029
+ 180 009c 25658B3E 		.word	1049322789
+ 181 00a0 66666666 		.word	1717986918
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 7
+
+
+ 182 00a4 66127140 		.word	1081152102
+ 183 00a8 00000840 		.word	1074266112
+ 184 00ac 0000F03F 		.word	1072693248
+ 185 00b0 00005940 		.word	1079574528
+ 186 00b4 0000E03F 		.word	1071644672
+ 187 00b8 6943AA9A 		.word	-1700117655
+ 188 00bc B34D303F 		.word	1060130227
+ 189 00c0 D8FD850B 		.word	193330648
+ 190 00c4 29994D3F 		.word	1062050089
+ 191              		.cfi_endproc
+ 192              	.LFE536:
+ 193              		.size	Thermistor_GetTemperature, .-Thermistor_GetTemperature
+ 194              		.text
+ 195              	.Letext0:
+ 196              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 197              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 198              		.file 4 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/syslib/cy_syslib.h"
+ 199              		.file 5 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/scb/cy_scb_uart.h"
+ 200              		.file 6 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/sar/cy_sar.h"
+ 201              		.file 7 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/ctb/cy_ctb.h"
+ 202              		.file 8 "Generated_Source\\PSoC6/ADC_1.h"
+ 203              		.file 9 "Generated_Source\\PSoC6\\pdl\\cmsis/include/core_cm4.h"
+ 204              		.file 10 "Generated_Source\\PSoC6/UART_1.h"
+ 205              		.file 11 "Generated_Source\\PSoC6/Opamp_1.h"
+ 206              		.file 12 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 207              		.section	.debug_info,"",%progbits
+ 208              	.Ldebug_info0:
+ 209 0000 B9060000 		.4byte	0x6b9
+ 210 0004 0400     		.2byte	0x4
+ 211 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 212 000a 04       		.byte	0x4
+ 213 000b 01       		.uleb128 0x1
+ 214 000c 6B040000 		.4byte	.LASF126
+ 215 0010 0C       		.byte	0xc
+ 216 0011 C6060000 		.4byte	.LASF127
+ 217 0015 A2020000 		.4byte	.LASF128
+ 218 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 219 001d 00000000 		.4byte	0
+ 220 0021 00000000 		.4byte	.Ldebug_line0
+ 221 0025 02       		.uleb128 0x2
+ 222 0026 02       		.byte	0x2
+ 223 0027 05       		.byte	0x5
+ 224 0028 F0050000 		.4byte	.LASF0
+ 225 002c 02       		.uleb128 0x2
+ 226 002d 01       		.byte	0x1
+ 227 002e 06       		.byte	0x6
+ 228 002f 26010000 		.4byte	.LASF1
+ 229 0033 02       		.uleb128 0x2
+ 230 0034 01       		.byte	0x1
+ 231 0035 08       		.byte	0x8
+ 232 0036 A6050000 		.4byte	.LASF2
+ 233 003a 03       		.uleb128 0x3
+ 234 003b 0C030000 		.4byte	.LASF3
+ 235 003f 02       		.byte	0x2
+ 236 0040 29       		.byte	0x29
+ 237 0041 25000000 		.4byte	0x25
+ 238 0045 03       		.uleb128 0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 8
+
+
+ 239 0046 BB060000 		.4byte	.LASF4
+ 240 004a 02       		.byte	0x2
+ 241 004b 2B       		.byte	0x2b
+ 242 004c 50000000 		.4byte	0x50
+ 243 0050 02       		.uleb128 0x2
+ 244 0051 02       		.byte	0x2
+ 245 0052 07       		.byte	0x7
+ 246 0053 52030000 		.4byte	.LASF5
+ 247 0057 03       		.uleb128 0x3
+ 248 0058 DA030000 		.4byte	.LASF6
+ 249 005c 02       		.byte	0x2
+ 250 005d 3F       		.byte	0x3f
+ 251 005e 62000000 		.4byte	0x62
+ 252 0062 02       		.uleb128 0x2
+ 253 0063 04       		.byte	0x4
+ 254 0064 05       		.byte	0x5
+ 255 0065 FD010000 		.4byte	.LASF7
+ 256 0069 03       		.uleb128 0x3
+ 257 006a F5020000 		.4byte	.LASF8
+ 258 006e 02       		.byte	0x2
+ 259 006f 41       		.byte	0x41
+ 260 0070 74000000 		.4byte	0x74
+ 261 0074 02       		.uleb128 0x2
+ 262 0075 04       		.byte	0x4
+ 263 0076 07       		.byte	0x7
+ 264 0077 40030000 		.4byte	.LASF9
+ 265 007b 02       		.uleb128 0x2
+ 266 007c 08       		.byte	0x8
+ 267 007d 05       		.byte	0x5
+ 268 007e 18010000 		.4byte	.LASF10
+ 269 0082 02       		.uleb128 0x2
+ 270 0083 08       		.byte	0x8
+ 271 0084 07       		.byte	0x7
+ 272 0085 B2000000 		.4byte	.LASF11
+ 273 0089 04       		.uleb128 0x4
+ 274 008a 04       		.byte	0x4
+ 275 008b 05       		.byte	0x5
+ 276 008c 696E7400 		.ascii	"int\000"
+ 277 0090 02       		.uleb128 0x2
+ 278 0091 04       		.byte	0x4
+ 279 0092 07       		.byte	0x7
+ 280 0093 33030000 		.4byte	.LASF12
+ 281 0097 03       		.uleb128 0x3
+ 282 0098 FC000000 		.4byte	.LASF13
+ 283 009c 03       		.byte	0x3
+ 284 009d 20       		.byte	0x20
+ 285 009e 3A000000 		.4byte	0x3a
+ 286 00a2 03       		.uleb128 0x3
+ 287 00a3 46020000 		.4byte	.LASF14
+ 288 00a7 03       		.byte	0x3
+ 289 00a8 24       		.byte	0x24
+ 290 00a9 45000000 		.4byte	0x45
+ 291 00ad 03       		.uleb128 0x3
+ 292 00ae FA030000 		.4byte	.LASF15
+ 293 00b2 03       		.byte	0x3
+ 294 00b3 2C       		.byte	0x2c
+ 295 00b4 57000000 		.4byte	0x57
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 9
+
+
+ 296 00b8 03       		.uleb128 0x3
+ 297 00b9 70060000 		.4byte	.LASF16
+ 298 00bd 03       		.byte	0x3
+ 299 00be 30       		.byte	0x30
+ 300 00bf 69000000 		.4byte	0x69
+ 301 00c3 02       		.uleb128 0x2
+ 302 00c4 04       		.byte	0x4
+ 303 00c5 07       		.byte	0x7
+ 304 00c6 02040000 		.4byte	.LASF17
+ 305 00ca 05       		.uleb128 0x5
+ 306 00cb B8000000 		.4byte	0xb8
+ 307 00cf 02       		.uleb128 0x2
+ 308 00d0 08       		.byte	0x8
+ 309 00d1 04       		.byte	0x4
+ 310 00d2 99060000 		.4byte	.LASF18
+ 311 00d6 02       		.uleb128 0x2
+ 312 00d7 01       		.byte	0x1
+ 313 00d8 08       		.byte	0x8
+ 314 00d9 A5060000 		.4byte	.LASF19
+ 315 00dd 02       		.uleb128 0x2
+ 316 00de 04       		.byte	0x4
+ 317 00df 04       		.byte	0x4
+ 318 00e0 29050000 		.4byte	.LASF20
+ 319 00e4 02       		.uleb128 0x2
+ 320 00e5 08       		.byte	0x8
+ 321 00e6 04       		.byte	0x4
+ 322 00e7 4F020000 		.4byte	.LASF21
+ 323 00eb 06       		.uleb128 0x6
+ 324 00ec 00000000 		.4byte	.LASF22
+ 325 00f0 04       		.byte	0x4
+ 326 00f1 8603     		.2byte	0x386
+ 327 00f3 A2000000 		.4byte	0xa2
+ 328 00f7 06       		.uleb128 0x6
+ 329 00f8 7C020000 		.4byte	.LASF23
+ 330 00fc 04       		.byte	0x4
+ 331 00fd 8703     		.2byte	0x387
+ 332 00ff B8000000 		.4byte	0xb8
+ 333 0103 06       		.uleb128 0x6
+ 334 0104 BA070000 		.4byte	.LASF24
+ 335 0108 04       		.byte	0x4
+ 336 0109 8903     		.2byte	0x389
+ 337 010b 97000000 		.4byte	0x97
+ 338 010f 06       		.uleb128 0x6
+ 339 0110 7A010000 		.4byte	.LASF25
+ 340 0114 04       		.byte	0x4
+ 341 0115 8A03     		.2byte	0x38a
+ 342 0117 AD000000 		.4byte	0xad
+ 343 011b 06       		.uleb128 0x6
+ 344 011c F2030000 		.4byte	.LASF26
+ 345 0120 04       		.byte	0x4
+ 346 0121 8B03     		.2byte	0x38b
+ 347 0123 DD000000 		.4byte	0xdd
+ 348 0127 06       		.uleb128 0x6
+ 349 0128 9E070000 		.4byte	.LASF27
+ 350 012c 04       		.byte	0x4
+ 351 012d 8C03     		.2byte	0x38c
+ 352 012f E4000000 		.4byte	0xe4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 10
+
+
+ 353 0133 07       		.uleb128 0x7
+ 354 0134 04       		.byte	0x4
+ 355 0135 02       		.uleb128 0x2
+ 356 0136 01       		.byte	0x1
+ 357 0137 02       		.byte	0x2
+ 358 0138 8C050000 		.4byte	.LASF28
+ 359 013c 08       		.uleb128 0x8
+ 360 013d 04       		.byte	0x4
+ 361 013e 42010000 		.4byte	0x142
+ 362 0142 09       		.uleb128 0x9
+ 363 0143 4D010000 		.4byte	0x14d
+ 364 0147 0A       		.uleb128 0xa
+ 365 0148 B8000000 		.4byte	0xb8
+ 366 014c 00       		.byte	0
+ 367 014d 06       		.uleb128 0x6
+ 368 014e 32070000 		.4byte	.LASF29
+ 369 0152 05       		.byte	0x5
+ 370 0153 AB01     		.2byte	0x1ab
+ 371 0155 3C010000 		.4byte	0x13c
+ 372 0159 0B       		.uleb128 0xb
+ 373 015a 51070000 		.4byte	.LASF129
+ 374 015e 38       		.byte	0x38
+ 375 015f 05       		.byte	0x5
+ 376 0160 4702     		.2byte	0x247
+ 377 0162 1D020000 		.4byte	0x21d
+ 378 0166 0C       		.uleb128 0xc
+ 379 0167 20080000 		.4byte	.LASF30
+ 380 016b 05       		.byte	0x5
+ 381 016c 4A02     		.2byte	0x24a
+ 382 016e CA000000 		.4byte	0xca
+ 383 0172 00       		.byte	0
+ 384 0173 0C       		.uleb128 0xc
+ 385 0174 37040000 		.4byte	.LASF31
+ 386 0178 05       		.byte	0x5
+ 387 0179 4B02     		.2byte	0x24b
+ 388 017b CA000000 		.4byte	0xca
+ 389 017f 04       		.byte	0x4
+ 390 0180 0C       		.uleb128 0xc
+ 391 0181 C9000000 		.4byte	.LASF32
+ 392 0185 05       		.byte	0x5
+ 393 0186 4D02     		.2byte	0x24d
+ 394 0188 33010000 		.4byte	0x133
+ 395 018c 08       		.byte	0x8
+ 396 018d 0C       		.uleb128 0xc
+ 397 018e 19070000 		.4byte	.LASF33
+ 398 0192 05       		.byte	0x5
+ 399 0193 4E02     		.2byte	0x24e
+ 400 0195 B8000000 		.4byte	0xb8
+ 401 0199 0C       		.byte	0xc
+ 402 019a 0C       		.uleb128 0xc
+ 403 019b E4030000 		.4byte	.LASF34
+ 404 019f 05       		.byte	0x5
+ 405 01a0 4F02     		.2byte	0x24f
+ 406 01a2 CA000000 		.4byte	0xca
+ 407 01a6 10       		.byte	0x10
+ 408 01a7 0C       		.uleb128 0xc
+ 409 01a8 F1070000 		.4byte	.LASF35
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 11
+
+
+ 410 01ac 05       		.byte	0x5
+ 411 01ad 5002     		.2byte	0x250
+ 412 01af CA000000 		.4byte	0xca
+ 413 01b3 14       		.byte	0x14
+ 414 01b4 0C       		.uleb128 0xc
+ 415 01b5 71070000 		.4byte	.LASF36
+ 416 01b9 05       		.byte	0x5
+ 417 01ba 5202     		.2byte	0x252
+ 418 01bc 33010000 		.4byte	0x133
+ 419 01c0 18       		.byte	0x18
+ 420 01c1 0C       		.uleb128 0xc
+ 421 01c2 07000000 		.4byte	.LASF37
+ 422 01c6 05       		.byte	0x5
+ 423 01c7 5302     		.2byte	0x253
+ 424 01c9 B8000000 		.4byte	0xb8
+ 425 01cd 1C       		.byte	0x1c
+ 426 01ce 0C       		.uleb128 0xc
+ 427 01cf 16030000 		.4byte	.LASF38
+ 428 01d3 05       		.byte	0x5
+ 429 01d4 5402     		.2byte	0x254
+ 430 01d6 CA000000 		.4byte	0xca
+ 431 01da 20       		.byte	0x20
+ 432 01db 0C       		.uleb128 0xc
+ 433 01dc AB030000 		.4byte	.LASF39
+ 434 01e0 05       		.byte	0x5
+ 435 01e1 5602     		.2byte	0x256
+ 436 01e3 33010000 		.4byte	0x133
+ 437 01e7 24       		.byte	0x24
+ 438 01e8 0C       		.uleb128 0xc
+ 439 01e9 29030000 		.4byte	.LASF40
+ 440 01ed 05       		.byte	0x5
+ 441 01ee 5702     		.2byte	0x257
+ 442 01f0 B8000000 		.4byte	0xb8
+ 443 01f4 28       		.byte	0x28
+ 444 01f5 0C       		.uleb128 0xc
+ 445 01f6 2F050000 		.4byte	.LASF41
+ 446 01fa 05       		.byte	0x5
+ 447 01fb 5802     		.2byte	0x258
+ 448 01fd CA000000 		.4byte	0xca
+ 449 0201 2C       		.byte	0x2c
+ 450 0202 0C       		.uleb128 0xc
+ 451 0203 A2030000 		.4byte	.LASF42
+ 452 0207 05       		.byte	0x5
+ 453 0208 5D02     		.2byte	0x25d
+ 454 020a 4D010000 		.4byte	0x14d
+ 455 020e 30       		.byte	0x30
+ 456 020f 0C       		.uleb128 0xc
+ 457 0210 69070000 		.4byte	.LASF43
+ 458 0214 05       		.byte	0x5
+ 459 0215 6002     		.2byte	0x260
+ 460 0217 B8000000 		.4byte	0xb8
+ 461 021b 34       		.byte	0x34
+ 462 021c 00       		.byte	0
+ 463 021d 06       		.uleb128 0x6
+ 464 021e 32010000 		.4byte	.LASF44
+ 465 0222 05       		.byte	0x5
+ 466 0223 6302     		.2byte	0x263
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 12
+
+
+ 467 0225 59010000 		.4byte	0x159
+ 468 0229 0D       		.uleb128 0xd
+ 469 022a 01       		.byte	0x1
+ 470 022b 33000000 		.4byte	0x33
+ 471 022f 06       		.byte	0x6
+ 472 0230 0504     		.2byte	0x405
+ 473 0232 4F020000 		.4byte	0x24f
+ 474 0236 0E       		.uleb128 0xe
+ 475 0237 BF010000 		.4byte	.LASF45
+ 476 023b 00       		.byte	0
+ 477 023c 0E       		.uleb128 0xe
+ 478 023d 5B050000 		.4byte	.LASF46
+ 479 0241 01       		.byte	0x1
+ 480 0242 0E       		.uleb128 0xe
+ 481 0243 2E020000 		.4byte	.LASF47
+ 482 0247 02       		.byte	0x2
+ 483 0248 0E       		.uleb128 0xe
+ 484 0249 D7070000 		.4byte	.LASF48
+ 485 024d 03       		.byte	0x3
+ 486 024e 00       		.byte	0
+ 487 024f 06       		.uleb128 0x6
+ 488 0250 4C010000 		.4byte	.LASF49
+ 489 0254 06       		.byte	0x6
+ 490 0255 0A04     		.2byte	0x40a
+ 491 0257 29020000 		.4byte	0x229
+ 492 025b 0F       		.uleb128 0xf
+ 493 025c 78       		.byte	0x78
+ 494 025d 06       		.byte	0x6
+ 495 025e F404     		.2byte	0x4f4
+ 496 0260 28030000 		.4byte	0x328
+ 497 0264 0C       		.uleb128 0xc
+ 498 0265 1F030000 		.4byte	.LASF50
+ 499 0269 06       		.byte	0x6
+ 500 026a F604     		.2byte	0x4f6
+ 501 026c B8000000 		.4byte	0xb8
+ 502 0270 00       		.byte	0
+ 503 0271 0C       		.uleb128 0xc
+ 504 0272 93070000 		.4byte	.LASF51
+ 505 0276 06       		.byte	0x6
+ 506 0277 F704     		.2byte	0x4f7
+ 507 0279 B8000000 		.4byte	0xb8
+ 508 027d 04       		.byte	0x4
+ 509 027e 0C       		.uleb128 0xc
+ 510 027f 56020000 		.4byte	.LASF52
+ 511 0283 06       		.byte	0x6
+ 512 0284 F804     		.2byte	0x4f8
+ 513 0286 B8000000 		.4byte	0xb8
+ 514 028a 08       		.byte	0x8
+ 515 028b 0C       		.uleb128 0xc
+ 516 028c 0B040000 		.4byte	.LASF53
+ 517 0290 06       		.byte	0x6
+ 518 0291 F904     		.2byte	0x4f9
+ 519 0293 B8000000 		.4byte	0xb8
+ 520 0297 0C       		.byte	0xc
+ 521 0298 0C       		.uleb128 0xc
+ 522 0299 76030000 		.4byte	.LASF54
+ 523 029d 06       		.byte	0x6
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 13
+
+
+ 524 029e FA04     		.2byte	0x4fa
+ 525 02a0 B8000000 		.4byte	0xb8
+ 526 02a4 10       		.byte	0x10
+ 527 02a5 0C       		.uleb128 0xc
+ 528 02a6 83070000 		.4byte	.LASF55
+ 529 02aa 06       		.byte	0x6
+ 530 02ab FB04     		.2byte	0x4fb
+ 531 02ad 4F020000 		.4byte	0x24f
+ 532 02b1 14       		.byte	0x14
+ 533 02b2 0C       		.uleb128 0xc
+ 534 02b3 40050000 		.4byte	.LASF56
+ 535 02b7 06       		.byte	0x6
+ 536 02b8 FC04     		.2byte	0x4fc
+ 537 02ba B8000000 		.4byte	0xb8
+ 538 02be 18       		.byte	0x18
+ 539 02bf 0C       		.uleb128 0xc
+ 540 02c0 BD030000 		.4byte	.LASF57
+ 541 02c4 06       		.byte	0x6
+ 542 02c5 FD04     		.2byte	0x4fd
+ 543 02c7 28030000 		.4byte	0x328
+ 544 02cb 1C       		.byte	0x1c
+ 545 02cc 0C       		.uleb128 0xc
+ 546 02cd 04060000 		.4byte	.LASF58
+ 547 02d1 06       		.byte	0x6
+ 548 02d2 FE04     		.2byte	0x4fe
+ 549 02d4 B8000000 		.4byte	0xb8
+ 550 02d8 5C       		.byte	0x5c
+ 551 02d9 0C       		.uleb128 0xc
+ 552 02da 19000000 		.4byte	.LASF59
+ 553 02de 06       		.byte	0x6
+ 554 02df FF04     		.2byte	0x4ff
+ 555 02e1 B8000000 		.4byte	0xb8
+ 556 02e5 60       		.byte	0x60
+ 557 02e6 0C       		.uleb128 0xc
+ 558 02e7 5D040000 		.4byte	.LASF60
+ 559 02eb 06       		.byte	0x6
+ 560 02ec 0005     		.2byte	0x500
+ 561 02ee B8000000 		.4byte	0xb8
+ 562 02f2 64       		.byte	0x64
+ 563 02f3 0C       		.uleb128 0xc
+ 564 02f4 FA050000 		.4byte	.LASF61
+ 565 02f8 06       		.byte	0x6
+ 566 02f9 0105     		.2byte	0x501
+ 567 02fb B8000000 		.4byte	0xb8
+ 568 02ff 68       		.byte	0x68
+ 569 0300 0C       		.uleb128 0xc
+ 570 0301 29080000 		.4byte	.LASF62
+ 571 0305 06       		.byte	0x6
+ 572 0306 0205     		.2byte	0x502
+ 573 0308 B8000000 		.4byte	0xb8
+ 574 030c 6C       		.byte	0x6c
+ 575 030d 0C       		.uleb128 0xc
+ 576 030e 29040000 		.4byte	.LASF63
+ 577 0312 06       		.byte	0x6
+ 578 0313 0305     		.2byte	0x503
+ 579 0315 35010000 		.4byte	0x135
+ 580 0319 70       		.byte	0x70
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 14
+
+
+ 581 031a 0C       		.uleb128 0xc
+ 582 031b 8D060000 		.4byte	.LASF64
+ 583 031f 06       		.byte	0x6
+ 584 0320 0405     		.2byte	0x504
+ 585 0322 B8000000 		.4byte	0xb8
+ 586 0326 74       		.byte	0x74
+ 587 0327 00       		.byte	0
+ 588 0328 10       		.uleb128 0x10
+ 589 0329 B8000000 		.4byte	0xb8
+ 590 032d 38030000 		.4byte	0x338
+ 591 0331 11       		.uleb128 0x11
+ 592 0332 C3000000 		.4byte	0xc3
+ 593 0336 0F       		.byte	0xf
+ 594 0337 00       		.byte	0
+ 595 0338 06       		.uleb128 0x6
+ 596 0339 04010000 		.4byte	.LASF65
+ 597 033d 06       		.byte	0x6
+ 598 033e 0505     		.2byte	0x505
+ 599 0340 5B020000 		.4byte	0x25b
+ 600 0344 0D       		.uleb128 0xd
+ 601 0345 04       		.byte	0x4
+ 602 0346 90000000 		.4byte	0x90
+ 603 034a 07       		.byte	0x7
+ 604 034b B501     		.2byte	0x1b5
+ 605 034d 61030000 		.4byte	0x361
+ 606 0351 0E       		.uleb128 0xe
+ 607 0352 39080000 		.4byte	.LASF66
+ 608 0356 00       		.byte	0
+ 609 0357 12       		.uleb128 0x12
+ 610 0358 25000000 		.4byte	.LASF67
+ 611 035c 00000040 		.4byte	0x40000000
+ 612 0360 00       		.byte	0
+ 613 0361 06       		.uleb128 0x6
+ 614 0362 02070000 		.4byte	.LASF68
+ 615 0366 07       		.byte	0x7
+ 616 0367 B801     		.2byte	0x1b8
+ 617 0369 44030000 		.4byte	0x344
+ 618 036d 0D       		.uleb128 0xd
+ 619 036e 01       		.byte	0x1
+ 620 036f 33000000 		.4byte	0x33
+ 621 0373 07       		.byte	0x7
+ 622 0374 D801     		.2byte	0x1d8
+ 623 0376 93030000 		.4byte	0x393
+ 624 037a 0E       		.uleb128 0xe
+ 625 037b 87000000 		.4byte	.LASF69
+ 626 037f 00       		.byte	0
+ 627 0380 0E       		.uleb128 0xe
+ 628 0381 EB000000 		.4byte	.LASF70
+ 629 0385 01       		.byte	0x1
+ 630 0386 0E       		.uleb128 0xe
+ 631 0387 D7010000 		.4byte	.LASF71
+ 632 038b 02       		.byte	0x2
+ 633 038c 0E       		.uleb128 0xe
+ 634 038d C8030000 		.4byte	.LASF72
+ 635 0391 03       		.byte	0x3
+ 636 0392 00       		.byte	0
+ 637 0393 06       		.uleb128 0x6
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 15
+
+
+ 638 0394 EB010000 		.4byte	.LASF73
+ 639 0398 07       		.byte	0x7
+ 640 0399 DD01     		.2byte	0x1dd
+ 641 039b 6D030000 		.4byte	0x36d
+ 642 039f 0D       		.uleb128 0xd
+ 643 03a0 01       		.byte	0x1
+ 644 03a1 33000000 		.4byte	0x33
+ 645 03a5 07       		.byte	0x7
+ 646 03a6 E301     		.2byte	0x1e3
+ 647 03a8 BF030000 		.4byte	0x3bf
+ 648 03ac 0E       		.uleb128 0xe
+ 649 03ad 47050000 		.4byte	.LASF74
+ 650 03b1 00       		.byte	0
+ 651 03b2 0E       		.uleb128 0xe
+ 652 03b3 FF070000 		.4byte	.LASF75
+ 653 03b7 08       		.byte	0x8
+ 654 03b8 0E       		.uleb128 0xe
+ 655 03b9 5F060000 		.4byte	.LASF76
+ 656 03bd 10       		.byte	0x10
+ 657 03be 00       		.byte	0
+ 658 03bf 06       		.uleb128 0x6
+ 659 03c0 18040000 		.4byte	.LASF77
+ 660 03c4 07       		.byte	0x7
+ 661 03c5 E701     		.2byte	0x1e7
+ 662 03c7 9F030000 		.4byte	0x39f
+ 663 03cb 0D       		.uleb128 0xd
+ 664 03cc 02       		.byte	0x2
+ 665 03cd 50000000 		.4byte	0x50
+ 666 03d1 07       		.byte	0x7
+ 667 03d2 FD01     		.2byte	0x1fd
+ 668 03d4 E6030000 		.4byte	0x3e6
+ 669 03d8 0E       		.uleb128 0xe
+ 670 03d9 DC050000 		.4byte	.LASF78
+ 671 03dd 00       		.byte	0
+ 672 03de 13       		.uleb128 0x13
+ 673 03df 93010000 		.4byte	.LASF79
+ 674 03e3 0008     		.2byte	0x800
+ 675 03e5 00       		.byte	0
+ 676 03e6 06       		.uleb128 0x6
+ 677 03e7 66080000 		.4byte	.LASF80
+ 678 03eb 07       		.byte	0x7
+ 679 03ec 0002     		.2byte	0x200
+ 680 03ee CB030000 		.4byte	0x3cb
+ 681 03f2 0D       		.uleb128 0xd
+ 682 03f3 02       		.byte	0x2
+ 683 03f4 50000000 		.4byte	0x50
+ 684 03f8 07       		.byte	0x7
+ 685 03f9 0702     		.2byte	0x207
+ 686 03fb 1B040000 		.4byte	0x41b
+ 687 03ff 0E       		.uleb128 0xe
+ 688 0400 63020000 		.4byte	.LASF81
+ 689 0404 00       		.byte	0
+ 690 0405 13       		.uleb128 0x13
+ 691 0406 25060000 		.4byte	.LASF82
+ 692 040a 0001     		.2byte	0x100
+ 693 040c 13       		.uleb128 0x13
+ 694 040d D3060000 		.4byte	.LASF83
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 16
+
+
+ 695 0411 0002     		.2byte	0x200
+ 696 0413 13       		.uleb128 0x13
+ 697 0414 49060000 		.4byte	.LASF84
+ 698 0418 0003     		.2byte	0x300
+ 699 041a 00       		.byte	0
+ 700 041b 06       		.uleb128 0x6
+ 701 041c 47040000 		.4byte	.LASF85
+ 702 0420 07       		.byte	0x7
+ 703 0421 0C02     		.2byte	0x20c
+ 704 0423 F2030000 		.4byte	0x3f2
+ 705 0427 0D       		.uleb128 0xd
+ 706 0428 01       		.byte	0x1
+ 707 0429 33000000 		.4byte	0x33
+ 708 042d 07       		.byte	0x7
+ 709 042e 1002     		.2byte	0x210
+ 710 0430 41040000 		.4byte	0x441
+ 711 0434 0E       		.uleb128 0xe
+ 712 0435 3D000000 		.4byte	.LASF86
+ 713 0439 00       		.byte	0
+ 714 043a 0E       		.uleb128 0xe
+ 715 043b B4050000 		.4byte	.LASF87
+ 716 043f 80       		.byte	0x80
+ 717 0440 00       		.byte	0
+ 718 0441 06       		.uleb128 0x6
+ 719 0442 C0070000 		.4byte	.LASF88
+ 720 0446 07       		.byte	0x7
+ 721 0447 1302     		.2byte	0x213
+ 722 0449 27040000 		.4byte	0x427
+ 723 044d 0D       		.uleb128 0xd
+ 724 044e 01       		.byte	0x1
+ 725 044f 33000000 		.4byte	0x33
+ 726 0453 07       		.byte	0x7
+ 727 0454 1702     		.2byte	0x217
+ 728 0456 67040000 		.4byte	0x467
+ 729 045a 0E       		.uleb128 0xe
+ 730 045b 0D060000 		.4byte	.LASF89
+ 731 045f 00       		.byte	0
+ 732 0460 0E       		.uleb128 0xe
+ 733 0461 6C000000 		.4byte	.LASF90
+ 734 0465 40       		.byte	0x40
+ 735 0466 00       		.byte	0
+ 736 0467 06       		.uleb128 0x6
+ 737 0468 74050000 		.4byte	.LASF91
+ 738 046c 07       		.byte	0x7
+ 739 046d 1A02     		.2byte	0x21a
+ 740 046f 4D040000 		.4byte	0x44d
+ 741 0473 0D       		.uleb128 0xd
+ 742 0474 01       		.byte	0x1
+ 743 0475 33000000 		.4byte	0x33
+ 744 0479 07       		.byte	0x7
+ 745 047a 1E02     		.2byte	0x21e
+ 746 047c 8D040000 		.4byte	0x48d
+ 747 0480 0E       		.uleb128 0xe
+ 748 0481 15020000 		.4byte	.LASF92
+ 749 0485 00       		.byte	0
+ 750 0486 0E       		.uleb128 0xe
+ 751 0487 EC060000 		.4byte	.LASF93
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 17
+
+
+ 752 048b 20       		.byte	0x20
+ 753 048c 00       		.byte	0
+ 754 048d 06       		.uleb128 0x6
+ 755 048e 8C030000 		.4byte	.LASF94
+ 756 0492 07       		.byte	0x7
+ 757 0493 2102     		.2byte	0x221
+ 758 0495 73040000 		.4byte	0x473
+ 759 0499 0F       		.uleb128 0xf
+ 760 049a 10       		.byte	0x10
+ 761 049b 07       		.byte	0x7
+ 762 049c F302     		.2byte	0x2f3
+ 763 049e 18050000 		.4byte	0x518
+ 764 04a2 0C       		.uleb128 0xc
+ 765 04a3 AA060000 		.4byte	.LASF95
+ 766 04a7 07       		.byte	0x7
+ 767 04a8 F402     		.2byte	0x2f4
+ 768 04aa 61030000 		.4byte	0x361
+ 769 04ae 00       		.byte	0
+ 770 04af 0C       		.uleb128 0xc
+ 771 04b0 11000000 		.4byte	.LASF96
+ 772 04b4 07       		.byte	0x7
+ 773 04b5 F702     		.2byte	0x2f7
+ 774 04b7 93030000 		.4byte	0x393
+ 775 04bb 04       		.byte	0x4
+ 776 04bc 0C       		.uleb128 0xc
+ 777 04bd 52080000 		.4byte	.LASF97
+ 778 04c1 07       		.byte	0x7
+ 779 04c2 F802     		.2byte	0x2f8
+ 780 04c4 BF030000 		.4byte	0x3bf
+ 781 04c8 05       		.byte	0x5
+ 782 04c9 0C       		.uleb128 0xc
+ 783 04ca B4060000 		.4byte	.LASF98
+ 784 04ce 07       		.byte	0x7
+ 785 04cf F902     		.2byte	0x2f9
+ 786 04d1 E6030000 		.4byte	0x3e6
+ 787 04d5 06       		.byte	0x6
+ 788 04d6 0C       		.uleb128 0xc
+ 789 04d7 D3000000 		.4byte	.LASF99
+ 790 04db 07       		.byte	0x7
+ 791 04dc FA02     		.2byte	0x2fa
+ 792 04de 1B040000 		.4byte	0x41b
+ 793 04e2 08       		.byte	0x8
+ 794 04e3 0C       		.uleb128 0xc
+ 795 04e4 77070000 		.4byte	.LASF100
+ 796 04e8 07       		.byte	0x7
+ 797 04e9 FB02     		.2byte	0x2fb
+ 798 04eb 41040000 		.4byte	0x441
+ 799 04ef 0A       		.byte	0xa
+ 800 04f0 0C       		.uleb128 0xc
+ 801 04f1 5F000000 		.4byte	.LASF101
+ 802 04f5 07       		.byte	0x7
+ 803 04f6 FC02     		.2byte	0x2fc
+ 804 04f8 67040000 		.4byte	0x467
+ 805 04fc 0B       		.byte	0xb
+ 806 04fd 0C       		.uleb128 0xc
+ 807 04fe 1E050000 		.4byte	.LASF102
+ 808 0502 07       		.byte	0x7
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 18
+
+
+ 809 0503 FD02     		.2byte	0x2fd
+ 810 0505 8D040000 		.4byte	0x48d
+ 811 0509 0C       		.byte	0xc
+ 812 050a 0C       		.uleb128 0xc
+ 813 050b 59080000 		.4byte	.LASF103
+ 814 050f 07       		.byte	0x7
+ 815 0510 FE02     		.2byte	0x2fe
+ 816 0512 35010000 		.4byte	0x135
+ 817 0516 0D       		.byte	0xd
+ 818 0517 00       		.byte	0
+ 819 0518 06       		.uleb128 0x6
+ 820 0519 88020000 		.4byte	.LASF104
+ 821 051d 07       		.byte	0x7
+ 822 051e FF02     		.2byte	0x2ff
+ 823 0520 99040000 		.4byte	0x499
+ 824 0524 14       		.uleb128 0x14
+ 825 0525 14       		.byte	0x14
+ 826 0526 08       		.byte	0x8
+ 827 0527 3B       		.byte	0x3b
+ 828 0528 69050000 		.4byte	0x569
+ 829 052c 15       		.uleb128 0x15
+ 830 052d 14080000 		.4byte	.LASF105
+ 831 0531 08       		.byte	0x8
+ 832 0532 3D       		.byte	0x3d
+ 833 0533 B8000000 		.4byte	0xb8
+ 834 0537 00       		.byte	0
+ 835 0538 15       		.uleb128 0x15
+ 836 0539 B1030000 		.4byte	.LASF106
+ 837 053d 08       		.byte	0x8
+ 838 053e 3E       		.byte	0x3e
+ 839 053f B8000000 		.4byte	0xb8
+ 840 0543 04       		.byte	0x4
+ 841 0544 15       		.uleb128 0x15
+ 842 0545 00030000 		.4byte	.LASF107
+ 843 0549 08       		.byte	0x8
+ 844 054a 3F       		.byte	0x3f
+ 845 054b 69050000 		.4byte	0x569
+ 846 054f 08       		.byte	0x8
+ 847 0550 15       		.uleb128 0x15
+ 848 0551 27070000 		.4byte	.LASF108
+ 849 0555 08       		.byte	0x8
+ 850 0556 40       		.byte	0x40
+ 851 0557 B8000000 		.4byte	0xb8
+ 852 055b 0C       		.byte	0xc
+ 853 055c 15       		.uleb128 0x15
+ 854 055d 6F010000 		.4byte	.LASF109
+ 855 0561 08       		.byte	0x8
+ 856 0562 45       		.byte	0x45
+ 857 0563 B8000000 		.4byte	0xb8
+ 858 0567 10       		.byte	0x10
+ 859 0568 00       		.byte	0
+ 860 0569 08       		.uleb128 0x8
+ 861 056a 04       		.byte	0x4
+ 862 056b 6F050000 		.4byte	0x56f
+ 863 056f 16       		.uleb128 0x16
+ 864 0570 38030000 		.4byte	0x338
+ 865 0574 03       		.uleb128 0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 19
+
+
+ 866 0575 A6070000 		.4byte	.LASF110
+ 867 0579 08       		.byte	0x8
+ 868 057a 48       		.byte	0x48
+ 869 057b 24050000 		.4byte	0x524
+ 870 057f 17       		.uleb128 0x17
+ 871 0580 A6010000 		.4byte	.LASF115
+ 872 0584 01       		.byte	0x1
+ 873 0585 2A       		.byte	0x2a
+ 874 0586 F7000000 		.4byte	0xf7
+ 875 058a 00000000 		.4byte	.LFB535
+ 876 058e 24000000 		.4byte	.LFE535-.LFB535
+ 877 0592 01       		.uleb128 0x1
+ 878 0593 9C       		.byte	0x9c
+ 879 0594 D5050000 		.4byte	0x5d5
+ 880 0598 18       		.uleb128 0x18
+ 881 0599 81030000 		.4byte	.LASF111
+ 882 059d 01       		.byte	0x1
+ 883 059e 2A       		.byte	0x2a
+ 884 059f 03010000 		.4byte	0x103
+ 885 05a3 00000000 		.4byte	.LLST0
+ 886 05a7 18       		.uleb128 0x18
+ 887 05a8 3D060000 		.4byte	.LASF112
+ 888 05ac 01       		.byte	0x1
+ 889 05ad 2A       		.byte	0x2a
+ 890 05ae 03010000 		.4byte	0x103
+ 891 05b2 21000000 		.4byte	.LLST1
+ 892 05b6 19       		.uleb128 0x19
+ 893 05b7 83020000 		.4byte	.LASF113
+ 894 05bb 01       		.byte	0x1
+ 895 05bc 2D       		.byte	0x2d
+ 896 05bd 0F010000 		.4byte	0x10f
+ 897 05c1 42000000 		.4byte	.LLST2
+ 898 05c5 19       		.uleb128 0x19
+ 899 05c6 24030000 		.4byte	.LASF114
+ 900 05ca 01       		.byte	0x1
+ 901 05cb 2E       		.byte	0x2e
+ 902 05cc 03010000 		.4byte	0x103
+ 903 05d0 70000000 		.4byte	.LLST3
+ 904 05d4 00       		.byte	0
+ 905 05d5 1A       		.uleb128 0x1a
+ 906 05d6 98000000 		.4byte	.LASF116
+ 907 05da 01       		.byte	0x1
+ 908 05db 56       		.byte	0x56
+ 909 05dc 03010000 		.4byte	0x103
+ 910 05e0 00000000 		.4byte	.LFB536
+ 911 05e4 C8000000 		.4byte	.LFE536-.LFB536
+ 912 05e8 01       		.uleb128 0x1
+ 913 05e9 9C       		.byte	0x9c
+ 914 05ea 3D060000 		.4byte	0x63d
+ 915 05ee 18       		.uleb128 0x18
+ 916 05ef 83020000 		.4byte	.LASF113
+ 917 05f3 01       		.byte	0x1
+ 918 05f4 56       		.byte	0x56
+ 919 05f5 F7000000 		.4byte	0xf7
+ 920 05f9 A7000000 		.4byte	.LLST4
+ 921 05fd 19       		.uleb128 0x19
+ 922 05fe 40040000 		.4byte	.LASF117
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 20
+
+
+ 923 0602 01       		.byte	0x1
+ 924 0603 58       		.byte	0x58
+ 925 0604 03010000 		.4byte	0x103
+ 926 0608 C8000000 		.4byte	.LLST5
+ 927 060c 19       		.uleb128 0x19
+ 928 060d 8D070000 		.4byte	.LASF118
+ 929 0611 01       		.byte	0x1
+ 930 0612 5C       		.byte	0x5c
+ 931 0613 1B010000 		.4byte	0x11b
+ 932 0617 E8000000 		.4byte	.LLST6
+ 933 061b 19       		.uleb128 0x19
+ 934 061c D6050000 		.4byte	.LASF119
+ 935 0620 01       		.byte	0x1
+ 936 0621 5D       		.byte	0x5d
+ 937 0622 1B010000 		.4byte	0x11b
+ 938 0626 FB000000 		.4byte	.LLST7
+ 939 062a 1B       		.uleb128 0x1b
+ 940 062b 0C000000 		.4byte	.LVL13
+ 941 062f A6060000 		.4byte	0x6a6
+ 942 0633 1B       		.uleb128 0x1b
+ 943 0634 3C000000 		.4byte	.LVL18
+ 944 0638 B1060000 		.4byte	0x6b1
+ 945 063c 00       		.byte	0
+ 946 063d 1C       		.uleb128 0x1c
+ 947 063e DE000000 		.4byte	.LASF120
+ 948 0642 09       		.byte	0x9
+ 949 0643 EA07     		.2byte	0x7ea
+ 950 0645 49060000 		.4byte	0x649
+ 951 0649 05       		.uleb128 0x5
+ 952 064a AD000000 		.4byte	0xad
+ 953 064e 1D       		.uleb128 0x1d
+ 954 064f 06020000 		.4byte	.LASF121
+ 955 0653 0A       		.byte	0xa
+ 956 0654 87       		.byte	0x87
+ 957 0655 1D020000 		.4byte	0x21d
+ 958 0659 1C       		.uleb128 0x1c
+ 959 065a 79060000 		.4byte	.LASF122
+ 960 065e 08       		.byte	0x8
+ 961 065f 6001     		.2byte	0x160
+ 962 0661 B8000000 		.4byte	0xb8
+ 963 0665 10       		.uleb128 0x10
+ 964 0666 75060000 		.4byte	0x675
+ 965 066a 75060000 		.4byte	0x675
+ 966 066e 11       		.uleb128 0x11
+ 967 066f C3000000 		.4byte	0xc3
+ 968 0673 00       		.byte	0
+ 969 0674 00       		.byte	0
+ 970 0675 16       		.uleb128 0x16
+ 971 0676 74050000 		.4byte	0x574
+ 972 067a 1C       		.uleb128 0x1c
+ 973 067b 65030000 		.4byte	.LASF123
+ 974 067f 08       		.byte	0x8
+ 975 0680 6401     		.2byte	0x164
+ 976 0682 86060000 		.4byte	0x686
+ 977 0686 16       		.uleb128 0x16
+ 978 0687 65060000 		.4byte	0x665
+ 979 068b 1D       		.uleb128 0x1d
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 21
+
+
+ 980 068c 80010000 		.4byte	.LASF124
+ 981 0690 0B       		.byte	0xb
+ 982 0691 30       		.byte	0x30
+ 983 0692 93030000 		.4byte	0x393
+ 984 0696 1D       		.uleb128 0x1d
+ 985 0697 92050000 		.4byte	.LASF125
+ 986 069b 0B       		.byte	0xb
+ 987 069c 33       		.byte	0x33
+ 988 069d A1060000 		.4byte	0x6a1
+ 989 06a1 16       		.uleb128 0x16
+ 990 06a2 18050000 		.4byte	0x518
+ 991 06a6 1E       		.uleb128 0x1e
+ 992 06a7 6C6F6700 		.ascii	"log\000"
+ 993 06ab 6C6F6700 		.ascii	"log\000"
+ 994 06af 0C       		.byte	0xc
+ 995 06b0 84       		.byte	0x84
+ 996 06b1 1E       		.uleb128 0x1e
+ 997 06b2 706F7700 		.ascii	"pow\000"
+ 998 06b6 706F7700 		.ascii	"pow\000"
+ 999 06ba 0C       		.byte	0xc
+ 1000 06bb 86       		.byte	0x86
+ 1001 06bc 00       		.byte	0
+ 1002              		.section	.debug_abbrev,"",%progbits
+ 1003              	.Ldebug_abbrev0:
+ 1004 0000 01       		.uleb128 0x1
+ 1005 0001 11       		.uleb128 0x11
+ 1006 0002 01       		.byte	0x1
+ 1007 0003 25       		.uleb128 0x25
+ 1008 0004 0E       		.uleb128 0xe
+ 1009 0005 13       		.uleb128 0x13
+ 1010 0006 0B       		.uleb128 0xb
+ 1011 0007 03       		.uleb128 0x3
+ 1012 0008 0E       		.uleb128 0xe
+ 1013 0009 1B       		.uleb128 0x1b
+ 1014 000a 0E       		.uleb128 0xe
+ 1015 000b 55       		.uleb128 0x55
+ 1016 000c 17       		.uleb128 0x17
+ 1017 000d 11       		.uleb128 0x11
+ 1018 000e 01       		.uleb128 0x1
+ 1019 000f 10       		.uleb128 0x10
+ 1020 0010 17       		.uleb128 0x17
+ 1021 0011 00       		.byte	0
+ 1022 0012 00       		.byte	0
+ 1023 0013 02       		.uleb128 0x2
+ 1024 0014 24       		.uleb128 0x24
+ 1025 0015 00       		.byte	0
+ 1026 0016 0B       		.uleb128 0xb
+ 1027 0017 0B       		.uleb128 0xb
+ 1028 0018 3E       		.uleb128 0x3e
+ 1029 0019 0B       		.uleb128 0xb
+ 1030 001a 03       		.uleb128 0x3
+ 1031 001b 0E       		.uleb128 0xe
+ 1032 001c 00       		.byte	0
+ 1033 001d 00       		.byte	0
+ 1034 001e 03       		.uleb128 0x3
+ 1035 001f 16       		.uleb128 0x16
+ 1036 0020 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 22
+
+
+ 1037 0021 03       		.uleb128 0x3
+ 1038 0022 0E       		.uleb128 0xe
+ 1039 0023 3A       		.uleb128 0x3a
+ 1040 0024 0B       		.uleb128 0xb
+ 1041 0025 3B       		.uleb128 0x3b
+ 1042 0026 0B       		.uleb128 0xb
+ 1043 0027 49       		.uleb128 0x49
+ 1044 0028 13       		.uleb128 0x13
+ 1045 0029 00       		.byte	0
+ 1046 002a 00       		.byte	0
+ 1047 002b 04       		.uleb128 0x4
+ 1048 002c 24       		.uleb128 0x24
+ 1049 002d 00       		.byte	0
+ 1050 002e 0B       		.uleb128 0xb
+ 1051 002f 0B       		.uleb128 0xb
+ 1052 0030 3E       		.uleb128 0x3e
+ 1053 0031 0B       		.uleb128 0xb
+ 1054 0032 03       		.uleb128 0x3
+ 1055 0033 08       		.uleb128 0x8
+ 1056 0034 00       		.byte	0
+ 1057 0035 00       		.byte	0
+ 1058 0036 05       		.uleb128 0x5
+ 1059 0037 35       		.uleb128 0x35
+ 1060 0038 00       		.byte	0
+ 1061 0039 49       		.uleb128 0x49
+ 1062 003a 13       		.uleb128 0x13
+ 1063 003b 00       		.byte	0
+ 1064 003c 00       		.byte	0
+ 1065 003d 06       		.uleb128 0x6
+ 1066 003e 16       		.uleb128 0x16
+ 1067 003f 00       		.byte	0
+ 1068 0040 03       		.uleb128 0x3
+ 1069 0041 0E       		.uleb128 0xe
+ 1070 0042 3A       		.uleb128 0x3a
+ 1071 0043 0B       		.uleb128 0xb
+ 1072 0044 3B       		.uleb128 0x3b
+ 1073 0045 05       		.uleb128 0x5
+ 1074 0046 49       		.uleb128 0x49
+ 1075 0047 13       		.uleb128 0x13
+ 1076 0048 00       		.byte	0
+ 1077 0049 00       		.byte	0
+ 1078 004a 07       		.uleb128 0x7
+ 1079 004b 0F       		.uleb128 0xf
+ 1080 004c 00       		.byte	0
+ 1081 004d 0B       		.uleb128 0xb
+ 1082 004e 0B       		.uleb128 0xb
+ 1083 004f 00       		.byte	0
+ 1084 0050 00       		.byte	0
+ 1085 0051 08       		.uleb128 0x8
+ 1086 0052 0F       		.uleb128 0xf
+ 1087 0053 00       		.byte	0
+ 1088 0054 0B       		.uleb128 0xb
+ 1089 0055 0B       		.uleb128 0xb
+ 1090 0056 49       		.uleb128 0x49
+ 1091 0057 13       		.uleb128 0x13
+ 1092 0058 00       		.byte	0
+ 1093 0059 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 23
+
+
+ 1094 005a 09       		.uleb128 0x9
+ 1095 005b 15       		.uleb128 0x15
+ 1096 005c 01       		.byte	0x1
+ 1097 005d 27       		.uleb128 0x27
+ 1098 005e 19       		.uleb128 0x19
+ 1099 005f 01       		.uleb128 0x1
+ 1100 0060 13       		.uleb128 0x13
+ 1101 0061 00       		.byte	0
+ 1102 0062 00       		.byte	0
+ 1103 0063 0A       		.uleb128 0xa
+ 1104 0064 05       		.uleb128 0x5
+ 1105 0065 00       		.byte	0
+ 1106 0066 49       		.uleb128 0x49
+ 1107 0067 13       		.uleb128 0x13
+ 1108 0068 00       		.byte	0
+ 1109 0069 00       		.byte	0
+ 1110 006a 0B       		.uleb128 0xb
+ 1111 006b 13       		.uleb128 0x13
+ 1112 006c 01       		.byte	0x1
+ 1113 006d 03       		.uleb128 0x3
+ 1114 006e 0E       		.uleb128 0xe
+ 1115 006f 0B       		.uleb128 0xb
+ 1116 0070 0B       		.uleb128 0xb
+ 1117 0071 3A       		.uleb128 0x3a
+ 1118 0072 0B       		.uleb128 0xb
+ 1119 0073 3B       		.uleb128 0x3b
+ 1120 0074 05       		.uleb128 0x5
+ 1121 0075 01       		.uleb128 0x1
+ 1122 0076 13       		.uleb128 0x13
+ 1123 0077 00       		.byte	0
+ 1124 0078 00       		.byte	0
+ 1125 0079 0C       		.uleb128 0xc
+ 1126 007a 0D       		.uleb128 0xd
+ 1127 007b 00       		.byte	0
+ 1128 007c 03       		.uleb128 0x3
+ 1129 007d 0E       		.uleb128 0xe
+ 1130 007e 3A       		.uleb128 0x3a
+ 1131 007f 0B       		.uleb128 0xb
+ 1132 0080 3B       		.uleb128 0x3b
+ 1133 0081 05       		.uleb128 0x5
+ 1134 0082 49       		.uleb128 0x49
+ 1135 0083 13       		.uleb128 0x13
+ 1136 0084 38       		.uleb128 0x38
+ 1137 0085 0B       		.uleb128 0xb
+ 1138 0086 00       		.byte	0
+ 1139 0087 00       		.byte	0
+ 1140 0088 0D       		.uleb128 0xd
+ 1141 0089 04       		.uleb128 0x4
+ 1142 008a 01       		.byte	0x1
+ 1143 008b 0B       		.uleb128 0xb
+ 1144 008c 0B       		.uleb128 0xb
+ 1145 008d 49       		.uleb128 0x49
+ 1146 008e 13       		.uleb128 0x13
+ 1147 008f 3A       		.uleb128 0x3a
+ 1148 0090 0B       		.uleb128 0xb
+ 1149 0091 3B       		.uleb128 0x3b
+ 1150 0092 05       		.uleb128 0x5
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 24
+
+
+ 1151 0093 01       		.uleb128 0x1
+ 1152 0094 13       		.uleb128 0x13
+ 1153 0095 00       		.byte	0
+ 1154 0096 00       		.byte	0
+ 1155 0097 0E       		.uleb128 0xe
+ 1156 0098 28       		.uleb128 0x28
+ 1157 0099 00       		.byte	0
+ 1158 009a 03       		.uleb128 0x3
+ 1159 009b 0E       		.uleb128 0xe
+ 1160 009c 1C       		.uleb128 0x1c
+ 1161 009d 0B       		.uleb128 0xb
+ 1162 009e 00       		.byte	0
+ 1163 009f 00       		.byte	0
+ 1164 00a0 0F       		.uleb128 0xf
+ 1165 00a1 13       		.uleb128 0x13
+ 1166 00a2 01       		.byte	0x1
+ 1167 00a3 0B       		.uleb128 0xb
+ 1168 00a4 0B       		.uleb128 0xb
+ 1169 00a5 3A       		.uleb128 0x3a
+ 1170 00a6 0B       		.uleb128 0xb
+ 1171 00a7 3B       		.uleb128 0x3b
+ 1172 00a8 05       		.uleb128 0x5
+ 1173 00a9 01       		.uleb128 0x1
+ 1174 00aa 13       		.uleb128 0x13
+ 1175 00ab 00       		.byte	0
+ 1176 00ac 00       		.byte	0
+ 1177 00ad 10       		.uleb128 0x10
+ 1178 00ae 01       		.uleb128 0x1
+ 1179 00af 01       		.byte	0x1
+ 1180 00b0 49       		.uleb128 0x49
+ 1181 00b1 13       		.uleb128 0x13
+ 1182 00b2 01       		.uleb128 0x1
+ 1183 00b3 13       		.uleb128 0x13
+ 1184 00b4 00       		.byte	0
+ 1185 00b5 00       		.byte	0
+ 1186 00b6 11       		.uleb128 0x11
+ 1187 00b7 21       		.uleb128 0x21
+ 1188 00b8 00       		.byte	0
+ 1189 00b9 49       		.uleb128 0x49
+ 1190 00ba 13       		.uleb128 0x13
+ 1191 00bb 2F       		.uleb128 0x2f
+ 1192 00bc 0B       		.uleb128 0xb
+ 1193 00bd 00       		.byte	0
+ 1194 00be 00       		.byte	0
+ 1195 00bf 12       		.uleb128 0x12
+ 1196 00c0 28       		.uleb128 0x28
+ 1197 00c1 00       		.byte	0
+ 1198 00c2 03       		.uleb128 0x3
+ 1199 00c3 0E       		.uleb128 0xe
+ 1200 00c4 1C       		.uleb128 0x1c
+ 1201 00c5 06       		.uleb128 0x6
+ 1202 00c6 00       		.byte	0
+ 1203 00c7 00       		.byte	0
+ 1204 00c8 13       		.uleb128 0x13
+ 1205 00c9 28       		.uleb128 0x28
+ 1206 00ca 00       		.byte	0
+ 1207 00cb 03       		.uleb128 0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 25
+
+
+ 1208 00cc 0E       		.uleb128 0xe
+ 1209 00cd 1C       		.uleb128 0x1c
+ 1210 00ce 05       		.uleb128 0x5
+ 1211 00cf 00       		.byte	0
+ 1212 00d0 00       		.byte	0
+ 1213 00d1 14       		.uleb128 0x14
+ 1214 00d2 13       		.uleb128 0x13
+ 1215 00d3 01       		.byte	0x1
+ 1216 00d4 0B       		.uleb128 0xb
+ 1217 00d5 0B       		.uleb128 0xb
+ 1218 00d6 3A       		.uleb128 0x3a
+ 1219 00d7 0B       		.uleb128 0xb
+ 1220 00d8 3B       		.uleb128 0x3b
+ 1221 00d9 0B       		.uleb128 0xb
+ 1222 00da 01       		.uleb128 0x1
+ 1223 00db 13       		.uleb128 0x13
+ 1224 00dc 00       		.byte	0
+ 1225 00dd 00       		.byte	0
+ 1226 00de 15       		.uleb128 0x15
+ 1227 00df 0D       		.uleb128 0xd
+ 1228 00e0 00       		.byte	0
+ 1229 00e1 03       		.uleb128 0x3
+ 1230 00e2 0E       		.uleb128 0xe
+ 1231 00e3 3A       		.uleb128 0x3a
+ 1232 00e4 0B       		.uleb128 0xb
+ 1233 00e5 3B       		.uleb128 0x3b
+ 1234 00e6 0B       		.uleb128 0xb
+ 1235 00e7 49       		.uleb128 0x49
+ 1236 00e8 13       		.uleb128 0x13
+ 1237 00e9 38       		.uleb128 0x38
+ 1238 00ea 0B       		.uleb128 0xb
+ 1239 00eb 00       		.byte	0
+ 1240 00ec 00       		.byte	0
+ 1241 00ed 16       		.uleb128 0x16
+ 1242 00ee 26       		.uleb128 0x26
+ 1243 00ef 00       		.byte	0
+ 1244 00f0 49       		.uleb128 0x49
+ 1245 00f1 13       		.uleb128 0x13
+ 1246 00f2 00       		.byte	0
+ 1247 00f3 00       		.byte	0
+ 1248 00f4 17       		.uleb128 0x17
+ 1249 00f5 2E       		.uleb128 0x2e
+ 1250 00f6 01       		.byte	0x1
+ 1251 00f7 3F       		.uleb128 0x3f
+ 1252 00f8 19       		.uleb128 0x19
+ 1253 00f9 03       		.uleb128 0x3
+ 1254 00fa 0E       		.uleb128 0xe
+ 1255 00fb 3A       		.uleb128 0x3a
+ 1256 00fc 0B       		.uleb128 0xb
+ 1257 00fd 3B       		.uleb128 0x3b
+ 1258 00fe 0B       		.uleb128 0xb
+ 1259 00ff 27       		.uleb128 0x27
+ 1260 0100 19       		.uleb128 0x19
+ 1261 0101 49       		.uleb128 0x49
+ 1262 0102 13       		.uleb128 0x13
+ 1263 0103 11       		.uleb128 0x11
+ 1264 0104 01       		.uleb128 0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 26
+
+
+ 1265 0105 12       		.uleb128 0x12
+ 1266 0106 06       		.uleb128 0x6
+ 1267 0107 40       		.uleb128 0x40
+ 1268 0108 18       		.uleb128 0x18
+ 1269 0109 9742     		.uleb128 0x2117
+ 1270 010b 19       		.uleb128 0x19
+ 1271 010c 01       		.uleb128 0x1
+ 1272 010d 13       		.uleb128 0x13
+ 1273 010e 00       		.byte	0
+ 1274 010f 00       		.byte	0
+ 1275 0110 18       		.uleb128 0x18
+ 1276 0111 05       		.uleb128 0x5
+ 1277 0112 00       		.byte	0
+ 1278 0113 03       		.uleb128 0x3
+ 1279 0114 0E       		.uleb128 0xe
+ 1280 0115 3A       		.uleb128 0x3a
+ 1281 0116 0B       		.uleb128 0xb
+ 1282 0117 3B       		.uleb128 0x3b
+ 1283 0118 0B       		.uleb128 0xb
+ 1284 0119 49       		.uleb128 0x49
+ 1285 011a 13       		.uleb128 0x13
+ 1286 011b 02       		.uleb128 0x2
+ 1287 011c 17       		.uleb128 0x17
+ 1288 011d 00       		.byte	0
+ 1289 011e 00       		.byte	0
+ 1290 011f 19       		.uleb128 0x19
+ 1291 0120 34       		.uleb128 0x34
+ 1292 0121 00       		.byte	0
+ 1293 0122 03       		.uleb128 0x3
+ 1294 0123 0E       		.uleb128 0xe
+ 1295 0124 3A       		.uleb128 0x3a
+ 1296 0125 0B       		.uleb128 0xb
+ 1297 0126 3B       		.uleb128 0x3b
+ 1298 0127 0B       		.uleb128 0xb
+ 1299 0128 49       		.uleb128 0x49
+ 1300 0129 13       		.uleb128 0x13
+ 1301 012a 02       		.uleb128 0x2
+ 1302 012b 17       		.uleb128 0x17
+ 1303 012c 00       		.byte	0
+ 1304 012d 00       		.byte	0
+ 1305 012e 1A       		.uleb128 0x1a
+ 1306 012f 2E       		.uleb128 0x2e
+ 1307 0130 01       		.byte	0x1
+ 1308 0131 3F       		.uleb128 0x3f
+ 1309 0132 19       		.uleb128 0x19
+ 1310 0133 03       		.uleb128 0x3
+ 1311 0134 0E       		.uleb128 0xe
+ 1312 0135 3A       		.uleb128 0x3a
+ 1313 0136 0B       		.uleb128 0xb
+ 1314 0137 3B       		.uleb128 0x3b
+ 1315 0138 0B       		.uleb128 0xb
+ 1316 0139 27       		.uleb128 0x27
+ 1317 013a 19       		.uleb128 0x19
+ 1318 013b 49       		.uleb128 0x49
+ 1319 013c 13       		.uleb128 0x13
+ 1320 013d 11       		.uleb128 0x11
+ 1321 013e 01       		.uleb128 0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 27
+
+
+ 1322 013f 12       		.uleb128 0x12
+ 1323 0140 06       		.uleb128 0x6
+ 1324 0141 40       		.uleb128 0x40
+ 1325 0142 18       		.uleb128 0x18
+ 1326 0143 9642     		.uleb128 0x2116
+ 1327 0145 19       		.uleb128 0x19
+ 1328 0146 01       		.uleb128 0x1
+ 1329 0147 13       		.uleb128 0x13
+ 1330 0148 00       		.byte	0
+ 1331 0149 00       		.byte	0
+ 1332 014a 1B       		.uleb128 0x1b
+ 1333 014b 898201   		.uleb128 0x4109
+ 1334 014e 00       		.byte	0
+ 1335 014f 11       		.uleb128 0x11
+ 1336 0150 01       		.uleb128 0x1
+ 1337 0151 31       		.uleb128 0x31
+ 1338 0152 13       		.uleb128 0x13
+ 1339 0153 00       		.byte	0
+ 1340 0154 00       		.byte	0
+ 1341 0155 1C       		.uleb128 0x1c
+ 1342 0156 34       		.uleb128 0x34
+ 1343 0157 00       		.byte	0
+ 1344 0158 03       		.uleb128 0x3
+ 1345 0159 0E       		.uleb128 0xe
+ 1346 015a 3A       		.uleb128 0x3a
+ 1347 015b 0B       		.uleb128 0xb
+ 1348 015c 3B       		.uleb128 0x3b
+ 1349 015d 05       		.uleb128 0x5
+ 1350 015e 49       		.uleb128 0x49
+ 1351 015f 13       		.uleb128 0x13
+ 1352 0160 3F       		.uleb128 0x3f
+ 1353 0161 19       		.uleb128 0x19
+ 1354 0162 3C       		.uleb128 0x3c
+ 1355 0163 19       		.uleb128 0x19
+ 1356 0164 00       		.byte	0
+ 1357 0165 00       		.byte	0
+ 1358 0166 1D       		.uleb128 0x1d
+ 1359 0167 34       		.uleb128 0x34
+ 1360 0168 00       		.byte	0
+ 1361 0169 03       		.uleb128 0x3
+ 1362 016a 0E       		.uleb128 0xe
+ 1363 016b 3A       		.uleb128 0x3a
+ 1364 016c 0B       		.uleb128 0xb
+ 1365 016d 3B       		.uleb128 0x3b
+ 1366 016e 0B       		.uleb128 0xb
+ 1367 016f 49       		.uleb128 0x49
+ 1368 0170 13       		.uleb128 0x13
+ 1369 0171 3F       		.uleb128 0x3f
+ 1370 0172 19       		.uleb128 0x19
+ 1371 0173 3C       		.uleb128 0x3c
+ 1372 0174 19       		.uleb128 0x19
+ 1373 0175 00       		.byte	0
+ 1374 0176 00       		.byte	0
+ 1375 0177 1E       		.uleb128 0x1e
+ 1376 0178 2E       		.uleb128 0x2e
+ 1377 0179 00       		.byte	0
+ 1378 017a 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 28
+
+
+ 1379 017b 19       		.uleb128 0x19
+ 1380 017c 3C       		.uleb128 0x3c
+ 1381 017d 19       		.uleb128 0x19
+ 1382 017e 6E       		.uleb128 0x6e
+ 1383 017f 08       		.uleb128 0x8
+ 1384 0180 03       		.uleb128 0x3
+ 1385 0181 08       		.uleb128 0x8
+ 1386 0182 3A       		.uleb128 0x3a
+ 1387 0183 0B       		.uleb128 0xb
+ 1388 0184 3B       		.uleb128 0x3b
+ 1389 0185 0B       		.uleb128 0xb
+ 1390 0186 00       		.byte	0
+ 1391 0187 00       		.byte	0
+ 1392 0188 00       		.byte	0
+ 1393              		.section	.debug_loc,"",%progbits
+ 1394              	.Ldebug_loc0:
+ 1395              	.LLST0:
+ 1396 0000 00000000 		.4byte	.LVL0
+ 1397 0004 0A000000 		.4byte	.LVL2
+ 1398 0008 0100     		.2byte	0x1
+ 1399 000a 50       		.byte	0x50
+ 1400 000b 0A000000 		.4byte	.LVL2
+ 1401 000f 24000000 		.4byte	.LFE535
+ 1402 0013 0400     		.2byte	0x4
+ 1403 0015 F3       		.byte	0xf3
+ 1404 0016 01       		.uleb128 0x1
+ 1405 0017 50       		.byte	0x50
+ 1406 0018 9F       		.byte	0x9f
+ 1407 0019 00000000 		.4byte	0
+ 1408 001d 00000000 		.4byte	0
+ 1409              	.LLST1:
+ 1410 0021 00000000 		.4byte	.LVL0
+ 1411 0025 08000000 		.4byte	.LVL1
+ 1412 0029 0100     		.2byte	0x1
+ 1413 002b 51       		.byte	0x51
+ 1414 002c 08000000 		.4byte	.LVL1
+ 1415 0030 24000000 		.4byte	.LFE535
+ 1416 0034 0400     		.2byte	0x4
+ 1417 0036 F3       		.byte	0xf3
+ 1418 0037 01       		.uleb128 0x1
+ 1419 0038 51       		.byte	0x51
+ 1420 0039 9F       		.byte	0x9f
+ 1421 003a 00000000 		.4byte	0
+ 1422 003e 00000000 		.4byte	0
+ 1423              	.LLST2:
+ 1424 0042 08000000 		.4byte	.LVL1
+ 1425 0046 1E000000 		.4byte	.LVL9
+ 1426 004a 0100     		.2byte	0x1
+ 1427 004c 51       		.byte	0x51
+ 1428 004d 1E000000 		.4byte	.LVL9
+ 1429 0051 22000000 		.4byte	.LVL10
+ 1430 0055 0600     		.2byte	0x6
+ 1431 0057 71       		.byte	0x71
+ 1432 0058 00       		.sleb128 0
+ 1433 0059 70       		.byte	0x70
+ 1434 005a 00       		.sleb128 0
+ 1435 005b 1B       		.byte	0x1b
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 29
+
+
+ 1436 005c 9F       		.byte	0x9f
+ 1437 005d 22000000 		.4byte	.LVL10
+ 1438 0061 24000000 		.4byte	.LFE535
+ 1439 0065 0100     		.2byte	0x1
+ 1440 0067 50       		.byte	0x50
+ 1441 0068 00000000 		.4byte	0
+ 1442 006c 00000000 		.4byte	0
+ 1443              	.LLST3:
+ 1444 0070 0E000000 		.4byte	.LVL3
+ 1445 0074 14000000 		.4byte	.LVL5
+ 1446 0078 0100     		.2byte	0x1
+ 1447 007a 53       		.byte	0x53
+ 1448 007b 14000000 		.4byte	.LVL5
+ 1449 007f 16000000 		.4byte	.LVL6
+ 1450 0083 0400     		.2byte	0x4
+ 1451 0085 73       		.byte	0x73
+ 1452 0086 00       		.sleb128 0
+ 1453 0087 1F       		.byte	0x1f
+ 1454 0088 9F       		.byte	0x9f
+ 1455 0089 16000000 		.4byte	.LVL6
+ 1456 008d 18000000 		.4byte	.LVL7
+ 1457 0091 0100     		.2byte	0x1
+ 1458 0093 53       		.byte	0x53
+ 1459 0094 1C000000 		.4byte	.LVL8
+ 1460 0098 24000000 		.4byte	.LFE535
+ 1461 009c 0100     		.2byte	0x1
+ 1462 009e 53       		.byte	0x53
+ 1463 009f 00000000 		.4byte	0
+ 1464 00a3 00000000 		.4byte	0
+ 1465              	.LLST4:
+ 1466 00a7 00000000 		.4byte	.LVL11
+ 1467 00ab 07000000 		.4byte	.LVL12-1
+ 1468 00af 0100     		.2byte	0x1
+ 1469 00b1 50       		.byte	0x50
+ 1470 00b2 07000000 		.4byte	.LVL12-1
+ 1471 00b6 C8000000 		.4byte	.LFE536
+ 1472 00ba 0400     		.2byte	0x4
+ 1473 00bc F3       		.byte	0xf3
+ 1474 00bd 01       		.uleb128 0x1
+ 1475 00be 50       		.byte	0x50
+ 1476 00bf 9F       		.byte	0x9f
+ 1477 00c0 00000000 		.4byte	0
+ 1478 00c4 00000000 		.4byte	0
+ 1479              	.LLST5:
+ 1480 00c8 90000000 		.4byte	.LVL28
+ 1481 00cc 98000000 		.4byte	.LVL29
+ 1482 00d0 0200     		.2byte	0x2
+ 1483 00d2 91       		.byte	0x91
+ 1484 00d3 64       		.sleb128 -28
+ 1485 00d4 98000000 		.4byte	.LVL29
+ 1486 00d8 C8000000 		.4byte	.LFE536
+ 1487 00dc 0200     		.2byte	0x2
+ 1488 00de 7D       		.byte	0x7d
+ 1489 00df 64       		.sleb128 -28
+ 1490 00e0 00000000 		.4byte	0
+ 1491 00e4 00000000 		.4byte	0
+ 1492              	.LLST6:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 30
+
+
+ 1493 00e8 56000000 		.4byte	.LVL21
+ 1494 00ec 59000000 		.4byte	.LVL22-1
+ 1495 00f0 0100     		.2byte	0x1
+ 1496 00f2 50       		.byte	0x50
+ 1497 00f3 00000000 		.4byte	0
+ 1498 00f7 00000000 		.4byte	0
+ 1499              	.LLST7:
+ 1500 00fb 10000000 		.4byte	.LVL14
+ 1501 00ff 13000000 		.4byte	.LVL15-1
+ 1502 0103 0100     		.2byte	0x1
+ 1503 0105 50       		.byte	0x50
+ 1504 0106 00000000 		.4byte	0
+ 1505 010a 00000000 		.4byte	0
+ 1506              		.section	.debug_aranges,"",%progbits
+ 1507 0000 24000000 		.4byte	0x24
+ 1508 0004 0200     		.2byte	0x2
+ 1509 0006 00000000 		.4byte	.Ldebug_info0
+ 1510 000a 04       		.byte	0x4
+ 1511 000b 00       		.byte	0
+ 1512 000c 0000     		.2byte	0
+ 1513 000e 0000     		.2byte	0
+ 1514 0010 00000000 		.4byte	.LFB535
+ 1515 0014 24000000 		.4byte	.LFE535-.LFB535
+ 1516 0018 00000000 		.4byte	.LFB536
+ 1517 001c C8000000 		.4byte	.LFE536-.LFB536
+ 1518 0020 00000000 		.4byte	0
+ 1519 0024 00000000 		.4byte	0
+ 1520              		.section	.debug_ranges,"",%progbits
+ 1521              	.Ldebug_ranges0:
+ 1522 0000 00000000 		.4byte	.LFB535
+ 1523 0004 24000000 		.4byte	.LFE535
+ 1524 0008 00000000 		.4byte	.LFB536
+ 1525 000c C8000000 		.4byte	.LFE536
+ 1526 0010 00000000 		.4byte	0
+ 1527 0014 00000000 		.4byte	0
+ 1528              		.section	.debug_line,"",%progbits
+ 1529              	.Ldebug_line0:
+ 1530 0000 3F030000 		.section	.debug_str,"MS",%progbits,1
+ 1530      02000703 
+ 1530      00000201 
+ 1530      FB0E0D00 
+ 1530      01010101 
+ 1531              	.LASF22:
+ 1532 0000 75696E74 		.ascii	"uint16\000"
+ 1532      313600
+ 1533              	.LASF37:
+ 1534 0007 72784275 		.ascii	"rxBufSize\000"
+ 1534      6653697A 
+ 1534      6500
+ 1535              	.LASF96:
+ 1536 0011 6F61506F 		.ascii	"oaPower\000"
+ 1536      77657200 
+ 1537              	.LASF59:
+ 1538 0019 73617449 		.ascii	"satIntrMask\000"
+ 1538      6E74724D 
+ 1538      61736B00 
+ 1539              	.LASF67:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 31
+
+
+ 1540 0025 43595F43 		.ascii	"CY_CTB_DEEPSLEEP_ENABLE\000"
+ 1540      54425F44 
+ 1540      45455053 
+ 1540      4C454550 
+ 1540      5F454E41 
+ 1541              	.LASF86:
+ 1542 003d 43595F43 		.ascii	"CY_CTB_COMP_DSI_TRIGGER_OUT_PULSE\000"
+ 1542      54425F43 
+ 1542      4F4D505F 
+ 1542      4453495F 
+ 1542      54524947 
+ 1543              	.LASF101:
+ 1544 005f 6F61436F 		.ascii	"oaCompBypass\000"
+ 1544      6D704279 
+ 1544      70617373 
+ 1544      00
+ 1545              	.LASF90:
+ 1546 006c 43595F43 		.ascii	"CY_CTB_COMP_BYPASS_NO_SYNC\000"
+ 1546      54425F43 
+ 1546      4F4D505F 
+ 1546      42595041 
+ 1546      53535F4E 
+ 1547              	.LASF69:
+ 1548 0087 43595F43 		.ascii	"CY_CTB_POWER_OFF\000"
+ 1548      54425F50 
+ 1548      4F574552 
+ 1548      5F4F4646 
+ 1548      00
+ 1549              	.LASF116:
+ 1550 0098 54686572 		.ascii	"Thermistor_GetTemperature\000"
+ 1550      6D697374 
+ 1550      6F725F47 
+ 1550      65745465 
+ 1550      6D706572 
+ 1551              	.LASF11:
+ 1552 00b2 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1552      206C6F6E 
+ 1552      6720756E 
+ 1552      7369676E 
+ 1552      65642069 
+ 1553              	.LASF32:
+ 1554 00c9 72785269 		.ascii	"rxRingBuf\000"
+ 1554      6E674275 
+ 1554      6600
+ 1555              	.LASF99:
+ 1556 00d3 6F61436F 		.ascii	"oaCompEdge\000"
+ 1556      6D704564 
+ 1556      676500
+ 1557              	.LASF120:
+ 1558 00de 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1558      52784275 
+ 1558      66666572 
+ 1558      00
+ 1559              	.LASF70:
+ 1560 00eb 43595F43 		.ascii	"CY_CTB_POWER_LOW\000"
+ 1560      54425F50 
+ 1560      4F574552 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 32
+
+
+ 1560      5F4C4F57 
+ 1560      00
+ 1561              	.LASF13:
+ 1562 00fc 696E7431 		.ascii	"int16_t\000"
+ 1562      365F7400 
+ 1563              	.LASF65:
+ 1564 0104 63795F73 		.ascii	"cy_stc_sar_config_t\000"
+ 1564      74635F73 
+ 1564      61725F63 
+ 1564      6F6E6669 
+ 1564      675F7400 
+ 1565              	.LASF10:
+ 1566 0118 6C6F6E67 		.ascii	"long long int\000"
+ 1566      206C6F6E 
+ 1566      6720696E 
+ 1566      7400
+ 1567              	.LASF1:
+ 1568 0126 7369676E 		.ascii	"signed char\000"
+ 1568      65642063 
+ 1568      68617200 
+ 1569              	.LASF44:
+ 1570 0132 63795F73 		.ascii	"cy_stc_scb_uart_context_t\000"
+ 1570      74635F73 
+ 1570      63625F75 
+ 1570      6172745F 
+ 1570      636F6E74 
+ 1571              	.LASF49:
+ 1572 014c 63795F65 		.ascii	"cy_en_sar_range_detect_condition_t\000"
+ 1572      6E5F7361 
+ 1572      725F7261 
+ 1572      6E67655F 
+ 1572      64657465 
+ 1573              	.LASF109:
+ 1574 016f 636C6B44 		.ascii	"clkDivider\000"
+ 1574      69766964 
+ 1574      657200
+ 1575              	.LASF25:
+ 1576 017a 696E7433 		.ascii	"int32\000"
+ 1576      3200
+ 1577              	.LASF124:
+ 1578 0180 4F70616D 		.ascii	"Opamp_1_opampPower\000"
+ 1578      705F315F 
+ 1578      6F70616D 
+ 1578      70506F77 
+ 1578      657200
+ 1579              	.LASF79:
+ 1580 0193 43595F43 		.ascii	"CY_CTB_PUMP_ENABLE\000"
+ 1580      54425F50 
+ 1580      554D505F 
+ 1580      454E4142 
+ 1580      4C4500
+ 1581              	.LASF115:
+ 1582 01a6 54686572 		.ascii	"Thermistor_GetResistance\000"
+ 1582      6D697374 
+ 1582      6F725F47 
+ 1582      65745265 
+ 1582      73697374 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 33
+
+
+ 1583              	.LASF45:
+ 1584 01bf 43595F53 		.ascii	"CY_SAR_RANGE_COND_BELOW\000"
+ 1584      41525F52 
+ 1584      414E4745 
+ 1584      5F434F4E 
+ 1584      445F4245 
+ 1585              	.LASF71:
+ 1586 01d7 43595F43 		.ascii	"CY_CTB_POWER_MEDIUM\000"
+ 1586      54425F50 
+ 1586      4F574552 
+ 1586      5F4D4544 
+ 1586      49554D00 
+ 1587              	.LASF73:
+ 1588 01eb 63795F65 		.ascii	"cy_en_ctb_power_t\000"
+ 1588      6E5F6374 
+ 1588      625F706F 
+ 1588      7765725F 
+ 1588      7400
+ 1589              	.LASF7:
+ 1590 01fd 6C6F6E67 		.ascii	"long int\000"
+ 1590      20696E74 
+ 1590      00
+ 1591              	.LASF121:
+ 1592 0206 55415254 		.ascii	"UART_1_context\000"
+ 1592      5F315F63 
+ 1592      6F6E7465 
+ 1592      787400
+ 1593              	.LASF92:
+ 1594 0215 43595F43 		.ascii	"CY_CTB_COMP_HYST_DISABLE\000"
+ 1594      54425F43 
+ 1594      4F4D505F 
+ 1594      48595354 
+ 1594      5F444953 
+ 1595              	.LASF47:
+ 1596 022e 43595F53 		.ascii	"CY_SAR_RANGE_COND_ABOVE\000"
+ 1596      41525F52 
+ 1596      414E4745 
+ 1596      5F434F4E 
+ 1596      445F4142 
+ 1597              	.LASF14:
+ 1598 0246 75696E74 		.ascii	"uint16_t\000"
+ 1598      31365F74 
+ 1598      00
+ 1599              	.LASF21:
+ 1600 024f 646F7562 		.ascii	"double\000"
+ 1600      6C6500
+ 1601              	.LASF52:
+ 1602 0256 73616D70 		.ascii	"sampleTime01\000"
+ 1602      6C655469 
+ 1602      6D653031 
+ 1602      00
+ 1603              	.LASF81:
+ 1604 0263 43595F43 		.ascii	"CY_CTB_COMP_EDGE_DISABLE\000"
+ 1604      54425F43 
+ 1604      4F4D505F 
+ 1604      45444745 
+ 1604      5F444953 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 34
+
+
+ 1605              	.LASF23:
+ 1606 027c 75696E74 		.ascii	"uint32\000"
+ 1606      333200
+ 1607              	.LASF113:
+ 1608 0283 72657354 		.ascii	"resT\000"
+ 1608      00
+ 1609              	.LASF104:
+ 1610 0288 63795F73 		.ascii	"cy_stc_ctb_opamp_config_t\000"
+ 1610      74635F63 
+ 1610      74625F6F 
+ 1610      70616D70 
+ 1610      5F636F6E 
+ 1611              	.LASF128:
+ 1612 02a2 433A5C47 		.ascii	"C:\\Git\\PSoC6-101-Videos\\Projects_ScreenCapture\\"
+ 1612      69745C50 
+ 1612      536F4336 
+ 1612      2D313031 
+ 1612      2D566964 
+ 1613 02d1 50536F43 		.ascii	"PSoC 6_101\\2-6-ADC_OPAMP_VREF.cydsn\000"
+ 1613      20365F31 
+ 1613      30315C32 
+ 1613      2D362D41 
+ 1613      44435F4F 
+ 1614              	.LASF8:
+ 1615 02f5 5F5F7569 		.ascii	"__uint32_t\000"
+ 1615      6E743332 
+ 1615      5F7400
+ 1616              	.LASF107:
+ 1617 0300 6877436F 		.ascii	"hwConfigStc\000"
+ 1617      6E666967 
+ 1617      53746300 
+ 1618              	.LASF3:
+ 1619 030c 5F5F696E 		.ascii	"__int16_t\000"
+ 1619      7431365F 
+ 1619      7400
+ 1620              	.LASF38:
+ 1621 0316 72784275 		.ascii	"rxBufIdx\000"
+ 1621      66496478 
+ 1621      00
+ 1622              	.LASF50:
+ 1623 031f 6374726C 		.ascii	"ctrl\000"
+ 1623      00
+ 1624              	.LASF114:
+ 1625 0324 74656D70 		.ascii	"temp\000"
+ 1625      00
+ 1626              	.LASF40:
+ 1627 0329 74784275 		.ascii	"txBufSize\000"
+ 1627      6653697A 
+ 1627      6500
+ 1628              	.LASF12:
+ 1629 0333 756E7369 		.ascii	"unsigned int\000"
+ 1629      676E6564 
+ 1629      20696E74 
+ 1629      00
+ 1630              	.LASF9:
+ 1631 0340 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1631      20756E73 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 35
+
+
+ 1631      69676E65 
+ 1631      6420696E 
+ 1631      7400
+ 1632              	.LASF5:
+ 1633 0352 73686F72 		.ascii	"short unsigned int\000"
+ 1633      7420756E 
+ 1633      7369676E 
+ 1633      65642069 
+ 1633      6E7400
+ 1634              	.LASF123:
+ 1635 0365 4144435F 		.ascii	"ADC_1_allConfigs\000"
+ 1635      315F616C 
+ 1635      6C436F6E 
+ 1635      66696773 
+ 1635      00
+ 1636              	.LASF54:
+ 1637 0376 72616E67 		.ascii	"rangeThres\000"
+ 1637      65546872 
+ 1637      657300
+ 1638              	.LASF111:
+ 1639 0381 76526566 		.ascii	"vReference\000"
+ 1639      6572656E 
+ 1639      636500
+ 1640              	.LASF94:
+ 1641 038c 63795F65 		.ascii	"cy_en_ctb_comp_hyst_t\000"
+ 1641      6E5F6374 
+ 1641      625F636F 
+ 1641      6D705F68 
+ 1641      7973745F 
+ 1642              	.LASF42:
+ 1643 03a2 63624576 		.ascii	"cbEvents\000"
+ 1643      656E7473 
+ 1643      00
+ 1644              	.LASF39:
+ 1645 03ab 74784275 		.ascii	"txBuf\000"
+ 1645      6600
+ 1646              	.LASF106:
+ 1647 03b1 6E756D43 		.ascii	"numChannels\000"
+ 1647      68616E6E 
+ 1647      656C7300 
+ 1648              	.LASF57:
+ 1649 03bd 6368616E 		.ascii	"chanConfig\000"
+ 1649      436F6E66 
+ 1649      696700
+ 1650              	.LASF72:
+ 1651 03c8 43595F43 		.ascii	"CY_CTB_POWER_HIGH\000"
+ 1651      54425F50 
+ 1651      4F574552 
+ 1651      5F484947 
+ 1651      4800
+ 1652              	.LASF6:
+ 1653 03da 5F5F696E 		.ascii	"__int32_t\000"
+ 1653      7433325F 
+ 1653      7400
+ 1654              	.LASF34:
+ 1655 03e4 72785269 		.ascii	"rxRingBufHead\000"
+ 1655      6E674275 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 36
+
+
+ 1655      66486561 
+ 1655      6400
+ 1656              	.LASF26:
+ 1657 03f2 666C6F61 		.ascii	"float32\000"
+ 1657      74333200 
+ 1658              	.LASF15:
+ 1659 03fa 696E7433 		.ascii	"int32_t\000"
+ 1659      325F7400 
+ 1660              	.LASF17:
+ 1661 0402 73697A65 		.ascii	"sizetype\000"
+ 1661      74797065 
+ 1661      00
+ 1662              	.LASF53:
+ 1663 040b 73616D70 		.ascii	"sampleTime23\000"
+ 1663      6C655469 
+ 1663      6D653233 
+ 1663      00
+ 1664              	.LASF77:
+ 1665 0418 63795F65 		.ascii	"cy_en_ctb_mode_t\000"
+ 1665      6E5F6374 
+ 1665      625F6D6F 
+ 1665      64655F74 
+ 1665      00
+ 1666              	.LASF63:
+ 1667 0429 636F6E66 		.ascii	"configRouting\000"
+ 1667      6967526F 
+ 1667      7574696E 
+ 1667      6700
+ 1668              	.LASF31:
+ 1669 0437 72785374 		.ascii	"rxStatus\000"
+ 1669      61747573 
+ 1669      00
+ 1670              	.LASF117:
+ 1671 0440 74656D70 		.ascii	"tempTR\000"
+ 1671      545200
+ 1672              	.LASF85:
+ 1673 0447 63795F65 		.ascii	"cy_en_ctb_comp_edge_t\000"
+ 1673      6E5F6374 
+ 1673      625F636F 
+ 1673      6D705F65 
+ 1673      6467655F 
+ 1674              	.LASF60:
+ 1675 045d 72616E67 		.ascii	"rangeIntrMask\000"
+ 1675      65496E74 
+ 1675      724D6173 
+ 1675      6B00
+ 1676              	.LASF126:
+ 1677 046b 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1677      43313120 
+ 1677      352E342E 
+ 1677      31203230 
+ 1677      31363036 
+ 1678 049e 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m4 -mfloat-abi=s"
+ 1678      20726576 
+ 1678      6973696F 
+ 1678      6E203233 
+ 1678      37373135 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 37
+
+
+ 1679 04d1 6F667466 		.ascii	"oftfp -mfpu=fpv4-sp-d16 -mthumb -g -Og -ffunction-s"
+ 1679      70202D6D 
+ 1679      6670753D 
+ 1679      66707634 
+ 1679      2D73702D 
+ 1680 0504 65637469 		.ascii	"ections -ffat-lto-objects\000"
+ 1680      6F6E7320 
+ 1680      2D666661 
+ 1680      742D6C74 
+ 1680      6F2D6F62 
+ 1681              	.LASF102:
+ 1682 051e 6F61436F 		.ascii	"oaCompHyst\000"
+ 1682      6D704879 
+ 1682      737400
+ 1683              	.LASF20:
+ 1684 0529 666C6F61 		.ascii	"float\000"
+ 1684      7400
+ 1685              	.LASF41:
+ 1686 052f 74784C65 		.ascii	"txLeftToTransmit\000"
+ 1686      6674546F 
+ 1686      5472616E 
+ 1686      736D6974 
+ 1686      00
+ 1687              	.LASF56:
+ 1688 0540 6368616E 		.ascii	"chanEn\000"
+ 1688      456E00
+ 1689              	.LASF74:
+ 1690 0547 43595F43 		.ascii	"CY_CTB_MODE_OPAMP1X\000"
+ 1690      54425F4D 
+ 1690      4F44455F 
+ 1690      4F50414D 
+ 1690      50315800 
+ 1691              	.LASF46:
+ 1692 055b 43595F53 		.ascii	"CY_SAR_RANGE_COND_INSIDE\000"
+ 1692      41525F52 
+ 1692      414E4745 
+ 1692      5F434F4E 
+ 1692      445F494E 
+ 1693              	.LASF91:
+ 1694 0574 63795F65 		.ascii	"cy_en_ctb_comp_bypass_t\000"
+ 1694      6E5F6374 
+ 1694      625F636F 
+ 1694      6D705F62 
+ 1694      79706173 
+ 1695              	.LASF28:
+ 1696 058c 5F426F6F 		.ascii	"_Bool\000"
+ 1696      6C00
+ 1697              	.LASF125:
+ 1698 0592 4F70616D 		.ascii	"Opamp_1_opampConfig\000"
+ 1698      705F315F 
+ 1698      6F70616D 
+ 1698      70436F6E 
+ 1698      66696700 
+ 1699              	.LASF2:
+ 1700 05a6 756E7369 		.ascii	"unsigned char\000"
+ 1700      676E6564 
+ 1700      20636861 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 38
+
+
+ 1700      7200
+ 1701              	.LASF87:
+ 1702 05b4 43595F43 		.ascii	"CY_CTB_COMP_DSI_TRIGGER_OUT_LEVEL\000"
+ 1702      54425F43 
+ 1702      4F4D505F 
+ 1702      4453495F 
+ 1702      54524947 
+ 1703              	.LASF119:
+ 1704 05d6 6C6F6772 		.ascii	"logrT\000"
+ 1704      5400
+ 1705              	.LASF78:
+ 1706 05dc 43595F43 		.ascii	"CY_CTB_PUMP_DISABLE\000"
+ 1706      54425F50 
+ 1706      554D505F 
+ 1706      44495341 
+ 1706      424C4500 
+ 1707              	.LASF0:
+ 1708 05f0 73686F72 		.ascii	"short int\000"
+ 1708      7420696E 
+ 1708      7400
+ 1709              	.LASF61:
+ 1710 05fa 6D757853 		.ascii	"muxSwitch\000"
+ 1710      77697463 
+ 1710      6800
+ 1711              	.LASF58:
+ 1712 0604 696E7472 		.ascii	"intrMask\000"
+ 1712      4D61736B 
+ 1712      00
+ 1713              	.LASF89:
+ 1714 060d 43595F43 		.ascii	"CY_CTB_COMP_BYPASS_SYNC\000"
+ 1714      54425F43 
+ 1714      4F4D505F 
+ 1714      42595041 
+ 1714      53535F53 
+ 1715              	.LASF82:
+ 1716 0625 43595F43 		.ascii	"CY_CTB_COMP_EDGE_RISING\000"
+ 1716      54425F43 
+ 1716      4F4D505F 
+ 1716      45444745 
+ 1716      5F524953 
+ 1717              	.LASF112:
+ 1718 063d 76546865 		.ascii	"vThermistor\000"
+ 1718      726D6973 
+ 1718      746F7200 
+ 1719              	.LASF84:
+ 1720 0649 43595F43 		.ascii	"CY_CTB_COMP_EDGE_BOTH\000"
+ 1720      54425F43 
+ 1720      4F4D505F 
+ 1720      45444745 
+ 1720      5F424F54 
+ 1721              	.LASF76:
+ 1722 065f 43595F43 		.ascii	"CY_CTB_MODE_COMP\000"
+ 1722      54425F4D 
+ 1722      4F44455F 
+ 1722      434F4D50 
+ 1722      00
+ 1723              	.LASF16:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 39
+
+
+ 1724 0670 75696E74 		.ascii	"uint32_t\000"
+ 1724      33325F74 
+ 1724      00
+ 1725              	.LASF122:
+ 1726 0679 4144435F 		.ascii	"ADC_1_currentConfig\000"
+ 1726      315F6375 
+ 1726      7272656E 
+ 1726      74436F6E 
+ 1726      66696700 
+ 1727              	.LASF64:
+ 1728 068d 76726566 		.ascii	"vrefMvValue\000"
+ 1728      4D765661 
+ 1728      6C756500 
+ 1729              	.LASF18:
+ 1730 0699 6C6F6E67 		.ascii	"long double\000"
+ 1730      20646F75 
+ 1730      626C6500 
+ 1731              	.LASF19:
+ 1732 06a5 63686172 		.ascii	"char\000"
+ 1732      00
+ 1733              	.LASF95:
+ 1734 06aa 64656570 		.ascii	"deepSleep\000"
+ 1734      536C6565 
+ 1734      7000
+ 1735              	.LASF98:
+ 1736 06b4 6F615075 		.ascii	"oaPump\000"
+ 1736      6D7000
+ 1737              	.LASF4:
+ 1738 06bb 5F5F7569 		.ascii	"__uint16_t\000"
+ 1738      6E743136 
+ 1738      5F7400
+ 1739              	.LASF127:
+ 1740 06c6 54686572 		.ascii	"Thermistor.c\000"
+ 1740      6D697374 
+ 1740      6F722E63 
+ 1740      00
+ 1741              	.LASF83:
+ 1742 06d3 43595F43 		.ascii	"CY_CTB_COMP_EDGE_FALLING\000"
+ 1742      54425F43 
+ 1742      4F4D505F 
+ 1742      45444745 
+ 1742      5F46414C 
+ 1743              	.LASF93:
+ 1744 06ec 43595F43 		.ascii	"CY_CTB_COMP_HYST_10MV\000"
+ 1744      54425F43 
+ 1744      4F4D505F 
+ 1744      48595354 
+ 1744      5F31304D 
+ 1745              	.LASF68:
+ 1746 0702 63795F65 		.ascii	"cy_en_ctb_deep_sleep_t\000"
+ 1746      6E5F6374 
+ 1746      625F6465 
+ 1746      65705F73 
+ 1746      6C656570 
+ 1747              	.LASF33:
+ 1748 0719 72785269 		.ascii	"rxRingBufSize\000"
+ 1748      6E674275 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 40
+
+
+ 1748      6653697A 
+ 1748      6500
+ 1749              	.LASF108:
+ 1750 0727 6D697363 		.ascii	"miscConfig\000"
+ 1750      436F6E66 
+ 1750      696700
+ 1751              	.LASF29:
+ 1752 0732 63795F63 		.ascii	"cy_cb_scb_uart_handle_events_t\000"
+ 1752      625F7363 
+ 1752      625F7561 
+ 1752      72745F68 
+ 1752      616E646C 
+ 1753              	.LASF129:
+ 1754 0751 63795F73 		.ascii	"cy_stc_scb_uart_context\000"
+ 1754      74635F73 
+ 1754      63625F75 
+ 1754      6172745F 
+ 1754      636F6E74 
+ 1755              	.LASF43:
+ 1756 0769 696E6974 		.ascii	"initKey\000"
+ 1756      4B657900 
+ 1757              	.LASF36:
+ 1758 0771 72784275 		.ascii	"rxBuf\000"
+ 1758      6600
+ 1759              	.LASF100:
+ 1760 0777 6F61436F 		.ascii	"oaCompLevel\000"
+ 1760      6D704C65 
+ 1760      76656C00 
+ 1761              	.LASF55:
+ 1762 0783 72616E67 		.ascii	"rangeCond\000"
+ 1762      65436F6E 
+ 1762      6400
+ 1763              	.LASF118:
+ 1764 078d 73744571 		.ascii	"stEqn\000"
+ 1764      6E00
+ 1765              	.LASF51:
+ 1766 0793 73616D70 		.ascii	"sampleCtrl\000"
+ 1766      6C654374 
+ 1766      726C00
+ 1767              	.LASF27:
+ 1768 079e 666C6F61 		.ascii	"float64\000"
+ 1768      74363400 
+ 1769              	.LASF110:
+ 1770 07a6 4144435F 		.ascii	"ADC_1_CONFIG_STRUCT\000"
+ 1770      315F434F 
+ 1770      4E464947 
+ 1770      5F535452 
+ 1770      55435400 
+ 1771              	.LASF24:
+ 1772 07ba 696E7431 		.ascii	"int16\000"
+ 1772      3600
+ 1773              	.LASF88:
+ 1774 07c0 63795F65 		.ascii	"cy_en_ctb_comp_level_t\000"
+ 1774      6E5F6374 
+ 1774      625F636F 
+ 1774      6D705F6C 
+ 1774      6576656C 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccozQY3D.s 			page 41
+
+
+ 1775              	.LASF48:
+ 1776 07d7 43595F53 		.ascii	"CY_SAR_RANGE_COND_OUTSIDE\000"
+ 1776      41525F52 
+ 1776      414E4745 
+ 1776      5F434F4E 
+ 1776      445F4F55 
+ 1777              	.LASF35:
+ 1778 07f1 72785269 		.ascii	"rxRingBufTail\000"
+ 1778      6E674275 
+ 1778      66546169 
+ 1778      6C00
+ 1779              	.LASF75:
+ 1780 07ff 43595F43 		.ascii	"CY_CTB_MODE_OPAMP10X\000"
+ 1780      54425F4D 
+ 1780      4F44455F 
+ 1780      4F50414D 
+ 1780      50313058 
+ 1781              	.LASF105:
+ 1782 0814 6368616E 		.ascii	"channelBase\000"
+ 1782      6E656C42 
+ 1782      61736500 
+ 1783              	.LASF30:
+ 1784 0820 74785374 		.ascii	"txStatus\000"
+ 1784      61747573 
+ 1784      00
+ 1785              	.LASF62:
+ 1786 0829 6D757853 		.ascii	"muxSwitchSqCtrl\000"
+ 1786      77697463 
+ 1786      68537143 
+ 1786      74726C00 
+ 1787              	.LASF66:
+ 1788 0839 43595F43 		.ascii	"CY_CTB_DEEPSLEEP_DISABLE\000"
+ 1788      54425F44 
+ 1788      45455053 
+ 1788      4C454550 
+ 1788      5F444953 
+ 1789              	.LASF97:
+ 1790 0852 6F614D6F 		.ascii	"oaMode\000"
+ 1790      646500
+ 1791              	.LASF103:
+ 1792 0859 6F61436F 		.ascii	"oaCompIntrEn\000"
+ 1792      6D70496E 
+ 1792      7472456E 
+ 1792      00
+ 1793              	.LASF80:
+ 1794 0866 63795F65 		.ascii	"cy_en_ctb_pump_t\000"
+ 1794      6E5F6374 
+ 1794      625F7075 
+ 1794      6D705F74 
+ 1794      00
+ 1795              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

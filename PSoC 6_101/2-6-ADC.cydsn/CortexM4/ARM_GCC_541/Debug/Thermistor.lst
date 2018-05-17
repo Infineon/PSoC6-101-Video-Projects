@@ -1,0 +1,1947 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.fpu fpv4-sp-d16
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.thumb
+  15              		.syntax unified
+  16              		.file	"Thermistor.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.Thermistor_GetResistance,"ax",%progbits
+  21              		.align	2
+  22              		.global	Thermistor_GetResistance
+  23              		.thumb
+  24              		.thumb_func
+  25              		.type	Thermistor_GetResistance, %function
+  26              	Thermistor_GetResistance:
+  27              	.LFB515:
+  28              		.file 1 "Thermistor.c"
+   1:Thermistor.c  **** /*******************************************************************************
+   2:Thermistor.c  **** * File Name: Thermistor.c
+   3:Thermistor.c  **** * Version 1.20
+   4:Thermistor.c  **** *
+   5:Thermistor.c  **** * Description:
+   6:Thermistor.c  **** *  This file provides the source code to the API for the ThermistorCalc
+   7:Thermistor.c  **** *  Component.
+   8:Thermistor.c  **** *
+   9:Thermistor.c  **** * Note:
+  10:Thermistor.c  **** *  None.
+  11:Thermistor.c  **** *
+  12:Thermistor.c  **** ********************************************************************************
+  13:Thermistor.c  **** * Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+  14:Thermistor.c  **** * You may use this file only in accordance with the license, terms, conditions,
+  15:Thermistor.c  **** * disclaimers, and limitations in the end user license agreement accompanying
+  16:Thermistor.c  **** * the software package with which this file was provided.
+  17:Thermistor.c  **** *******************************************************************************/
+  18:Thermistor.c  **** 
+  19:Thermistor.c  **** #include "Thermistor.h"
+  20:Thermistor.c  **** 
+  21:Thermistor.c  **** 
+  22:Thermistor.c  **** /*******************************************************************************
+  23:Thermistor.c  **** * Function Name: Thermistor_GetResistance
+  24:Thermistor.c  **** ********************************************************************************
+  25:Thermistor.c  **** *
+  26:Thermistor.c  **** * Summary:
+  27:Thermistor.c  **** *  The digital values of the voltages across the reference resistor and the
+  28:Thermistor.c  **** *  thermistor are passed to this function as parameters. The function returns
+  29:Thermistor.c  **** *  the resistance, based on the voltage values.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 2
+
+
+  30:Thermistor.c  **** *
+  31:Thermistor.c  **** * Parameters:
+  32:Thermistor.c  **** *  vReference: the voltage across the reference resistor;
+  33:Thermistor.c  **** *  vThermistor: the voltage across the thermistor.
+  34:Thermistor.c  **** *  The ratio of these two voltages is used by this function. Therefore, the
+  35:Thermistor.c  **** *  units for both parameters must be the same.
+  36:Thermistor.c  **** *
+  37:Thermistor.c  **** * Return:
+  38:Thermistor.c  **** *  The return value is the resistance across the thermistor. The value returned
+  39:Thermistor.c  **** *  is the resistance in Ohms.
+  40:Thermistor.c  **** *
+  41:Thermistor.c  **** *******************************************************************************/
+  42:Thermistor.c  **** uint32 Thermistor_GetResistance(int16 vReference, int16 vThermistor)
+  43:Thermistor.c  ****                                       
+  44:Thermistor.c  **** {
+  29              		.loc 1 44 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              	.LVL0:
+  45:Thermistor.c  ****     int32 resT;
+  46:Thermistor.c  ****     int16 temp;
+  47:Thermistor.c  **** 
+  48:Thermistor.c  ****     /* Calculate thermistor resistance from the voltages */
+  49:Thermistor.c  ****     resT = Thermistor_REF_RESISTOR * ((int32)vThermistor);
+  35              		.loc 1 49 0
+  36 0000 42F21073 		movw	r3, #10000
+  37 0004 03FB01F1 		mul	r1, r3, r1
+  38              	.LVL1:
+  50:Thermistor.c  ****     if (vReference < 0)
+  39              		.loc 1 50 0
+  40 0008 0028     		cmp	r0, #0
+  41              	.LVL2:
+  42 000a 05DA     		bge	.L2
+  51:Thermistor.c  ****     {
+  52:Thermistor.c  ****         temp = -vReference;
+  43              		.loc 1 52 0
+  44 000c 4342     		negs	r3, r0
+  45              	.LVL3:
+  53:Thermistor.c  ****         temp = (int16)((uint16)((uint16)temp >> 1u));
+  46              		.loc 1 53 0
+  47 000e C3F34E03 		ubfx	r3, r3, #1, #15
+  48              	.LVL4:
+  54:Thermistor.c  ****         temp = -temp;
+  49              		.loc 1 54 0
+  50 0012 5B42     		negs	r3, r3
+  51              	.LVL5:
+  52 0014 1BB2     		sxth	r3, r3
+  53              	.LVL6:
+  54 0016 01E0     		b	.L3
+  55              	.LVL7:
+  56              	.L2:
+  55:Thermistor.c  ****     }
+  56:Thermistor.c  ****     else
+  57:Thermistor.c  ****     {
+  58:Thermistor.c  ****         temp = (int16)((uint16)((uint16)vReference >> 1u));
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 3
+
+
+  57              		.loc 1 58 0
+  58 0018 C0F34E03 		ubfx	r3, r0, #1, #15
+  59              	.LVL8:
+  60              	.L3:
+  59:Thermistor.c  ****     }
+  60:Thermistor.c  ****     resT += temp;
+  61              		.loc 1 60 0
+  62 001c 1944     		add	r1, r1, r3
+  63              	.LVL9:
+  61:Thermistor.c  ****     resT /= vReference;
+  62:Thermistor.c  **** 
+  63:Thermistor.c  ****     /* The ordering of Reference resistor value is specifically designed to keep the result from ov
+  64:Thermistor.c  ****     return ((uint32)((uint32)resT << Thermistor_REF_RES_SHIFT));
+  65:Thermistor.c  **** }
+  64              		.loc 1 65 0
+  65 001e 91FBF0F0 		sdiv	r0, r1, r0
+  66              	.LVL10:
+  67 0022 7047     		bx	lr
+  68              		.cfi_endproc
+  69              	.LFE515:
+  70              		.size	Thermistor_GetResistance, .-Thermistor_GetResistance
+  71              		.global	__aeabi_ui2d
+  72              		.global	__aeabi_d2f
+  73              		.global	__aeabi_f2d
+  74              		.global	__aeabi_dmul
+  75              		.global	__aeabi_dadd
+  76              		.global	__aeabi_ddiv
+  77              		.global	__aeabi_dsub
+  78              		.section	.text.Thermistor_GetTemperature,"ax",%progbits
+  79              		.align	2
+  80              		.global	Thermistor_GetTemperature
+  81              		.thumb
+  82              		.thumb_func
+  83              		.type	Thermistor_GetTemperature, %function
+  84              	Thermistor_GetTemperature:
+  85              	.LFB516:
+  66:Thermistor.c  **** 
+  67:Thermistor.c  **** 
+  68:Thermistor.c  **** /*******************************************************************************
+  69:Thermistor.c  **** * Function Name: Thermistor_GetTemperature
+  70:Thermistor.c  **** ********************************************************************************
+  71:Thermistor.c  **** *
+  72:Thermistor.c  **** * Summary:
+  73:Thermistor.c  **** *  The value of the thermistor resistance is passed to this function as a
+  74:Thermistor.c  **** *  parameter. The function returns the temperature, based on the resistance
+  75:Thermistor.c  **** *  value. The method used to calculate the temperature is dependent on whether
+  76:Thermistor.c  **** *  Equation or LUT was selected in the Customizer.
+  77:Thermistor.c  **** *
+  78:Thermistor.c  **** * Parameters:
+  79:Thermistor.c  **** *  resT: the resistance across the thermistor in Ohms.
+  80:Thermistor.c  **** *
+  81:Thermistor.c  **** * Return:
+  82:Thermistor.c  **** *  The return value is the temperature in 1/100ths of degrees C. For example,
+  83:Thermistor.c  **** *  the return value is 2345, when the actual temperature is 23.45 degrees C.
+  84:Thermistor.c  **** *
+  85:Thermistor.c  **** *******************************************************************************/
+  86:Thermistor.c  **** int16 Thermistor_GetTemperature(uint32 resT) 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 4
+
+
+  87:Thermistor.c  **** {
+  86              		.loc 1 87 0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 8
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              	.LVL11:
+  91 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  92              		.cfi_def_cfa_offset 20
+  93              		.cfi_offset 4, -20
+  94              		.cfi_offset 5, -16
+  95              		.cfi_offset 6, -12
+  96              		.cfi_offset 7, -8
+  97              		.cfi_offset 14, -4
+  98 0002 83B0     		sub	sp, sp, #12
+  99              		.cfi_def_cfa_offset 32
+  88:Thermistor.c  ****     int16 tempTR;
+  89:Thermistor.c  ****     
+  90:Thermistor.c  ****     #if (Thermistor_IMPLEMENTATION == Thermistor_EQUATION_METHOD)
+  91:Thermistor.c  **** 
+  92:Thermistor.c  ****         float32 stEqn;
+  93:Thermistor.c  ****         float32 logrT;
+  94:Thermistor.c  **** 
+  95:Thermistor.c  ****         /* Calculate thermistor resistance from the voltages */
+  96:Thermistor.c  ****         #if(!CY_PSOC3)
+  97:Thermistor.c  ****             logrT = (float32)log((float64)resT);
+ 100              		.loc 1 97 0
+ 101 0004 FFF7FEFF 		bl	__aeabi_ui2d
+ 102              	.LVL12:
+ 103 0008 FFF7FEFF 		bl	log
+ 104              	.LVL13:
+ 105 000c FFF7FEFF 		bl	__aeabi_d2f
+ 106              	.LVL14:
+  98:Thermistor.c  ****         #else
+  99:Thermistor.c  ****             logrT = log((float32)resT);
+ 100:Thermistor.c  ****         #endif  /* (!CY_PSOC3) */
+ 101:Thermistor.c  **** 
+ 102:Thermistor.c  ****         /* Calculate temperature from the resistance of thermistor using Steinhart-Hart Equation */
+ 103:Thermistor.c  ****         #if(!CY_PSOC3)
+ 104:Thermistor.c  ****             stEqn = (float32)(Thermistor_THA + (Thermistor_THB * logrT) + 
+ 107              		.loc 1 104 0
+ 108 0010 FFF7FEFF 		bl	__aeabi_f2d
+ 109              	.LVL15:
+ 110 0014 0646     		mov	r6, r0
+ 111 0016 0F46     		mov	r7, r1
+ 112 0018 27A3     		adr	r3, .L6+32
+ 113 001a D3E90023 		ldrd	r2, [r3]
+ 114 001e FFF7FEFF 		bl	__aeabi_dmul
+ 115              	.LVL16:
+ 116 0022 27A3     		adr	r3, .L6+40
+ 117 0024 D3E90023 		ldrd	r2, [r3]
+ 118 0028 FFF7FEFF 		bl	__aeabi_dadd
+ 119              	.LVL17:
+ 120 002c 0446     		mov	r4, r0
+ 121 002e 0D46     		mov	r5, r1
+ 105:Thermistor.c  ****                              (Thermistor_THC * pow((float64)logrT, (float32)3)));
+ 122              		.loc 1 105 0
+ 123 0030 0022     		movs	r2, #0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 5
+
+
+ 124 0032 1D4B     		ldr	r3, .L6+16
+ 125 0034 3046     		mov	r0, r6
+ 126 0036 3946     		mov	r1, r7
+ 127 0038 FFF7FEFF 		bl	pow
+ 128              	.LVL18:
+ 129 003c 16A3     		adr	r3, .L6
+ 130 003e D3E90023 		ldrd	r2, [r3]
+ 131 0042 FFF7FEFF 		bl	__aeabi_dmul
+ 132              	.LVL19:
+ 104:Thermistor.c  ****                              (Thermistor_THC * pow((float64)logrT, (float32)3)));
+ 133              		.loc 1 104 0
+ 134 0046 0246     		mov	r2, r0
+ 135 0048 0B46     		mov	r3, r1
+ 136 004a 2046     		mov	r0, r4
+ 137 004c 2946     		mov	r1, r5
+ 138 004e FFF7FEFF 		bl	__aeabi_dadd
+ 139              	.LVL20:
+ 140 0052 FFF7FEFF 		bl	__aeabi_d2f
+ 141              	.LVL21:
+ 106:Thermistor.c  ****         #else
+ 107:Thermistor.c  ****             stEqn = (float32)(Thermistor_THA + (Thermistor_THB * logrT) + 
+ 108:Thermistor.c  ****                              (Thermistor_THC * pow(logrT, (float32)3)));
+ 109:Thermistor.c  ****         #endif  /* (!CY_PSOC3) */
+ 110:Thermistor.c  **** 
+ 111:Thermistor.c  ****         tempTR = (int16)((float32)((((1.0 / stEqn) - Thermistor_K2C) * (float32)Thermistor_SCALE) +
+ 142              		.loc 1 111 0
+ 143 0056 FFF7FEFF 		bl	__aeabi_f2d
+ 144              	.LVL22:
+ 145 005a 0246     		mov	r2, r0
+ 146 005c 0B46     		mov	r3, r1
+ 147 005e 0020     		movs	r0, #0
+ 148 0060 1249     		ldr	r1, .L6+20
+ 149 0062 FFF7FEFF 		bl	__aeabi_ddiv
+ 150              	.LVL23:
+ 151 0066 0EA3     		adr	r3, .L6+8
+ 152 0068 D3E90023 		ldrd	r2, [r3]
+ 153 006c FFF7FEFF 		bl	__aeabi_dsub
+ 154              	.LVL24:
+ 155 0070 0022     		movs	r2, #0
+ 156 0072 0F4B     		ldr	r3, .L6+24
+ 157 0074 FFF7FEFF 		bl	__aeabi_dmul
+ 158              	.LVL25:
+ 159 0078 0022     		movs	r2, #0
+ 160 007a 0E4B     		ldr	r3, .L6+28
+ 161 007c FFF7FEFF 		bl	__aeabi_dadd
+ 162              	.LVL26:
+ 163 0080 FFF7FEFF 		bl	__aeabi_d2f
+ 164              	.LVL27:
+ 165 0084 07EE900A 		vmov	s15, r0
+ 166 0088 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 167 008c CDED017A 		vstr.32	s15, [sp, #4]	@ int
+ 168              	.LVL28:
+ 112:Thermistor.c  **** 
+ 113:Thermistor.c  ****     #else /* Thermistor_IMPLEMENTATION == Thermistor_LUT_METHOD */
+ 114:Thermistor.c  **** 
+ 115:Thermistor.c  ****         uint16 mid;
+ 116:Thermistor.c  ****         uint16 first = 0u;
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 6
+
+
+ 117:Thermistor.c  ****         uint16 last = Thermistor_LUT_SIZE - 1u;
+ 118:Thermistor.c  **** 
+ 119:Thermistor.c  ****         /* Calculate temperature from the resistance of thermistor by using the LUT */
+ 120:Thermistor.c  ****         while (first < last)
+ 121:Thermistor.c  ****         {
+ 122:Thermistor.c  ****             mid = (first + last) >> 1u;
+ 123:Thermistor.c  **** 
+ 124:Thermistor.c  ****             if ((0u == mid) || ((Thermistor_LUT_SIZE - 1u) == mid) || (resT == Thermistor_LUT[mid])
+ 125:Thermistor.c  ****             {
+ 126:Thermistor.c  ****                 last = mid;
+ 127:Thermistor.c  ****                 break;
+ 128:Thermistor.c  ****             }
+ 129:Thermistor.c  ****             else if (Thermistor_LUT[mid] > resT)
+ 130:Thermistor.c  ****             {
+ 131:Thermistor.c  ****                 first = mid + 1u;
+ 132:Thermistor.c  ****             }
+ 133:Thermistor.c  ****             else /* (Thermistor_LUT[mid] < resT) */
+ 134:Thermistor.c  ****             {
+ 135:Thermistor.c  ****                 last = mid - 1u;
+ 136:Thermistor.c  ****             }
+ 137:Thermistor.c  ****         }
+ 138:Thermistor.c  **** 
+ 139:Thermistor.c  ****         /* Calculation the closest entry in the LUT */
+ 140:Thermistor.c  ****         if ((Thermistor_LUT[last] > resT) && (last < (Thermistor_LUT_SIZE - 1u)) &&
+ 141:Thermistor.c  ****            ((Thermistor_LUT[last] - resT) > (resT - Thermistor_LUT[last + 1u])))
+ 142:Thermistor.c  ****         {
+ 143:Thermistor.c  ****             last++;
+ 144:Thermistor.c  ****         }
+ 145:Thermistor.c  ****         else if ((Thermistor_LUT[last] < resT) && (last > 0u) &&
+ 146:Thermistor.c  ****                 ((Thermistor_LUT[last - 1u] - resT) < (resT - Thermistor_LUT[last])))
+ 147:Thermistor.c  ****         {
+ 148:Thermistor.c  ****             last--;
+ 149:Thermistor.c  ****         }
+ 150:Thermistor.c  ****         else
+ 151:Thermistor.c  ****         {
+ 152:Thermistor.c  ****             /* Closest entry in the LUT already found */
+ 153:Thermistor.c  ****         }
+ 154:Thermistor.c  **** 
+ 155:Thermistor.c  ****         tempTR = Thermistor_MIN_TEMP + (int16)((uint16)(last * Thermistor_ACCURACY));
+ 156:Thermistor.c  **** 
+ 157:Thermistor.c  ****     #endif /* (Thermistor_IMPLEMENTATION == Thermistor_EQUATION_METHOD) */
+ 158:Thermistor.c  **** 
+ 159:Thermistor.c  ****     return (tempTR);
+ 160:Thermistor.c  **** }
+ 169              		.loc 1 160 0
+ 170 0090 BDF90400 		ldrsh	r0, [sp, #4]
+ 171 0094 03B0     		add	sp, sp, #12
+ 172              		.cfi_def_cfa_offset 20
+ 173              		@ sp needed
+ 174 0096 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 175              	.LVL29:
+ 176              	.L7:
+ 177              		.align	3
+ 178              	.L6:
+ 179 0098 4D33E444 		.word	1155806029
+ 180 009c 25658B3E 		.word	1049322789
+ 181 00a0 66666666 		.word	1717986918
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 7
+
+
+ 182 00a4 66127140 		.word	1081152102
+ 183 00a8 00000840 		.word	1074266112
+ 184 00ac 0000F03F 		.word	1072693248
+ 185 00b0 00005940 		.word	1079574528
+ 186 00b4 0000E03F 		.word	1071644672
+ 187 00b8 6943AA9A 		.word	-1700117655
+ 188 00bc B34D303F 		.word	1060130227
+ 189 00c0 D8FD850B 		.word	193330648
+ 190 00c4 29994D3F 		.word	1062050089
+ 191              		.cfi_endproc
+ 192              	.LFE516:
+ 193              		.size	Thermistor_GetTemperature, .-Thermistor_GetTemperature
+ 194              		.text
+ 195              	.Letext0:
+ 196              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 197              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 198              		.file 4 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/syslib/cy_syslib.h"
+ 199              		.file 5 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/scb/cy_scb_uart.h"
+ 200              		.file 6 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/sar/cy_sar.h"
+ 201              		.file 7 "Generated_Source\\PSoC6/ADC_1.h"
+ 202              		.file 8 "Generated_Source\\PSoC6\\pdl\\cmsis/include/core_cm4.h"
+ 203              		.file 9 "Generated_Source\\PSoC6/UART_1.h"
+ 204              		.file 10 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 205              		.section	.debug_info,"",%progbits
+ 206              	.Ldebug_info0:
+ 207 0000 BE040000 		.4byte	0x4be
+ 208 0004 0400     		.2byte	0x4
+ 209 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 210 000a 04       		.byte	0x4
+ 211 000b 01       		.uleb128 0x1
+ 212 000c 30010000 		.4byte	.LASF85
+ 213 0010 0C       		.byte	0xc
+ 214 0011 9D020000 		.4byte	.LASF86
+ 215 0015 75000000 		.4byte	.LASF87
+ 216 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 217 001d 00000000 		.4byte	0
+ 218 0021 00000000 		.4byte	.Ldebug_line0
+ 219 0025 02       		.uleb128 0x2
+ 220 0026 02       		.byte	0x2
+ 221 0027 05       		.byte	0x5
+ 222 0028 16020000 		.4byte	.LASF0
+ 223 002c 02       		.uleb128 0x2
+ 224 002d 01       		.byte	0x1
+ 225 002e 06       		.byte	0x6
+ 226 002f 2E030000 		.4byte	.LASF1
+ 227 0033 02       		.uleb128 0x2
+ 228 0034 01       		.byte	0x1
+ 229 0035 08       		.byte	0x8
+ 230 0036 02030000 		.4byte	.LASF2
+ 231 003a 03       		.uleb128 0x3
+ 232 003b 69040000 		.4byte	.LASF3
+ 233 003f 02       		.byte	0x2
+ 234 0040 29       		.byte	0x29
+ 235 0041 25000000 		.4byte	0x25
+ 236 0045 03       		.uleb128 0x3
+ 237 0046 F7010000 		.4byte	.LASF4
+ 238 004a 02       		.byte	0x2
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 8
+
+
+ 239 004b 2B       		.byte	0x2b
+ 240 004c 50000000 		.4byte	0x50
+ 241 0050 02       		.uleb128 0x2
+ 242 0051 02       		.byte	0x2
+ 243 0052 07       		.byte	0x7
+ 244 0053 89030000 		.4byte	.LASF5
+ 245 0057 03       		.uleb128 0x3
+ 246 0058 3E040000 		.4byte	.LASF6
+ 247 005c 02       		.byte	0x2
+ 248 005d 3F       		.byte	0x3f
+ 249 005e 62000000 		.4byte	0x62
+ 250 0062 02       		.uleb128 0x2
+ 251 0063 04       		.byte	0x4
+ 252 0064 05       		.byte	0x5
+ 253 0065 D4040000 		.4byte	.LASF7
+ 254 0069 03       		.uleb128 0x3
+ 255 006a E3010000 		.4byte	.LASF8
+ 256 006e 02       		.byte	0x2
+ 257 006f 41       		.byte	0x41
+ 258 0070 74000000 		.4byte	0x74
+ 259 0074 02       		.uleb128 0x2
+ 260 0075 04       		.byte	0x4
+ 261 0076 07       		.byte	0x7
+ 262 0077 1F040000 		.4byte	.LASF9
+ 263 007b 02       		.uleb128 0x2
+ 264 007c 08       		.byte	0x8
+ 265 007d 05       		.byte	0x5
+ 266 007e 81020000 		.4byte	.LASF10
+ 267 0082 02       		.uleb128 0x2
+ 268 0083 08       		.byte	0x8
+ 269 0084 07       		.byte	0x7
+ 270 0085 40030000 		.4byte	.LASF11
+ 271 0089 04       		.uleb128 0x4
+ 272 008a 04       		.byte	0x4
+ 273 008b 05       		.byte	0x5
+ 274 008c 696E7400 		.ascii	"int\000"
+ 275 0090 02       		.uleb128 0x2
+ 276 0091 04       		.byte	0x4
+ 277 0092 07       		.byte	0x7
+ 278 0093 EA040000 		.4byte	.LASF12
+ 279 0097 03       		.uleb128 0x3
+ 280 0098 F7030000 		.4byte	.LASF13
+ 281 009c 03       		.byte	0x3
+ 282 009d 20       		.byte	0x20
+ 283 009e 3A000000 		.4byte	0x3a
+ 284 00a2 03       		.uleb128 0x3
+ 285 00a3 66030000 		.4byte	.LASF14
+ 286 00a7 03       		.byte	0x3
+ 287 00a8 24       		.byte	0x24
+ 288 00a9 45000000 		.4byte	0x45
+ 289 00ad 03       		.uleb128 0x3
+ 290 00ae CA020000 		.4byte	.LASF15
+ 291 00b2 03       		.byte	0x3
+ 292 00b3 2C       		.byte	0x2c
+ 293 00b4 57000000 		.4byte	0x57
+ 294 00b8 03       		.uleb128 0x3
+ 295 00b9 57030000 		.4byte	.LASF16
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 9
+
+
+ 296 00bd 03       		.byte	0x3
+ 297 00be 30       		.byte	0x30
+ 298 00bf 69000000 		.4byte	0x69
+ 299 00c3 02       		.uleb128 0x2
+ 300 00c4 04       		.byte	0x4
+ 301 00c5 07       		.byte	0x7
+ 302 00c6 E1000000 		.4byte	.LASF17
+ 303 00ca 05       		.uleb128 0x5
+ 304 00cb B8000000 		.4byte	0xb8
+ 305 00cf 02       		.uleb128 0x2
+ 306 00d0 08       		.byte	0x8
+ 307 00d1 04       		.byte	0x4
+ 308 00d2 E6020000 		.4byte	.LASF18
+ 309 00d6 02       		.uleb128 0x2
+ 310 00d7 01       		.byte	0x1
+ 311 00d8 08       		.byte	0x8
+ 312 00d9 AD030000 		.4byte	.LASF19
+ 313 00dd 02       		.uleb128 0x2
+ 314 00de 04       		.byte	0x4
+ 315 00df 04       		.byte	0x4
+ 316 00e0 69020000 		.4byte	.LASF20
+ 317 00e4 02       		.uleb128 0x2
+ 318 00e5 08       		.byte	0x8
+ 319 00e6 04       		.byte	0x4
+ 320 00e7 37040000 		.4byte	.LASF21
+ 321 00eb 06       		.uleb128 0x6
+ 322 00ec 11040000 		.4byte	.LASF22
+ 323 00f0 04       		.byte	0x4
+ 324 00f1 8603     		.2byte	0x386
+ 325 00f3 A2000000 		.4byte	0xa2
+ 326 00f7 06       		.uleb128 0x6
+ 327 00f8 18040000 		.4byte	.LASF23
+ 328 00fc 04       		.byte	0x4
+ 329 00fd 8703     		.2byte	0x387
+ 330 00ff B8000000 		.4byte	0xb8
+ 331 0103 06       		.uleb128 0x6
+ 332 0104 39020000 		.4byte	.LASF24
+ 333 0108 04       		.byte	0x4
+ 334 0109 8903     		.2byte	0x389
+ 335 010b 97000000 		.4byte	0x97
+ 336 010f 06       		.uleb128 0x6
+ 337 0110 31040000 		.4byte	.LASF25
+ 338 0114 04       		.byte	0x4
+ 339 0115 8A03     		.2byte	0x38a
+ 340 0117 AD000000 		.4byte	0xad
+ 341 011b 06       		.uleb128 0x6
+ 342 011c 63000000 		.4byte	.LASF26
+ 343 0120 04       		.byte	0x4
+ 344 0121 8B03     		.2byte	0x38b
+ 345 0123 DD000000 		.4byte	0xdd
+ 346 0127 06       		.uleb128 0x6
+ 347 0128 AC040000 		.4byte	.LASF27
+ 348 012c 04       		.byte	0x4
+ 349 012d 8C03     		.2byte	0x38c
+ 350 012f E4000000 		.4byte	0xe4
+ 351 0133 07       		.uleb128 0x7
+ 352 0134 04       		.byte	0x4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 10
+
+
+ 353 0135 02       		.uleb128 0x2
+ 354 0136 01       		.byte	0x1
+ 355 0137 02       		.byte	0x2
+ 356 0138 FF030000 		.4byte	.LASF28
+ 357 013c 08       		.uleb128 0x8
+ 358 013d 04       		.byte	0x4
+ 359 013e 42010000 		.4byte	0x142
+ 360 0142 09       		.uleb128 0x9
+ 361 0143 4D010000 		.4byte	0x14d
+ 362 0147 0A       		.uleb128 0xa
+ 363 0148 B8000000 		.4byte	0xb8
+ 364 014c 00       		.byte	0
+ 365 014d 06       		.uleb128 0x6
+ 366 014e BD000000 		.4byte	.LASF29
+ 367 0152 05       		.byte	0x5
+ 368 0153 AB01     		.2byte	0x1ab
+ 369 0155 3C010000 		.4byte	0x13c
+ 370 0159 0B       		.uleb128 0xb
+ 371 015a 01010000 		.4byte	.LASF88
+ 372 015e 38       		.byte	0x38
+ 373 015f 05       		.byte	0x5
+ 374 0160 4702     		.2byte	0x247
+ 375 0162 1D020000 		.4byte	0x21d
+ 376 0166 0C       		.uleb128 0xc
+ 377 0167 EE010000 		.4byte	.LASF30
+ 378 016b 05       		.byte	0x5
+ 379 016c 4A02     		.2byte	0x24a
+ 380 016e CA000000 		.4byte	0xca
+ 381 0172 00       		.byte	0
+ 382 0173 0C       		.uleb128 0xc
+ 383 0174 F9020000 		.4byte	.LASF31
+ 384 0178 05       		.byte	0x5
+ 385 0179 4B02     		.2byte	0x24b
+ 386 017b CA000000 		.4byte	0xca
+ 387 017f 04       		.byte	0x4
+ 388 0180 0C       		.uleb128 0xc
+ 389 0181 10030000 		.4byte	.LASF32
+ 390 0185 05       		.byte	0x5
+ 391 0186 4D02     		.2byte	0x24d
+ 392 0188 33010000 		.4byte	0x133
+ 393 018c 08       		.byte	0x8
+ 394 018d 0C       		.uleb128 0xc
+ 395 018e AA020000 		.4byte	.LASF33
+ 396 0192 05       		.byte	0x5
+ 397 0193 4E02     		.2byte	0x24e
+ 398 0195 B8000000 		.4byte	0xb8
+ 399 0199 0C       		.byte	0xc
+ 400 019a 0C       		.uleb128 0xc
+ 401 019b 5B020000 		.4byte	.LASF34
+ 402 019f 05       		.byte	0x5
+ 403 01a0 4F02     		.2byte	0x24f
+ 404 01a2 CA000000 		.4byte	0xca
+ 405 01a6 10       		.byte	0x10
+ 406 01a7 0C       		.uleb128 0xc
+ 407 01a8 50000000 		.4byte	.LASF35
+ 408 01ac 05       		.byte	0x5
+ 409 01ad 5002     		.2byte	0x250
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 11
+
+
+ 410 01af CA000000 		.4byte	0xca
+ 411 01b3 14       		.byte	0x14
+ 412 01b4 0C       		.uleb128 0xc
+ 413 01b5 9C030000 		.4byte	.LASF36
+ 414 01b9 05       		.byte	0x5
+ 415 01ba 5202     		.2byte	0x252
+ 416 01bc 33010000 		.4byte	0x133
+ 417 01c0 18       		.byte	0x18
+ 418 01c1 0C       		.uleb128 0xc
+ 419 01c2 6B000000 		.4byte	.LASF37
+ 420 01c6 05       		.byte	0x5
+ 421 01c7 5302     		.2byte	0x253
+ 422 01c9 B8000000 		.4byte	0xb8
+ 423 01cd 1C       		.byte	0x1c
+ 424 01ce 0C       		.uleb128 0xc
+ 425 01cf 0D020000 		.4byte	.LASF38
+ 426 01d3 05       		.byte	0x5
+ 427 01d4 5402     		.2byte	0x254
+ 428 01d6 CA000000 		.4byte	0xca
+ 429 01da 20       		.byte	0x20
+ 430 01db 0C       		.uleb128 0xc
+ 431 01dc 6F020000 		.4byte	.LASF39
+ 432 01e0 05       		.byte	0x5
+ 433 01e1 5602     		.2byte	0x256
+ 434 01e3 33010000 		.4byte	0x133
+ 435 01e7 24       		.byte	0x24
+ 436 01e8 0C       		.uleb128 0xc
+ 437 01e9 7F030000 		.4byte	.LASF40
+ 438 01ed 05       		.byte	0x5
+ 439 01ee 5702     		.2byte	0x257
+ 440 01f0 B8000000 		.4byte	0xb8
+ 441 01f4 28       		.byte	0x28
+ 442 01f5 0C       		.uleb128 0xc
+ 443 01f6 0C000000 		.4byte	.LASF41
+ 444 01fa 05       		.byte	0x5
+ 445 01fb 5802     		.2byte	0x258
+ 446 01fd CA000000 		.4byte	0xca
+ 447 0201 2C       		.byte	0x2c
+ 448 0202 0C       		.uleb128 0xc
+ 449 0203 BC030000 		.4byte	.LASF42
+ 450 0207 05       		.byte	0x5
+ 451 0208 5D02     		.2byte	0x25d
+ 452 020a 4D010000 		.4byte	0x14d
+ 453 020e 30       		.byte	0x30
+ 454 020f 0C       		.uleb128 0xc
+ 455 0210 61040000 		.4byte	.LASF43
+ 456 0214 05       		.byte	0x5
+ 457 0215 6002     		.2byte	0x260
+ 458 0217 B8000000 		.4byte	0xb8
+ 459 021b 34       		.byte	0x34
+ 460 021c 00       		.byte	0
+ 461 021d 06       		.uleb128 0x6
+ 462 021e 92040000 		.4byte	.LASF44
+ 463 0222 05       		.byte	0x5
+ 464 0223 6302     		.2byte	0x263
+ 465 0225 59010000 		.4byte	0x159
+ 466 0229 0D       		.uleb128 0xd
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 12
+
+
+ 467 022a 01       		.byte	0x1
+ 468 022b 33000000 		.4byte	0x33
+ 469 022f 06       		.byte	0x6
+ 470 0230 0504     		.2byte	0x405
+ 471 0232 4F020000 		.4byte	0x24f
+ 472 0236 0E       		.uleb128 0xe
+ 473 0237 F7040000 		.4byte	.LASF45
+ 474 023b 00       		.byte	0
+ 475 023c 0E       		.uleb128 0xe
+ 476 023d 48040000 		.4byte	.LASF46
+ 477 0241 01       		.byte	0x1
+ 478 0242 0E       		.uleb128 0xe
+ 479 0243 C5030000 		.4byte	.LASF47
+ 480 0247 02       		.byte	0x2
+ 481 0248 0E       		.uleb128 0xe
+ 482 0249 1D000000 		.4byte	.LASF48
+ 483 024d 03       		.byte	0x3
+ 484 024e 00       		.byte	0
+ 485 024f 06       		.uleb128 0x6
+ 486 0250 26050000 		.4byte	.LASF49
+ 487 0254 06       		.byte	0x6
+ 488 0255 0A04     		.2byte	0x40a
+ 489 0257 29020000 		.4byte	0x229
+ 490 025b 0F       		.uleb128 0xf
+ 491 025c 78       		.byte	0x78
+ 492 025d 06       		.byte	0x6
+ 493 025e F404     		.2byte	0x4f4
+ 494 0260 28030000 		.4byte	0x328
+ 495 0264 0C       		.uleb128 0xc
+ 496 0265 B8020000 		.4byte	.LASF50
+ 497 0269 06       		.byte	0x6
+ 498 026a F604     		.2byte	0x4f6
+ 499 026c B8000000 		.4byte	0xb8
+ 500 0270 00       		.byte	0
+ 501 0271 0C       		.uleb128 0xc
+ 502 0272 F6000000 		.4byte	.LASF51
+ 503 0276 06       		.byte	0x6
+ 504 0277 F704     		.2byte	0x4f7
+ 505 0279 B8000000 		.4byte	0xb8
+ 506 027d 04       		.byte	0x4
+ 507 027e 0C       		.uleb128 0xc
+ 508 027f BD020000 		.4byte	.LASF52
+ 509 0283 06       		.byte	0x6
+ 510 0284 F804     		.2byte	0x4f8
+ 511 0286 B8000000 		.4byte	0xb8
+ 512 028a 08       		.byte	0x8
+ 513 028b 0C       		.uleb128 0xc
+ 514 028c C7040000 		.4byte	.LASF53
+ 515 0290 06       		.byte	0x6
+ 516 0291 F904     		.2byte	0x4f9
+ 517 0293 B8000000 		.4byte	0xb8
+ 518 0297 0C       		.byte	0xc
+ 519 0298 0C       		.uleb128 0xc
+ 520 0299 25010000 		.4byte	.LASF54
+ 521 029d 06       		.byte	0x6
+ 522 029e FA04     		.2byte	0x4fa
+ 523 02a0 B8000000 		.4byte	0xb8
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 13
+
+
+ 524 02a4 10       		.byte	0x10
+ 525 02a5 0C       		.uleb128 0xc
+ 526 02a6 2F020000 		.4byte	.LASF55
+ 527 02aa 06       		.byte	0x6
+ 528 02ab FB04     		.2byte	0x4fb
+ 529 02ad 4F020000 		.4byte	0x24f
+ 530 02b1 14       		.byte	0x14
+ 531 02b2 0C       		.uleb128 0xc
+ 532 02b3 B4040000 		.4byte	.LASF56
+ 533 02b7 06       		.byte	0x6
+ 534 02b8 FC04     		.2byte	0x4fc
+ 535 02ba B8000000 		.4byte	0xb8
+ 536 02be 18       		.byte	0x18
+ 537 02bf 0C       		.uleb128 0xc
+ 538 02c0 73040000 		.4byte	.LASF57
+ 539 02c4 06       		.byte	0x6
+ 540 02c5 FD04     		.2byte	0x4fd
+ 541 02c7 28030000 		.4byte	0x328
+ 542 02cb 1C       		.byte	0x1c
+ 543 02cc 0C       		.uleb128 0xc
+ 544 02cd 0F050000 		.4byte	.LASF58
+ 545 02d1 06       		.byte	0x6
+ 546 02d2 FE04     		.2byte	0x4fe
+ 547 02d4 B8000000 		.4byte	0xb8
+ 548 02d8 5C       		.byte	0x5c
+ 549 02d9 0C       		.uleb128 0xc
+ 550 02da EA000000 		.4byte	.LASF59
+ 551 02de 06       		.byte	0x6
+ 552 02df FF04     		.2byte	0x4ff
+ 553 02e1 B8000000 		.4byte	0xb8
+ 554 02e5 60       		.byte	0x60
+ 555 02e6 0C       		.uleb128 0xc
+ 556 02e7 18050000 		.4byte	.LASF60
+ 557 02eb 06       		.byte	0x6
+ 558 02ec 0005     		.2byte	0x500
+ 559 02ee B8000000 		.4byte	0xb8
+ 560 02f2 64       		.byte	0x64
+ 561 02f3 0C       		.uleb128 0xc
+ 562 02f4 B2030000 		.4byte	.LASF61
+ 563 02f8 06       		.byte	0x6
+ 564 02f9 0105     		.2byte	0x501
+ 565 02fb B8000000 		.4byte	0xb8
+ 566 02ff 68       		.byte	0x68
+ 567 0300 0C       		.uleb128 0xc
+ 568 0301 6F030000 		.4byte	.LASF62
+ 569 0305 06       		.byte	0x6
+ 570 0306 0205     		.2byte	0x502
+ 571 0308 B8000000 		.4byte	0xb8
+ 572 030c 6C       		.byte	0x6c
+ 573 030d 0C       		.uleb128 0xc
+ 574 030e 8F020000 		.4byte	.LASF63
+ 575 0312 06       		.byte	0x6
+ 576 0313 0305     		.2byte	0x503
+ 577 0315 35010000 		.4byte	0x135
+ 578 0319 70       		.byte	0x70
+ 579 031a 0C       		.uleb128 0xc
+ 580 031b 19010000 		.4byte	.LASF64
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 14
+
+
+ 581 031f 06       		.byte	0x6
+ 582 0320 0405     		.2byte	0x504
+ 583 0322 B8000000 		.4byte	0xb8
+ 584 0326 74       		.byte	0x74
+ 585 0327 00       		.byte	0
+ 586 0328 10       		.uleb128 0x10
+ 587 0329 B8000000 		.4byte	0xb8
+ 588 032d 38030000 		.4byte	0x338
+ 589 0331 11       		.uleb128 0x11
+ 590 0332 C3000000 		.4byte	0xc3
+ 591 0336 0F       		.byte	0xf
+ 592 0337 00       		.byte	0
+ 593 0338 06       		.uleb128 0x6
+ 594 0339 7E040000 		.4byte	.LASF65
+ 595 033d 06       		.byte	0x6
+ 596 033e 0505     		.2byte	0x505
+ 597 0340 5B020000 		.4byte	0x25b
+ 598 0344 12       		.uleb128 0x12
+ 599 0345 14       		.byte	0x14
+ 600 0346 07       		.byte	0x7
+ 601 0347 3B       		.byte	0x3b
+ 602 0348 89030000 		.4byte	0x389
+ 603 034c 13       		.uleb128 0x13
+ 604 034d 00000000 		.4byte	.LASF66
+ 605 0351 07       		.byte	0x7
+ 606 0352 3D       		.byte	0x3d
+ 607 0353 B8000000 		.4byte	0xb8
+ 608 0357 00       		.byte	0
+ 609 0358 13       		.uleb128 0x13
+ 610 0359 BB040000 		.4byte	.LASF67
+ 611 035d 07       		.byte	0x7
+ 612 035e 3E       		.byte	0x3e
+ 613 035f B8000000 		.4byte	0xb8
+ 614 0363 04       		.byte	0x4
+ 615 0364 13       		.uleb128 0x13
+ 616 0365 05040000 		.4byte	.LASF68
+ 617 0369 07       		.byte	0x7
+ 618 036a 3F       		.byte	0x3f
+ 619 036b 89030000 		.4byte	0x389
+ 620 036f 08       		.byte	0x8
+ 621 0370 13       		.uleb128 0x13
+ 622 0371 A2030000 		.4byte	.LASF69
+ 623 0375 07       		.byte	0x7
+ 624 0376 40       		.byte	0x40
+ 625 0377 B8000000 		.4byte	0xb8
+ 626 037b 0C       		.byte	0xc
+ 627 037c 13       		.uleb128 0x13
+ 628 037d 50020000 		.4byte	.LASF70
+ 629 0381 07       		.byte	0x7
+ 630 0382 45       		.byte	0x45
+ 631 0383 B8000000 		.4byte	0xb8
+ 632 0387 10       		.byte	0x10
+ 633 0388 00       		.byte	0
+ 634 0389 08       		.uleb128 0x8
+ 635 038a 04       		.byte	0x4
+ 636 038b 8F030000 		.4byte	0x38f
+ 637 038f 14       		.uleb128 0x14
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 15
+
+
+ 638 0390 38030000 		.4byte	0x338
+ 639 0394 03       		.uleb128 0x3
+ 640 0395 1A030000 		.4byte	.LASF71
+ 641 0399 07       		.byte	0x7
+ 642 039a 48       		.byte	0x48
+ 643 039b 44030000 		.4byte	0x344
+ 644 039f 15       		.uleb128 0x15
+ 645 03a0 37000000 		.4byte	.LASF76
+ 646 03a4 01       		.byte	0x1
+ 647 03a5 2A       		.byte	0x2a
+ 648 03a6 F7000000 		.4byte	0xf7
+ 649 03aa 00000000 		.4byte	.LFB515
+ 650 03ae 24000000 		.4byte	.LFE515-.LFB515
+ 651 03b2 01       		.uleb128 0x1
+ 652 03b3 9C       		.byte	0x9c
+ 653 03b4 F5030000 		.4byte	0x3f5
+ 654 03b8 16       		.uleb128 0x16
+ 655 03b9 02020000 		.4byte	.LASF72
+ 656 03bd 01       		.byte	0x1
+ 657 03be 2A       		.byte	0x2a
+ 658 03bf 03010000 		.4byte	0x103
+ 659 03c3 00000000 		.4byte	.LLST0
+ 660 03c7 16       		.uleb128 0x16
+ 661 03c8 75020000 		.4byte	.LASF73
+ 662 03cc 01       		.byte	0x1
+ 663 03cd 2A       		.byte	0x2a
+ 664 03ce 03010000 		.4byte	0x103
+ 665 03d2 21000000 		.4byte	.LLST1
+ 666 03d6 17       		.uleb128 0x17
+ 667 03d7 5E000000 		.4byte	.LASF74
+ 668 03db 01       		.byte	0x1
+ 669 03dc 2D       		.byte	0x2d
+ 670 03dd 0F010000 		.4byte	0x10f
+ 671 03e1 42000000 		.4byte	.LLST2
+ 672 03e5 17       		.uleb128 0x17
+ 673 03e6 DC000000 		.4byte	.LASF75
+ 674 03ea 01       		.byte	0x1
+ 675 03eb 2E       		.byte	0x2e
+ 676 03ec 03010000 		.4byte	0x103
+ 677 03f0 70000000 		.4byte	.LLST3
+ 678 03f4 00       		.byte	0
+ 679 03f5 18       		.uleb128 0x18
+ 680 03f6 DD030000 		.4byte	.LASF77
+ 681 03fa 01       		.byte	0x1
+ 682 03fb 56       		.byte	0x56
+ 683 03fc 03010000 		.4byte	0x103
+ 684 0400 00000000 		.4byte	.LFB516
+ 685 0404 C8000000 		.4byte	.LFE516-.LFB516
+ 686 0408 01       		.uleb128 0x1
+ 687 0409 9C       		.byte	0x9c
+ 688 040a 5D040000 		.4byte	0x45d
+ 689 040e 16       		.uleb128 0x16
+ 690 040f 5E000000 		.4byte	.LASF74
+ 691 0413 01       		.byte	0x1
+ 692 0414 56       		.byte	0x56
+ 693 0415 F7000000 		.4byte	0xf7
+ 694 0419 A7000000 		.4byte	.LLST4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 16
+
+
+ 695 041d 17       		.uleb128 0x17
+ 696 041e F2020000 		.4byte	.LASF78
+ 697 0422 01       		.byte	0x1
+ 698 0423 58       		.byte	0x58
+ 699 0424 03010000 		.4byte	0x103
+ 700 0428 C8000000 		.4byte	.LLST5
+ 701 042c 17       		.uleb128 0x17
+ 702 042d 60030000 		.4byte	.LASF79
+ 703 0431 01       		.byte	0x1
+ 704 0432 5C       		.byte	0x5c
+ 705 0433 1B010000 		.4byte	0x11b
+ 706 0437 E8000000 		.4byte	.LLST6
+ 707 043b 17       		.uleb128 0x17
+ 708 043c 3A030000 		.4byte	.LASF80
+ 709 0440 01       		.byte	0x1
+ 710 0441 5D       		.byte	0x5d
+ 711 0442 1B010000 		.4byte	0x11b
+ 712 0446 FB000000 		.4byte	.LLST7
+ 713 044a 19       		.uleb128 0x19
+ 714 044b 0C000000 		.4byte	.LVL13
+ 715 044f AB040000 		.4byte	0x4ab
+ 716 0453 19       		.uleb128 0x19
+ 717 0454 3C000000 		.4byte	.LVL18
+ 718 0458 B6040000 		.4byte	0x4b6
+ 719 045c 00       		.byte	0
+ 720 045d 1A       		.uleb128 0x1a
+ 721 045e DD040000 		.4byte	.LASF81
+ 722 0462 08       		.byte	0x8
+ 723 0463 EA07     		.2byte	0x7ea
+ 724 0465 69040000 		.4byte	0x469
+ 725 0469 05       		.uleb128 0x5
+ 726 046a AD000000 		.4byte	0xad
+ 727 046e 1B       		.uleb128 0x1b
+ 728 046f 20020000 		.4byte	.LASF82
+ 729 0473 09       		.byte	0x9
+ 730 0474 87       		.byte	0x87
+ 731 0475 1D020000 		.4byte	0x21d
+ 732 0479 1A       		.uleb128 0x1a
+ 733 047a D2020000 		.4byte	.LASF83
+ 734 047e 07       		.byte	0x7
+ 735 047f 6001     		.2byte	0x160
+ 736 0481 B8000000 		.4byte	0xb8
+ 737 0485 10       		.uleb128 0x10
+ 738 0486 95040000 		.4byte	0x495
+ 739 048a 95040000 		.4byte	0x495
+ 740 048e 11       		.uleb128 0x11
+ 741 048f C3000000 		.4byte	0xc3
+ 742 0493 00       		.byte	0
+ 743 0494 00       		.byte	0
+ 744 0495 14       		.uleb128 0x14
+ 745 0496 94030000 		.4byte	0x394
+ 746 049a 1A       		.uleb128 0x1a
+ 747 049b 3F020000 		.4byte	.LASF84
+ 748 049f 07       		.byte	0x7
+ 749 04a0 6401     		.2byte	0x164
+ 750 04a2 A6040000 		.4byte	0x4a6
+ 751 04a6 14       		.uleb128 0x14
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 17
+
+
+ 752 04a7 85040000 		.4byte	0x485
+ 753 04ab 1C       		.uleb128 0x1c
+ 754 04ac 6C6F6700 		.ascii	"log\000"
+ 755 04b0 6C6F6700 		.ascii	"log\000"
+ 756 04b4 0A       		.byte	0xa
+ 757 04b5 84       		.byte	0x84
+ 758 04b6 1C       		.uleb128 0x1c
+ 759 04b7 706F7700 		.ascii	"pow\000"
+ 760 04bb 706F7700 		.ascii	"pow\000"
+ 761 04bf 0A       		.byte	0xa
+ 762 04c0 86       		.byte	0x86
+ 763 04c1 00       		.byte	0
+ 764              		.section	.debug_abbrev,"",%progbits
+ 765              	.Ldebug_abbrev0:
+ 766 0000 01       		.uleb128 0x1
+ 767 0001 11       		.uleb128 0x11
+ 768 0002 01       		.byte	0x1
+ 769 0003 25       		.uleb128 0x25
+ 770 0004 0E       		.uleb128 0xe
+ 771 0005 13       		.uleb128 0x13
+ 772 0006 0B       		.uleb128 0xb
+ 773 0007 03       		.uleb128 0x3
+ 774 0008 0E       		.uleb128 0xe
+ 775 0009 1B       		.uleb128 0x1b
+ 776 000a 0E       		.uleb128 0xe
+ 777 000b 55       		.uleb128 0x55
+ 778 000c 17       		.uleb128 0x17
+ 779 000d 11       		.uleb128 0x11
+ 780 000e 01       		.uleb128 0x1
+ 781 000f 10       		.uleb128 0x10
+ 782 0010 17       		.uleb128 0x17
+ 783 0011 00       		.byte	0
+ 784 0012 00       		.byte	0
+ 785 0013 02       		.uleb128 0x2
+ 786 0014 24       		.uleb128 0x24
+ 787 0015 00       		.byte	0
+ 788 0016 0B       		.uleb128 0xb
+ 789 0017 0B       		.uleb128 0xb
+ 790 0018 3E       		.uleb128 0x3e
+ 791 0019 0B       		.uleb128 0xb
+ 792 001a 03       		.uleb128 0x3
+ 793 001b 0E       		.uleb128 0xe
+ 794 001c 00       		.byte	0
+ 795 001d 00       		.byte	0
+ 796 001e 03       		.uleb128 0x3
+ 797 001f 16       		.uleb128 0x16
+ 798 0020 00       		.byte	0
+ 799 0021 03       		.uleb128 0x3
+ 800 0022 0E       		.uleb128 0xe
+ 801 0023 3A       		.uleb128 0x3a
+ 802 0024 0B       		.uleb128 0xb
+ 803 0025 3B       		.uleb128 0x3b
+ 804 0026 0B       		.uleb128 0xb
+ 805 0027 49       		.uleb128 0x49
+ 806 0028 13       		.uleb128 0x13
+ 807 0029 00       		.byte	0
+ 808 002a 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 18
+
+
+ 809 002b 04       		.uleb128 0x4
+ 810 002c 24       		.uleb128 0x24
+ 811 002d 00       		.byte	0
+ 812 002e 0B       		.uleb128 0xb
+ 813 002f 0B       		.uleb128 0xb
+ 814 0030 3E       		.uleb128 0x3e
+ 815 0031 0B       		.uleb128 0xb
+ 816 0032 03       		.uleb128 0x3
+ 817 0033 08       		.uleb128 0x8
+ 818 0034 00       		.byte	0
+ 819 0035 00       		.byte	0
+ 820 0036 05       		.uleb128 0x5
+ 821 0037 35       		.uleb128 0x35
+ 822 0038 00       		.byte	0
+ 823 0039 49       		.uleb128 0x49
+ 824 003a 13       		.uleb128 0x13
+ 825 003b 00       		.byte	0
+ 826 003c 00       		.byte	0
+ 827 003d 06       		.uleb128 0x6
+ 828 003e 16       		.uleb128 0x16
+ 829 003f 00       		.byte	0
+ 830 0040 03       		.uleb128 0x3
+ 831 0041 0E       		.uleb128 0xe
+ 832 0042 3A       		.uleb128 0x3a
+ 833 0043 0B       		.uleb128 0xb
+ 834 0044 3B       		.uleb128 0x3b
+ 835 0045 05       		.uleb128 0x5
+ 836 0046 49       		.uleb128 0x49
+ 837 0047 13       		.uleb128 0x13
+ 838 0048 00       		.byte	0
+ 839 0049 00       		.byte	0
+ 840 004a 07       		.uleb128 0x7
+ 841 004b 0F       		.uleb128 0xf
+ 842 004c 00       		.byte	0
+ 843 004d 0B       		.uleb128 0xb
+ 844 004e 0B       		.uleb128 0xb
+ 845 004f 00       		.byte	0
+ 846 0050 00       		.byte	0
+ 847 0051 08       		.uleb128 0x8
+ 848 0052 0F       		.uleb128 0xf
+ 849 0053 00       		.byte	0
+ 850 0054 0B       		.uleb128 0xb
+ 851 0055 0B       		.uleb128 0xb
+ 852 0056 49       		.uleb128 0x49
+ 853 0057 13       		.uleb128 0x13
+ 854 0058 00       		.byte	0
+ 855 0059 00       		.byte	0
+ 856 005a 09       		.uleb128 0x9
+ 857 005b 15       		.uleb128 0x15
+ 858 005c 01       		.byte	0x1
+ 859 005d 27       		.uleb128 0x27
+ 860 005e 19       		.uleb128 0x19
+ 861 005f 01       		.uleb128 0x1
+ 862 0060 13       		.uleb128 0x13
+ 863 0061 00       		.byte	0
+ 864 0062 00       		.byte	0
+ 865 0063 0A       		.uleb128 0xa
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 19
+
+
+ 866 0064 05       		.uleb128 0x5
+ 867 0065 00       		.byte	0
+ 868 0066 49       		.uleb128 0x49
+ 869 0067 13       		.uleb128 0x13
+ 870 0068 00       		.byte	0
+ 871 0069 00       		.byte	0
+ 872 006a 0B       		.uleb128 0xb
+ 873 006b 13       		.uleb128 0x13
+ 874 006c 01       		.byte	0x1
+ 875 006d 03       		.uleb128 0x3
+ 876 006e 0E       		.uleb128 0xe
+ 877 006f 0B       		.uleb128 0xb
+ 878 0070 0B       		.uleb128 0xb
+ 879 0071 3A       		.uleb128 0x3a
+ 880 0072 0B       		.uleb128 0xb
+ 881 0073 3B       		.uleb128 0x3b
+ 882 0074 05       		.uleb128 0x5
+ 883 0075 01       		.uleb128 0x1
+ 884 0076 13       		.uleb128 0x13
+ 885 0077 00       		.byte	0
+ 886 0078 00       		.byte	0
+ 887 0079 0C       		.uleb128 0xc
+ 888 007a 0D       		.uleb128 0xd
+ 889 007b 00       		.byte	0
+ 890 007c 03       		.uleb128 0x3
+ 891 007d 0E       		.uleb128 0xe
+ 892 007e 3A       		.uleb128 0x3a
+ 893 007f 0B       		.uleb128 0xb
+ 894 0080 3B       		.uleb128 0x3b
+ 895 0081 05       		.uleb128 0x5
+ 896 0082 49       		.uleb128 0x49
+ 897 0083 13       		.uleb128 0x13
+ 898 0084 38       		.uleb128 0x38
+ 899 0085 0B       		.uleb128 0xb
+ 900 0086 00       		.byte	0
+ 901 0087 00       		.byte	0
+ 902 0088 0D       		.uleb128 0xd
+ 903 0089 04       		.uleb128 0x4
+ 904 008a 01       		.byte	0x1
+ 905 008b 0B       		.uleb128 0xb
+ 906 008c 0B       		.uleb128 0xb
+ 907 008d 49       		.uleb128 0x49
+ 908 008e 13       		.uleb128 0x13
+ 909 008f 3A       		.uleb128 0x3a
+ 910 0090 0B       		.uleb128 0xb
+ 911 0091 3B       		.uleb128 0x3b
+ 912 0092 05       		.uleb128 0x5
+ 913 0093 01       		.uleb128 0x1
+ 914 0094 13       		.uleb128 0x13
+ 915 0095 00       		.byte	0
+ 916 0096 00       		.byte	0
+ 917 0097 0E       		.uleb128 0xe
+ 918 0098 28       		.uleb128 0x28
+ 919 0099 00       		.byte	0
+ 920 009a 03       		.uleb128 0x3
+ 921 009b 0E       		.uleb128 0xe
+ 922 009c 1C       		.uleb128 0x1c
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 20
+
+
+ 923 009d 0B       		.uleb128 0xb
+ 924 009e 00       		.byte	0
+ 925 009f 00       		.byte	0
+ 926 00a0 0F       		.uleb128 0xf
+ 927 00a1 13       		.uleb128 0x13
+ 928 00a2 01       		.byte	0x1
+ 929 00a3 0B       		.uleb128 0xb
+ 930 00a4 0B       		.uleb128 0xb
+ 931 00a5 3A       		.uleb128 0x3a
+ 932 00a6 0B       		.uleb128 0xb
+ 933 00a7 3B       		.uleb128 0x3b
+ 934 00a8 05       		.uleb128 0x5
+ 935 00a9 01       		.uleb128 0x1
+ 936 00aa 13       		.uleb128 0x13
+ 937 00ab 00       		.byte	0
+ 938 00ac 00       		.byte	0
+ 939 00ad 10       		.uleb128 0x10
+ 940 00ae 01       		.uleb128 0x1
+ 941 00af 01       		.byte	0x1
+ 942 00b0 49       		.uleb128 0x49
+ 943 00b1 13       		.uleb128 0x13
+ 944 00b2 01       		.uleb128 0x1
+ 945 00b3 13       		.uleb128 0x13
+ 946 00b4 00       		.byte	0
+ 947 00b5 00       		.byte	0
+ 948 00b6 11       		.uleb128 0x11
+ 949 00b7 21       		.uleb128 0x21
+ 950 00b8 00       		.byte	0
+ 951 00b9 49       		.uleb128 0x49
+ 952 00ba 13       		.uleb128 0x13
+ 953 00bb 2F       		.uleb128 0x2f
+ 954 00bc 0B       		.uleb128 0xb
+ 955 00bd 00       		.byte	0
+ 956 00be 00       		.byte	0
+ 957 00bf 12       		.uleb128 0x12
+ 958 00c0 13       		.uleb128 0x13
+ 959 00c1 01       		.byte	0x1
+ 960 00c2 0B       		.uleb128 0xb
+ 961 00c3 0B       		.uleb128 0xb
+ 962 00c4 3A       		.uleb128 0x3a
+ 963 00c5 0B       		.uleb128 0xb
+ 964 00c6 3B       		.uleb128 0x3b
+ 965 00c7 0B       		.uleb128 0xb
+ 966 00c8 01       		.uleb128 0x1
+ 967 00c9 13       		.uleb128 0x13
+ 968 00ca 00       		.byte	0
+ 969 00cb 00       		.byte	0
+ 970 00cc 13       		.uleb128 0x13
+ 971 00cd 0D       		.uleb128 0xd
+ 972 00ce 00       		.byte	0
+ 973 00cf 03       		.uleb128 0x3
+ 974 00d0 0E       		.uleb128 0xe
+ 975 00d1 3A       		.uleb128 0x3a
+ 976 00d2 0B       		.uleb128 0xb
+ 977 00d3 3B       		.uleb128 0x3b
+ 978 00d4 0B       		.uleb128 0xb
+ 979 00d5 49       		.uleb128 0x49
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 21
+
+
+ 980 00d6 13       		.uleb128 0x13
+ 981 00d7 38       		.uleb128 0x38
+ 982 00d8 0B       		.uleb128 0xb
+ 983 00d9 00       		.byte	0
+ 984 00da 00       		.byte	0
+ 985 00db 14       		.uleb128 0x14
+ 986 00dc 26       		.uleb128 0x26
+ 987 00dd 00       		.byte	0
+ 988 00de 49       		.uleb128 0x49
+ 989 00df 13       		.uleb128 0x13
+ 990 00e0 00       		.byte	0
+ 991 00e1 00       		.byte	0
+ 992 00e2 15       		.uleb128 0x15
+ 993 00e3 2E       		.uleb128 0x2e
+ 994 00e4 01       		.byte	0x1
+ 995 00e5 3F       		.uleb128 0x3f
+ 996 00e6 19       		.uleb128 0x19
+ 997 00e7 03       		.uleb128 0x3
+ 998 00e8 0E       		.uleb128 0xe
+ 999 00e9 3A       		.uleb128 0x3a
+ 1000 00ea 0B       		.uleb128 0xb
+ 1001 00eb 3B       		.uleb128 0x3b
+ 1002 00ec 0B       		.uleb128 0xb
+ 1003 00ed 27       		.uleb128 0x27
+ 1004 00ee 19       		.uleb128 0x19
+ 1005 00ef 49       		.uleb128 0x49
+ 1006 00f0 13       		.uleb128 0x13
+ 1007 00f1 11       		.uleb128 0x11
+ 1008 00f2 01       		.uleb128 0x1
+ 1009 00f3 12       		.uleb128 0x12
+ 1010 00f4 06       		.uleb128 0x6
+ 1011 00f5 40       		.uleb128 0x40
+ 1012 00f6 18       		.uleb128 0x18
+ 1013 00f7 9742     		.uleb128 0x2117
+ 1014 00f9 19       		.uleb128 0x19
+ 1015 00fa 01       		.uleb128 0x1
+ 1016 00fb 13       		.uleb128 0x13
+ 1017 00fc 00       		.byte	0
+ 1018 00fd 00       		.byte	0
+ 1019 00fe 16       		.uleb128 0x16
+ 1020 00ff 05       		.uleb128 0x5
+ 1021 0100 00       		.byte	0
+ 1022 0101 03       		.uleb128 0x3
+ 1023 0102 0E       		.uleb128 0xe
+ 1024 0103 3A       		.uleb128 0x3a
+ 1025 0104 0B       		.uleb128 0xb
+ 1026 0105 3B       		.uleb128 0x3b
+ 1027 0106 0B       		.uleb128 0xb
+ 1028 0107 49       		.uleb128 0x49
+ 1029 0108 13       		.uleb128 0x13
+ 1030 0109 02       		.uleb128 0x2
+ 1031 010a 17       		.uleb128 0x17
+ 1032 010b 00       		.byte	0
+ 1033 010c 00       		.byte	0
+ 1034 010d 17       		.uleb128 0x17
+ 1035 010e 34       		.uleb128 0x34
+ 1036 010f 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 22
+
+
+ 1037 0110 03       		.uleb128 0x3
+ 1038 0111 0E       		.uleb128 0xe
+ 1039 0112 3A       		.uleb128 0x3a
+ 1040 0113 0B       		.uleb128 0xb
+ 1041 0114 3B       		.uleb128 0x3b
+ 1042 0115 0B       		.uleb128 0xb
+ 1043 0116 49       		.uleb128 0x49
+ 1044 0117 13       		.uleb128 0x13
+ 1045 0118 02       		.uleb128 0x2
+ 1046 0119 17       		.uleb128 0x17
+ 1047 011a 00       		.byte	0
+ 1048 011b 00       		.byte	0
+ 1049 011c 18       		.uleb128 0x18
+ 1050 011d 2E       		.uleb128 0x2e
+ 1051 011e 01       		.byte	0x1
+ 1052 011f 3F       		.uleb128 0x3f
+ 1053 0120 19       		.uleb128 0x19
+ 1054 0121 03       		.uleb128 0x3
+ 1055 0122 0E       		.uleb128 0xe
+ 1056 0123 3A       		.uleb128 0x3a
+ 1057 0124 0B       		.uleb128 0xb
+ 1058 0125 3B       		.uleb128 0x3b
+ 1059 0126 0B       		.uleb128 0xb
+ 1060 0127 27       		.uleb128 0x27
+ 1061 0128 19       		.uleb128 0x19
+ 1062 0129 49       		.uleb128 0x49
+ 1063 012a 13       		.uleb128 0x13
+ 1064 012b 11       		.uleb128 0x11
+ 1065 012c 01       		.uleb128 0x1
+ 1066 012d 12       		.uleb128 0x12
+ 1067 012e 06       		.uleb128 0x6
+ 1068 012f 40       		.uleb128 0x40
+ 1069 0130 18       		.uleb128 0x18
+ 1070 0131 9642     		.uleb128 0x2116
+ 1071 0133 19       		.uleb128 0x19
+ 1072 0134 01       		.uleb128 0x1
+ 1073 0135 13       		.uleb128 0x13
+ 1074 0136 00       		.byte	0
+ 1075 0137 00       		.byte	0
+ 1076 0138 19       		.uleb128 0x19
+ 1077 0139 898201   		.uleb128 0x4109
+ 1078 013c 00       		.byte	0
+ 1079 013d 11       		.uleb128 0x11
+ 1080 013e 01       		.uleb128 0x1
+ 1081 013f 31       		.uleb128 0x31
+ 1082 0140 13       		.uleb128 0x13
+ 1083 0141 00       		.byte	0
+ 1084 0142 00       		.byte	0
+ 1085 0143 1A       		.uleb128 0x1a
+ 1086 0144 34       		.uleb128 0x34
+ 1087 0145 00       		.byte	0
+ 1088 0146 03       		.uleb128 0x3
+ 1089 0147 0E       		.uleb128 0xe
+ 1090 0148 3A       		.uleb128 0x3a
+ 1091 0149 0B       		.uleb128 0xb
+ 1092 014a 3B       		.uleb128 0x3b
+ 1093 014b 05       		.uleb128 0x5
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 23
+
+
+ 1094 014c 49       		.uleb128 0x49
+ 1095 014d 13       		.uleb128 0x13
+ 1096 014e 3F       		.uleb128 0x3f
+ 1097 014f 19       		.uleb128 0x19
+ 1098 0150 3C       		.uleb128 0x3c
+ 1099 0151 19       		.uleb128 0x19
+ 1100 0152 00       		.byte	0
+ 1101 0153 00       		.byte	0
+ 1102 0154 1B       		.uleb128 0x1b
+ 1103 0155 34       		.uleb128 0x34
+ 1104 0156 00       		.byte	0
+ 1105 0157 03       		.uleb128 0x3
+ 1106 0158 0E       		.uleb128 0xe
+ 1107 0159 3A       		.uleb128 0x3a
+ 1108 015a 0B       		.uleb128 0xb
+ 1109 015b 3B       		.uleb128 0x3b
+ 1110 015c 0B       		.uleb128 0xb
+ 1111 015d 49       		.uleb128 0x49
+ 1112 015e 13       		.uleb128 0x13
+ 1113 015f 3F       		.uleb128 0x3f
+ 1114 0160 19       		.uleb128 0x19
+ 1115 0161 3C       		.uleb128 0x3c
+ 1116 0162 19       		.uleb128 0x19
+ 1117 0163 00       		.byte	0
+ 1118 0164 00       		.byte	0
+ 1119 0165 1C       		.uleb128 0x1c
+ 1120 0166 2E       		.uleb128 0x2e
+ 1121 0167 00       		.byte	0
+ 1122 0168 3F       		.uleb128 0x3f
+ 1123 0169 19       		.uleb128 0x19
+ 1124 016a 3C       		.uleb128 0x3c
+ 1125 016b 19       		.uleb128 0x19
+ 1126 016c 6E       		.uleb128 0x6e
+ 1127 016d 08       		.uleb128 0x8
+ 1128 016e 03       		.uleb128 0x3
+ 1129 016f 08       		.uleb128 0x8
+ 1130 0170 3A       		.uleb128 0x3a
+ 1131 0171 0B       		.uleb128 0xb
+ 1132 0172 3B       		.uleb128 0x3b
+ 1133 0173 0B       		.uleb128 0xb
+ 1134 0174 00       		.byte	0
+ 1135 0175 00       		.byte	0
+ 1136 0176 00       		.byte	0
+ 1137              		.section	.debug_loc,"",%progbits
+ 1138              	.Ldebug_loc0:
+ 1139              	.LLST0:
+ 1140 0000 00000000 		.4byte	.LVL0
+ 1141 0004 0A000000 		.4byte	.LVL2
+ 1142 0008 0100     		.2byte	0x1
+ 1143 000a 50       		.byte	0x50
+ 1144 000b 0A000000 		.4byte	.LVL2
+ 1145 000f 24000000 		.4byte	.LFE515
+ 1146 0013 0400     		.2byte	0x4
+ 1147 0015 F3       		.byte	0xf3
+ 1148 0016 01       		.uleb128 0x1
+ 1149 0017 50       		.byte	0x50
+ 1150 0018 9F       		.byte	0x9f
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 24
+
+
+ 1151 0019 00000000 		.4byte	0
+ 1152 001d 00000000 		.4byte	0
+ 1153              	.LLST1:
+ 1154 0021 00000000 		.4byte	.LVL0
+ 1155 0025 08000000 		.4byte	.LVL1
+ 1156 0029 0100     		.2byte	0x1
+ 1157 002b 51       		.byte	0x51
+ 1158 002c 08000000 		.4byte	.LVL1
+ 1159 0030 24000000 		.4byte	.LFE515
+ 1160 0034 0400     		.2byte	0x4
+ 1161 0036 F3       		.byte	0xf3
+ 1162 0037 01       		.uleb128 0x1
+ 1163 0038 51       		.byte	0x51
+ 1164 0039 9F       		.byte	0x9f
+ 1165 003a 00000000 		.4byte	0
+ 1166 003e 00000000 		.4byte	0
+ 1167              	.LLST2:
+ 1168 0042 08000000 		.4byte	.LVL1
+ 1169 0046 1E000000 		.4byte	.LVL9
+ 1170 004a 0100     		.2byte	0x1
+ 1171 004c 51       		.byte	0x51
+ 1172 004d 1E000000 		.4byte	.LVL9
+ 1173 0051 22000000 		.4byte	.LVL10
+ 1174 0055 0600     		.2byte	0x6
+ 1175 0057 71       		.byte	0x71
+ 1176 0058 00       		.sleb128 0
+ 1177 0059 70       		.byte	0x70
+ 1178 005a 00       		.sleb128 0
+ 1179 005b 1B       		.byte	0x1b
+ 1180 005c 9F       		.byte	0x9f
+ 1181 005d 22000000 		.4byte	.LVL10
+ 1182 0061 24000000 		.4byte	.LFE515
+ 1183 0065 0100     		.2byte	0x1
+ 1184 0067 50       		.byte	0x50
+ 1185 0068 00000000 		.4byte	0
+ 1186 006c 00000000 		.4byte	0
+ 1187              	.LLST3:
+ 1188 0070 0E000000 		.4byte	.LVL3
+ 1189 0074 14000000 		.4byte	.LVL5
+ 1190 0078 0100     		.2byte	0x1
+ 1191 007a 53       		.byte	0x53
+ 1192 007b 14000000 		.4byte	.LVL5
+ 1193 007f 16000000 		.4byte	.LVL6
+ 1194 0083 0400     		.2byte	0x4
+ 1195 0085 73       		.byte	0x73
+ 1196 0086 00       		.sleb128 0
+ 1197 0087 1F       		.byte	0x1f
+ 1198 0088 9F       		.byte	0x9f
+ 1199 0089 16000000 		.4byte	.LVL6
+ 1200 008d 18000000 		.4byte	.LVL7
+ 1201 0091 0100     		.2byte	0x1
+ 1202 0093 53       		.byte	0x53
+ 1203 0094 1C000000 		.4byte	.LVL8
+ 1204 0098 24000000 		.4byte	.LFE515
+ 1205 009c 0100     		.2byte	0x1
+ 1206 009e 53       		.byte	0x53
+ 1207 009f 00000000 		.4byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 25
+
+
+ 1208 00a3 00000000 		.4byte	0
+ 1209              	.LLST4:
+ 1210 00a7 00000000 		.4byte	.LVL11
+ 1211 00ab 07000000 		.4byte	.LVL12-1
+ 1212 00af 0100     		.2byte	0x1
+ 1213 00b1 50       		.byte	0x50
+ 1214 00b2 07000000 		.4byte	.LVL12-1
+ 1215 00b6 C8000000 		.4byte	.LFE516
+ 1216 00ba 0400     		.2byte	0x4
+ 1217 00bc F3       		.byte	0xf3
+ 1218 00bd 01       		.uleb128 0x1
+ 1219 00be 50       		.byte	0x50
+ 1220 00bf 9F       		.byte	0x9f
+ 1221 00c0 00000000 		.4byte	0
+ 1222 00c4 00000000 		.4byte	0
+ 1223              	.LLST5:
+ 1224 00c8 90000000 		.4byte	.LVL28
+ 1225 00cc 98000000 		.4byte	.LVL29
+ 1226 00d0 0200     		.2byte	0x2
+ 1227 00d2 91       		.byte	0x91
+ 1228 00d3 64       		.sleb128 -28
+ 1229 00d4 98000000 		.4byte	.LVL29
+ 1230 00d8 C8000000 		.4byte	.LFE516
+ 1231 00dc 0200     		.2byte	0x2
+ 1232 00de 7D       		.byte	0x7d
+ 1233 00df 64       		.sleb128 -28
+ 1234 00e0 00000000 		.4byte	0
+ 1235 00e4 00000000 		.4byte	0
+ 1236              	.LLST6:
+ 1237 00e8 56000000 		.4byte	.LVL21
+ 1238 00ec 59000000 		.4byte	.LVL22-1
+ 1239 00f0 0100     		.2byte	0x1
+ 1240 00f2 50       		.byte	0x50
+ 1241 00f3 00000000 		.4byte	0
+ 1242 00f7 00000000 		.4byte	0
+ 1243              	.LLST7:
+ 1244 00fb 10000000 		.4byte	.LVL14
+ 1245 00ff 13000000 		.4byte	.LVL15-1
+ 1246 0103 0100     		.2byte	0x1
+ 1247 0105 50       		.byte	0x50
+ 1248 0106 00000000 		.4byte	0
+ 1249 010a 00000000 		.4byte	0
+ 1250              		.section	.debug_aranges,"",%progbits
+ 1251 0000 24000000 		.4byte	0x24
+ 1252 0004 0200     		.2byte	0x2
+ 1253 0006 00000000 		.4byte	.Ldebug_info0
+ 1254 000a 04       		.byte	0x4
+ 1255 000b 00       		.byte	0
+ 1256 000c 0000     		.2byte	0
+ 1257 000e 0000     		.2byte	0
+ 1258 0010 00000000 		.4byte	.LFB515
+ 1259 0014 24000000 		.4byte	.LFE515-.LFB515
+ 1260 0018 00000000 		.4byte	.LFB516
+ 1261 001c C8000000 		.4byte	.LFE516-.LFB516
+ 1262 0020 00000000 		.4byte	0
+ 1263 0024 00000000 		.4byte	0
+ 1264              		.section	.debug_ranges,"",%progbits
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 26
+
+
+ 1265              	.Ldebug_ranges0:
+ 1266 0000 00000000 		.4byte	.LFB515
+ 1267 0004 24000000 		.4byte	.LFE515
+ 1268 0008 00000000 		.4byte	.LFB516
+ 1269 000c C8000000 		.4byte	.LFE516
+ 1270 0010 00000000 		.4byte	0
+ 1271 0014 00000000 		.4byte	0
+ 1272              		.section	.debug_line,"",%progbits
+ 1273              	.Ldebug_line0:
+ 1274 0000 F4020000 		.section	.debug_str,"MS",%progbits,1
+ 1274      0200BC02 
+ 1274      00000201 
+ 1274      FB0E0D00 
+ 1274      01010101 
+ 1275              	.LASF66:
+ 1276 0000 6368616E 		.ascii	"channelBase\000"
+ 1276      6E656C42 
+ 1276      61736500 
+ 1277              	.LASF41:
+ 1278 000c 74784C65 		.ascii	"txLeftToTransmit\000"
+ 1278      6674546F 
+ 1278      5472616E 
+ 1278      736D6974 
+ 1278      00
+ 1279              	.LASF48:
+ 1280 001d 43595F53 		.ascii	"CY_SAR_RANGE_COND_OUTSIDE\000"
+ 1280      41525F52 
+ 1280      414E4745 
+ 1280      5F434F4E 
+ 1280      445F4F55 
+ 1281              	.LASF76:
+ 1282 0037 54686572 		.ascii	"Thermistor_GetResistance\000"
+ 1282      6D697374 
+ 1282      6F725F47 
+ 1282      65745265 
+ 1282      73697374 
+ 1283              	.LASF35:
+ 1284 0050 72785269 		.ascii	"rxRingBufTail\000"
+ 1284      6E674275 
+ 1284      66546169 
+ 1284      6C00
+ 1285              	.LASF74:
+ 1286 005e 72657354 		.ascii	"resT\000"
+ 1286      00
+ 1287              	.LASF26:
+ 1288 0063 666C6F61 		.ascii	"float32\000"
+ 1288      74333200 
+ 1289              	.LASF37:
+ 1290 006b 72784275 		.ascii	"rxBufSize\000"
+ 1290      6653697A 
+ 1290      6500
+ 1291              	.LASF87:
+ 1292 0075 433A5C47 		.ascii	"C:\\Git\\PSoC6-101-Videos\\Projects_ScreenCapture\\"
+ 1292      69745C50 
+ 1292      536F4336 
+ 1292      2D313031 
+ 1292      2D566964 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 27
+
+
+ 1293 00a4 50536F43 		.ascii	"PSoC 6_101\\2-6-ADC.cydsn\000"
+ 1293      20365F31 
+ 1293      30315C32 
+ 1293      2D362D41 
+ 1293      44432E63 
+ 1294              	.LASF29:
+ 1295 00bd 63795F63 		.ascii	"cy_cb_scb_uart_handle_events_t\000"
+ 1295      625F7363 
+ 1295      625F7561 
+ 1295      72745F68 
+ 1295      616E646C 
+ 1296              	.LASF75:
+ 1297 00dc 74656D70 		.ascii	"temp\000"
+ 1297      00
+ 1298              	.LASF17:
+ 1299 00e1 73697A65 		.ascii	"sizetype\000"
+ 1299      74797065 
+ 1299      00
+ 1300              	.LASF59:
+ 1301 00ea 73617449 		.ascii	"satIntrMask\000"
+ 1301      6E74724D 
+ 1301      61736B00 
+ 1302              	.LASF51:
+ 1303 00f6 73616D70 		.ascii	"sampleCtrl\000"
+ 1303      6C654374 
+ 1303      726C00
+ 1304              	.LASF88:
+ 1305 0101 63795F73 		.ascii	"cy_stc_scb_uart_context\000"
+ 1305      74635F73 
+ 1305      63625F75 
+ 1305      6172745F 
+ 1305      636F6E74 
+ 1306              	.LASF64:
+ 1307 0119 76726566 		.ascii	"vrefMvValue\000"
+ 1307      4D765661 
+ 1307      6C756500 
+ 1308              	.LASF54:
+ 1309 0125 72616E67 		.ascii	"rangeThres\000"
+ 1309      65546872 
+ 1309      657300
+ 1310              	.LASF85:
+ 1311 0130 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1311      43313120 
+ 1311      352E342E 
+ 1311      31203230 
+ 1311      31363036 
+ 1312 0163 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m4 -mfloat-abi=s"
+ 1312      20726576 
+ 1312      6973696F 
+ 1312      6E203233 
+ 1312      37373135 
+ 1313 0196 6F667466 		.ascii	"oftfp -mfpu=fpv4-sp-d16 -mthumb -g -Og -ffunction-s"
+ 1313      70202D6D 
+ 1313      6670753D 
+ 1313      66707634 
+ 1313      2D73702D 
+ 1314 01c9 65637469 		.ascii	"ections -ffat-lto-objects\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 28
+
+
+ 1314      6F6E7320 
+ 1314      2D666661 
+ 1314      742D6C74 
+ 1314      6F2D6F62 
+ 1315              	.LASF8:
+ 1316 01e3 5F5F7569 		.ascii	"__uint32_t\000"
+ 1316      6E743332 
+ 1316      5F7400
+ 1317              	.LASF30:
+ 1318 01ee 74785374 		.ascii	"txStatus\000"
+ 1318      61747573 
+ 1318      00
+ 1319              	.LASF4:
+ 1320 01f7 5F5F7569 		.ascii	"__uint16_t\000"
+ 1320      6E743136 
+ 1320      5F7400
+ 1321              	.LASF72:
+ 1322 0202 76526566 		.ascii	"vReference\000"
+ 1322      6572656E 
+ 1322      636500
+ 1323              	.LASF38:
+ 1324 020d 72784275 		.ascii	"rxBufIdx\000"
+ 1324      66496478 
+ 1324      00
+ 1325              	.LASF0:
+ 1326 0216 73686F72 		.ascii	"short int\000"
+ 1326      7420696E 
+ 1326      7400
+ 1327              	.LASF82:
+ 1328 0220 55415254 		.ascii	"UART_1_context\000"
+ 1328      5F315F63 
+ 1328      6F6E7465 
+ 1328      787400
+ 1329              	.LASF55:
+ 1330 022f 72616E67 		.ascii	"rangeCond\000"
+ 1330      65436F6E 
+ 1330      6400
+ 1331              	.LASF24:
+ 1332 0239 696E7431 		.ascii	"int16\000"
+ 1332      3600
+ 1333              	.LASF84:
+ 1334 023f 4144435F 		.ascii	"ADC_1_allConfigs\000"
+ 1334      315F616C 
+ 1334      6C436F6E 
+ 1334      66696773 
+ 1334      00
+ 1335              	.LASF70:
+ 1336 0250 636C6B44 		.ascii	"clkDivider\000"
+ 1336      69766964 
+ 1336      657200
+ 1337              	.LASF34:
+ 1338 025b 72785269 		.ascii	"rxRingBufHead\000"
+ 1338      6E674275 
+ 1338      66486561 
+ 1338      6400
+ 1339              	.LASF20:
+ 1340 0269 666C6F61 		.ascii	"float\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 29
+
+
+ 1340      7400
+ 1341              	.LASF39:
+ 1342 026f 74784275 		.ascii	"txBuf\000"
+ 1342      6600
+ 1343              	.LASF73:
+ 1344 0275 76546865 		.ascii	"vThermistor\000"
+ 1344      726D6973 
+ 1344      746F7200 
+ 1345              	.LASF10:
+ 1346 0281 6C6F6E67 		.ascii	"long long int\000"
+ 1346      206C6F6E 
+ 1346      6720696E 
+ 1346      7400
+ 1347              	.LASF63:
+ 1348 028f 636F6E66 		.ascii	"configRouting\000"
+ 1348      6967526F 
+ 1348      7574696E 
+ 1348      6700
+ 1349              	.LASF86:
+ 1350 029d 54686572 		.ascii	"Thermistor.c\000"
+ 1350      6D697374 
+ 1350      6F722E63 
+ 1350      00
+ 1351              	.LASF33:
+ 1352 02aa 72785269 		.ascii	"rxRingBufSize\000"
+ 1352      6E674275 
+ 1352      6653697A 
+ 1352      6500
+ 1353              	.LASF50:
+ 1354 02b8 6374726C 		.ascii	"ctrl\000"
+ 1354      00
+ 1355              	.LASF52:
+ 1356 02bd 73616D70 		.ascii	"sampleTime01\000"
+ 1356      6C655469 
+ 1356      6D653031 
+ 1356      00
+ 1357              	.LASF15:
+ 1358 02ca 696E7433 		.ascii	"int32_t\000"
+ 1358      325F7400 
+ 1359              	.LASF83:
+ 1360 02d2 4144435F 		.ascii	"ADC_1_currentConfig\000"
+ 1360      315F6375 
+ 1360      7272656E 
+ 1360      74436F6E 
+ 1360      66696700 
+ 1361              	.LASF18:
+ 1362 02e6 6C6F6E67 		.ascii	"long double\000"
+ 1362      20646F75 
+ 1362      626C6500 
+ 1363              	.LASF78:
+ 1364 02f2 74656D70 		.ascii	"tempTR\000"
+ 1364      545200
+ 1365              	.LASF31:
+ 1366 02f9 72785374 		.ascii	"rxStatus\000"
+ 1366      61747573 
+ 1366      00
+ 1367              	.LASF2:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 30
+
+
+ 1368 0302 756E7369 		.ascii	"unsigned char\000"
+ 1368      676E6564 
+ 1368      20636861 
+ 1368      7200
+ 1369              	.LASF32:
+ 1370 0310 72785269 		.ascii	"rxRingBuf\000"
+ 1370      6E674275 
+ 1370      6600
+ 1371              	.LASF71:
+ 1372 031a 4144435F 		.ascii	"ADC_1_CONFIG_STRUCT\000"
+ 1372      315F434F 
+ 1372      4E464947 
+ 1372      5F535452 
+ 1372      55435400 
+ 1373              	.LASF1:
+ 1374 032e 7369676E 		.ascii	"signed char\000"
+ 1374      65642063 
+ 1374      68617200 
+ 1375              	.LASF80:
+ 1376 033a 6C6F6772 		.ascii	"logrT\000"
+ 1376      5400
+ 1377              	.LASF11:
+ 1378 0340 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1378      206C6F6E 
+ 1378      6720756E 
+ 1378      7369676E 
+ 1378      65642069 
+ 1379              	.LASF16:
+ 1380 0357 75696E74 		.ascii	"uint32_t\000"
+ 1380      33325F74 
+ 1380      00
+ 1381              	.LASF79:
+ 1382 0360 73744571 		.ascii	"stEqn\000"
+ 1382      6E00
+ 1383              	.LASF14:
+ 1384 0366 75696E74 		.ascii	"uint16_t\000"
+ 1384      31365F74 
+ 1384      00
+ 1385              	.LASF62:
+ 1386 036f 6D757853 		.ascii	"muxSwitchSqCtrl\000"
+ 1386      77697463 
+ 1386      68537143 
+ 1386      74726C00 
+ 1387              	.LASF40:
+ 1388 037f 74784275 		.ascii	"txBufSize\000"
+ 1388      6653697A 
+ 1388      6500
+ 1389              	.LASF5:
+ 1390 0389 73686F72 		.ascii	"short unsigned int\000"
+ 1390      7420756E 
+ 1390      7369676E 
+ 1390      65642069 
+ 1390      6E7400
+ 1391              	.LASF36:
+ 1392 039c 72784275 		.ascii	"rxBuf\000"
+ 1392      6600
+ 1393              	.LASF69:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 31
+
+
+ 1394 03a2 6D697363 		.ascii	"miscConfig\000"
+ 1394      436F6E66 
+ 1394      696700
+ 1395              	.LASF19:
+ 1396 03ad 63686172 		.ascii	"char\000"
+ 1396      00
+ 1397              	.LASF61:
+ 1398 03b2 6D757853 		.ascii	"muxSwitch\000"
+ 1398      77697463 
+ 1398      6800
+ 1399              	.LASF42:
+ 1400 03bc 63624576 		.ascii	"cbEvents\000"
+ 1400      656E7473 
+ 1400      00
+ 1401              	.LASF47:
+ 1402 03c5 43595F53 		.ascii	"CY_SAR_RANGE_COND_ABOVE\000"
+ 1402      41525F52 
+ 1402      414E4745 
+ 1402      5F434F4E 
+ 1402      445F4142 
+ 1403              	.LASF77:
+ 1404 03dd 54686572 		.ascii	"Thermistor_GetTemperature\000"
+ 1404      6D697374 
+ 1404      6F725F47 
+ 1404      65745465 
+ 1404      6D706572 
+ 1405              	.LASF13:
+ 1406 03f7 696E7431 		.ascii	"int16_t\000"
+ 1406      365F7400 
+ 1407              	.LASF28:
+ 1408 03ff 5F426F6F 		.ascii	"_Bool\000"
+ 1408      6C00
+ 1409              	.LASF68:
+ 1410 0405 6877436F 		.ascii	"hwConfigStc\000"
+ 1410      6E666967 
+ 1410      53746300 
+ 1411              	.LASF22:
+ 1412 0411 75696E74 		.ascii	"uint16\000"
+ 1412      313600
+ 1413              	.LASF23:
+ 1414 0418 75696E74 		.ascii	"uint32\000"
+ 1414      333200
+ 1415              	.LASF9:
+ 1416 041f 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1416      20756E73 
+ 1416      69676E65 
+ 1416      6420696E 
+ 1416      7400
+ 1417              	.LASF25:
+ 1418 0431 696E7433 		.ascii	"int32\000"
+ 1418      3200
+ 1419              	.LASF21:
+ 1420 0437 646F7562 		.ascii	"double\000"
+ 1420      6C6500
+ 1421              	.LASF6:
+ 1422 043e 5F5F696E 		.ascii	"__int32_t\000"
+ 1422      7433325F 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 32
+
+
+ 1422      7400
+ 1423              	.LASF46:
+ 1424 0448 43595F53 		.ascii	"CY_SAR_RANGE_COND_INSIDE\000"
+ 1424      41525F52 
+ 1424      414E4745 
+ 1424      5F434F4E 
+ 1424      445F494E 
+ 1425              	.LASF43:
+ 1426 0461 696E6974 		.ascii	"initKey\000"
+ 1426      4B657900 
+ 1427              	.LASF3:
+ 1428 0469 5F5F696E 		.ascii	"__int16_t\000"
+ 1428      7431365F 
+ 1428      7400
+ 1429              	.LASF57:
+ 1430 0473 6368616E 		.ascii	"chanConfig\000"
+ 1430      436F6E66 
+ 1430      696700
+ 1431              	.LASF65:
+ 1432 047e 63795F73 		.ascii	"cy_stc_sar_config_t\000"
+ 1432      74635F73 
+ 1432      61725F63 
+ 1432      6F6E6669 
+ 1432      675F7400 
+ 1433              	.LASF44:
+ 1434 0492 63795F73 		.ascii	"cy_stc_scb_uart_context_t\000"
+ 1434      74635F73 
+ 1434      63625F75 
+ 1434      6172745F 
+ 1434      636F6E74 
+ 1435              	.LASF27:
+ 1436 04ac 666C6F61 		.ascii	"float64\000"
+ 1436      74363400 
+ 1437              	.LASF56:
+ 1438 04b4 6368616E 		.ascii	"chanEn\000"
+ 1438      456E00
+ 1439              	.LASF67:
+ 1440 04bb 6E756D43 		.ascii	"numChannels\000"
+ 1440      68616E6E 
+ 1440      656C7300 
+ 1441              	.LASF53:
+ 1442 04c7 73616D70 		.ascii	"sampleTime23\000"
+ 1442      6C655469 
+ 1442      6D653233 
+ 1442      00
+ 1443              	.LASF7:
+ 1444 04d4 6C6F6E67 		.ascii	"long int\000"
+ 1444      20696E74 
+ 1444      00
+ 1445              	.LASF81:
+ 1446 04dd 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1446      52784275 
+ 1446      66666572 
+ 1446      00
+ 1447              	.LASF12:
+ 1448 04ea 756E7369 		.ascii	"unsigned int\000"
+ 1448      676E6564 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccgvCCt9.s 			page 33
+
+
+ 1448      20696E74 
+ 1448      00
+ 1449              	.LASF45:
+ 1450 04f7 43595F53 		.ascii	"CY_SAR_RANGE_COND_BELOW\000"
+ 1450      41525F52 
+ 1450      414E4745 
+ 1450      5F434F4E 
+ 1450      445F4245 
+ 1451              	.LASF58:
+ 1452 050f 696E7472 		.ascii	"intrMask\000"
+ 1452      4D61736B 
+ 1452      00
+ 1453              	.LASF60:
+ 1454 0518 72616E67 		.ascii	"rangeIntrMask\000"
+ 1454      65496E74 
+ 1454      724D6173 
+ 1454      6B00
+ 1455              	.LASF49:
+ 1456 0526 63795F65 		.ascii	"cy_en_sar_range_detect_condition_t\000"
+ 1456      6E5F7361 
+ 1456      725F7261 
+ 1456      6E67655F 
+ 1456      64657465 
+ 1457              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

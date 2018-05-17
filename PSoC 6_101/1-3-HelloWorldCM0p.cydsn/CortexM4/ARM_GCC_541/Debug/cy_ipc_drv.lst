@@ -1,0 +1,2972 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.fpu fpv4-sp-d16
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.thumb
+  15              		.syntax unified
+  16              		.file	"cy_ipc_drv.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.Cy_IPC_Drv_LockRelease,"ax",%progbits
+  21              		.align	2
+  22              		.global	Cy_IPC_Drv_LockRelease
+  23              		.thumb
+  24              		.thumb_func
+  25              		.type	Cy_IPC_Drv_LockRelease, %function
+  26              	Cy_IPC_Drv_LockRelease:
+  27              	.LFB144:
+  28              		.file 1 "Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\ipc\\cy_ipc_drv.c"
+   1:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** /***************************************************************************//**
+   2:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \file cy_ipc_drv.c
+   3:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \version 1.10.1
+   4:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+   5:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *  \breif
+   6:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *   IPC Driver - This source file contains the low-level driver code for
+   7:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *   the IPC hardware.
+   8:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+   9:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** ********************************************************************************
+  10:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Copyright 2016-2018, Cypress Semiconductor Corporation.  All rights reserved.
+  11:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * You may use this file only in accordance with the license, terms, conditions,
+  12:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  13:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * the software package with which this file was provided.
+  14:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *******************************************************************************/
+  15:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+  16:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** #include "cy_ipc_drv.h"
+  17:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+  18:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+  19:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** /*******************************************************************************
+  20:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Function Name: Cy_IPC_Drv_LockRelease
+  21:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** ****************************************************************************//**
+  22:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  23:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * The function is used to release an IPC channel from the locked state.
+  24:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * The function also has a way to specify through a parameter which IPC
+  25:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * interrupts must be notified during the release event.
+  26:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  27:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \param base
+  28:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * This parameter is a handle that represents the base address of the registers
+  29:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * of the IPC channel.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 2
+
+
+  30:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * The parameter is generally returned from a call to the \ref
+  31:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Cy_IPC_Drv_GetIpcBaseAddress.
+  32:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  33:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \param releaseEventIntr
+  34:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Bit encoded list of IPC interrupt lines that are triggered by a release event.
+  35:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  36:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \return   Status of the operation
+  37:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *   \retval CY_IPC_DRV_SUCCESS: The function executed successfully and the IPC channel
+  38:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *                       was released.
+  39:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *   \retval CY_IPC_DRV_ERROR: The IPC channel was not acquired before the
+  40:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *                       function call.
+  41:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  42:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \funcusage
+  43:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_ReadMsgPtr
+  44:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  45:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *******************************************************************************/
+  46:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** cy_en_ipcdrv_status_t Cy_IPC_Drv_LockRelease (IPC_STRUCT_Type* base, uint32_t releaseEventIntr)
+  47:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** {
+  29              		.loc 1 47 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              	.LVL0:
+  34 0000 38B5     		push	{r3, r4, r5, lr}
+  35              		.cfi_def_cfa_offset 16
+  36              		.cfi_offset 3, -16
+  37              		.cfi_offset 4, -12
+  38              		.cfi_offset 5, -8
+  39              		.cfi_offset 14, -4
+  40              	.LVL1:
+  41              	.LBB16:
+  42              	.LBB17:
+  43              		.file 2 "Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\ipc\\cy_ipc_drv.h"
+   1:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /***************************************************************************//**
+   2:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \file cy_ipc_drv.h
+   3:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \version 1.10.1
+   4:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+   5:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Provides an API declaration of the IPC driver.
+   6:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+   7:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ********************************************************************************
+   8:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \copyright
+   9:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Copyright 2016-2018, Cypress Semiconductor Corporation. All rights reserved.
+  10:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+  14:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+  15:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #ifndef CY_IPC_DRV_H
+  16:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #define CY_IPC_DRV_H
+  17:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+  18:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+  19:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /**
+  20:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \defgroup group_ipc Inter Process Communication (IPC)
+  21:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \{
+  22:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The inter-processor communication (IPC) driver provides a safe and reliable
+  23:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * method to transfer data between CPUs. Hardware locking ensures that only one
+  24:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * device can acquire and transfer data at a time so no data is lost or
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 3
+
+
+  25:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * overwritten by asynchronous processes or CPUs.
+  26:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  27:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * There are three parts to the API:
+  28:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     - Driver-level (DRV) API - used internally by Semaphore and Pipe levels
+  29:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     - Pipe-level (PIPE) API - establishes a communication channel between
+  30:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *       processors
+  31:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     - Semaphore-level (SEMA) API - enables users to set and clear flags to
+  32:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *       synchronize operations.
+  33:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  34:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Firmware does not need to use the DRV API. It can implement IPC functionality
+  35:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * entirely with the PIPE and SEMA APIs.
+  36:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  37:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \section group_ipc_background Background
+  38:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  39:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * IPC is implemented in hardware as a collection of individual communication
+  40:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * channels, each with a set of 32-bit registers. The IPC design implements a set
+  41:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of interrupts that enable each processor to notify the other that data is
+  42:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * available, or has been processed. There is also a locking mechanism that
+  43:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * allows only one CPU to gain access at a time.
+  44:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  45:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The Driver-level API manages each channel's registers to implement IPC
+  46:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * functionality. For information on the IPC registers, see the IPC chapter of
+  47:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * the Technical Reference Manual (TRM).
+  48:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  49:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * At the hardware level, communication is a five-step process.
+  50:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     -#  The sending processor acquires a channel
+  51:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     -#  It puts data into the channel
+  52:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     -#  The sender generates a notify event (interrupt)
+  53:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     -#  The receiving processor identifies the sender and retrieves the data
+  54:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     -#  The receiving processor generates a release event (interrupt)
+  55:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  56:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \image html ipc_driver.png
+  57:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  58:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * These transactions are handled transparently by the DRV-level API. Use the
+  59:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * PIPE and SEMA layers of the API to implement communication in your application.
+  60:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The data transferred is limited to a single 32-bit value. As implemented by
+  61:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * the PIPE API, that value is a pointer to a data structure of arbitrary size
+  62:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * and complexity.
+  63:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  64:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \section group_ipc_overview Overview
+  65:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  66:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The Pipe is the key element in the PDL design. A pipe is typically a
+  67:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * full-duplex communication channel between CPU cores. A pipe allows a single
+  68:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * conduit to transfer messages or data to and from multiple processes or CPUs.
+  69:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  70:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * A pipe has two endpoints, one on each core. Each endpoint contains a dedicated
+  71:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * IPC channel and an interrupt. IPC channels 0-7 and IPC interrupts 0-7 are
+  72:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * reserved for system use.
+  73:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  74:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The pipe also contains the number of clients it supports, and for each client
+  75:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * a callback function. So the pipe can service a number of clients, each with a
+  76:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * separate callback function, on either endpoint. The number of clients a pipe
+  77:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * supports is the sum of each endpoint's clients.
+  78:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  79:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This design enables any number of processes on the sending core to put
+  80:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * arbitrary data into a single pipe. The first element of that data is the
+  81:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * client ID of the client that should handle the data.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 4
+
+
+  82:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  83:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * An interrupt notifies the receiving core that data is available. The receiving
+  84:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * core parses the data to identify the client, and then dispatches the event to
+  85:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * the appropriate client via the client callback function. An interrupt notifies
+  86:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * the sending core that the receiver is finished. In this way a single pipe can
+  87:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * manage arbitrary data transfers between cores with data flowing in either
+  88:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * direction.
+  89:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  90:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \image html ipc_ints.png
+  91:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  92:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The application can use semaphores to control access to shared resources, as
+  93:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * required by the application's logic.
+  94:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+  95:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The PDL provides two specific files that set up default IPC functionality.
+  96:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * They are cy_ipc_config.h and cy_ipc_config.c. You can modify these files based
+  97:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * on the requirements of your design. If you use PSoC Creator as a development
+  98:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * environment, it will not overwrite your changes when you generate the
+  99:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * application or build your code.
+ 100:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 101:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \section group_ipc_pipe_layer PIPE layer
+ 102:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 103:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * A pipe is a communication channel between two endpoints. PSoC 6 devices support
+ 104:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * 16 IPC channels, and 16 IPC interrupts, each numbered 0-15. IPC Channels 0-7
+ 105:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * and IPC interrupts 0-7 are reserved for system use. Channels 8-15 and
+ 106:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * interrupts 8-15 are available for application use.
+ 107:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 108:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * A full duplex pipe uses two IPC channels, one per endpoint. Each endpoint
+ 109:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * specifies all the information required to process a message (either sent or
+ 110:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * received). Each endpoint is configured to use an IPC channel, and an IPC
+ 111:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * interrupt. Common practice is to use the interrupt with the same number as
+ 112:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * the IPC channel. However, IPC Interrupts are not directly associated with the
+ 113:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * IPC channels, so any channel can use any interrupt.  Any IPC channel can
+ 114:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * trigger 0, 1 or all the IPC interrupts at once, depending on the Notify or
+ 115:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Release masks used.
+ 116:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 117:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * It is also possible to set up a one-directional pipe, using a single IPC
+ 118:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * channel. In this design one processor is always the sender, and the other is
+ 119:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * always the receiver. However, there are still two endpoints.
+ 120:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 121:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * A pipe supports an arbitrary number of clients with an array of callback
+ 122:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * functions, one per client. The client ID is the index number into the array
+ 123:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * for the client. After a pipe is configured and initialized, the application
+ 124:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * calls Cy_IPC_Pipe_RegisterCallback() once per client to register each client's
+ 125:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * callback function. Multiple clients can use the same callback function. The
+ 126:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * endpoints in a pipe share the callback array.
+ 127:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 128:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Use Cy_IPC_Pipe_SendMessage() to send data. You specify both the "to" and
+ 129:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * "from" endpoints, and a callback function to be used when the data transfer is
+ 130:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * complete. The data is a 32-bit void pointer. The data pointed to is arbitrary,
+ 131:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * and can be an array, a structure, or a location in memory. The only limitation
+ 132:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * is that the first element of the data must be a 32-bit unsigned word containing
+ 133:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * a client ID number. The ID number is the index into the callback array.
+ 134:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 135:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * When a message is sent, the receiving endpoint's interrupt handler is called.
+ 136:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The ISR can perform any task required by the design. However, as part of its
+ 137:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * function it calls \ref Cy_IPC_Pipe_ExecCallback. This function retrieves the
+ 138:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * client ID from the data and calls the associated callback function.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 5
+
+
+ 139:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The user-supplied callback function handles the data in whatever way is
+ 140:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * appropriate based on the application logic.
+ 141:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 142:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * After the callback function is returned by the receiver, it invokes the release
+ 143:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * callback function defined by the sender of the message.
+ 144:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 145:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \section group_ipc_sema_layer SEMA Layer
+ 146:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 147:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * A semaphore is a flag the application uses to control access to a shared
+ 148:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * resource. The SEMA-level API uses an IPC channel to implement
+ 149:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * semaphores. Startup code sets up a default semaphore system. The
+ 150:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * default system creates an array of 128 semaphores (four 32-bit values).
+ 151:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Semaphores 0-15 are reserved for system use. See
+ 152:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Configuration Considerations - SEMA.
+ 153:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 154:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Functions are available to initialize the semaphore system, to set or
+ 155:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * clear a semaphore, or to get the semaphore's current status. Application
+ 156:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * logic uses SEMA functions to relate a particular semaphore to a particular
+ 157:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * shared resource, and set, clear, or check the flag when accessing the
+ 158:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * shared resource.
+ 159:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 160:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \section group_ipc_configuration_cypipe Configuration Considerations - CYPIPE
+ 161:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 162:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * There are none. The cy_ipc_config files set up the required CYPIPE for system
+ 163:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * use. Do not modify the CYPIPE. It uses IPC channels 5 and 6 to implement full
+ 164:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * duplex communication between cores. On the CM0+ the notify interrupt is
+ 165:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * assigned to NVIC IRQn 27. See System Interrupt (SysInt) for background.
+ 166:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 167:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * To create your own pipe you should make 3 steps:
+ 168:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   -# Define pipe callbacks processing interrupt handler
+ 169:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   -# Define your pipe configuration by cy_stc_ipc_pipe_config_t type structure
+ 170:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   -# Call Cy_IPC_Pipe_Init() to initialize your pipe on both cores
+ 171:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 172:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \section group_ipc_configuration_sema Configuration Considerations - SEMA
+ 173:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 174:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Startup code calls Cy_IPC_SystemSemaInit() (in cy_ipc_config.c) to set up
+ 175:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * semaphore functionality. This function calls the PDL init function
+ 176:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Sema_Init() with default values. By default the semaphore system
+ 177:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * uses IPC channel 4, and creates 128 semaphores. Do <b>not</b> change the IPC
+ 178:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * channel. You can change the number of semaphores.
+ 179:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 180:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * To change the number of semaphores, modify this line of code in cy_ipc_config.h.
+ 181:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 182:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \code
+ 183:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * #define CY_IPC_SEMA_COUNT               (uint32_t)(128u)
+ 184:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \endcode
+ 185:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 186:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The file cy_ipc_config.c declares array ipcSemaArray to hold the semaphore
+ 187:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * flags based on the size defined for this symbol. Use increments of 32. You
+ 188:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * must have at least 32 semaphores. Semaphores 0-15 are reserved for
+ 189:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * system use. Your application can use semaphores greater than 15.
+ 190:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 191:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \section group_ipc_more_information More Information
+ 192:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 193:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_SystemSemaInit() and Cy_IPC_SystemPipeInit() functions are called in the
+ 194:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * SystemInit function. If the default startup file is not used, or SystemInit is
+ 195:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * not called in your project, call the following three functions prior to
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 6
+
+
+ 196:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * executing any flash or EmEEPROM write or erase operation. For example:
+ 197:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *  -# Cy_IPC_SystemSemaInit()
+ 198:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *  -# Cy_IPC_SystemPipeInit()
+ 199:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *  -# Cy_Flash_Init()
+ 200:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 201:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Also Cy_IPC_SystemPipeInit function is called to support BLE host/controller
+ 202:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * communication.
+ 203:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 204:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * See the technical reference manual(TRM) for more information on the IPC.
+ 205:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 206:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \section group_ipc_MISRA MISRA-C Compliance
+ 207:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 208:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * <table class="doxtable">
+ 209:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr>
+ 210:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <th>MISRA Rule</th>
+ 211:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <th>Rule Class (Required/Advisory)</th>
+ 212:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <th>Rule Description</th>
+ 213:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <th style="width: 50%;">Description of Deviation(s)</th>
+ 214:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   </tr>
+ 215:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr>
+ 216:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>10.3</td>
+ 217:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>R</td>
+ 218:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>The value of a complex expression of integer type shall be cast
+ 219:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *         only to a type of the same signedness that is no wider than the underlying
+ 220:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *         type of the expression.</td>
+ 221:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>The cast from integer to enumeration value is used to calculate
+ 222:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *         the interrupt vector source from the integer number of the IPC interrupt
+ 223:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *         structure, so there is no way to avoid this cast.</td>
+ 224:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   </tr>
+ 225:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr>
+ 226:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>11.4</td>
+ 227:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>A</td>
+ 228:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>A cast should not be performed between a pointer to the void to a
+ 229:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *         pointer to the object type.</td>
+ 230:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>The cast from the void to pointer and vice versa is used to transmit
+ 231:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *         data via the \ref group_ipc channel by exchanging the pointer. We
+ 232:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *         exchange only one pointer, so there is no way to avoid this cast.</td>
+ 233:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   </tr>
+ 234:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * </table>
+ 235:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 236:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \section group_ipc_changelog Changelog
+ 237:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 238:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * <table class="doxtable">
+ 239:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><th>Version</th><th>Changes</th><th>Reason for Change</th></tr>
+ 240:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr>
+ 241:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>1.10.1</td>
+ 242:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>Updated description of the \ref Cy_IPC_Pipe_Init,  
+ 243:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *         \ref Cy_IPC_Pipe_EndpointInit, \ref Cy_IPC_Sema_Set functions.
+ 244:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *         Added / updated code snippets.
+ 245:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     </td>
+ 246:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>Documentation update and clarification</td>
+ 247:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   </tr>
+ 248:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr>
+ 249:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>1.10</td>
+ 250:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>Added support for more IPC structures</td>
+ 251:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>New device support</td>
+ 252:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   </tr>
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 7
+
+
+ 253:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr>
+ 254:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>1.0</td>
+ 255:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td>Initial version</td>
+ 256:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *     <td></td>
+ 257:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   </tr>
+ 258:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * </table>
+ 259:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 260:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \defgroup group_ipc_drv IPC driver layer (IPC_DRV)
+ 261:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \{
+ 262:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   The functions of this layer are used in the higher IPC levels
+ 263:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   (Semaphores and Pipes).
+ 264:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   Users should not call any of these IPC functions directly.
+ 265:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 266:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \defgroup group_ipc_macros Macros
+ 267:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *       Macro definitions are used in the driver
+ 268:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 269:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \defgroup group_ipc_functions Functions
+ 270:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *       Functions are used in the driver
+ 271:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 272:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \defgroup group_ipc_data_structures Data Structures
+ 273:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *       Data structures are used in the driver
+ 274:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 275:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \defgroup group_ipc_enums Enumerated Types
+ 276:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *       Enumerations are used in the driver
+ 277:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \}
+ 278:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 279:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \defgroup group_ipc_sema IPC semaphores layer (IPC_SEMA)
+ 280:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \defgroup group_ipc_pipe IPC pipes layer (IPC_PIPE)
+ 281:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 282:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** */
+ 283:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 284:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /******************************************************************************/
+ 285:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /* Include files                                                              */
+ 286:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /******************************************************************************/
+ 287:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #include "syslib/cy_syslib.h"
+ 288:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #include "cy_device_headers.h"
+ 289:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #include "cy_ipc_config.h"
+ 290:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #include <stddef.h>
+ 291:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 292:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /**
+ 293:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \addtogroup group_ipc_macros
+ 294:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \{
+ 295:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** */
+ 296:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 297:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** Driver major version */
+ 298:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #define CY_IPC_DRV_VERSION_MAJOR       1
+ 299:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 300:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** Driver minor version */
+ 301:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #define CY_IPC_DRV_VERSION_MINOR       10
+ 302:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 303:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** Defines a value to indicate that no notification events are needed */
+ 304:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #define CY_IPC_NO_NOTIFICATION         (uint32_t)(0x00000000ul)
+ 305:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 306:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /* Error Code constants */
+ 307:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #define CY_IPC_ID CY_PDL_DRV_ID(0x22u)  /**< Software PDL driver ID for IPC */
+ 308:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 309:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** Return prefix for IPC driver function status codes */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 8
+
+
+ 310:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #define CY_IPC_ID_INFO    (uint32_t)( CY_IPC_ID | CY_PDL_STATUS_INFO )
+ 311:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** Return prefix for IPC driver function warning return values */
+ 312:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #define CY_IPC_ID_WARNING (uint32_t)( CY_IPC_ID | CY_PDL_STATUS_WARNING)
+ 313:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** Return prefix for IPC driver function error return values */
+ 314:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #define CY_IPC_ID_ERROR   (uint32_t)( CY_IPC_ID | CY_PDL_STATUS_ERROR)
+ 315:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 316:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** Converts the IPC interrupt channel number to interrupt vector */
+ 317:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #define CY_IPC_INTR_NUM_TO_VECT(x)         ((int32_t)cpuss_interrupts_ipc_0_IRQn + (x))
+ 318:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 319:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** \} group_ipc_macros */
+ 320:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 321:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /* end of definition in device.h */
+ 322:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 323:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 324:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /**
+ 325:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \addtogroup group_ipc_enums
+ 326:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \{
+ 327:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** */
+ 328:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 329:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /**
+ 330:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This is a list of ENUMs used for function return status.
+ 331:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** */
+ 332:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** typedef enum
+ 333:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 334:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     /** Function was successfully executed */
+ 335:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_IPC_DRV_SUCCESS      = (0x00u),
+ 336:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     /** Function was not executed due to an error.
+ 337:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****         Typical conditions for the error explained
+ 338:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****         in the function description */
+ 339:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_IPC_DRV_ERROR        = ( CY_IPC_ID_ERROR + 1ul),
+ 340:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** } cy_en_ipcdrv_status_t;
+ 341:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 342:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** \} group_ipc_enums */
+ 343:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 344:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 345:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #ifdef __cplusplus
+ 346:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** extern "C" {
+ 347:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** #endif
+ 348:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 349:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** \cond INTERNAL */
+ 350:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 351:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void     Cy_IPC_Drv_WriteDataValue (IPC_STRUCT_Type* base, uint32_t dataValue);
+ 352:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_ReadDataValue (IPC_STRUCT_Type const * base);
+ 353:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 354:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_ExtractAcquireMask (uint32_t intMask);
+ 355:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_ExtractReleaseMask (uint32_t intMask);
+ 356:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 357:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** \endcond */
+ 358:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 359:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /**
+ 360:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \addtogroup group_ipc_functions
+ 361:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \{
+ 362:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** */
+ 363:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 364:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE IPC_STRUCT_Type*       Cy_IPC_Drv_GetIpcBaseAddress (uint32_t ipcIndex);
+ 365:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE IPC_INTR_STRUCT_Type*  Cy_IPC_Drv_GetIntrBaseAddr (uint32_t ipcIntrIndex);
+ 366:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 9
+
+
+ 367:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void     Cy_IPC_Drv_AcquireNotify (IPC_STRUCT_Type * base, uint32_t notifyEventIntr
+ 368:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void     Cy_IPC_Drv_ReleaseNotify (IPC_STRUCT_Type * base, uint32_t notifyEventIntr
+ 369:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 370:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE  cy_en_ipcdrv_status_t Cy_IPC_Drv_LockAcquire (IPC_STRUCT_Type const * base);
+ 371:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** cy_en_ipcdrv_status_t    Cy_IPC_Drv_LockRelease (IPC_STRUCT_Type * base, uint32_t releaseEventIntr)
+ 372:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE bool     Cy_IPC_Drv_IsLockAcquired (IPC_STRUCT_Type const * base);
+ 373:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_GetLockStatus (IPC_STRUCT_Type const * base);
+ 374:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 375:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** cy_en_ipcdrv_status_t    Cy_IPC_Drv_SendMsgWord (IPC_STRUCT_Type * base, uint32_t notifyEventIntr, 
+ 376:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** cy_en_ipcdrv_status_t    Cy_IPC_Drv_ReadMsgWord (IPC_STRUCT_Type const * base, uint32_t * message);
+ 377:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE cy_en_ipcdrv_status_t Cy_IPC_Drv_SendMsgPtr (IPC_STRUCT_Type* base, uint32_t notify
+ 378:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE cy_en_ipcdrv_status_t Cy_IPC_Drv_ReadMsgPtr (IPC_STRUCT_Type const * base, void ** 
+ 379:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 380:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void     Cy_IPC_Drv_SetInterruptMask (IPC_INTR_STRUCT_Type * base,
+ 381:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****                                                       uint32_t ipcReleaseMask, uint32_t ipcNotifyMa
+ 382:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_GetInterruptMask (IPC_INTR_STRUCT_Type const * base);
+ 383:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_GetInterruptStatusMasked (IPC_INTR_STRUCT_Type const * base);
+ 384:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_GetInterruptStatus (IPC_INTR_STRUCT_Type const * base);
+ 385:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void     Cy_IPC_Drv_SetInterrupt (IPC_INTR_STRUCT_Type * base,
+ 386:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****                                                       uint32_t ipcReleaseMask, uint32_t ipcNotifyMa
+ 387:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void     Cy_IPC_Drv_ClearInterrupt (IPC_INTR_STRUCT_Type * base,
+ 388:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****                                                       uint32_t ipcReleaseMask, uint32_t ipcNotifyMa
+ 389:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 390:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 391:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_GetIpcBaseAddress
+ 392:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 393:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 394:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function takes an IPC channel index as a parameter and returns the base
+ 395:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * address the IPC registers corresponding to the IPC channel.
+ 396:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 397:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \note The user is responsible for ensuring that ipcIndex does not exceed the
+ 398:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * limits.
+ 399:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 400:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param ipcIndex
+ 401:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Represents the number of IPC structure. This is converted to the base address of
+ 402:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * the IPC channel registers.
+ 403:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 404:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 405:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Returns a pointer to the base of the IPC registers.
+ 406:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 407:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 408:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_SendMsgWord
+ 409:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 410:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 411:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE IPC_STRUCT_Type* Cy_IPC_Drv_GetIpcBaseAddress (uint32_t ipcIndex)
+ 412:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 413:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1((uint32_t)CY_IPC_CHANNELS > ipcIndex);
+ 414:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return ( (IPC_STRUCT_Type*) ( &IPC->STRUCT[ipcIndex] ) );
+ 415:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 416:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 417:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 418:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_GetIntrBaseAddr
+ 419:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 420:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 421:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function takes an IPC interrupt structure index and returns the base
+ 422:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * address of the IPC interrupt registers corresponding to the IPC Interrupt.
+ 423:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 10
+
+
+ 424:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \note The user is responsible for ensuring that ipcIntrIndex does not exceed the
+ 425:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * limits.
+ 426:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 427:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param ipcIntrIndex
+ 428:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Represents the number of IPC interrupt structure. This is converted to the
+ 429:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * base address of the IPC interrupt registers.
+ 430:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 431:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 432:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Returns a pointer to the base of the IPC interrupt registers.
+ 433:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 434:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 435:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_GetInterruptStatus
+ 436:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 437:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 438:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE IPC_INTR_STRUCT_Type* Cy_IPC_Drv_GetIntrBaseAddr (uint32_t ipcIntrIndex)
+ 439:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 440:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1((uint32_t)CY_IPC_INTERRUPTS > ipcIntrIndex);
+ 441:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return ( (IPC_INTR_STRUCT_Type*) ( &IPC->INTR_STRUCT[ipcIntrIndex] ) );
+ 442:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 443:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 444:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 445:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_SetInterruptMask
+ 446:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 447:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 448:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is used to set the interrupt mask for an IPC Interrupt.
+ 449:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The mask sets release or acquire notification events for all IPC channels.
+ 450:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 451:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 452:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This is a handle to the IPC interrupt. This handle can be calculated from the
+ 453:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * IPC interrupt number using \ref Cy_IPC_Drv_GetIntrBaseAddr.
+ 454:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 455:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param ipcReleaseMask
+ 456:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * An encoded list of all IPC channels that can trigger the interrupt on a
+ 457:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * release event.
+ 458:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 459:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param ipcNotifyMask
+ 460:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * An encoded list of all IPC channels that can trigger the interrupt on a
+ 461:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * notify event.
+ 462:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 463:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 464:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_GetInterruptStatusMasked
+ 465:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 466:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 467:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void  Cy_IPC_Drv_SetInterruptMask (IPC_INTR_STRUCT_Type* base,
+ 468:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****                                               uint32_t ipcReleaseMask, uint32_t ipcNotifyMask)
+ 469:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 470:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(0ul == (ipcNotifyMask  & ~(uint32_t)(IPC_STRUCT_NOTIFY_INTR_NOTIFY_Msk)));
+ 471:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(0ul == (ipcReleaseMask & ~(uint32_t)(IPC_STRUCT_RELEASE_INTR_RELEASE_Msk)));
+ 472:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     base->INTR_MASK = _VAL2FLD( IPC_INTR_STRUCT_INTR_MASK_NOTIFY,  ipcNotifyMask) |
+ 473:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****                       _VAL2FLD( IPC_INTR_STRUCT_INTR_MASK_RELEASE, ipcReleaseMask);
+ 474:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 475:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 476:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 477:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 478:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_GetInterruptMask
+ 479:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 480:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 11
+
+
+ 481:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is used to read the interrupt mask.
+ 482:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 483:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 484:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This is a handle to the IPC interrupt. This handle can be calculated from
+ 485:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * the IPC interrupt number using \ref Cy_IPC_Drv_GetIntrBaseAddr.
+ 486:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 487:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 488:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   The return value is encoded as follows
+ 489:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <table>
+ 490:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><th>Interrupt sources   <th>Value
+ 491:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><td>Ipc_PORTX_RELEASE   <td>Xth bit set
+ 492:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><td>Ipc_PORTX_NOTIFY    <td>X+16th bit set
+ 493:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   </table>
+ 494:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 495:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 496:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_GetInterruptStatusMasked
+ 497:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 498:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 499:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_GetInterruptMask(IPC_INTR_STRUCT_Type const * base)
+ 500:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 501:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return (base->INTR_MASK);
+ 502:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 503:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 504:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 505:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_GetInterruptStatusMasked
+ 506:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 507:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 508:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is used to read the active unmasked interrupt. This function
+ 509:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * can be used in the interrupt service routine to find which source triggered
+ 510:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * the interrupt.
+ 511:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 512:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 513:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This is a handle to the IPC interrupt. This handle can be calculated from the
+ 514:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * IPC interrupt number using \ref Cy_IPC_Drv_GetIntrBaseAddr.
+ 515:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 516:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 517:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   The return value is encoded as follows
+ 518:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <table>
+ 519:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><th>Interrupt sources   <th>Value
+ 520:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><td>Ipc_PORTX_RELEASE   <td>Xth bit set
+ 521:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><td>Ipc_PORTX_NOTIFY    <td>X+16th bit set
+ 522:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   </table>
+ 523:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 524:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 525:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_GetInterruptStatusMasked
+ 526:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 527:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 528:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_GetInterruptStatusMasked (IPC_INTR_STRUCT_Type const * base)
+ 529:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 530:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return (base->INTR_MASKED);
+ 531:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 532:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 533:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 534:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_GetInterruptStatus
+ 535:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 536:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 537:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is used to read the pending interrupts. Note that this read is
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 12
+
+
+ 538:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * an unmasked read of the interrupt status. Interrupt sources read as active by
+ 539:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * this function would generate interrupts only if they were not masked.
+ 540:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 541:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 542:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This is a handle to the IPC interrupt. This handle can be calculated from the
+ 543:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * IPC interrupt number using \ref Cy_IPC_Drv_GetIntrBaseAddr.
+ 544:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 545:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 546:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   The return value is encoded as follows
+ 547:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <table>
+ 548:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><th>Interrupt sources   <th>Value
+ 549:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><td>Ipc_PORTX_RELEASE   <td>Xth bit set
+ 550:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   <tr><td>Ipc_PORTX_NOTIFY    <td>X+16th bit set
+ 551:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   </table>
+ 552:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 553:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 554:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_GetInterruptStatus
+ 555:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 556:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 557:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_GetInterruptStatus(IPC_INTR_STRUCT_Type const * base)
+ 558:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 559:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return (base->INTR);
+ 560:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 561:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 562:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 563:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_SetInterrupt
+ 564:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 565:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 566:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is used to set the interrupt source. This function can be used
+ 567:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * to activate interrupts through software.
+ 568:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \note That interrupt sources set using this interrupt would generate interrupts
+ 569:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * only if they are not masked.
+ 570:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 571:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 572:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This is a handle to the IPC interrupt. This handle can be calculated from the
+ 573:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * IPC interrupt number using \ref Cy_IPC_Drv_GetIntrBaseAddr.
+ 574:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 575:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param ipcReleaseMask
+ 576:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * An encoded list of all IPC channels that can trigger the interrupt on a
+ 577:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * release event.
+ 578:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 579:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param ipcNotifyMask
+ 580:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * An encoded list of all IPC channels that can trigger the interrupt on a
+ 581:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * notify event.
+ 582:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 583:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 584:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_SetInterrupt
+ 585:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 586:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 587:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void  Cy_IPC_Drv_SetInterrupt(IPC_INTR_STRUCT_Type* base, uint32_t ipcReleaseMask, 
+ 588:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 589:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(0ul == (ipcNotifyMask  & ~(uint32_t)(IPC_STRUCT_NOTIFY_INTR_NOTIFY_Msk)));
+ 590:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(0ul == (ipcReleaseMask & ~(uint32_t)(IPC_STRUCT_RELEASE_INTR_RELEASE_Msk)));
+ 591:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     base->INTR_SET =  _VAL2FLD( IPC_INTR_STRUCT_INTR_NOTIFY,  ipcNotifyMask )  |
+ 592:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****                       _VAL2FLD( IPC_INTR_STRUCT_INTR_RELEASE, ipcReleaseMask );
+ 593:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 594:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 13
+
+
+ 595:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 596:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_ClearInterrupt
+ 597:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 598:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 599:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is used to clear the interrupt source. Use this function to clear
+ 600:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * a pending interrupt source in the interrupt status.
+ 601:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 602:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 603:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This is a handle to the IPC interrupt. This handle can be calculated from the
+ 604:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * IPC interrupt number using \ref Cy_IPC_Drv_GetIntrBaseAddr.
+ 605:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 606:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param ipcReleaseMask
+ 607:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * An encoded list of all IPC channels that can trigger the interrupt on a
+ 608:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * release event.
+ 609:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 610:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param ipcNotifyMask
+ 611:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * An encoded list of all IPC channels that can trigger the interrupt on a
+ 612:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * notify event.
+ 613:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 614:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 615:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_GetInterruptStatusMasked
+ 616:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 617:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 618:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void  Cy_IPC_Drv_ClearInterrupt(IPC_INTR_STRUCT_Type* base, uint32_t ipcReleaseMask
+ 619:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 620:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(0ul == (ipcNotifyMask  & ~(uint32_t)(IPC_STRUCT_NOTIFY_INTR_NOTIFY_Msk)));
+ 621:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(0ul == (ipcReleaseMask & ~(uint32_t)(IPC_STRUCT_RELEASE_INTR_RELEASE_Msk)));
+ 622:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     base->INTR =  _VAL2FLD(IPC_INTR_STRUCT_INTR_NOTIFY,  ipcNotifyMask) |
+ 623:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****                   _VAL2FLD(IPC_INTR_STRUCT_INTR_RELEASE, ipcReleaseMask);
+ 624:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     (void)base->INTR;  /* Read the register to flush the cache */
+ 625:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 626:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 627:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** \} group_ipc_functions */
+ 628:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 629:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /** \} group_ipc */
+ 630:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 631:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 632:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_AcquireNotify
+ 633:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 634:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 635:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The function generates a notify event by IPC interrupt structures.
+ 636:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 637:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 638:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This parameter is a handle that represents the base address of the registers
+ 639:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of the IPC channel.
+ 640:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The parameter is generally returned from a call to the \ref
+ 641:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Drv_GetIpcBaseAddress.
+ 642:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 643:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param notifyEventIntr
+ 644:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Bit encoded list of IPC interrupt structures that are triggered
+ 645:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * by a notification. Bit number correspond to number of the IPC interrupt
+ 646:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * structure.
+ 647:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 648:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 649:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_LockAcquire
+ 650:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 651:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 14
+
+
+ 652:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void  Cy_IPC_Drv_AcquireNotify (IPC_STRUCT_Type* base, uint32_t notifyEventIntr)
+ 653:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 654:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(0ul == (notifyEventIntr  & ~(uint32_t)(IPC_STRUCT_NOTIFY_INTR_NOTIFY_Msk)));
+ 655:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     base->NOTIFY = _VAL2FLD(IPC_STRUCT_NOTIFY_INTR_NOTIFY, notifyEventIntr);
+ 656:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 657:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 658:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 659:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_ReleaseNotify
+ 660:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 661:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 662:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The function generates a notify event to an IPC interrupt structure.
+ 663:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 664:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 665:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This parameter is a handle that represents the base address of the registers
+ 666:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of the IPC channel.
+ 667:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The parameter is generally returned from a call to the \ref
+ 668:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Drv_GetIpcBaseAddress.
+ 669:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 670:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param notifyEventIntr
+ 671:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Bit encoded list of IPC interrupt lines that are triggered by a notification.
+ 672:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 673:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 674:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_ReadMsgWord
+ 675:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 676:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 677:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void  Cy_IPC_Drv_ReleaseNotify (IPC_STRUCT_Type* base, uint32_t notifyEventIntr)
+ 678:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 679:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(0ul == (notifyEventIntr  & ~(uint32_t)(IPC_STRUCT_NOTIFY_INTR_NOTIFY_Msk)));
+ 680:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     base->RELEASE = _VAL2FLD(IPC_INTR_STRUCT_INTR_RELEASE, notifyEventIntr);
+ 681:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 682:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 683:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 684:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_WriteDataValue
+ 685:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 686:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 687:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The function writes a value to the DATA register of the IPC channel.
+ 688:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 689:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is internal and should not be called directly by user
+ 690:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * software.
+ 691:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 692:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 693:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This parameter is a handle that represents the base address of the registers
+ 694:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of the IPC channel.
+ 695:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The parameter is generally returned from a call to the \ref
+ 696:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Drv_GetIpcBaseAddress.
+ 697:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 698:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param dataValue
+ 699:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Value to be written.
+ 700:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 701:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 702:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE void     Cy_IPC_Drv_WriteDataValue (IPC_STRUCT_Type* base, uint32_t dataValue)
+ 703:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 704:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****       base->DATA = dataValue;
+ 705:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 706:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 707:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 708:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_ReadDataValue
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 15
+
+
+ 709:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 710:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 711:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The function reads a value from the DATA register of the IPC channel.
+ 712:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 713:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is internal and should not be called directly by user
+ 714:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * software.
+ 715:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 716:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 717:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This parameter is a handle that represents the base address of the registers
+ 718:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of the IPC channel.
+ 719:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The parameter is generally returned from a call to the \ref
+ 720:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Drv_GetIpcBaseAddress.
+ 721:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 722:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 723:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Value from DATA register.
+ 724:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 725:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 726:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_ReadDataValue (IPC_STRUCT_Type const * base)
+ 727:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 728:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return (base->DATA);
+ 729:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 730:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 731:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 732:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_IsLockAcquired
+ 733:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 734:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 735:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The function is used to test the status of an IPC channel. The function
+ 736:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * tells the reader if the IPC channel was in the locked or released state.
+ 737:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 738:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 739:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This parameter is a handle that represents the base address of the registers
+ 740:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of the IPC channel.
+ 741:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The parameter is generally returned from a call to the \ref
+ 742:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Drv_GetIpcBaseAddress.
+ 743:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 744:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 745:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   Status for the function:
+ 746:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   true:  The IPC channel is in the Locked state.
+ 747:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   false: The IPC channel is in the Released state.
+ 748:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 749:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 750:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_LockAcquire
+ 751:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 752:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 753:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE bool Cy_IPC_Drv_IsLockAcquired (IPC_STRUCT_Type const * base)
+ 754:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 755:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return ( 0u != _FLD2VAL(IPC_STRUCT_ACQUIRE_SUCCESS, base->LOCK_STATUS) );
+  44              		.loc 2 755 0
+  45 0002 0369     		ldr	r3, [r0, #16]
+  46              	.LVL2:
+  47              	.LBE17:
+  48              	.LBE16:
+  48:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     cy_en_ipcdrv_status_t retStatus;
+  49:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+  50:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     /* Check to make sure the IPC is Acquired */
+  51:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     if( Cy_IPC_Drv_IsLockAcquired(base) )
+  49              		.loc 1 51 0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 16
+
+
+  50 0004 002B     		cmp	r3, #0
+  51 0006 0DDA     		bge	.L4
+  52 0008 0D46     		mov	r5, r1
+  53 000a 0446     		mov	r4, r0
+  54              	.LVL3:
+  55              	.LBB18:
+  56              	.LBB19:
+ 679:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     base->RELEASE = _VAL2FLD(IPC_INTR_STRUCT_INTR_RELEASE, notifyEventIntr);
+  57              		.loc 2 679 0
+  58 000c 0B0C     		lsrs	r3, r1, #16
+  59 000e 1B04     		lsls	r3, r3, #16
+  60 0010 23B1     		cbz	r3, .L3
+  61 0012 40F2A721 		movw	r1, #679
+  62              	.LVL4:
+  63 0016 0448     		ldr	r0, .L6
+  64              	.LVL5:
+  65 0018 FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+  66              	.LVL6:
+  67              	.L3:
+ 680:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+  68              		.loc 2 680 0
+  69 001c A9B2     		uxth	r1, r5
+  70 001e 6160     		str	r1, [r4, #4]
+  71              	.LVL7:
+  72              	.LBE19:
+  73              	.LBE18:
+  52:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     {
+  53:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         /* The IPC was acquired, release the IPC channel */
+  54:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         Cy_IPC_Drv_ReleaseNotify(base, releaseEventIntr);
+  55:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+  56:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         retStatus = CY_IPC_DRV_SUCCESS;
+  74              		.loc 1 56 0
+  75 0020 0020     		movs	r0, #0
+  76 0022 38BD     		pop	{r3, r4, r5, pc}
+  77              	.LVL8:
+  78              	.L4:
+  57:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     }
+  58:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     else   /* The IPC channel was already released (not acquired) */
+  59:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     {
+  60:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         retStatus = CY_IPC_DRV_ERROR;
+  79              		.loc 1 60 0
+  80 0024 0148     		ldr	r0, .L6+4
+  81              	.LVL9:
+  61:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     }
+  62:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+  63:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     return (retStatus);
+  64:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** }
+  82              		.loc 1 64 0
+  83 0026 38BD     		pop	{r3, r4, r5, pc}
+  84              	.L7:
+  85              		.align	2
+  86              	.L6:
+  87 0028 00000000 		.word	.LC0
+  88 002c 01008A00 		.word	9043969
+  89              		.cfi_endproc
+  90              	.LFE144:
+  91              		.size	Cy_IPC_Drv_LockRelease, .-Cy_IPC_Drv_LockRelease
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 17
+
+
+  92              		.section	.text.Cy_IPC_Drv_SendMsgWord,"ax",%progbits
+  93              		.align	2
+  94              		.global	Cy_IPC_Drv_SendMsgWord
+  95              		.thumb
+  96              		.thumb_func
+  97              		.type	Cy_IPC_Drv_SendMsgWord, %function
+  98              	Cy_IPC_Drv_SendMsgWord:
+  99              	.LFB145:
+  65:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+  66:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+  67:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** /*******************************************************************************
+  68:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Function Name: Cy_IPC_Drv_SendMsgWord
+  69:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** ****************************************************************************//**
+  70:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  71:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * This function is used to send a 32-bit word message through an IPC channel.
+  72:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * The function also has an associated notification field that will let the
+  73:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * message notify one or multiple IPC interrupts. The IPC channel is locked and
+  74:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * remains locked after the function returns.  The receiver of the message should
+  75:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * release the channel.
+  76:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  77:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \param base
+  78:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * This parameter is a handle that represents the base address of the registers
+  79:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * of the IPC channel.
+  80:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * The parameter is generally returned from a call to the \ref
+  81:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Cy_IPC_Drv_GetIpcBaseAddress.
+  82:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  83:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \param notifyEventIntr
+  84:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Bit encoded list of IPC interrupt lines that are triggered by a notification.
+  85:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  86:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \param message
+  87:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * The message word that is the data placed in the IPC data register.
+  88:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  89:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \return   Status of the operation:
+  90:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *   \retval CY_IPC_DRV_SUCCESS: The send operation was successful.
+  91:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *   \retval CY_IPC_DRV_ERROR: The IPC channel is unavailable because it is already locked.
+  92:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  93:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \funcusage
+  94:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_SendMsgWord
+  95:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+  96:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *******************************************************************************/
+  97:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** cy_en_ipcdrv_status_t  Cy_IPC_Drv_SendMsgWord (IPC_STRUCT_Type* base, uint32_t notifyEventIntr, uin
+  98:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** {
+ 100              		.loc 1 98 0
+ 101              		.cfi_startproc
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104              	.LVL10:
+ 105 0000 38B5     		push	{r3, r4, r5, lr}
+ 106              		.cfi_def_cfa_offset 16
+ 107              		.cfi_offset 3, -16
+ 108              		.cfi_offset 4, -12
+ 109              		.cfi_offset 5, -8
+ 110              		.cfi_offset 14, -4
+ 111              	.LVL11:
+ 112              	.LBB20:
+ 113              	.LBB21:
+ 756:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 18
+
+
+ 757:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 758:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 759:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_GetLockStatus
+ 760:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 761:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 762:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The function is used to get the status of an IPC channel.
+ 763:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 764:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 765:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This parameter is a handle that represents the base address of the registers
+ 766:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of the IPC channel.
+ 767:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The parameter is generally returned from a call to the \ref
+ 768:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Drv_GetIpcBaseAddress.
+ 769:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 770:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 771:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Value from LOCK_STATUS register.
+ 772:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 773:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 774:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_GetLockStatus
+ 775:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 776:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 777:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_GetLockStatus (IPC_STRUCT_Type const * base)
+ 778:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 779:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return (base->LOCK_STATUS);
+ 780:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 781:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 782:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 783:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_ExtractAcquireMask
+ 784:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 785:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 786:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The function extracts an Acquire mask part from full interrupt mask value.
+ 787:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 788:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is internal and should not be called directly by user
+ 789:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * software.
+ 790:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 791:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param intMask
+ 792:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Interrupt mask value to be processed.
+ 793:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 794:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 795:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Acquire mask value.
+ 796:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 797:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 798:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_ExtractAcquireMask (uint32_t intMask)
+ 799:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 800:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return _FLD2VAL(IPC_INTR_STRUCT_INTR_MASK_NOTIFY, intMask);
+ 801:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 802:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 803:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 804:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_ExtractReleaseMask
+ 805:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 806:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 807:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The function extracts a Release mask part from full interrupt mask value.
+ 808:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 809:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is internal and should not be called directly by user
+ 810:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * software.
+ 811:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 812:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param intMask
+ 813:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Interrupt mask value to be processed.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 19
+
+
+ 814:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 815:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return
+ 816:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Release mask value.
+ 817:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 818:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 819:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE uint32_t Cy_IPC_Drv_ExtractReleaseMask (uint32_t intMask)
+ 820:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 821:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return _FLD2VAL(IPC_INTR_STRUCT_INTR_MASK_RELEASE, intMask);
+ 822:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 823:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 824:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 825:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_SendMsgPtr
+ 826:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 827:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 828:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is used to send a message pointer through an IPC channel.
+ 829:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The message structure may hold a generic pointer that may contain the address
+ 830:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of any user data type or structure. This parameter could be a pointer to a 32-bit
+ 831:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * integer, an array, or even a data structure defined in the user code. This
+ 832:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * function acts as a transfer engine for sending the pointer. Any memory
+ 833:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * management of the pointer allocation and deallocation is up to the application
+ 834:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * code.
+ 835:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The function also has an associated notification field that will let the
+ 836:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * message notify one or multiple interrupts.
+ 837:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 838:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 839:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This parameter is a handle that represents the base address of the registers
+ 840:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of the IPC channel.
+ 841:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The parameter is generally returned from a call to the \ref
+ 842:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Drv_GetIpcBaseAddress.
+ 843:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 844:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param notifyEventIntr
+ 845:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Bit encoded list of IPC interrupt lines that are triggered during the release
+ 846:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * action.
+ 847:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 848:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param msgPtr
+ 849:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The message pointer that is being sent over the IPC channel.
+ 850:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 851:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return   Status of the operation:
+ 852:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \retval CY_IPC_DRV_SUCCESS: The send operation was successful.
+ 853:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \retval CY_IPC_DRV_ERROR:   The IPC channel is unavailable because
+ 854:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *                               it is already locked.
+ 855:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 856:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 857:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_SendMsgPtr
+ 858:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 859:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 860:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE cy_en_ipcdrv_status_t  Cy_IPC_Drv_SendMsgPtr(IPC_STRUCT_Type* base, uint32_t notify
+ 861:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 862:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(NULL != msgPtr);
+ 863:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return Cy_IPC_Drv_SendMsgWord(base, notifyEventIntr, (uint32_t)msgPtr);
+ 864:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 865:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 866:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 867:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_ReadMsgPtr
+ 868:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 869:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 870:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is used to read a 32-bit pointer message through an IPC channel.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 20
+
+
+ 871:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 872:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 873:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This parameter is a handle that represents the base address of the registers
+ 874:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of the IPC channel.
+ 875:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The parameter is generally returned from a call to the \ref
+ 876:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Drv_GetIpcBaseAddress.
+ 877:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 878:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param msgPtr
+ 879:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Pointer variable to hold the data pointer that is being read from the IPC
+ 880:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * channel.
+ 881:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 882:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 883:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return Status of the operation
+ 884:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \retval CY_IPC_DRV_SUCCESS: The function executed successfully and the IPC
+ 885:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *                       was acquired.
+ 886:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \retval CY_IPC_DRV_ERROR:   The function encountered an error because the IPC
+ 887:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *                       channel was already in a released state meaning the data
+ 888:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *                       in it is invalid.
+ 889:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 890:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 891:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_ReadMsgPtr
+ 892:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 893:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 894:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE  cy_en_ipcdrv_status_t  Cy_IPC_Drv_ReadMsgPtr (IPC_STRUCT_Type const * base, void *
+ 895:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 896:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     CY_ASSERT_L1(NULL != msgPtr);
+ 897:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return Cy_IPC_Drv_ReadMsgWord(base, (uint32_t *)msgPtr);
+ 898:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 899:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** 
+ 900:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** /*******************************************************************************
+ 901:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Function Name: Cy_IPC_Drv_LockAcquire
+ 902:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** ****************************************************************************//**
+ 903:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 904:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This function is used to acquire the IPC channel.
+ 905:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 906:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \param base
+ 907:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * This parameter is a handle that represents the base address of the registers
+ 908:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * of the IPC channel.
+ 909:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * The parameter is generally returned from a call to the \ref
+ 910:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * Cy_IPC_Drv_GetIpcBaseAddress
+ 911:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 912:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \return   Status of the operation
+ 913:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \retval CY_IPC_DRV_SUCCESS: The IPC was successfully acquired
+ 914:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *   \retval CY_IPC_DRV_ERROR:   The IPC was not acquired because it was already acquired
+ 915:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *                       by another master
+ 916:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 917:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \funcusage
+ 918:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_LockAcquire
+ 919:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *
+ 920:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** *******************************************************************************/
+ 921:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** __STATIC_INLINE cy_en_ipcdrv_status_t Cy_IPC_Drv_LockAcquire (IPC_STRUCT_Type const * base)
+ 922:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** {
+ 923:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     return ( 0ul != _FLD2VAL(IPC_STRUCT_ACQUIRE_SUCCESS, base->ACQUIRE)) ? CY_IPC_DRV_SUCCESS : CY_
+ 114              		.loc 2 923 0
+ 115 0002 0368     		ldr	r3, [r0]
+ 116 0004 002B     		cmp	r3, #0
+ 117 0006 01DA     		bge	.L12
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 21
+
+
+ 118 0008 0023     		movs	r3, #0
+ 119 000a 00E0     		b	.L9
+ 120              	.L12:
+ 121 000c 094B     		ldr	r3, .L15
+ 122              	.L9:
+ 123              	.LVL12:
+ 124              	.LBE21:
+ 125              	.LBE20:
+  99:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     cy_en_ipcdrv_status_t retStatus;
+ 100:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+ 101:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     if( CY_IPC_DRV_SUCCESS == Cy_IPC_Drv_LockAcquire(base) )
+ 126              		.loc 1 101 0
+ 127 000e 73B9     		cbnz	r3, .L13
+ 128 0010 0D46     		mov	r5, r1
+ 129 0012 0446     		mov	r4, r0
+ 130              	.LVL13:
+ 131              	.LBB22:
+ 132              	.LBB23:
+ 704:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 133              		.loc 2 704 0
+ 134 0014 C260     		str	r2, [r0, #12]
+ 135              	.LVL14:
+ 136              	.LBE23:
+ 137              	.LBE22:
+ 138              	.LBB24:
+ 139              	.LBB25:
+ 654:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h ****     base->NOTIFY = _VAL2FLD(IPC_STRUCT_NOTIFY_INTR_NOTIFY, notifyEventIntr);
+ 140              		.loc 2 654 0
+ 141 0016 0B0C     		lsrs	r3, r1, #16
+ 142 0018 1B04     		lsls	r3, r3, #16
+ 143 001a 23B1     		cbz	r3, .L11
+ 144              	.LVL15:
+ 145 001c 40F28E21 		movw	r1, #654
+ 146              	.LVL16:
+ 147 0020 0548     		ldr	r0, .L15+4
+ 148              	.LVL17:
+ 149 0022 FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+ 150              	.LVL18:
+ 151              	.L11:
+ 655:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 152              		.loc 2 655 0
+ 153 0026 A9B2     		uxth	r1, r5
+ 154 0028 A160     		str	r1, [r4, #8]
+ 155              	.LVL19:
+ 156              	.LBE25:
+ 157              	.LBE24:
+ 102:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     {
+ 103:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         /* If the channel was acquired, send the message. */
+ 104:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         Cy_IPC_Drv_WriteDataValue(base, message);
+ 105:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+ 106:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         Cy_IPC_Drv_AcquireNotify(base, notifyEventIntr);
+ 107:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+ 108:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         retStatus = CY_IPC_DRV_SUCCESS;
+ 158              		.loc 1 108 0
+ 159 002a 0020     		movs	r0, #0
+ 160 002c 38BD     		pop	{r3, r4, r5, pc}
+ 161              	.LVL20:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 22
+
+
+ 162              	.L13:
+ 109:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     }
+ 110:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     else
+ 111:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     {
+ 112:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         /* Channel was already acquired, return Error */
+ 113:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         retStatus = CY_IPC_DRV_ERROR;
+ 163              		.loc 1 113 0
+ 164 002e 0148     		ldr	r0, .L15
+ 165              	.LVL21:
+ 114:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     }
+ 115:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     return (retStatus);
+ 116:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** }
+ 166              		.loc 1 116 0
+ 167 0030 38BD     		pop	{r3, r4, r5, pc}
+ 168              	.L16:
+ 169 0032 00BF     		.align	2
+ 170              	.L15:
+ 171 0034 01008A00 		.word	9043969
+ 172 0038 00000000 		.word	.LC0
+ 173              		.cfi_endproc
+ 174              	.LFE145:
+ 175              		.size	Cy_IPC_Drv_SendMsgWord, .-Cy_IPC_Drv_SendMsgWord
+ 176              		.section	.text.Cy_IPC_Drv_ReadMsgWord,"ax",%progbits
+ 177              		.align	2
+ 178              		.global	Cy_IPC_Drv_ReadMsgWord
+ 179              		.thumb
+ 180              		.thumb_func
+ 181              		.type	Cy_IPC_Drv_ReadMsgWord, %function
+ 182              	Cy_IPC_Drv_ReadMsgWord:
+ 183              	.LFB146:
+ 117:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+ 118:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+ 119:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** /*******************************************************************************
+ 120:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Function Name: Cy_IPC_Drv_ReadMsgWord
+ 121:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** ****************************************************************************//**
+ 122:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+ 123:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * This function is used to read a 32-bit word message through an IPC channel.
+ 124:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * This function assumes that the channel is locked (for a valid message).
+ 125:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * If the channel is not locked, the message is invalid.  The user must call
+ 126:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Cy_IPC_Drv_Release() function after reading the message to release the
+ 127:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * IPC channel.
+ 128:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+ 129:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \param base
+ 130:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * This parameter is a handle that represents the base address of the registers
+ 131:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * of the IPC channel.
+ 132:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * The parameter is generally returned from a call to the \ref
+ 133:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * Cy_IPC_Drv_GetIpcBaseAddress.
+ 134:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+ 135:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \param message
+ 136:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *  A variable where the read data is copied.
+ 137:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+ 138:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \return  Status of the operation
+ 139:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *   \retval CY_IPC_DRV_SUCCESS: The function executed successfully and the IPC
+ 140:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *                       was acquired.
+ 141:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *   \retval CY_IPC_DRV_ERROR:   The function encountered an error because the IPC
+ 142:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *                       channel was already in a released state, meaning the data
+ 143:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *                       may be invalid.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 23
+
+
+ 144:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+ 145:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \funcusage
+ 146:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** * \snippet IPC_sut_01.cydsn/main_cm4.c snippet_Cy_IPC_Drv_ReadMsgWord
+ 147:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *
+ 148:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** *******************************************************************************/
+ 149:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** cy_en_ipcdrv_status_t  Cy_IPC_Drv_ReadMsgWord (IPC_STRUCT_Type const * base, uint32_t * message)
+ 150:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** {
+ 184              		.loc 1 150 0
+ 185              		.cfi_startproc
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188              	.LVL22:
+ 189 0000 38B5     		push	{r3, r4, r5, lr}
+ 190              		.cfi_def_cfa_offset 16
+ 191              		.cfi_offset 3, -16
+ 192              		.cfi_offset 4, -12
+ 193              		.cfi_offset 5, -8
+ 194              		.cfi_offset 14, -4
+ 195 0002 0446     		mov	r4, r0
+ 151:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     cy_en_ipcdrv_status_t retStatus;
+ 152:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+ 153:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     CY_ASSERT_L1(NULL != message);
+ 196              		.loc 1 153 0
+ 197 0004 0D46     		mov	r5, r1
+ 198 0006 19B9     		cbnz	r1, .L18
+ 199              		.loc 1 153 0 is_stmt 0 discriminator 1
+ 200 0008 9921     		movs	r1, #153
+ 201              	.LVL23:
+ 202 000a 0648     		ldr	r0, .L22
+ 203              	.LVL24:
+ 204 000c FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+ 205              	.LVL25:
+ 206              	.L18:
+ 207              	.LBB26:
+ 208              	.LBB27:
+ 755:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 209              		.loc 2 755 0 is_stmt 1
+ 210 0010 2369     		ldr	r3, [r4, #16]
+ 211              	.LVL26:
+ 212              	.LBE27:
+ 213              	.LBE26:
+ 154:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+ 155:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     if ( Cy_IPC_Drv_IsLockAcquired(base) )
+ 214              		.loc 1 155 0
+ 215 0012 002B     		cmp	r3, #0
+ 216 0014 03DA     		bge	.L20
+ 217              	.LVL27:
+ 218              	.LBB28:
+ 219              	.LBB29:
+ 728:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.h **** }
+ 220              		.loc 2 728 0
+ 221 0016 E368     		ldr	r3, [r4, #12]
+ 222              	.LVL28:
+ 223              	.LBE29:
+ 224              	.LBE28:
+ 156:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     {
+ 157:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         /* The channel is locked; message is valid. */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 24
+
+
+ 158:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         *message = Cy_IPC_Drv_ReadDataValue(base);
+ 225              		.loc 1 158 0
+ 226 0018 2B60     		str	r3, [r5]
+ 227              	.LVL29:
+ 159:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** 
+ 160:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         retStatus = CY_IPC_DRV_SUCCESS;
+ 228              		.loc 1 160 0
+ 229 001a 0020     		movs	r0, #0
+ 230 001c 38BD     		pop	{r3, r4, r5, pc}
+ 231              	.LVL30:
+ 232              	.L20:
+ 161:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     }
+ 162:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     else
+ 163:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     {
+ 164:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         /* The channel is not locked so channel is invalid. */
+ 165:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****         retStatus = CY_IPC_DRV_ERROR;
+ 233              		.loc 1 165 0
+ 234 001e 0248     		ldr	r0, .L22+4
+ 235              	.LVL31:
+ 166:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     }
+ 167:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c ****     return(retStatus);
+ 168:Generated_Source\PSoC6\pdl\drivers\peripheral\ipc/cy_ipc_drv.c **** }
+ 236              		.loc 1 168 0
+ 237 0020 38BD     		pop	{r3, r4, r5, pc}
+ 238              	.LVL32:
+ 239              	.L23:
+ 240 0022 00BF     		.align	2
+ 241              	.L22:
+ 242 0024 40000000 		.word	.LC1
+ 243 0028 01008A00 		.word	9043969
+ 244              		.cfi_endproc
+ 245              	.LFE146:
+ 246              		.size	Cy_IPC_Drv_ReadMsgWord, .-Cy_IPC_Drv_ReadMsgWord
+ 247              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 248              		.align	2
+ 249              	.LC0:
+ 250 0000 47656E65 		.ascii	"Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\"
+ 250      72617465 
+ 250      645F536F 
+ 250      75726365 
+ 250      5C50536F 
+ 251 002e 6970635C 		.ascii	"ipc\\cy_ipc_drv.h\000"
+ 251      63795F69 
+ 251      70635F64 
+ 251      72762E68 
+ 251      00
+ 252 003f 00       		.space	1
+ 253              	.LC1:
+ 254 0040 47656E65 		.ascii	"Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\"
+ 254      72617465 
+ 254      645F536F 
+ 254      75726365 
+ 254      5C50536F 
+ 255 006e 6970635C 		.ascii	"ipc\\cy_ipc_drv.c\000"
+ 255      63795F69 
+ 255      70635F64 
+ 255      72762E63 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 25
+
+
+ 255      00
+ 256              		.text
+ 257              	.Letext0:
+ 258              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 259              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 260              		.file 5 "Generated_Source\\PSoC6\\pdl\\devices/psoc6/ip/cyip_ipc.h"
+ 261              		.file 6 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/syslib/cy_syslib.h"
+ 262              		.file 7 "Generated_Source\\PSoC6\\pdl\\cmsis/include/core_cm4.h"
+ 263              		.section	.debug_info,"",%progbits
+ 264              	.Ldebug_info0:
+ 265 0000 82040000 		.4byte	0x482
+ 266 0004 0400     		.2byte	0x4
+ 267 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 268 000a 04       		.byte	0x4
+ 269 000b 01       		.uleb128 0x1
+ 270 000c 6E020000 		.4byte	.LASF45
+ 271 0010 0C       		.byte	0xc
+ 272 0011 74030000 		.4byte	.LASF46
+ 273 0015 28010000 		.4byte	.LASF47
+ 274 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 275 001d 00000000 		.4byte	0
+ 276 0021 00000000 		.4byte	.Ldebug_line0
+ 277 0025 02       		.uleb128 0x2
+ 278 0026 01       		.byte	0x1
+ 279 0027 06       		.byte	0x6
+ 280 0028 98000000 		.4byte	.LASF0
+ 281 002c 02       		.uleb128 0x2
+ 282 002d 01       		.byte	0x1
+ 283 002e 08       		.byte	0x8
+ 284 002f DE000000 		.4byte	.LASF1
+ 285 0033 02       		.uleb128 0x2
+ 286 0034 02       		.byte	0x2
+ 287 0035 05       		.byte	0x5
+ 288 0036 4D020000 		.4byte	.LASF2
+ 289 003a 02       		.uleb128 0x2
+ 290 003b 02       		.byte	0x2
+ 291 003c 07       		.byte	0x7
+ 292 003d BE000000 		.4byte	.LASF3
+ 293 0041 03       		.uleb128 0x3
+ 294 0042 5E000000 		.4byte	.LASF5
+ 295 0046 03       		.byte	0x3
+ 296 0047 3F       		.byte	0x3f
+ 297 0048 4C000000 		.4byte	0x4c
+ 298 004c 02       		.uleb128 0x2
+ 299 004d 04       		.byte	0x4
+ 300 004e 05       		.byte	0x5
+ 301 004f 2A030000 		.4byte	.LASF4
+ 302 0053 03       		.uleb128 0x3
+ 303 0054 13010000 		.4byte	.LASF6
+ 304 0058 03       		.byte	0x3
+ 305 0059 41       		.byte	0x41
+ 306 005a 5E000000 		.4byte	0x5e
+ 307 005e 02       		.uleb128 0x2
+ 308 005f 04       		.byte	0x4
+ 309 0060 07       		.byte	0x7
+ 310 0061 AC000000 		.4byte	.LASF7
+ 311 0065 02       		.uleb128 0x2
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 26
+
+
+ 312 0066 08       		.byte	0x8
+ 313 0067 05       		.byte	0x5
+ 314 0068 1C020000 		.4byte	.LASF8
+ 315 006c 02       		.uleb128 0x2
+ 316 006d 08       		.byte	0x8
+ 317 006e 07       		.byte	0x7
+ 318 006f A1010000 		.4byte	.LASF9
+ 319 0073 04       		.uleb128 0x4
+ 320 0074 04       		.byte	0x4
+ 321 0075 05       		.byte	0x5
+ 322 0076 696E7400 		.ascii	"int\000"
+ 323 007a 02       		.uleb128 0x2
+ 324 007b 04       		.byte	0x4
+ 325 007c 07       		.byte	0x7
+ 326 007d 6C010000 		.4byte	.LASF10
+ 327 0081 03       		.uleb128 0x3
+ 328 0082 0B020000 		.4byte	.LASF11
+ 329 0086 04       		.byte	0x4
+ 330 0087 2C       		.byte	0x2c
+ 331 0088 41000000 		.4byte	0x41
+ 332 008c 03       		.uleb128 0x3
+ 333 008d 21030000 		.4byte	.LASF12
+ 334 0091 04       		.byte	0x4
+ 335 0092 30       		.byte	0x30
+ 336 0093 53000000 		.4byte	0x53
+ 337 0097 02       		.uleb128 0x2
+ 338 0098 04       		.byte	0x4
+ 339 0099 07       		.byte	0x7
+ 340 009a 13020000 		.4byte	.LASF13
+ 341 009e 05       		.uleb128 0x5
+ 342 009f 8C000000 		.4byte	0x8c
+ 343 00a3 06       		.uleb128 0x6
+ 344 00a4 9E000000 		.4byte	0x9e
+ 345 00a8 07       		.uleb128 0x7
+ 346 00a9 A3000000 		.4byte	0xa3
+ 347 00ad B8000000 		.4byte	0xb8
+ 348 00b1 08       		.uleb128 0x8
+ 349 00b2 97000000 		.4byte	0x97
+ 350 00b6 02       		.byte	0x2
+ 351 00b7 00       		.byte	0
+ 352 00b8 09       		.uleb128 0x9
+ 353 00b9 20       		.byte	0x20
+ 354 00ba 05       		.byte	0x5
+ 355 00bb 23       		.byte	0x23
+ 356 00bc 09010000 		.4byte	0x109
+ 357 00c0 0A       		.uleb128 0xa
+ 358 00c1 56000000 		.4byte	.LASF14
+ 359 00c5 05       		.byte	0x5
+ 360 00c6 24       		.byte	0x24
+ 361 00c7 A3000000 		.4byte	0xa3
+ 362 00cb 00       		.byte	0
+ 363 00cc 0A       		.uleb128 0xa
+ 364 00cd A4000000 		.4byte	.LASF15
+ 365 00d1 05       		.byte	0x5
+ 366 00d2 25       		.byte	0x25
+ 367 00d3 9E000000 		.4byte	0x9e
+ 368 00d7 04       		.byte	0x4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 27
+
+
+ 369 00d8 0A       		.uleb128 0xa
+ 370 00d9 56030000 		.4byte	.LASF16
+ 371 00dd 05       		.byte	0x5
+ 372 00de 26       		.byte	0x26
+ 373 00df 9E000000 		.4byte	0x9e
+ 374 00e3 08       		.byte	0x8
+ 375 00e4 0A       		.uleb128 0xa
+ 376 00e5 8D000000 		.4byte	.LASF17
+ 377 00e9 05       		.byte	0x5
+ 378 00ea 27       		.byte	0x27
+ 379 00eb 9E000000 		.4byte	0x9e
+ 380 00ef 0C       		.byte	0xc
+ 381 00f0 0A       		.uleb128 0xa
+ 382 00f1 70000000 		.4byte	.LASF18
+ 383 00f5 05       		.byte	0x5
+ 384 00f6 28       		.byte	0x28
+ 385 00f7 A3000000 		.4byte	0xa3
+ 386 00fb 10       		.byte	0x10
+ 387 00fc 0A       		.uleb128 0xa
+ 388 00fd 0A010000 		.4byte	.LASF19
+ 389 0101 05       		.byte	0x5
+ 390 0102 29       		.byte	0x29
+ 391 0103 0E010000 		.4byte	0x10e
+ 392 0107 14       		.byte	0x14
+ 393 0108 00       		.byte	0
+ 394 0109 05       		.uleb128 0x5
+ 395 010a A8000000 		.4byte	0xa8
+ 396 010e 06       		.uleb128 0x6
+ 397 010f 09010000 		.4byte	0x109
+ 398 0113 03       		.uleb128 0x3
+ 399 0114 C0030000 		.4byte	.LASF20
+ 400 0118 05       		.byte	0x5
+ 401 0119 2A       		.byte	0x2a
+ 402 011a B8000000 		.4byte	0xb8
+ 403 011e 0B       		.uleb128 0xb
+ 404 011f B3030000 		.4byte	.LASF21
+ 405 0123 06       		.byte	0x6
+ 406 0124 C401     		.2byte	0x1c4
+ 407 0126 2A010000 		.4byte	0x12a
+ 408 012a 02       		.uleb128 0x2
+ 409 012b 01       		.byte	0x1
+ 410 012c 08       		.byte	0x8
+ 411 012d 2A020000 		.4byte	.LASF22
+ 412 0131 02       		.uleb128 0x2
+ 413 0132 04       		.byte	0x4
+ 414 0133 04       		.byte	0x4
+ 415 0134 92000000 		.4byte	.LASF23
+ 416 0138 02       		.uleb128 0x2
+ 417 0139 08       		.byte	0x8
+ 418 013a 04       		.byte	0x4
+ 419 013b 03010000 		.4byte	.LASF24
+ 420 013f 02       		.uleb128 0x2
+ 421 0140 08       		.byte	0x8
+ 422 0141 04       		.byte	0x4
+ 423 0142 33030000 		.4byte	.LASF25
+ 424 0146 0C       		.uleb128 0xc
+ 425 0147 04       		.byte	0x4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 28
+
+
+ 426 0148 7A000000 		.4byte	0x7a
+ 427 014c 02       		.byte	0x2
+ 428 014d 4D01     		.2byte	0x14d
+ 429 014f 63010000 		.4byte	0x163
+ 430 0153 0D       		.uleb128 0xd
+ 431 0154 E2010000 		.4byte	.LASF26
+ 432 0158 00       		.byte	0
+ 433 0159 0E       		.uleb128 0xe
+ 434 015a 90010000 		.4byte	.LASF27
+ 435 015e 01008A00 		.4byte	0x8a0001
+ 436 0162 00       		.byte	0
+ 437 0163 0B       		.uleb128 0xb
+ 438 0164 F5010000 		.4byte	.LASF28
+ 439 0168 02       		.byte	0x2
+ 440 0169 5401     		.2byte	0x154
+ 441 016b 46010000 		.4byte	0x146
+ 442 016f 0F       		.uleb128 0xf
+ 443 0170 C8010000 		.4byte	.LASF32
+ 444 0174 02       		.byte	0x2
+ 445 0175 F102     		.2byte	0x2f1
+ 446 0177 8D010000 		.4byte	0x18d
+ 447 017b 03       		.byte	0x3
+ 448 017c 8D010000 		.4byte	0x18d
+ 449 0180 10       		.uleb128 0x10
+ 450 0181 2F020000 		.4byte	.LASF30
+ 451 0185 02       		.byte	0x2
+ 452 0186 F102     		.2byte	0x2f1
+ 453 0188 94010000 		.4byte	0x194
+ 454 018c 00       		.byte	0
+ 455 018d 02       		.uleb128 0x2
+ 456 018e 01       		.byte	0x1
+ 457 018f 02       		.byte	0x2
+ 458 0190 BA030000 		.4byte	.LASF29
+ 459 0194 11       		.uleb128 0x11
+ 460 0195 04       		.byte	0x4
+ 461 0196 9A010000 		.4byte	0x19a
+ 462 019a 06       		.uleb128 0x6
+ 463 019b 13010000 		.4byte	0x113
+ 464 019f 12       		.uleb128 0x12
+ 465 01a0 24000000 		.4byte	.LASF34
+ 466 01a4 02       		.byte	0x2
+ 467 01a5 A502     		.2byte	0x2a5
+ 468 01a7 03       		.byte	0x3
+ 469 01a8 C5010000 		.4byte	0x1c5
+ 470 01ac 10       		.uleb128 0x10
+ 471 01ad 2F020000 		.4byte	.LASF30
+ 472 01b1 02       		.byte	0x2
+ 473 01b2 A502     		.2byte	0x2a5
+ 474 01b4 C5010000 		.4byte	0x1c5
+ 475 01b8 10       		.uleb128 0x10
+ 476 01b9 B8010000 		.4byte	.LASF31
+ 477 01bd 02       		.byte	0x2
+ 478 01be A502     		.2byte	0x2a5
+ 479 01c0 8C000000 		.4byte	0x8c
+ 480 01c4 00       		.byte	0
+ 481 01c5 11       		.uleb128 0x11
+ 482 01c6 04       		.byte	0x4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 29
+
+
+ 483 01c7 13010000 		.4byte	0x113
+ 484 01cb 0F       		.uleb128 0xf
+ 485 01cc EC000000 		.4byte	.LASF33
+ 486 01d0 02       		.byte	0x2
+ 487 01d1 9903     		.2byte	0x399
+ 488 01d3 63010000 		.4byte	0x163
+ 489 01d7 03       		.byte	0x3
+ 490 01d8 E9010000 		.4byte	0x1e9
+ 491 01dc 10       		.uleb128 0x10
+ 492 01dd 2F020000 		.4byte	.LASF30
+ 493 01e1 02       		.byte	0x2
+ 494 01e2 9903     		.2byte	0x399
+ 495 01e4 94010000 		.4byte	0x194
+ 496 01e8 00       		.byte	0
+ 497 01e9 12       		.uleb128 0x12
+ 498 01ea 3D000000 		.4byte	.LASF35
+ 499 01ee 02       		.byte	0x2
+ 500 01ef 8C02     		.2byte	0x28c
+ 501 01f1 03       		.byte	0x3
+ 502 01f2 0F020000 		.4byte	0x20f
+ 503 01f6 10       		.uleb128 0x10
+ 504 01f7 2F020000 		.4byte	.LASF30
+ 505 01fb 02       		.byte	0x2
+ 506 01fc 8C02     		.2byte	0x28c
+ 507 01fe C5010000 		.4byte	0x1c5
+ 508 0202 10       		.uleb128 0x10
+ 509 0203 B8010000 		.4byte	.LASF31
+ 510 0207 02       		.byte	0x2
+ 511 0208 8C02     		.2byte	0x28c
+ 512 020a 8C000000 		.4byte	0x8c
+ 513 020e 00       		.byte	0
+ 514 020f 12       		.uleb128 0x12
+ 515 0210 0A000000 		.4byte	.LASF36
+ 516 0214 02       		.byte	0x2
+ 517 0215 BE02     		.2byte	0x2be
+ 518 0217 03       		.byte	0x3
+ 519 0218 35020000 		.4byte	0x235
+ 520 021c 10       		.uleb128 0x10
+ 521 021d 2F020000 		.4byte	.LASF30
+ 522 0221 02       		.byte	0x2
+ 523 0222 BE02     		.2byte	0x2be
+ 524 0224 C5010000 		.4byte	0x1c5
+ 525 0228 10       		.uleb128 0x10
+ 526 0229 1E010000 		.4byte	.LASF37
+ 527 022d 02       		.byte	0x2
+ 528 022e BE02     		.2byte	0x2be
+ 529 0230 8C000000 		.4byte	0x8c
+ 530 0234 00       		.byte	0
+ 531 0235 0F       		.uleb128 0xf
+ 532 0236 34020000 		.4byte	.LASF38
+ 533 023a 02       		.byte	0x2
+ 534 023b D602     		.2byte	0x2d6
+ 535 023d 8C000000 		.4byte	0x8c
+ 536 0241 03       		.byte	0x3
+ 537 0242 53020000 		.4byte	0x253
+ 538 0246 10       		.uleb128 0x10
+ 539 0247 2F020000 		.4byte	.LASF30
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 30
+
+
+ 540 024b 02       		.byte	0x2
+ 541 024c D602     		.2byte	0x2d6
+ 542 024e 94010000 		.4byte	0x194
+ 543 0252 00       		.byte	0
+ 544 0253 13       		.uleb128 0x13
+ 545 0254 3F030000 		.4byte	.LASF40
+ 546 0258 01       		.byte	0x1
+ 547 0259 2E       		.byte	0x2e
+ 548 025a 63010000 		.4byte	0x163
+ 549 025e 00000000 		.4byte	.LFB144
+ 550 0262 30000000 		.4byte	.LFE144-.LFB144
+ 551 0266 01       		.uleb128 0x1
+ 552 0267 9C       		.byte	0x9c
+ 553 0268 F3020000 		.4byte	0x2f3
+ 554 026c 14       		.uleb128 0x14
+ 555 026d 2F020000 		.4byte	.LASF30
+ 556 0271 01       		.byte	0x1
+ 557 0272 2E       		.byte	0x2e
+ 558 0273 C5010000 		.4byte	0x1c5
+ 559 0277 00000000 		.4byte	.LLST0
+ 560 027b 14       		.uleb128 0x14
+ 561 027c 7C000000 		.4byte	.LASF39
+ 562 0280 01       		.byte	0x1
+ 563 0281 2E       		.byte	0x2e
+ 564 0282 8C000000 		.4byte	0x8c
+ 565 0286 37000000 		.4byte	.LLST1
+ 566 028a 15       		.uleb128 0x15
+ 567 028b 00000000 		.4byte	.LASF43
+ 568 028f 01       		.byte	0x1
+ 569 0290 30       		.byte	0x30
+ 570 0291 63010000 		.4byte	0x163
+ 571 0295 60000000 		.4byte	.LLST2
+ 572 0299 16       		.uleb128 0x16
+ 573 029a 6F010000 		.4byte	0x16f
+ 574 029e 02000000 		.4byte	.LBB16
+ 575 02a2 02000000 		.4byte	.LBE16-.LBB16
+ 576 02a6 01       		.byte	0x1
+ 577 02a7 33       		.byte	0x33
+ 578 02a8 B6020000 		.4byte	0x2b6
+ 579 02ac 17       		.uleb128 0x17
+ 580 02ad 80010000 		.4byte	0x180
+ 581 02b1 7F000000 		.4byte	.LLST3
+ 582 02b5 00       		.byte	0
+ 583 02b6 18       		.uleb128 0x18
+ 584 02b7 9F010000 		.4byte	0x19f
+ 585 02bb 0C000000 		.4byte	.LBB18
+ 586 02bf 14000000 		.4byte	.LBE18-.LBB18
+ 587 02c3 01       		.byte	0x1
+ 588 02c4 36       		.byte	0x36
+ 589 02c5 17       		.uleb128 0x17
+ 590 02c6 B8010000 		.4byte	0x1b8
+ 591 02ca 92000000 		.4byte	.LLST4
+ 592 02ce 17       		.uleb128 0x17
+ 593 02cf AC010000 		.4byte	0x1ac
+ 594 02d3 B0000000 		.4byte	.LLST5
+ 595 02d7 19       		.uleb128 0x19
+ 596 02d8 1C000000 		.4byte	.LVL6
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 31
+
+
+ 597 02dc 79040000 		.4byte	0x479
+ 598 02e0 1A       		.uleb128 0x1a
+ 599 02e1 01       		.uleb128 0x1
+ 600 02e2 50       		.byte	0x50
+ 601 02e3 05       		.uleb128 0x5
+ 602 02e4 03       		.byte	0x3
+ 603 02e5 00000000 		.4byte	.LC0
+ 604 02e9 1A       		.uleb128 0x1a
+ 605 02ea 01       		.uleb128 0x1
+ 606 02eb 51       		.byte	0x51
+ 607 02ec 03       		.uleb128 0x3
+ 608 02ed 0A       		.byte	0xa
+ 609 02ee A702     		.2byte	0x2a7
+ 610 02f0 00       		.byte	0
+ 611 02f1 00       		.byte	0
+ 612 02f2 00       		.byte	0
+ 613 02f3 13       		.uleb128 0x13
+ 614 02f4 79010000 		.4byte	.LASF41
+ 615 02f8 01       		.byte	0x1
+ 616 02f9 61       		.byte	0x61
+ 617 02fa 63010000 		.4byte	0x163
+ 618 02fe 00000000 		.4byte	.LFB145
+ 619 0302 3C000000 		.4byte	.LFE145-.LFB145
+ 620 0306 01       		.uleb128 0x1
+ 621 0307 9C       		.byte	0x9c
+ 622 0308 C8030000 		.4byte	0x3c8
+ 623 030c 14       		.uleb128 0x14
+ 624 030d 2F020000 		.4byte	.LASF30
+ 625 0311 01       		.byte	0x1
+ 626 0312 61       		.byte	0x61
+ 627 0313 C5010000 		.4byte	0x1c5
+ 628 0317 CE000000 		.4byte	.LLST6
+ 629 031b 14       		.uleb128 0x14
+ 630 031c B8010000 		.4byte	.LASF31
+ 631 0320 01       		.byte	0x1
+ 632 0321 61       		.byte	0x61
+ 633 0322 8C000000 		.4byte	0x8c
+ 634 0326 05010000 		.4byte	.LLST7
+ 635 032a 14       		.uleb128 0x14
+ 636 032b 68000000 		.4byte	.LASF42
+ 637 032f 01       		.byte	0x1
+ 638 0330 61       		.byte	0x61
+ 639 0331 8C000000 		.4byte	0x8c
+ 640 0335 2E010000 		.4byte	.LLST8
+ 641 0339 15       		.uleb128 0x15
+ 642 033a 00000000 		.4byte	.LASF43
+ 643 033e 01       		.byte	0x1
+ 644 033f 63       		.byte	0x63
+ 645 0340 63010000 		.4byte	0x163
+ 646 0344 5A010000 		.4byte	.LLST9
+ 647 0348 16       		.uleb128 0x16
+ 648 0349 CB010000 		.4byte	0x1cb
+ 649 034d 02000000 		.4byte	.LBB20
+ 650 0351 0C000000 		.4byte	.LBE20-.LBB20
+ 651 0355 01       		.byte	0x1
+ 652 0356 65       		.byte	0x65
+ 653 0357 65030000 		.4byte	0x365
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 32
+
+
+ 654 035b 17       		.uleb128 0x17
+ 655 035c DC010000 		.4byte	0x1dc
+ 656 0360 79010000 		.4byte	.LLST10
+ 657 0364 00       		.byte	0
+ 658 0365 16       		.uleb128 0x16
+ 659 0366 0F020000 		.4byte	0x20f
+ 660 036a 14000000 		.4byte	.LBB22
+ 661 036e 02000000 		.4byte	.LBE22-.LBB22
+ 662 0372 01       		.byte	0x1
+ 663 0373 68       		.byte	0x68
+ 664 0374 8B030000 		.4byte	0x38b
+ 665 0378 17       		.uleb128 0x17
+ 666 0379 28020000 		.4byte	0x228
+ 667 037d 8C010000 		.4byte	.LLST11
+ 668 0381 17       		.uleb128 0x17
+ 669 0382 1C020000 		.4byte	0x21c
+ 670 0386 9F010000 		.4byte	.LLST12
+ 671 038a 00       		.byte	0
+ 672 038b 18       		.uleb128 0x18
+ 673 038c E9010000 		.4byte	0x1e9
+ 674 0390 16000000 		.4byte	.LBB24
+ 675 0394 14000000 		.4byte	.LBE24-.LBB24
+ 676 0398 01       		.byte	0x1
+ 677 0399 6A       		.byte	0x6a
+ 678 039a 17       		.uleb128 0x17
+ 679 039b 02020000 		.4byte	0x202
+ 680 039f B2010000 		.4byte	.LLST13
+ 681 03a3 17       		.uleb128 0x17
+ 682 03a4 F6010000 		.4byte	0x1f6
+ 683 03a8 DB010000 		.4byte	.LLST14
+ 684 03ac 19       		.uleb128 0x19
+ 685 03ad 26000000 		.4byte	.LVL18
+ 686 03b1 79040000 		.4byte	0x479
+ 687 03b5 1A       		.uleb128 0x1a
+ 688 03b6 01       		.uleb128 0x1
+ 689 03b7 50       		.byte	0x50
+ 690 03b8 05       		.uleb128 0x5
+ 691 03b9 03       		.byte	0x3
+ 692 03ba 00000000 		.4byte	.LC0
+ 693 03be 1A       		.uleb128 0x1a
+ 694 03bf 01       		.uleb128 0x1
+ 695 03c0 51       		.byte	0x51
+ 696 03c1 03       		.uleb128 0x3
+ 697 03c2 0A       		.byte	0xa
+ 698 03c3 8E02     		.2byte	0x28e
+ 699 03c5 00       		.byte	0
+ 700 03c6 00       		.byte	0
+ 701 03c7 00       		.byte	0
+ 702 03c8 13       		.uleb128 0x13
+ 703 03c9 57020000 		.4byte	.LASF44
+ 704 03cd 01       		.byte	0x1
+ 705 03ce 95       		.byte	0x95
+ 706 03cf 63010000 		.4byte	0x163
+ 707 03d3 00000000 		.4byte	.LFB146
+ 708 03d7 2C000000 		.4byte	.LFE146-.LFB146
+ 709 03db 01       		.uleb128 0x1
+ 710 03dc 9C       		.byte	0x9c
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 33
+
+
+ 711 03dd 62040000 		.4byte	0x462
+ 712 03e1 14       		.uleb128 0x14
+ 713 03e2 2F020000 		.4byte	.LASF30
+ 714 03e6 01       		.byte	0x1
+ 715 03e7 95       		.byte	0x95
+ 716 03e8 94010000 		.4byte	0x194
+ 717 03ec 04020000 		.4byte	.LLST15
+ 718 03f0 14       		.uleb128 0x14
+ 719 03f1 68000000 		.4byte	.LASF42
+ 720 03f5 01       		.byte	0x1
+ 721 03f6 95       		.byte	0x95
+ 722 03f7 62040000 		.4byte	0x462
+ 723 03fb 30020000 		.4byte	.LLST16
+ 724 03ff 15       		.uleb128 0x15
+ 725 0400 00000000 		.4byte	.LASF43
+ 726 0404 01       		.byte	0x1
+ 727 0405 97       		.byte	0x97
+ 728 0406 63010000 		.4byte	0x163
+ 729 040a 5C020000 		.4byte	.LLST17
+ 730 040e 16       		.uleb128 0x16
+ 731 040f 6F010000 		.4byte	0x16f
+ 732 0413 10000000 		.4byte	.LBB26
+ 733 0417 02000000 		.4byte	.LBE26-.LBB26
+ 734 041b 01       		.byte	0x1
+ 735 041c 9B       		.byte	0x9b
+ 736 041d 2B040000 		.4byte	0x42b
+ 737 0421 17       		.uleb128 0x17
+ 738 0422 80010000 		.4byte	0x180
+ 739 0426 7B020000 		.4byte	.LLST18
+ 740 042a 00       		.byte	0
+ 741 042b 16       		.uleb128 0x16
+ 742 042c 35020000 		.4byte	0x235
+ 743 0430 16000000 		.4byte	.LBB28
+ 744 0434 02000000 		.4byte	.LBE28-.LBB28
+ 745 0438 01       		.byte	0x1
+ 746 0439 9E       		.byte	0x9e
+ 747 043a 48040000 		.4byte	0x448
+ 748 043e 17       		.uleb128 0x17
+ 749 043f 46020000 		.4byte	0x246
+ 750 0443 8E020000 		.4byte	.LLST19
+ 751 0447 00       		.byte	0
+ 752 0448 19       		.uleb128 0x19
+ 753 0449 10000000 		.4byte	.LVL25
+ 754 044d 79040000 		.4byte	0x479
+ 755 0451 1A       		.uleb128 0x1a
+ 756 0452 01       		.uleb128 0x1
+ 757 0453 50       		.byte	0x50
+ 758 0454 05       		.uleb128 0x5
+ 759 0455 03       		.byte	0x3
+ 760 0456 40000000 		.4byte	.LC1
+ 761 045a 1A       		.uleb128 0x1a
+ 762 045b 01       		.uleb128 0x1
+ 763 045c 51       		.byte	0x51
+ 764 045d 02       		.uleb128 0x2
+ 765 045e 08       		.byte	0x8
+ 766 045f 99       		.byte	0x99
+ 767 0460 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 34
+
+
+ 768 0461 00       		.byte	0
+ 769 0462 11       		.uleb128 0x11
+ 770 0463 04       		.byte	0x4
+ 771 0464 8C000000 		.4byte	0x8c
+ 772 0468 1B       		.uleb128 0x1b
+ 773 0469 D1000000 		.4byte	.LASF48
+ 774 046d 07       		.byte	0x7
+ 775 046e EA07     		.2byte	0x7ea
+ 776 0470 74040000 		.4byte	0x474
+ 777 0474 05       		.uleb128 0x5
+ 778 0475 81000000 		.4byte	0x81
+ 779 0479 1C       		.uleb128 0x1c
+ 780 047a 5D030000 		.4byte	.LASF49
+ 781 047e 5D030000 		.4byte	.LASF49
+ 782 0482 06       		.byte	0x6
+ 783 0483 2A03     		.2byte	0x32a
+ 784 0485 00       		.byte	0
+ 785              		.section	.debug_abbrev,"",%progbits
+ 786              	.Ldebug_abbrev0:
+ 787 0000 01       		.uleb128 0x1
+ 788 0001 11       		.uleb128 0x11
+ 789 0002 01       		.byte	0x1
+ 790 0003 25       		.uleb128 0x25
+ 791 0004 0E       		.uleb128 0xe
+ 792 0005 13       		.uleb128 0x13
+ 793 0006 0B       		.uleb128 0xb
+ 794 0007 03       		.uleb128 0x3
+ 795 0008 0E       		.uleb128 0xe
+ 796 0009 1B       		.uleb128 0x1b
+ 797 000a 0E       		.uleb128 0xe
+ 798 000b 55       		.uleb128 0x55
+ 799 000c 17       		.uleb128 0x17
+ 800 000d 11       		.uleb128 0x11
+ 801 000e 01       		.uleb128 0x1
+ 802 000f 10       		.uleb128 0x10
+ 803 0010 17       		.uleb128 0x17
+ 804 0011 00       		.byte	0
+ 805 0012 00       		.byte	0
+ 806 0013 02       		.uleb128 0x2
+ 807 0014 24       		.uleb128 0x24
+ 808 0015 00       		.byte	0
+ 809 0016 0B       		.uleb128 0xb
+ 810 0017 0B       		.uleb128 0xb
+ 811 0018 3E       		.uleb128 0x3e
+ 812 0019 0B       		.uleb128 0xb
+ 813 001a 03       		.uleb128 0x3
+ 814 001b 0E       		.uleb128 0xe
+ 815 001c 00       		.byte	0
+ 816 001d 00       		.byte	0
+ 817 001e 03       		.uleb128 0x3
+ 818 001f 16       		.uleb128 0x16
+ 819 0020 00       		.byte	0
+ 820 0021 03       		.uleb128 0x3
+ 821 0022 0E       		.uleb128 0xe
+ 822 0023 3A       		.uleb128 0x3a
+ 823 0024 0B       		.uleb128 0xb
+ 824 0025 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 35
+
+
+ 825 0026 0B       		.uleb128 0xb
+ 826 0027 49       		.uleb128 0x49
+ 827 0028 13       		.uleb128 0x13
+ 828 0029 00       		.byte	0
+ 829 002a 00       		.byte	0
+ 830 002b 04       		.uleb128 0x4
+ 831 002c 24       		.uleb128 0x24
+ 832 002d 00       		.byte	0
+ 833 002e 0B       		.uleb128 0xb
+ 834 002f 0B       		.uleb128 0xb
+ 835 0030 3E       		.uleb128 0x3e
+ 836 0031 0B       		.uleb128 0xb
+ 837 0032 03       		.uleb128 0x3
+ 838 0033 08       		.uleb128 0x8
+ 839 0034 00       		.byte	0
+ 840 0035 00       		.byte	0
+ 841 0036 05       		.uleb128 0x5
+ 842 0037 35       		.uleb128 0x35
+ 843 0038 00       		.byte	0
+ 844 0039 49       		.uleb128 0x49
+ 845 003a 13       		.uleb128 0x13
+ 846 003b 00       		.byte	0
+ 847 003c 00       		.byte	0
+ 848 003d 06       		.uleb128 0x6
+ 849 003e 26       		.uleb128 0x26
+ 850 003f 00       		.byte	0
+ 851 0040 49       		.uleb128 0x49
+ 852 0041 13       		.uleb128 0x13
+ 853 0042 00       		.byte	0
+ 854 0043 00       		.byte	0
+ 855 0044 07       		.uleb128 0x7
+ 856 0045 01       		.uleb128 0x1
+ 857 0046 01       		.byte	0x1
+ 858 0047 49       		.uleb128 0x49
+ 859 0048 13       		.uleb128 0x13
+ 860 0049 01       		.uleb128 0x1
+ 861 004a 13       		.uleb128 0x13
+ 862 004b 00       		.byte	0
+ 863 004c 00       		.byte	0
+ 864 004d 08       		.uleb128 0x8
+ 865 004e 21       		.uleb128 0x21
+ 866 004f 00       		.byte	0
+ 867 0050 49       		.uleb128 0x49
+ 868 0051 13       		.uleb128 0x13
+ 869 0052 2F       		.uleb128 0x2f
+ 870 0053 0B       		.uleb128 0xb
+ 871 0054 00       		.byte	0
+ 872 0055 00       		.byte	0
+ 873 0056 09       		.uleb128 0x9
+ 874 0057 13       		.uleb128 0x13
+ 875 0058 01       		.byte	0x1
+ 876 0059 0B       		.uleb128 0xb
+ 877 005a 0B       		.uleb128 0xb
+ 878 005b 3A       		.uleb128 0x3a
+ 879 005c 0B       		.uleb128 0xb
+ 880 005d 3B       		.uleb128 0x3b
+ 881 005e 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 36
+
+
+ 882 005f 01       		.uleb128 0x1
+ 883 0060 13       		.uleb128 0x13
+ 884 0061 00       		.byte	0
+ 885 0062 00       		.byte	0
+ 886 0063 0A       		.uleb128 0xa
+ 887 0064 0D       		.uleb128 0xd
+ 888 0065 00       		.byte	0
+ 889 0066 03       		.uleb128 0x3
+ 890 0067 0E       		.uleb128 0xe
+ 891 0068 3A       		.uleb128 0x3a
+ 892 0069 0B       		.uleb128 0xb
+ 893 006a 3B       		.uleb128 0x3b
+ 894 006b 0B       		.uleb128 0xb
+ 895 006c 49       		.uleb128 0x49
+ 896 006d 13       		.uleb128 0x13
+ 897 006e 38       		.uleb128 0x38
+ 898 006f 0B       		.uleb128 0xb
+ 899 0070 00       		.byte	0
+ 900 0071 00       		.byte	0
+ 901 0072 0B       		.uleb128 0xb
+ 902 0073 16       		.uleb128 0x16
+ 903 0074 00       		.byte	0
+ 904 0075 03       		.uleb128 0x3
+ 905 0076 0E       		.uleb128 0xe
+ 906 0077 3A       		.uleb128 0x3a
+ 907 0078 0B       		.uleb128 0xb
+ 908 0079 3B       		.uleb128 0x3b
+ 909 007a 05       		.uleb128 0x5
+ 910 007b 49       		.uleb128 0x49
+ 911 007c 13       		.uleb128 0x13
+ 912 007d 00       		.byte	0
+ 913 007e 00       		.byte	0
+ 914 007f 0C       		.uleb128 0xc
+ 915 0080 04       		.uleb128 0x4
+ 916 0081 01       		.byte	0x1
+ 917 0082 0B       		.uleb128 0xb
+ 918 0083 0B       		.uleb128 0xb
+ 919 0084 49       		.uleb128 0x49
+ 920 0085 13       		.uleb128 0x13
+ 921 0086 3A       		.uleb128 0x3a
+ 922 0087 0B       		.uleb128 0xb
+ 923 0088 3B       		.uleb128 0x3b
+ 924 0089 05       		.uleb128 0x5
+ 925 008a 01       		.uleb128 0x1
+ 926 008b 13       		.uleb128 0x13
+ 927 008c 00       		.byte	0
+ 928 008d 00       		.byte	0
+ 929 008e 0D       		.uleb128 0xd
+ 930 008f 28       		.uleb128 0x28
+ 931 0090 00       		.byte	0
+ 932 0091 03       		.uleb128 0x3
+ 933 0092 0E       		.uleb128 0xe
+ 934 0093 1C       		.uleb128 0x1c
+ 935 0094 0B       		.uleb128 0xb
+ 936 0095 00       		.byte	0
+ 937 0096 00       		.byte	0
+ 938 0097 0E       		.uleb128 0xe
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 37
+
+
+ 939 0098 28       		.uleb128 0x28
+ 940 0099 00       		.byte	0
+ 941 009a 03       		.uleb128 0x3
+ 942 009b 0E       		.uleb128 0xe
+ 943 009c 1C       		.uleb128 0x1c
+ 944 009d 06       		.uleb128 0x6
+ 945 009e 00       		.byte	0
+ 946 009f 00       		.byte	0
+ 947 00a0 0F       		.uleb128 0xf
+ 948 00a1 2E       		.uleb128 0x2e
+ 949 00a2 01       		.byte	0x1
+ 950 00a3 03       		.uleb128 0x3
+ 951 00a4 0E       		.uleb128 0xe
+ 952 00a5 3A       		.uleb128 0x3a
+ 953 00a6 0B       		.uleb128 0xb
+ 954 00a7 3B       		.uleb128 0x3b
+ 955 00a8 05       		.uleb128 0x5
+ 956 00a9 27       		.uleb128 0x27
+ 957 00aa 19       		.uleb128 0x19
+ 958 00ab 49       		.uleb128 0x49
+ 959 00ac 13       		.uleb128 0x13
+ 960 00ad 20       		.uleb128 0x20
+ 961 00ae 0B       		.uleb128 0xb
+ 962 00af 01       		.uleb128 0x1
+ 963 00b0 13       		.uleb128 0x13
+ 964 00b1 00       		.byte	0
+ 965 00b2 00       		.byte	0
+ 966 00b3 10       		.uleb128 0x10
+ 967 00b4 05       		.uleb128 0x5
+ 968 00b5 00       		.byte	0
+ 969 00b6 03       		.uleb128 0x3
+ 970 00b7 0E       		.uleb128 0xe
+ 971 00b8 3A       		.uleb128 0x3a
+ 972 00b9 0B       		.uleb128 0xb
+ 973 00ba 3B       		.uleb128 0x3b
+ 974 00bb 05       		.uleb128 0x5
+ 975 00bc 49       		.uleb128 0x49
+ 976 00bd 13       		.uleb128 0x13
+ 977 00be 00       		.byte	0
+ 978 00bf 00       		.byte	0
+ 979 00c0 11       		.uleb128 0x11
+ 980 00c1 0F       		.uleb128 0xf
+ 981 00c2 00       		.byte	0
+ 982 00c3 0B       		.uleb128 0xb
+ 983 00c4 0B       		.uleb128 0xb
+ 984 00c5 49       		.uleb128 0x49
+ 985 00c6 13       		.uleb128 0x13
+ 986 00c7 00       		.byte	0
+ 987 00c8 00       		.byte	0
+ 988 00c9 12       		.uleb128 0x12
+ 989 00ca 2E       		.uleb128 0x2e
+ 990 00cb 01       		.byte	0x1
+ 991 00cc 03       		.uleb128 0x3
+ 992 00cd 0E       		.uleb128 0xe
+ 993 00ce 3A       		.uleb128 0x3a
+ 994 00cf 0B       		.uleb128 0xb
+ 995 00d0 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 38
+
+
+ 996 00d1 05       		.uleb128 0x5
+ 997 00d2 27       		.uleb128 0x27
+ 998 00d3 19       		.uleb128 0x19
+ 999 00d4 20       		.uleb128 0x20
+ 1000 00d5 0B       		.uleb128 0xb
+ 1001 00d6 01       		.uleb128 0x1
+ 1002 00d7 13       		.uleb128 0x13
+ 1003 00d8 00       		.byte	0
+ 1004 00d9 00       		.byte	0
+ 1005 00da 13       		.uleb128 0x13
+ 1006 00db 2E       		.uleb128 0x2e
+ 1007 00dc 01       		.byte	0x1
+ 1008 00dd 3F       		.uleb128 0x3f
+ 1009 00de 19       		.uleb128 0x19
+ 1010 00df 03       		.uleb128 0x3
+ 1011 00e0 0E       		.uleb128 0xe
+ 1012 00e1 3A       		.uleb128 0x3a
+ 1013 00e2 0B       		.uleb128 0xb
+ 1014 00e3 3B       		.uleb128 0x3b
+ 1015 00e4 0B       		.uleb128 0xb
+ 1016 00e5 27       		.uleb128 0x27
+ 1017 00e6 19       		.uleb128 0x19
+ 1018 00e7 49       		.uleb128 0x49
+ 1019 00e8 13       		.uleb128 0x13
+ 1020 00e9 11       		.uleb128 0x11
+ 1021 00ea 01       		.uleb128 0x1
+ 1022 00eb 12       		.uleb128 0x12
+ 1023 00ec 06       		.uleb128 0x6
+ 1024 00ed 40       		.uleb128 0x40
+ 1025 00ee 18       		.uleb128 0x18
+ 1026 00ef 9742     		.uleb128 0x2117
+ 1027 00f1 19       		.uleb128 0x19
+ 1028 00f2 01       		.uleb128 0x1
+ 1029 00f3 13       		.uleb128 0x13
+ 1030 00f4 00       		.byte	0
+ 1031 00f5 00       		.byte	0
+ 1032 00f6 14       		.uleb128 0x14
+ 1033 00f7 05       		.uleb128 0x5
+ 1034 00f8 00       		.byte	0
+ 1035 00f9 03       		.uleb128 0x3
+ 1036 00fa 0E       		.uleb128 0xe
+ 1037 00fb 3A       		.uleb128 0x3a
+ 1038 00fc 0B       		.uleb128 0xb
+ 1039 00fd 3B       		.uleb128 0x3b
+ 1040 00fe 0B       		.uleb128 0xb
+ 1041 00ff 49       		.uleb128 0x49
+ 1042 0100 13       		.uleb128 0x13
+ 1043 0101 02       		.uleb128 0x2
+ 1044 0102 17       		.uleb128 0x17
+ 1045 0103 00       		.byte	0
+ 1046 0104 00       		.byte	0
+ 1047 0105 15       		.uleb128 0x15
+ 1048 0106 34       		.uleb128 0x34
+ 1049 0107 00       		.byte	0
+ 1050 0108 03       		.uleb128 0x3
+ 1051 0109 0E       		.uleb128 0xe
+ 1052 010a 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 39
+
+
+ 1053 010b 0B       		.uleb128 0xb
+ 1054 010c 3B       		.uleb128 0x3b
+ 1055 010d 0B       		.uleb128 0xb
+ 1056 010e 49       		.uleb128 0x49
+ 1057 010f 13       		.uleb128 0x13
+ 1058 0110 02       		.uleb128 0x2
+ 1059 0111 17       		.uleb128 0x17
+ 1060 0112 00       		.byte	0
+ 1061 0113 00       		.byte	0
+ 1062 0114 16       		.uleb128 0x16
+ 1063 0115 1D       		.uleb128 0x1d
+ 1064 0116 01       		.byte	0x1
+ 1065 0117 31       		.uleb128 0x31
+ 1066 0118 13       		.uleb128 0x13
+ 1067 0119 11       		.uleb128 0x11
+ 1068 011a 01       		.uleb128 0x1
+ 1069 011b 12       		.uleb128 0x12
+ 1070 011c 06       		.uleb128 0x6
+ 1071 011d 58       		.uleb128 0x58
+ 1072 011e 0B       		.uleb128 0xb
+ 1073 011f 59       		.uleb128 0x59
+ 1074 0120 0B       		.uleb128 0xb
+ 1075 0121 01       		.uleb128 0x1
+ 1076 0122 13       		.uleb128 0x13
+ 1077 0123 00       		.byte	0
+ 1078 0124 00       		.byte	0
+ 1079 0125 17       		.uleb128 0x17
+ 1080 0126 05       		.uleb128 0x5
+ 1081 0127 00       		.byte	0
+ 1082 0128 31       		.uleb128 0x31
+ 1083 0129 13       		.uleb128 0x13
+ 1084 012a 02       		.uleb128 0x2
+ 1085 012b 17       		.uleb128 0x17
+ 1086 012c 00       		.byte	0
+ 1087 012d 00       		.byte	0
+ 1088 012e 18       		.uleb128 0x18
+ 1089 012f 1D       		.uleb128 0x1d
+ 1090 0130 01       		.byte	0x1
+ 1091 0131 31       		.uleb128 0x31
+ 1092 0132 13       		.uleb128 0x13
+ 1093 0133 11       		.uleb128 0x11
+ 1094 0134 01       		.uleb128 0x1
+ 1095 0135 12       		.uleb128 0x12
+ 1096 0136 06       		.uleb128 0x6
+ 1097 0137 58       		.uleb128 0x58
+ 1098 0138 0B       		.uleb128 0xb
+ 1099 0139 59       		.uleb128 0x59
+ 1100 013a 0B       		.uleb128 0xb
+ 1101 013b 00       		.byte	0
+ 1102 013c 00       		.byte	0
+ 1103 013d 19       		.uleb128 0x19
+ 1104 013e 898201   		.uleb128 0x4109
+ 1105 0141 01       		.byte	0x1
+ 1106 0142 11       		.uleb128 0x11
+ 1107 0143 01       		.uleb128 0x1
+ 1108 0144 31       		.uleb128 0x31
+ 1109 0145 13       		.uleb128 0x13
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 40
+
+
+ 1110 0146 00       		.byte	0
+ 1111 0147 00       		.byte	0
+ 1112 0148 1A       		.uleb128 0x1a
+ 1113 0149 8A8201   		.uleb128 0x410a
+ 1114 014c 00       		.byte	0
+ 1115 014d 02       		.uleb128 0x2
+ 1116 014e 18       		.uleb128 0x18
+ 1117 014f 9142     		.uleb128 0x2111
+ 1118 0151 18       		.uleb128 0x18
+ 1119 0152 00       		.byte	0
+ 1120 0153 00       		.byte	0
+ 1121 0154 1B       		.uleb128 0x1b
+ 1122 0155 34       		.uleb128 0x34
+ 1123 0156 00       		.byte	0
+ 1124 0157 03       		.uleb128 0x3
+ 1125 0158 0E       		.uleb128 0xe
+ 1126 0159 3A       		.uleb128 0x3a
+ 1127 015a 0B       		.uleb128 0xb
+ 1128 015b 3B       		.uleb128 0x3b
+ 1129 015c 05       		.uleb128 0x5
+ 1130 015d 49       		.uleb128 0x49
+ 1131 015e 13       		.uleb128 0x13
+ 1132 015f 3F       		.uleb128 0x3f
+ 1133 0160 19       		.uleb128 0x19
+ 1134 0161 3C       		.uleb128 0x3c
+ 1135 0162 19       		.uleb128 0x19
+ 1136 0163 00       		.byte	0
+ 1137 0164 00       		.byte	0
+ 1138 0165 1C       		.uleb128 0x1c
+ 1139 0166 2E       		.uleb128 0x2e
+ 1140 0167 00       		.byte	0
+ 1141 0168 3F       		.uleb128 0x3f
+ 1142 0169 19       		.uleb128 0x19
+ 1143 016a 3C       		.uleb128 0x3c
+ 1144 016b 19       		.uleb128 0x19
+ 1145 016c 6E       		.uleb128 0x6e
+ 1146 016d 0E       		.uleb128 0xe
+ 1147 016e 03       		.uleb128 0x3
+ 1148 016f 0E       		.uleb128 0xe
+ 1149 0170 3A       		.uleb128 0x3a
+ 1150 0171 0B       		.uleb128 0xb
+ 1151 0172 3B       		.uleb128 0x3b
+ 1152 0173 05       		.uleb128 0x5
+ 1153 0174 00       		.byte	0
+ 1154 0175 00       		.byte	0
+ 1155 0176 00       		.byte	0
+ 1156              		.section	.debug_loc,"",%progbits
+ 1157              	.Ldebug_loc0:
+ 1158              	.LLST0:
+ 1159 0000 00000000 		.4byte	.LVL0
+ 1160 0004 18000000 		.4byte	.LVL5
+ 1161 0008 0100     		.2byte	0x1
+ 1162 000a 50       		.byte	0x50
+ 1163 000b 18000000 		.4byte	.LVL5
+ 1164 000f 24000000 		.4byte	.LVL8
+ 1165 0013 0100     		.2byte	0x1
+ 1166 0015 54       		.byte	0x54
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 41
+
+
+ 1167 0016 24000000 		.4byte	.LVL8
+ 1168 001a 26000000 		.4byte	.LVL9
+ 1169 001e 0100     		.2byte	0x1
+ 1170 0020 50       		.byte	0x50
+ 1171 0021 26000000 		.4byte	.LVL9
+ 1172 0025 30000000 		.4byte	.LFE144
+ 1173 0029 0400     		.2byte	0x4
+ 1174 002b F3       		.byte	0xf3
+ 1175 002c 01       		.uleb128 0x1
+ 1176 002d 50       		.byte	0x50
+ 1177 002e 9F       		.byte	0x9f
+ 1178 002f 00000000 		.4byte	0
+ 1179 0033 00000000 		.4byte	0
+ 1180              	.LLST1:
+ 1181 0037 00000000 		.4byte	.LVL0
+ 1182 003b 16000000 		.4byte	.LVL4
+ 1183 003f 0100     		.2byte	0x1
+ 1184 0041 51       		.byte	0x51
+ 1185 0042 16000000 		.4byte	.LVL4
+ 1186 0046 24000000 		.4byte	.LVL8
+ 1187 004a 0100     		.2byte	0x1
+ 1188 004c 55       		.byte	0x55
+ 1189 004d 24000000 		.4byte	.LVL8
+ 1190 0051 30000000 		.4byte	.LFE144
+ 1191 0055 0100     		.2byte	0x1
+ 1192 0057 51       		.byte	0x51
+ 1193 0058 00000000 		.4byte	0
+ 1194 005c 00000000 		.4byte	0
+ 1195              	.LLST2:
+ 1196 0060 20000000 		.4byte	.LVL7
+ 1197 0064 24000000 		.4byte	.LVL8
+ 1198 0068 0200     		.2byte	0x2
+ 1199 006a 30       		.byte	0x30
+ 1200 006b 9F       		.byte	0x9f
+ 1201 006c 26000000 		.4byte	.LVL9
+ 1202 0070 30000000 		.4byte	.LFE144
+ 1203 0074 0100     		.2byte	0x1
+ 1204 0076 50       		.byte	0x50
+ 1205 0077 00000000 		.4byte	0
+ 1206 007b 00000000 		.4byte	0
+ 1207              	.LLST3:
+ 1208 007f 02000000 		.4byte	.LVL1
+ 1209 0083 04000000 		.4byte	.LVL2
+ 1210 0087 0100     		.2byte	0x1
+ 1211 0089 50       		.byte	0x50
+ 1212 008a 00000000 		.4byte	0
+ 1213 008e 00000000 		.4byte	0
+ 1214              	.LLST4:
+ 1215 0092 0C000000 		.4byte	.LVL3
+ 1216 0096 16000000 		.4byte	.LVL4
+ 1217 009a 0100     		.2byte	0x1
+ 1218 009c 51       		.byte	0x51
+ 1219 009d 16000000 		.4byte	.LVL4
+ 1220 00a1 20000000 		.4byte	.LVL7
+ 1221 00a5 0100     		.2byte	0x1
+ 1222 00a7 55       		.byte	0x55
+ 1223 00a8 00000000 		.4byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 42
+
+
+ 1224 00ac 00000000 		.4byte	0
+ 1225              	.LLST5:
+ 1226 00b0 0C000000 		.4byte	.LVL3
+ 1227 00b4 18000000 		.4byte	.LVL5
+ 1228 00b8 0100     		.2byte	0x1
+ 1229 00ba 50       		.byte	0x50
+ 1230 00bb 18000000 		.4byte	.LVL5
+ 1231 00bf 20000000 		.4byte	.LVL7
+ 1232 00c3 0100     		.2byte	0x1
+ 1233 00c5 54       		.byte	0x54
+ 1234 00c6 00000000 		.4byte	0
+ 1235 00ca 00000000 		.4byte	0
+ 1236              	.LLST6:
+ 1237 00ce 00000000 		.4byte	.LVL10
+ 1238 00d2 22000000 		.4byte	.LVL17
+ 1239 00d6 0100     		.2byte	0x1
+ 1240 00d8 50       		.byte	0x50
+ 1241 00d9 22000000 		.4byte	.LVL17
+ 1242 00dd 2E000000 		.4byte	.LVL20
+ 1243 00e1 0100     		.2byte	0x1
+ 1244 00e3 54       		.byte	0x54
+ 1245 00e4 2E000000 		.4byte	.LVL20
+ 1246 00e8 30000000 		.4byte	.LVL21
+ 1247 00ec 0100     		.2byte	0x1
+ 1248 00ee 50       		.byte	0x50
+ 1249 00ef 30000000 		.4byte	.LVL21
+ 1250 00f3 3C000000 		.4byte	.LFE145
+ 1251 00f7 0400     		.2byte	0x4
+ 1252 00f9 F3       		.byte	0xf3
+ 1253 00fa 01       		.uleb128 0x1
+ 1254 00fb 50       		.byte	0x50
+ 1255 00fc 9F       		.byte	0x9f
+ 1256 00fd 00000000 		.4byte	0
+ 1257 0101 00000000 		.4byte	0
+ 1258              	.LLST7:
+ 1259 0105 00000000 		.4byte	.LVL10
+ 1260 0109 20000000 		.4byte	.LVL16
+ 1261 010d 0100     		.2byte	0x1
+ 1262 010f 51       		.byte	0x51
+ 1263 0110 20000000 		.4byte	.LVL16
+ 1264 0114 2E000000 		.4byte	.LVL20
+ 1265 0118 0100     		.2byte	0x1
+ 1266 011a 55       		.byte	0x55
+ 1267 011b 2E000000 		.4byte	.LVL20
+ 1268 011f 3C000000 		.4byte	.LFE145
+ 1269 0123 0100     		.2byte	0x1
+ 1270 0125 51       		.byte	0x51
+ 1271 0126 00000000 		.4byte	0
+ 1272 012a 00000000 		.4byte	0
+ 1273              	.LLST8:
+ 1274 012e 00000000 		.4byte	.LVL10
+ 1275 0132 25000000 		.4byte	.LVL18-1
+ 1276 0136 0100     		.2byte	0x1
+ 1277 0138 52       		.byte	0x52
+ 1278 0139 25000000 		.4byte	.LVL18-1
+ 1279 013d 2E000000 		.4byte	.LVL20
+ 1280 0141 0400     		.2byte	0x4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 43
+
+
+ 1281 0143 F3       		.byte	0xf3
+ 1282 0144 01       		.uleb128 0x1
+ 1283 0145 52       		.byte	0x52
+ 1284 0146 9F       		.byte	0x9f
+ 1285 0147 2E000000 		.4byte	.LVL20
+ 1286 014b 3C000000 		.4byte	.LFE145
+ 1287 014f 0100     		.2byte	0x1
+ 1288 0151 52       		.byte	0x52
+ 1289 0152 00000000 		.4byte	0
+ 1290 0156 00000000 		.4byte	0
+ 1291              	.LLST9:
+ 1292 015a 2A000000 		.4byte	.LVL19
+ 1293 015e 2E000000 		.4byte	.LVL20
+ 1294 0162 0200     		.2byte	0x2
+ 1295 0164 30       		.byte	0x30
+ 1296 0165 9F       		.byte	0x9f
+ 1297 0166 30000000 		.4byte	.LVL21
+ 1298 016a 3C000000 		.4byte	.LFE145
+ 1299 016e 0100     		.2byte	0x1
+ 1300 0170 50       		.byte	0x50
+ 1301 0171 00000000 		.4byte	0
+ 1302 0175 00000000 		.4byte	0
+ 1303              	.LLST10:
+ 1304 0179 02000000 		.4byte	.LVL11
+ 1305 017d 0E000000 		.4byte	.LVL12
+ 1306 0181 0100     		.2byte	0x1
+ 1307 0183 50       		.byte	0x50
+ 1308 0184 00000000 		.4byte	0
+ 1309 0188 00000000 		.4byte	0
+ 1310              	.LLST11:
+ 1311 018c 14000000 		.4byte	.LVL13
+ 1312 0190 16000000 		.4byte	.LVL14
+ 1313 0194 0100     		.2byte	0x1
+ 1314 0196 52       		.byte	0x52
+ 1315 0197 00000000 		.4byte	0
+ 1316 019b 00000000 		.4byte	0
+ 1317              	.LLST12:
+ 1318 019f 14000000 		.4byte	.LVL13
+ 1319 01a3 16000000 		.4byte	.LVL14
+ 1320 01a7 0100     		.2byte	0x1
+ 1321 01a9 54       		.byte	0x54
+ 1322 01aa 00000000 		.4byte	0
+ 1323 01ae 00000000 		.4byte	0
+ 1324              	.LLST13:
+ 1325 01b2 16000000 		.4byte	.LVL14
+ 1326 01b6 1C000000 		.4byte	.LVL15
+ 1327 01ba 0100     		.2byte	0x1
+ 1328 01bc 55       		.byte	0x55
+ 1329 01bd 1C000000 		.4byte	.LVL15
+ 1330 01c1 20000000 		.4byte	.LVL16
+ 1331 01c5 0100     		.2byte	0x1
+ 1332 01c7 51       		.byte	0x51
+ 1333 01c8 20000000 		.4byte	.LVL16
+ 1334 01cc 2A000000 		.4byte	.LVL19
+ 1335 01d0 0100     		.2byte	0x1
+ 1336 01d2 55       		.byte	0x55
+ 1337 01d3 00000000 		.4byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 44
+
+
+ 1338 01d7 00000000 		.4byte	0
+ 1339              	.LLST14:
+ 1340 01db 16000000 		.4byte	.LVL14
+ 1341 01df 1C000000 		.4byte	.LVL15
+ 1342 01e3 0100     		.2byte	0x1
+ 1343 01e5 54       		.byte	0x54
+ 1344 01e6 1C000000 		.4byte	.LVL15
+ 1345 01ea 22000000 		.4byte	.LVL17
+ 1346 01ee 0100     		.2byte	0x1
+ 1347 01f0 50       		.byte	0x50
+ 1348 01f1 22000000 		.4byte	.LVL17
+ 1349 01f5 2A000000 		.4byte	.LVL19
+ 1350 01f9 0100     		.2byte	0x1
+ 1351 01fb 54       		.byte	0x54
+ 1352 01fc 00000000 		.4byte	0
+ 1353 0200 00000000 		.4byte	0
+ 1354              	.LLST15:
+ 1355 0204 00000000 		.4byte	.LVL22
+ 1356 0208 0C000000 		.4byte	.LVL24
+ 1357 020c 0100     		.2byte	0x1
+ 1358 020e 50       		.byte	0x50
+ 1359 020f 0C000000 		.4byte	.LVL24
+ 1360 0213 22000000 		.4byte	.LVL32
+ 1361 0217 0100     		.2byte	0x1
+ 1362 0219 54       		.byte	0x54
+ 1363 021a 22000000 		.4byte	.LVL32
+ 1364 021e 2C000000 		.4byte	.LFE146
+ 1365 0222 0400     		.2byte	0x4
+ 1366 0224 F3       		.byte	0xf3
+ 1367 0225 01       		.uleb128 0x1
+ 1368 0226 50       		.byte	0x50
+ 1369 0227 9F       		.byte	0x9f
+ 1370 0228 00000000 		.4byte	0
+ 1371 022c 00000000 		.4byte	0
+ 1372              	.LLST16:
+ 1373 0230 00000000 		.4byte	.LVL22
+ 1374 0234 0A000000 		.4byte	.LVL23
+ 1375 0238 0100     		.2byte	0x1
+ 1376 023a 51       		.byte	0x51
+ 1377 023b 0A000000 		.4byte	.LVL23
+ 1378 023f 22000000 		.4byte	.LVL32
+ 1379 0243 0100     		.2byte	0x1
+ 1380 0245 55       		.byte	0x55
+ 1381 0246 22000000 		.4byte	.LVL32
+ 1382 024a 2C000000 		.4byte	.LFE146
+ 1383 024e 0400     		.2byte	0x4
+ 1384 0250 F3       		.byte	0xf3
+ 1385 0251 01       		.uleb128 0x1
+ 1386 0252 51       		.byte	0x51
+ 1387 0253 9F       		.byte	0x9f
+ 1388 0254 00000000 		.4byte	0
+ 1389 0258 00000000 		.4byte	0
+ 1390              	.LLST17:
+ 1391 025c 1A000000 		.4byte	.LVL29
+ 1392 0260 1E000000 		.4byte	.LVL30
+ 1393 0264 0200     		.2byte	0x2
+ 1394 0266 30       		.byte	0x30
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 45
+
+
+ 1395 0267 9F       		.byte	0x9f
+ 1396 0268 20000000 		.4byte	.LVL31
+ 1397 026c 2C000000 		.4byte	.LFE146
+ 1398 0270 0100     		.2byte	0x1
+ 1399 0272 50       		.byte	0x50
+ 1400 0273 00000000 		.4byte	0
+ 1401 0277 00000000 		.4byte	0
+ 1402              	.LLST18:
+ 1403 027b 10000000 		.4byte	.LVL25
+ 1404 027f 12000000 		.4byte	.LVL26
+ 1405 0283 0100     		.2byte	0x1
+ 1406 0285 54       		.byte	0x54
+ 1407 0286 00000000 		.4byte	0
+ 1408 028a 00000000 		.4byte	0
+ 1409              	.LLST19:
+ 1410 028e 16000000 		.4byte	.LVL27
+ 1411 0292 18000000 		.4byte	.LVL28
+ 1412 0296 0100     		.2byte	0x1
+ 1413 0298 54       		.byte	0x54
+ 1414 0299 00000000 		.4byte	0
+ 1415 029d 00000000 		.4byte	0
+ 1416              		.section	.debug_aranges,"",%progbits
+ 1417 0000 2C000000 		.4byte	0x2c
+ 1418 0004 0200     		.2byte	0x2
+ 1419 0006 00000000 		.4byte	.Ldebug_info0
+ 1420 000a 04       		.byte	0x4
+ 1421 000b 00       		.byte	0
+ 1422 000c 0000     		.2byte	0
+ 1423 000e 0000     		.2byte	0
+ 1424 0010 00000000 		.4byte	.LFB144
+ 1425 0014 30000000 		.4byte	.LFE144-.LFB144
+ 1426 0018 00000000 		.4byte	.LFB145
+ 1427 001c 3C000000 		.4byte	.LFE145-.LFB145
+ 1428 0020 00000000 		.4byte	.LFB146
+ 1429 0024 2C000000 		.4byte	.LFE146-.LFB146
+ 1430 0028 00000000 		.4byte	0
+ 1431 002c 00000000 		.4byte	0
+ 1432              		.section	.debug_ranges,"",%progbits
+ 1433              	.Ldebug_ranges0:
+ 1434 0000 00000000 		.4byte	.LFB144
+ 1435 0004 30000000 		.4byte	.LFE144
+ 1436 0008 00000000 		.4byte	.LFB145
+ 1437 000c 3C000000 		.4byte	.LFE145
+ 1438 0010 00000000 		.4byte	.LFB146
+ 1439 0014 2C000000 		.4byte	.LFE146
+ 1440 0018 00000000 		.4byte	0
+ 1441 001c 00000000 		.4byte	0
+ 1442              		.section	.debug_line,"",%progbits
+ 1443              	.Ldebug_line0:
+ 1444 0000 A8020000 		.section	.debug_str,"MS",%progbits,1
+ 1444      02001702 
+ 1444      00000201 
+ 1444      FB0E0D00 
+ 1444      01010101 
+ 1445              	.LASF43:
+ 1446 0000 72657453 		.ascii	"retStatus\000"
+ 1446      74617475 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 46
+
+
+ 1446      7300
+ 1447              	.LASF36:
+ 1448 000a 43795F49 		.ascii	"Cy_IPC_Drv_WriteDataValue\000"
+ 1448      50435F44 
+ 1448      72765F57 
+ 1448      72697465 
+ 1448      44617461 
+ 1449              	.LASF34:
+ 1450 0024 43795F49 		.ascii	"Cy_IPC_Drv_ReleaseNotify\000"
+ 1450      50435F44 
+ 1450      72765F52 
+ 1450      656C6561 
+ 1450      73654E6F 
+ 1451              	.LASF35:
+ 1452 003d 43795F49 		.ascii	"Cy_IPC_Drv_AcquireNotify\000"
+ 1452      50435F44 
+ 1452      72765F41 
+ 1452      63717569 
+ 1452      72654E6F 
+ 1453              	.LASF14:
+ 1454 0056 41435155 		.ascii	"ACQUIRE\000"
+ 1454      49524500 
+ 1455              	.LASF5:
+ 1456 005e 5F5F696E 		.ascii	"__int32_t\000"
+ 1456      7433325F 
+ 1456      7400
+ 1457              	.LASF42:
+ 1458 0068 6D657373 		.ascii	"message\000"
+ 1458      61676500 
+ 1459              	.LASF18:
+ 1460 0070 4C4F434B 		.ascii	"LOCK_STATUS\000"
+ 1460      5F535441 
+ 1460      54555300 
+ 1461              	.LASF39:
+ 1462 007c 72656C65 		.ascii	"releaseEventIntr\000"
+ 1462      61736545 
+ 1462      76656E74 
+ 1462      496E7472 
+ 1462      00
+ 1463              	.LASF17:
+ 1464 008d 44415441 		.ascii	"DATA\000"
+ 1464      00
+ 1465              	.LASF23:
+ 1466 0092 666C6F61 		.ascii	"float\000"
+ 1466      7400
+ 1467              	.LASF0:
+ 1468 0098 7369676E 		.ascii	"signed char\000"
+ 1468      65642063 
+ 1468      68617200 
+ 1469              	.LASF15:
+ 1470 00a4 52454C45 		.ascii	"RELEASE\000"
+ 1470      41534500 
+ 1471              	.LASF7:
+ 1472 00ac 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1472      20756E73 
+ 1472      69676E65 
+ 1472      6420696E 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 47
+
+
+ 1472      7400
+ 1473              	.LASF3:
+ 1474 00be 73686F72 		.ascii	"short unsigned int\000"
+ 1474      7420756E 
+ 1474      7369676E 
+ 1474      65642069 
+ 1474      6E7400
+ 1475              	.LASF48:
+ 1476 00d1 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1476      52784275 
+ 1476      66666572 
+ 1476      00
+ 1477              	.LASF1:
+ 1478 00de 756E7369 		.ascii	"unsigned char\000"
+ 1478      676E6564 
+ 1478      20636861 
+ 1478      7200
+ 1479              	.LASF33:
+ 1480 00ec 43795F49 		.ascii	"Cy_IPC_Drv_LockAcquire\000"
+ 1480      50435F44 
+ 1480      72765F4C 
+ 1480      6F636B41 
+ 1480      63717569 
+ 1481              	.LASF24:
+ 1482 0103 646F7562 		.ascii	"double\000"
+ 1482      6C6500
+ 1483              	.LASF19:
+ 1484 010a 52455345 		.ascii	"RESERVED\000"
+ 1484      52564544 
+ 1484      00
+ 1485              	.LASF6:
+ 1486 0113 5F5F7569 		.ascii	"__uint32_t\000"
+ 1486      6E743332 
+ 1486      5F7400
+ 1487              	.LASF37:
+ 1488 011e 64617461 		.ascii	"dataValue\000"
+ 1488      56616C75 
+ 1488      6500
+ 1489              	.LASF47:
+ 1490 0128 433A5C55 		.ascii	"C:\\Users\\gjl\\Documents\\PSoC Creator\\PSoC 6_101"
+ 1490      73657273 
+ 1490      5C676A6C 
+ 1490      5C446F63 
+ 1490      756D656E 
+ 1491 0156 5C48656C 		.ascii	"\\HelloWorldCM0p.cydsn\000"
+ 1491      6C6F576F 
+ 1491      726C6443 
+ 1491      4D30702E 
+ 1491      63796473 
+ 1492              	.LASF10:
+ 1493 016c 756E7369 		.ascii	"unsigned int\000"
+ 1493      676E6564 
+ 1493      20696E74 
+ 1493      00
+ 1494              	.LASF41:
+ 1495 0179 43795F49 		.ascii	"Cy_IPC_Drv_SendMsgWord\000"
+ 1495      50435F44 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 48
+
+
+ 1495      72765F53 
+ 1495      656E644D 
+ 1495      7367576F 
+ 1496              	.LASF27:
+ 1497 0190 43595F49 		.ascii	"CY_IPC_DRV_ERROR\000"
+ 1497      50435F44 
+ 1497      52565F45 
+ 1497      52524F52 
+ 1497      00
+ 1498              	.LASF9:
+ 1499 01a1 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1499      206C6F6E 
+ 1499      6720756E 
+ 1499      7369676E 
+ 1499      65642069 
+ 1500              	.LASF31:
+ 1501 01b8 6E6F7469 		.ascii	"notifyEventIntr\000"
+ 1501      66794576 
+ 1501      656E7449 
+ 1501      6E747200 
+ 1502              	.LASF32:
+ 1503 01c8 43795F49 		.ascii	"Cy_IPC_Drv_IsLockAcquired\000"
+ 1503      50435F44 
+ 1503      72765F49 
+ 1503      734C6F63 
+ 1503      6B416371 
+ 1504              	.LASF26:
+ 1505 01e2 43595F49 		.ascii	"CY_IPC_DRV_SUCCESS\000"
+ 1505      50435F44 
+ 1505      52565F53 
+ 1505      55434345 
+ 1505      535300
+ 1506              	.LASF28:
+ 1507 01f5 63795F65 		.ascii	"cy_en_ipcdrv_status_t\000"
+ 1507      6E5F6970 
+ 1507      63647276 
+ 1507      5F737461 
+ 1507      7475735F 
+ 1508              	.LASF11:
+ 1509 020b 696E7433 		.ascii	"int32_t\000"
+ 1509      325F7400 
+ 1510              	.LASF13:
+ 1511 0213 73697A65 		.ascii	"sizetype\000"
+ 1511      74797065 
+ 1511      00
+ 1512              	.LASF8:
+ 1513 021c 6C6F6E67 		.ascii	"long long int\000"
+ 1513      206C6F6E 
+ 1513      6720696E 
+ 1513      7400
+ 1514              	.LASF22:
+ 1515 022a 63686172 		.ascii	"char\000"
+ 1515      00
+ 1516              	.LASF30:
+ 1517 022f 62617365 		.ascii	"base\000"
+ 1517      00
+ 1518              	.LASF38:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 49
+
+
+ 1519 0234 43795F49 		.ascii	"Cy_IPC_Drv_ReadDataValue\000"
+ 1519      50435F44 
+ 1519      72765F52 
+ 1519      65616444 
+ 1519      61746156 
+ 1520              	.LASF2:
+ 1521 024d 73686F72 		.ascii	"short int\000"
+ 1521      7420696E 
+ 1521      7400
+ 1522              	.LASF44:
+ 1523 0257 43795F49 		.ascii	"Cy_IPC_Drv_ReadMsgWord\000"
+ 1523      50435F44 
+ 1523      72765F52 
+ 1523      6561644D 
+ 1523      7367576F 
+ 1524              	.LASF45:
+ 1525 026e 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1525      43313120 
+ 1525      352E342E 
+ 1525      31203230 
+ 1525      31363036 
+ 1526 02a1 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m4 -mfloat-abi=s"
+ 1526      20726576 
+ 1526      6973696F 
+ 1526      6E203233 
+ 1526      37373135 
+ 1527 02d4 6F667466 		.ascii	"oftfp -mfpu=fpv4-sp-d16 -mthumb -g -Og -ffunction-s"
+ 1527      70202D6D 
+ 1527      6670753D 
+ 1527      66707634 
+ 1527      2D73702D 
+ 1528 0307 65637469 		.ascii	"ections -ffat-lto-objects\000"
+ 1528      6F6E7320 
+ 1528      2D666661 
+ 1528      742D6C74 
+ 1528      6F2D6F62 
+ 1529              	.LASF12:
+ 1530 0321 75696E74 		.ascii	"uint32_t\000"
+ 1530      33325F74 
+ 1530      00
+ 1531              	.LASF4:
+ 1532 032a 6C6F6E67 		.ascii	"long int\000"
+ 1532      20696E74 
+ 1532      00
+ 1533              	.LASF25:
+ 1534 0333 6C6F6E67 		.ascii	"long double\000"
+ 1534      20646F75 
+ 1534      626C6500 
+ 1535              	.LASF40:
+ 1536 033f 43795F49 		.ascii	"Cy_IPC_Drv_LockRelease\000"
+ 1536      50435F44 
+ 1536      72765F4C 
+ 1536      6F636B52 
+ 1536      656C6561 
+ 1537              	.LASF16:
+ 1538 0356 4E4F5449 		.ascii	"NOTIFY\000"
+ 1538      465900
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccIzSase.s 			page 50
+
+
+ 1539              	.LASF49:
+ 1540 035d 43795F53 		.ascii	"Cy_SysLib_AssertFailed\000"
+ 1540      79734C69 
+ 1540      625F4173 
+ 1540      73657274 
+ 1540      4661696C 
+ 1541              	.LASF46:
+ 1542 0374 47656E65 		.ascii	"Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\"
+ 1542      72617465 
+ 1542      645F536F 
+ 1542      75726365 
+ 1542      5C50536F 
+ 1543 03a2 6970635C 		.ascii	"ipc\\cy_ipc_drv.c\000"
+ 1543      63795F69 
+ 1543      70635F64 
+ 1543      72762E63 
+ 1543      00
+ 1544              	.LASF21:
+ 1545 03b3 63686172 		.ascii	"char_t\000"
+ 1545      5F7400
+ 1546              	.LASF29:
+ 1547 03ba 5F426F6F 		.ascii	"_Bool\000"
+ 1547      6C00
+ 1548              	.LASF20:
+ 1549 03c0 4950435F 		.ascii	"IPC_STRUCT_Type\000"
+ 1549      53545255 
+ 1549      43545F54 
+ 1549      79706500 
+ 1550              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,3490 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.fpu fpv4-sp-d16
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.thumb
+  15              		.syntax unified
+  16              		.file	"cy_systick.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.Cy_SysTick_ServiceCallbacks,"ax",%progbits
+  21              		.align	2
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	Cy_SysTick_ServiceCallbacks, %function
+  25              	Cy_SysTick_ServiceCallbacks:
+  26              	.LFB139:
+  27              		.file 1 "Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\systick\\cy_systick.c"
+   1:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** /***************************************************************************//**
+   2:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \file cy_systick.c
+   3:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \version 1.0.1
+   4:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+   5:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Provides the API definitions of the SisTick driver.
+   6:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+   7:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** ********************************************************************************
+   8:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \copyright
+   9:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Copyright 2016-2018, Cypress Semiconductor Corporation.  All rights reserved.
+  10:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *******************************************************************************/
+  14:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  15:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** #include "cy_systick.h"
+  16:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** #include <stddef.h>     /* for NULL */
+  17:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  18:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  19:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** static Cy_SysTick_Callback Cy_SysTick_Callbacks[CY_SYS_SYST_NUM_OF_CALLBACKS];
+  20:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** static void Cy_SysTick_ServiceCallbacks(void);
+  21:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  22:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  23:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** /*******************************************************************************
+  24:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Function Name: Cy_SysTick_Init
+  25:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** ****************************************************************************//**
+  26:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  27:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Initializes the SysTick driver:
+  28:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * - Initializes the callback addresses with pointers to NULL
+  29:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * - Associates the SysTick system vector with the callback functions
+  30:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * - Sets the SysTick clock by calling \ref Cy_SysTick_SetClockSource()
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 2
+
+
+  31:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * - Sets the SysTick reload interval by calling \ref Cy_SysTick_SetReload()
+  32:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * - Clears the SysTick counter value by calling \ref Cy_SysTick_Clear()
+  33:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * - Enables the SysTick by calling \ref Cy_SysTick_Enable(). Note the \ref
+  34:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *   Cy_SysTick_Enable() function also enables the SysTick interrupt by calling
+  35:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *   \ref Cy_SysTick_EnableInterrupt().
+  36:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  37:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \param clockSource The SysTick clock source \ref cy_en_systick_clock_source_t
+  38:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \param interval The SysTick reload value.
+  39:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  40:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \sideeffect Clears the SysTick count flag if it was set.
+  41:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  42:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *******************************************************************************/
+  43:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** void Cy_SysTick_Init(cy_en_systick_clock_source_t clockSource, uint32_t interval)
+  44:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** {
+  45:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     uint32_t i;
+  46:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  47:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     for (i = 0u; i<CY_SYS_SYST_NUM_OF_CALLBACKS; i++)
+  48:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+  49:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         Cy_SysTick_Callbacks[i] = NULL;
+  50:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+  51:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  52:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     __ramVectors[CY_SYSTICK_IRQ_NUM] = &Cy_SysTick_ServiceCallbacks;
+  53:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_SetClockSource(clockSource);
+  54:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  55:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_SetReload(interval);
+  56:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_Clear();
+  57:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_Enable();
+  58:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+  59:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  60:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  61:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** /*******************************************************************************
+  62:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Function Name: Cy_SysTick_Enable
+  63:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** ****************************************************************************//**
+  64:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  65:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Enables the SysTick timer and its interrupt.
+  66:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  67:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \sideeffect Clears the SysTick count flag if it was set
+  68:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  69:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *******************************************************************************/
+  70:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** void Cy_SysTick_Enable(void)
+  71:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** {
+  72:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_EnableInterrupt();
+  73:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+  74:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+  75:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  76:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  77:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** /*******************************************************************************
+  78:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Function Name: Cy_SysTick_Disable
+  79:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** ****************************************************************************//**
+  80:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  81:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Disables the SysTick timer and its interrupt.
+  82:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  83:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \sideeffect Clears the SysTick count flag if it was set
+  84:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  85:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *******************************************************************************/
+  86:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** void Cy_SysTick_Disable(void)
+  87:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** {
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 3
+
+
+  88:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_DisableInterrupt();
+  89:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+  90:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+  91:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  92:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+  93:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** /*******************************************************************************
+  94:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Function Name: Cy_SysTick_SetClockSource
+  95:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** ****************************************************************************//**
+  96:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  97:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Sets the clock source for the SysTick counter.
+  98:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+  99:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Clears the SysTick count flag if it was set. If the clock source is not ready
+ 100:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * this function call will have no effect. After changing the clock source to the
+ 101:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * low frequency clock, the counter and reload register values will remain
+ 102:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * unchanged so the time to the interrupt will be significantly longer and vice
+ 103:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * versa.
+ 104:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 105:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Changing the SysTick clock source and/or its frequency will change
+ 106:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * the interrupt interval and Cy_SysTick_SetReload() should be
+ 107:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * called to compensate this change.
+ 108:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 109:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \param clockSource \ref cy_en_systick_clock_source_t Clock source.
+ 110:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 111:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *******************************************************************************/
+ 112:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** void Cy_SysTick_SetClockSource(cy_en_systick_clock_source_t clockSource)
+ 113:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** {
+ 114:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     if (clockSource == CY_SYSTICK_CLOCK_SOURCE_CLK_CPU)
+ 115:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 116:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+ 117:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 118:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     else
+ 119:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 120:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         CPUSS->SYSTICK_CTL = _VAL2FLD(CPUSS_SYSTICK_CTL_CLOCK_SOURCE, (uint32_t) clockSource);
+ 121:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
+ 122:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 123:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+ 124:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 125:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 126:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** /*******************************************************************************
+ 127:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Function Name: Cy_SysTick_GetClockSource
+ 128:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** ****************************************************************************//**
+ 129:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 130:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Gets the clock source for the SysTick counter.
+ 131:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 132:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \returns \ref cy_en_systick_clock_source_t Clock source
+ 133:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 134:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *******************************************************************************/
+ 135:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** cy_en_systick_clock_source_t Cy_SysTick_GetClockSource(void)
+ 136:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** {
+ 137:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     cy_en_systick_clock_source_t returnValue;
+ 138:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 139:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     if ((SysTick->CTRL & SysTick_CTRL_CLKSOURCE_Msk) != 0u)
+ 140:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 141:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         returnValue = CY_SYSTICK_CLOCK_SOURCE_CLK_CPU;
+ 142:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 143:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     else
+ 144:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 4
+
+
+ 145:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         returnValue =  (cy_en_systick_clock_source_t) ((uint32_t) _FLD2VAL(CPUSS_SYSTICK_CTL_CLOCK_
+ 146:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 147:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 148:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     return(returnValue);
+ 149:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+ 150:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 151:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 152:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** /*******************************************************************************
+ 153:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Function Name: Cy_SysTick_SetCallback
+ 154:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** ****************************************************************************//**
+ 155:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 156:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Sets the callback function to the specified callback number.
+ 157:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 158:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \param number The number of the callback function addresses to be set.
+ 159:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * The valid range is from 0 to \ref CY_SYS_SYST_NUM_OF_CALLBACKS - 1.
+ 160:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 161:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \param function The pointer to the function that will be associated with the
+ 162:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * SysTick ISR for the specified number.
+ 163:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 164:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \return Returns the address of the previous callback function.
+ 165:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * The NULL is returned if the specified address in not set or incorrect
+ 166:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * parameter is specified.
+ 167:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 168:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \sideeffect
+ 169:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * The registered callback functions will be executed in the interrupt.
+ 170:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 171:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *******************************************************************************/
+ 172:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** Cy_SysTick_Callback Cy_SysTick_SetCallback(uint32_t number, Cy_SysTick_Callback function)
+ 173:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** {
+ 174:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_Callback retVal;
+ 175:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 176:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     if (number < CY_SYS_SYST_NUM_OF_CALLBACKS)
+ 177:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 178:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         retVal = Cy_SysTick_Callbacks[number];
+ 179:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         Cy_SysTick_Callbacks[number] = function;
+ 180:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 181:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     else
+ 182:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 183:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         retVal = NULL;
+ 184:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 185:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 186:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     return (retVal);
+ 187:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+ 188:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 189:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 190:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** /*******************************************************************************
+ 191:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Function Name: Cy_SysTick_GetCallback
+ 192:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** ****************************************************************************//**
+ 193:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 194:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Gets the specified callback function address.
+ 195:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 196:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \param number The number of the callback function address to get. The valid
+ 197:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * range is from 0 to \ref CY_SYS_SYST_NUM_OF_CALLBACKS - 1.
+ 198:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 199:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * \return Returns the address of the specified callback function.
+ 200:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * The NULL is returned if the specified address in not initialized or incorrect
+ 201:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * parameter is specified.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 5
+
+
+ 202:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 203:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *******************************************************************************/
+ 204:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** Cy_SysTick_Callback Cy_SysTick_GetCallback(uint32_t number)
+ 205:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** {
+ 206:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_Callback retVal;
+ 207:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 208:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     if (number < CY_SYS_SYST_NUM_OF_CALLBACKS)
+ 209:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 210:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         retVal = Cy_SysTick_Callbacks[number];
+ 211:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 212:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     else
+ 213:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 214:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         retVal = NULL;
+ 215:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 216:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 217:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     return (retVal);
+ 218:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+ 219:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 220:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 221:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** /*******************************************************************************
+ 222:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * Function Name: Cy_SysTick_ServiceCallbacks
+ 223:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** ****************************************************************************//**
+ 224:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 225:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** * The system Tick timer interrupt routine.
+ 226:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *
+ 227:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** *******************************************************************************/
+ 228:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** static void Cy_SysTick_ServiceCallbacks(void)
+ 229:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** {
+  28              		.loc 1 229 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LBB12:
+  33              	.LBB13:
+  34              		.file 2 "Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\systick\\cy_systick.h"
+   1:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /***************************************************************************//**
+   2:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \file cy_systick.h
+   3:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \version 1.0.1
+   4:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+   5:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Provides the API declarations of the SysTick driver.
+   6:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+   7:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** ********************************************************************************
+   8:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \copyright
+   9:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Copyright 2016-2018, Cypress Semiconductor Corporation.  All rights reserved.
+  10:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *******************************************************************************/
+  14:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+  15:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #ifndef _CY_SYSTICK_H_
+  16:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #define _CY_SYSTICK_H_
+  17:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+  18:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /**
+  19:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \defgroup group_arm_system_timer ARM System Timer (SysTick)
+  20:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \{
+  21:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Provides vendor-specific SysTick API.
+  22:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 6
+
+
+  23:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * The SysTick timer is part of the CPU. The timer is a down counter with a 24-bit reload/tick value
+  24:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * the FastClk/SlowClk. The timer has the capability to generate an interrupt when the set number of
+  25:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * the counter is reloaded. This interrupt is available as part of the Nested Vectored Interrupt Con
+  26:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * service by the CPU and can be used for general-purpose timing control in user code.
+  27:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  28:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * The timer is independent of the CPU (except for the clock), which is useful in applications requi
+  29:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * precise timing that do not have a dedicated timer/counter available for the job.
+  30:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  31:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \section group_systick_configuration Configuration Considerations
+  32:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  33:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * The \ref Cy_SysTick_Init() performs all required driver's initialization and enables the timer. T
+  34:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * two parameters: clock source \ref cy_en_systick_clock_source_t and the timer interval. You must e
+  35:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * the selected clock source for SysTick is enabled.
+  36:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * The callbacks can be registered/unregistered any time after \ref Cy_SysTick_Init() by calling
+  37:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \ref Cy_SysTick_SetCallback().
+  38:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  39:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Changing the SysTick clock source and/or its frequency will change the interrupt interval and the
+  40:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \ref Cy_SysTick_SetReload() should be called to compensate for this change.
+  41:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  42:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \section group_systick_more_information More Information
+  43:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  44:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Refer to the SysTick section of the ARM reference guide for complete details on the registers and
+  45:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * See also the "CPU Subsystem (CPUSS)" chapter of the device technical reference manual (TRM).
+  46:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  47:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \section group_systick_MISRA MISRA-C Compliance
+  48:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  49:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <table class="doxtable">
+  50:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *   <tr>
+  51:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *       <th>MISRA Rule</th>
+  52:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *       <th>Rule Class (Required/Advisory)</th>
+  53:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *       <th>Rule Description</th>
+  54:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *       <th>Description of Deviation(s)</th>
+  55:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *   </tr>
+  56:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *   <tr>
+  57:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *       <td>8.12</td>
+  58:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *       <td>Required</td>
+  59:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *       <td>When an array is declared with external linkage, its size shall be
+  60:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *           stated explicitly or defined implicitly by initialization.</td>
+  61:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *       <td>The warning is related to the __ramVectors symbol defined in the assembly startup code.
+  62:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *           It's size is device-specific and unknown to the SysTick driver.</td>
+  63:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *   </tr>
+  64:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * </table>
+  65:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  66:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \section group_systick_changelog Changelog
+  67:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  68:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <table class="doxtable">
+  69:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <tr><th>Version</th><th>Changes</th><th>Reason for Change</th></tr>
+  70:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <tr>
+  71:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <td>1.0.1</td>
+  72:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <td>Fixed a warning issued when the compilation of C++ source code was
+  73:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *     enabled.</td> 
+  74:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <td></td>
+  75:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * </tr>
+  76:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <tr>
+  77:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <td>1.0</td>
+  78:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <td>Initial version</td>
+  79:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * <td></td>
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 7
+
+
+  80:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * </tr>
+  81:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * </table>
+  82:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+  83:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \defgroup group_systick_macros Macros
+  84:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \defgroup group_systick_functions Functions
+  85:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \defgroup group_systick_data_structures Data Structures
+  86:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** */
+  87:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+  88:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #include <stdint.h>
+  89:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #include "syslib/cy_syslib.h"
+  90:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+  91:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #ifdef __cplusplus
+  92:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** extern "C" {
+  93:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #endif
+  94:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+  95:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** \cond */
+  96:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** extern cy_israddress __ramVectors[];
+  97:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** typedef void (*Cy_SysTick_Callback)(void);
+  98:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** \endcond */
+  99:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 100:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /**
+ 101:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \addtogroup group_systick_data_structures
+ 102:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \{
+ 103:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** */
+ 104:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** SysTick clocks sources */
+ 105:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** typedef enum
+ 106:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** {
+ 107:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     CY_SYSTICK_CLOCK_SOURCE_CLK_LF    = 0u,     /**< The low frequency clock clk_lf is selected. */
+ 108:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     CY_SYSTICK_CLOCK_SOURCE_CLK_IMO   = 1u,     /**< The internal main oscillator (IMO) clock clk_i
+ 109:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     CY_SYSTICK_CLOCK_SOURCE_CLK_ECO   = 2u,     /**< The external crystal oscillator (ECO) clock cl
+ 110:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     CY_SYSTICK_CLOCK_SOURCE_CLK_TIMER = 3u,     /**< The SRSS clk_timer is selected. */
+ 111:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     CY_SYSTICK_CLOCK_SOURCE_CLK_CPU   = 4u,     /**< The CPU clock is selected. */
+ 112:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** } cy_en_systick_clock_source_t;
+ 113:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 114:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** \} group_systick_data_structures */
+ 115:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 116:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 117:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /**
+ 118:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \addtogroup group_systick_functions
+ 119:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \{
+ 120:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** */
+ 121:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 122:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** void Cy_SysTick_Init(cy_en_systick_clock_source_t clockSource, uint32_t interval);
+ 123:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** void Cy_SysTick_Enable(void);
+ 124:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** void Cy_SysTick_Disable(void);
+ 125:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** Cy_SysTick_Callback Cy_SysTick_SetCallback(uint32_t number, Cy_SysTick_Callback function);
+ 126:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** Cy_SysTick_Callback Cy_SysTick_GetCallback(uint32_t number);
+ 127:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** void Cy_SysTick_SetClockSource(cy_en_systick_clock_source_t clockSource);
+ 128:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** cy_en_systick_clock_source_t Cy_SysTick_GetClockSource(void);
+ 129:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE void Cy_SysTick_EnableInterrupt(void);
+ 130:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE void Cy_SysTick_DisableInterrupt(void);
+ 131:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE void Cy_SysTick_SetReload(uint32_t value);
+ 132:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE uint32_t Cy_SysTick_GetReload(void);
+ 133:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE uint32_t Cy_SysTick_GetValue(void);
+ 134:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE uint32_t Cy_SysTick_GetCountFlag(void);
+ 135:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE void Cy_SysTick_Clear(void);
+ 136:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 8
+
+
+ 137:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** \} group_systick_functions */
+ 138:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 139:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 140:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /**
+ 141:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \addtogroup group_systick_macros
+ 142:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \{
+ 143:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** */
+ 144:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 145:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** Driver major version */
+ 146:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #define SYSTICK_DRV_VERSION_MAJOR       1
+ 147:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 148:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** Driver minor version */
+ 149:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #define SYSTICK_DRV_VERSION_MINOR       0
+ 150:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 151:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** Number of the callbacks assigned to the SysTick interrupt */
+ 152:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #define CY_SYS_SYST_NUM_OF_CALLBACKS         (5u)
+ 153:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 154:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** \} group_systick_macros */
+ 155:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 156:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 157:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** \cond */
+ 158:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** Interrupt number in the vector table */
+ 159:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** #define CY_SYSTICK_IRQ_NUM                   (15u)
+ 160:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /** \endcond */
+ 161:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 162:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /**
+ 163:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \addtogroup group_systick_functions
+ 164:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \{
+ 165:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** */
+ 166:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 167:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /*******************************************************************************
+ 168:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Function Name: Cy_SysTick_EnableInterrupt
+ 169:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** ****************************************************************************//**
+ 170:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 171:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Enables the SysTick interrupt.
+ 172:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 173:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \sideeffect Clears the SysTick count flag if it was set
+ 174:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 175:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *******************************************************************************/
+ 176:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE void Cy_SysTick_EnableInterrupt(void)
+ 177:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** {
+ 178:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_TICKINT_Msk;
+ 179:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 180:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 181:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 182:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /*******************************************************************************
+ 183:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Function Name: Cy_SysTick_DisableInterrupt
+ 184:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** ****************************************************************************//**
+ 185:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 186:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Disables the SysTick interrupt.
+ 187:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 188:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \sideeffect Clears the SysTick count flag if it was set
+ 189:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 190:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *******************************************************************************/
+ 191:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE void Cy_SysTick_DisableInterrupt(void)
+ 192:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** {
+ 193:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     SysTick->CTRL = SysTick->CTRL & ~SysTick_CTRL_TICKINT_Msk;
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 9
+
+
+ 194:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 195:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 196:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 197:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /*******************************************************************************
+ 198:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Function Name: Cy_SysTick_SetReload
+ 199:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** ****************************************************************************//**
+ 200:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 201:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Sets the value the counter is set to on a startup and after it reaches zero.
+ 202:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * This function does not change or reset the current sysTick counter value, so
+ 203:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * it should be cleared using the Cy_SysTick_Clear() API.
+ 204:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 205:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \param value: The valid range is [0x0-0x00FFFFFF]. The counter reset value.
+ 206:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 207:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *******************************************************************************/
+ 208:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE void Cy_SysTick_SetReload(uint32_t value)
+ 209:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** {
+ 210:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     SysTick->LOAD = (value & SysTick_LOAD_RELOAD_Msk);
+ 211:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 212:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 213:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 214:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /*******************************************************************************
+ 215:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Function Name: Cy_SysTick_GetReload
+ 216:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** ****************************************************************************//**
+ 217:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 218:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Gets the value the counter is set to on a startup and after it reaches zero.
+ 219:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 220:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \return The counter reset value.
+ 221:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 222:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *******************************************************************************/
+ 223:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE uint32_t Cy_SysTick_GetReload(void)
+ 224:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** {
+ 225:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     return (SysTick->LOAD);
+ 226:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 227:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 228:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 229:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /*******************************************************************************
+ 230:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Function Name: Cy_SysTick_GetValue
+ 231:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** ****************************************************************************//**
+ 232:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 233:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Gets the current SysTick counter value.
+ 234:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 235:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \return The current SysTick counter value.
+ 236:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 237:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *******************************************************************************/
+ 238:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE uint32_t Cy_SysTick_GetValue(void)
+ 239:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** {
+ 240:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     return (SysTick->VAL);
+ 241:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 242:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 243:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /*******************************************************************************
+ 244:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Function Name: Cy_SysTick_Clear
+ 245:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** ****************************************************************************//**
+ 246:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 247:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Clears the SysTick counter for a well-defined startup.
+ 248:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 249:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *******************************************************************************/
+ 250:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE void Cy_SysTick_Clear(void)
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 10
+
+
+ 251:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** {
+ 252:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     SysTick->VAL = 0u;
+ 253:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 254:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 255:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** 
+ 256:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** /*******************************************************************************
+ 257:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Function Name: Cy_SysTick_GetCountFlag
+ 258:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** ****************************************************************************//**
+ 259:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 260:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * Gets the values of the count flag. The count flag is set once the SysTick
+ 261:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * counter reaches zero. The flag is cleared on read.
+ 262:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 263:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \return Returns a non-zero value if a flag is set; otherwise a zero is
+ 264:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * returned.
+ 265:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 266:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** * \sideeffect Clears the SysTick count flag if it was set.
+ 267:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *
+ 268:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** *******************************************************************************/
+ 269:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** __STATIC_INLINE uint32_t Cy_SysTick_GetCountFlag(void)
+ 270:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** {
+ 271:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h ****     return (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk);
+  35              		.loc 2 271 0
+  36 0000 084B     		ldr	r3, .L8
+  37 0002 1B68     		ldr	r3, [r3]
+  38              	.LBE13:
+  39              	.LBE12:
+ 230:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     uint32_t i;
+ 231:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 232:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     /* Verify that tick timer flag was set */
+ 233:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     if (0u != Cy_SysTick_GetCountFlag())
+  40              		.loc 1 233 0
+  41 0004 13F4803F 		tst	r3, #65536
+  42 0008 07D1     		bne	.L6
+  43 000a 7047     		bx	lr
+  44              	.LVL0:
+  45              	.L5:
+  46              		.cfi_def_cfa_offset 8
+  47              		.cfi_offset 4, -8
+  48              		.cfi_offset 14, -4
+ 234:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 235:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         for (i=0u; i < CY_SYS_SYST_NUM_OF_CALLBACKS; i++)
+ 236:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         {
+ 237:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****             if (Cy_SysTick_Callbacks[i] != NULL)
+  49              		.loc 1 237 0
+  50 000c 064B     		ldr	r3, .L8+4
+  51 000e 53F82430 		ldr	r3, [r3, r4, lsl #2]
+  52 0012 03B1     		cbz	r3, .L4
+ 238:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****             {
+ 239:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****                 (void)(Cy_SysTick_Callbacks[i])();
+  53              		.loc 1 239 0
+  54 0014 9847     		blx	r3
+  55              	.LVL1:
+  56              	.L4:
+ 235:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         {
+  57              		.loc 1 235 0 discriminator 2
+  58 0016 0134     		adds	r4, r4, #1
+  59              	.LVL2:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 11
+
+
+  60 0018 01E0     		b	.L2
+  61              	.LVL3:
+  62              	.L6:
+  63              		.cfi_def_cfa_offset 0
+  64              		.cfi_restore 4
+  65              		.cfi_restore 14
+ 229:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     uint32_t i;
+  66              		.loc 1 229 0
+  67 001a 10B5     		push	{r4, lr}
+  68              		.cfi_def_cfa_offset 8
+  69              		.cfi_offset 4, -8
+  70              		.cfi_offset 14, -4
+  71 001c 0024     		movs	r4, #0
+  72              	.L2:
+  73              	.LVL4:
+ 235:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         {
+  74              		.loc 1 235 0 discriminator 1
+  75 001e 042C     		cmp	r4, #4
+  76 0020 F4D9     		bls	.L5
+  77 0022 10BD     		pop	{r4, pc}
+  78              	.LVL5:
+  79              	.L9:
+  80              		.align	2
+  81              	.L8:
+  82 0024 10E000E0 		.word	-536813552
+  83 0028 00000000 		.word	.LANCHOR0
+  84              		.cfi_endproc
+  85              	.LFE139:
+  86              		.size	Cy_SysTick_ServiceCallbacks, .-Cy_SysTick_ServiceCallbacks
+  87              		.section	.text.Cy_SysTick_Enable,"ax",%progbits
+  88              		.align	2
+  89              		.global	Cy_SysTick_Enable
+  90              		.thumb
+  91              		.thumb_func
+  92              		.type	Cy_SysTick_Enable, %function
+  93              	Cy_SysTick_Enable:
+  94              	.LFB133:
+  71:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_EnableInterrupt();
+  95              		.loc 1 71 0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+  99              		@ link register save eliminated.
+ 100              	.LBB14:
+ 101              	.LBB15:
+ 178:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 102              		.loc 2 178 0
+ 103 0000 044B     		ldr	r3, .L11
+ 104 0002 1A68     		ldr	r2, [r3]
+ 105 0004 42F00202 		orr	r2, r2, #2
+ 106 0008 1A60     		str	r2, [r3]
+ 107              	.LBE15:
+ 108              	.LBE14:
+  73:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+ 109              		.loc 1 73 0
+ 110 000a 1A68     		ldr	r2, [r3]
+ 111 000c 42F00102 		orr	r2, r2, #1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 12
+
+
+ 112 0010 1A60     		str	r2, [r3]
+ 113 0012 7047     		bx	lr
+ 114              	.L12:
+ 115              		.align	2
+ 116              	.L11:
+ 117 0014 10E000E0 		.word	-536813552
+ 118              		.cfi_endproc
+ 119              	.LFE133:
+ 120              		.size	Cy_SysTick_Enable, .-Cy_SysTick_Enable
+ 121              		.section	.text.Cy_SysTick_Disable,"ax",%progbits
+ 122              		.align	2
+ 123              		.global	Cy_SysTick_Disable
+ 124              		.thumb
+ 125              		.thumb_func
+ 126              		.type	Cy_SysTick_Disable, %function
+ 127              	Cy_SysTick_Disable:
+ 128              	.LFB134:
+  87:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_DisableInterrupt();
+ 129              		.loc 1 87 0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133              		@ link register save eliminated.
+ 134              	.LBB16:
+ 135              	.LBB17:
+ 193:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 136              		.loc 2 193 0
+ 137 0000 044B     		ldr	r3, .L14
+ 138 0002 1A68     		ldr	r2, [r3]
+ 139 0004 22F00202 		bic	r2, r2, #2
+ 140 0008 1A60     		str	r2, [r3]
+ 141              	.LBE17:
+ 142              	.LBE16:
+  89:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+ 143              		.loc 1 89 0
+ 144 000a 1A68     		ldr	r2, [r3]
+ 145 000c 22F00102 		bic	r2, r2, #1
+ 146 0010 1A60     		str	r2, [r3]
+ 147 0012 7047     		bx	lr
+ 148              	.L15:
+ 149              		.align	2
+ 150              	.L14:
+ 151 0014 10E000E0 		.word	-536813552
+ 152              		.cfi_endproc
+ 153              	.LFE134:
+ 154              		.size	Cy_SysTick_Disable, .-Cy_SysTick_Disable
+ 155              		.section	.text.Cy_SysTick_SetClockSource,"ax",%progbits
+ 156              		.align	2
+ 157              		.global	Cy_SysTick_SetClockSource
+ 158              		.thumb
+ 159              		.thumb_func
+ 160              		.type	Cy_SysTick_SetClockSource, %function
+ 161              	Cy_SysTick_SetClockSource:
+ 162              	.LFB135:
+ 113:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     if (clockSource == CY_SYSTICK_CLOCK_SOURCE_CLK_CPU)
+ 163              		.loc 1 113 0
+ 164              		.cfi_startproc
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 13
+
+
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167              		@ link register save eliminated.
+ 168              	.LVL6:
+ 114:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 169              		.loc 1 114 0
+ 170 0000 0428     		cmp	r0, #4
+ 171 0002 05D1     		bne	.L17
+ 116:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 172              		.loc 1 116 0
+ 173 0004 084A     		ldr	r2, .L19
+ 174 0006 1368     		ldr	r3, [r2]
+ 175 0008 43F00403 		orr	r3, r3, #4
+ 176 000c 1360     		str	r3, [r2]
+ 177 000e 7047     		bx	lr
+ 178              	.L17:
+ 120:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
+ 179              		.loc 1 120 0
+ 180 0010 0006     		lsls	r0, r0, #24
+ 181              	.LVL7:
+ 182 0012 00F04070 		and	r0, r0, #50331648
+ 183 0016 054B     		ldr	r3, .L19+4
+ 184 0018 C3F84002 		str	r0, [r3, #576]
+ 121:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 185              		.loc 1 121 0
+ 186 001c 024A     		ldr	r2, .L19
+ 187 001e 1368     		ldr	r3, [r2]
+ 188 0020 23F00403 		bic	r3, r3, #4
+ 189 0024 1360     		str	r3, [r2]
+ 190 0026 7047     		bx	lr
+ 191              	.L20:
+ 192              		.align	2
+ 193              	.L19:
+ 194 0028 10E000E0 		.word	-536813552
+ 195 002c 00002140 		.word	1075904512
+ 196              		.cfi_endproc
+ 197              	.LFE135:
+ 198              		.size	Cy_SysTick_SetClockSource, .-Cy_SysTick_SetClockSource
+ 199              		.section	.text.Cy_SysTick_Init,"ax",%progbits
+ 200              		.align	2
+ 201              		.global	Cy_SysTick_Init
+ 202              		.thumb
+ 203              		.thumb_func
+ 204              		.type	Cy_SysTick_Init, %function
+ 205              	Cy_SysTick_Init:
+ 206              	.LFB132:
+  44:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     uint32_t i;
+ 207              		.loc 1 44 0
+ 208              		.cfi_startproc
+ 209              		@ args = 0, pretend = 0, frame = 0
+ 210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 211              	.LVL8:
+ 212 0000 10B5     		push	{r4, lr}
+ 213              		.cfi_def_cfa_offset 8
+ 214              		.cfi_offset 4, -8
+ 215              		.cfi_offset 14, -4
+ 216 0002 0C46     		mov	r4, r1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 14
+
+
+ 217              	.LVL9:
+  47:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 218              		.loc 1 47 0
+ 219 0004 0023     		movs	r3, #0
+ 220 0006 04E0     		b	.L22
+ 221              	.LVL10:
+ 222              	.L23:
+  49:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 223              		.loc 1 49 0 discriminator 3
+ 224 0008 0021     		movs	r1, #0
+ 225 000a 0A4A     		ldr	r2, .L25
+ 226 000c 42F82310 		str	r1, [r2, r3, lsl #2]
+  47:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 227              		.loc 1 47 0 discriminator 3
+ 228 0010 0133     		adds	r3, r3, #1
+ 229              	.LVL11:
+ 230              	.L22:
+  47:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 231              		.loc 1 47 0 is_stmt 0 discriminator 1
+ 232 0012 042B     		cmp	r3, #4
+ 233 0014 F8D9     		bls	.L23
+  52:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_SetClockSource(clockSource);
+ 234              		.loc 1 52 0 is_stmt 1
+ 235 0016 084A     		ldr	r2, .L25+4
+ 236 0018 084B     		ldr	r3, .L25+8
+ 237              	.LVL12:
+ 238 001a DA63     		str	r2, [r3, #60]
+  53:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 239              		.loc 1 53 0
+ 240 001c FFF7FEFF 		bl	Cy_SysTick_SetClockSource
+ 241              	.LVL13:
+ 242              	.LBB18:
+ 243              	.LBB19:
+ 210:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 244              		.loc 2 210 0
+ 245 0020 24F07F44 		bic	r4, r4, #-16777216
+ 246              	.LVL14:
+ 247 0024 064B     		ldr	r3, .L25+12
+ 248 0026 5C60     		str	r4, [r3, #4]
+ 249              	.LVL15:
+ 250              	.LBE19:
+ 251              	.LBE18:
+ 252              	.LBB20:
+ 253              	.LBB21:
+ 252:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.h **** }
+ 254              		.loc 2 252 0
+ 255 0028 0022     		movs	r2, #0
+ 256 002a 9A60     		str	r2, [r3, #8]
+ 257              	.LBE21:
+ 258              	.LBE20:
+  57:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** }
+ 259              		.loc 1 57 0
+ 260 002c FFF7FEFF 		bl	Cy_SysTick_Enable
+ 261              	.LVL16:
+ 262 0030 10BD     		pop	{r4, pc}
+ 263              	.L26:
+ 264 0032 00BF     		.align	2
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 15
+
+
+ 265              	.L25:
+ 266 0034 00000000 		.word	.LANCHOR0
+ 267 0038 00000000 		.word	Cy_SysTick_ServiceCallbacks
+ 268 003c 00000000 		.word	__ramVectors
+ 269 0040 10E000E0 		.word	-536813552
+ 270              		.cfi_endproc
+ 271              	.LFE132:
+ 272              		.size	Cy_SysTick_Init, .-Cy_SysTick_Init
+ 273              		.section	.text.Cy_SysTick_GetClockSource,"ax",%progbits
+ 274              		.align	2
+ 275              		.global	Cy_SysTick_GetClockSource
+ 276              		.thumb
+ 277              		.thumb_func
+ 278              		.type	Cy_SysTick_GetClockSource, %function
+ 279              	Cy_SysTick_GetClockSource:
+ 280              	.LFB136:
+ 136:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     cy_en_systick_clock_source_t returnValue;
+ 281              		.loc 1 136 0
+ 282              		.cfi_startproc
+ 283              		@ args = 0, pretend = 0, frame = 0
+ 284              		@ frame_needed = 0, uses_anonymous_args = 0
+ 285              		@ link register save eliminated.
+ 139:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 286              		.loc 1 139 0
+ 287 0000 064B     		ldr	r3, .L30
+ 288 0002 1B68     		ldr	r3, [r3]
+ 289 0004 13F0040F 		tst	r3, #4
+ 290 0008 05D1     		bne	.L29
+ 145:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 291              		.loc 1 145 0
+ 292 000a 054B     		ldr	r3, .L30+4
+ 293 000c D3F84002 		ldr	r0, [r3, #576]
+ 294 0010 C0F30160 		ubfx	r0, r0, #24, #2
+ 295              	.LVL17:
+ 296 0014 7047     		bx	lr
+ 297              	.LVL18:
+ 298              	.L29:
+ 141:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 299              		.loc 1 141 0
+ 300 0016 0420     		movs	r0, #4
+ 301              	.LVL19:
+ 149:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 302              		.loc 1 149 0
+ 303 0018 7047     		bx	lr
+ 304              	.L31:
+ 305 001a 00BF     		.align	2
+ 306              	.L30:
+ 307 001c 10E000E0 		.word	-536813552
+ 308 0020 00002140 		.word	1075904512
+ 309              		.cfi_endproc
+ 310              	.LFE136:
+ 311              		.size	Cy_SysTick_GetClockSource, .-Cy_SysTick_GetClockSource
+ 312              		.section	.text.Cy_SysTick_SetCallback,"ax",%progbits
+ 313              		.align	2
+ 314              		.global	Cy_SysTick_SetCallback
+ 315              		.thumb
+ 316              		.thumb_func
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 16
+
+
+ 317              		.type	Cy_SysTick_SetCallback, %function
+ 318              	Cy_SysTick_SetCallback:
+ 319              	.LFB137:
+ 173:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_Callback retVal;
+ 320              		.loc 1 173 0
+ 321              		.cfi_startproc
+ 322              		@ args = 0, pretend = 0, frame = 0
+ 323              		@ frame_needed = 0, uses_anonymous_args = 0
+ 324              		@ link register save eliminated.
+ 325              	.LVL20:
+ 326 0000 0346     		mov	r3, r0
+ 176:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 327              		.loc 1 176 0
+ 328 0002 0428     		cmp	r0, #4
+ 329 0004 05D8     		bhi	.L34
+ 178:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****         Cy_SysTick_Callbacks[number] = function;
+ 330              		.loc 1 178 0
+ 331 0006 044A     		ldr	r2, .L35
+ 332 0008 52F82000 		ldr	r0, [r2, r0, lsl #2]
+ 333              	.LVL21:
+ 179:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 334              		.loc 1 179 0
+ 335 000c 42F82310 		str	r1, [r2, r3, lsl #2]
+ 336 0010 7047     		bx	lr
+ 337              	.LVL22:
+ 338              	.L34:
+ 183:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 339              		.loc 1 183 0
+ 340 0012 0020     		movs	r0, #0
+ 341              	.LVL23:
+ 187:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 342              		.loc 1 187 0
+ 343 0014 7047     		bx	lr
+ 344              	.L36:
+ 345 0016 00BF     		.align	2
+ 346              	.L35:
+ 347 0018 00000000 		.word	.LANCHOR0
+ 348              		.cfi_endproc
+ 349              	.LFE137:
+ 350              		.size	Cy_SysTick_SetCallback, .-Cy_SysTick_SetCallback
+ 351              		.section	.text.Cy_SysTick_GetCallback,"ax",%progbits
+ 352              		.align	2
+ 353              		.global	Cy_SysTick_GetCallback
+ 354              		.thumb
+ 355              		.thumb_func
+ 356              		.type	Cy_SysTick_GetCallback, %function
+ 357              	Cy_SysTick_GetCallback:
+ 358              	.LFB138:
+ 205:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     Cy_SysTick_Callback retVal;
+ 359              		.loc 1 205 0
+ 360              		.cfi_startproc
+ 361              		@ args = 0, pretend = 0, frame = 0
+ 362              		@ frame_needed = 0, uses_anonymous_args = 0
+ 363              		@ link register save eliminated.
+ 364              	.LVL24:
+ 208:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     {
+ 365              		.loc 1 208 0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 17
+
+
+ 366 0000 0428     		cmp	r0, #4
+ 367 0002 03D8     		bhi	.L39
+ 210:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 368              		.loc 1 210 0
+ 369 0004 024B     		ldr	r3, .L40
+ 370 0006 53F82000 		ldr	r0, [r3, r0, lsl #2]
+ 371              	.LVL25:
+ 372 000a 7047     		bx	lr
+ 373              	.LVL26:
+ 374              	.L39:
+ 214:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c ****     }
+ 375              		.loc 1 214 0
+ 376 000c 0020     		movs	r0, #0
+ 377              	.LVL27:
+ 218:Generated_Source\PSoC6\pdl\drivers\peripheral\systick/cy_systick.c **** 
+ 378              		.loc 1 218 0
+ 379 000e 7047     		bx	lr
+ 380              	.L41:
+ 381              		.align	2
+ 382              	.L40:
+ 383 0010 00000000 		.word	.LANCHOR0
+ 384              		.cfi_endproc
+ 385              	.LFE138:
+ 386              		.size	Cy_SysTick_GetCallback, .-Cy_SysTick_GetCallback
+ 387              		.bss
+ 388              		.align	2
+ 389              		.set	.LANCHOR0,. + 0
+ 390              		.type	Cy_SysTick_Callbacks, %object
+ 391              		.size	Cy_SysTick_Callbacks, 20
+ 392              	Cy_SysTick_Callbacks:
+ 393 0000 00000000 		.space	20
+ 393      00000000 
+ 393      00000000 
+ 393      00000000 
+ 393      00000000 
+ 394              		.text
+ 395              	.Letext0:
+ 396              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 397              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 398              		.file 5 "Generated_Source\\PSoC6\\pdl\\cmsis/include/core_cm4.h"
+ 399              		.file 6 "Generated_Source\\PSoC6\\pdl\\devices/psoc6/ip/cyip_cpuss.h"
+ 400              		.file 7 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/syslib/cy_syslib.h"
+ 401              		.section	.debug_info,"",%progbits
+ 402              	.Ldebug_info0:
+ 403 0000 B1080000 		.4byte	0x8b1
+ 404 0004 0400     		.2byte	0x4
+ 405 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 406 000a 04       		.byte	0x4
+ 407 000b 01       		.uleb128 0x1
+ 408 000c E6000000 		.4byte	.LASF115
+ 409 0010 0C       		.byte	0xc
+ 410 0011 63000000 		.4byte	.LASF116
+ 411 0015 86060000 		.4byte	.LASF117
+ 412 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 413 001d 00000000 		.4byte	0
+ 414 0021 00000000 		.4byte	.Ldebug_line0
+ 415 0025 02       		.uleb128 0x2
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 18
+
+
+ 416 0026 01       		.byte	0x1
+ 417 0027 06       		.byte	0x6
+ 418 0028 79020000 		.4byte	.LASF0
+ 419 002c 02       		.uleb128 0x2
+ 420 002d 01       		.byte	0x1
+ 421 002e 08       		.byte	0x8
+ 422 002f 92030000 		.4byte	.LASF1
+ 423 0033 02       		.uleb128 0x2
+ 424 0034 02       		.byte	0x2
+ 425 0035 05       		.byte	0x5
+ 426 0036 D7010000 		.4byte	.LASF2
+ 427 003a 02       		.uleb128 0x2
+ 428 003b 02       		.byte	0x2
+ 429 003c 07       		.byte	0x7
+ 430 003d 9F040000 		.4byte	.LASF3
+ 431 0041 03       		.uleb128 0x3
+ 432 0042 49060000 		.4byte	.LASF5
+ 433 0046 03       		.byte	0x3
+ 434 0047 3F       		.byte	0x3f
+ 435 0048 4C000000 		.4byte	0x4c
+ 436 004c 02       		.uleb128 0x2
+ 437 004d 04       		.byte	0x4
+ 438 004e 05       		.byte	0x5
+ 439 004f 00030000 		.4byte	.LASF4
+ 440 0053 03       		.uleb128 0x3
+ 441 0054 99010000 		.4byte	.LASF6
+ 442 0058 03       		.byte	0x3
+ 443 0059 41       		.byte	0x41
+ 444 005a 5E000000 		.4byte	0x5e
+ 445 005e 02       		.uleb128 0x2
+ 446 005f 04       		.byte	0x4
+ 447 0060 07       		.byte	0x7
+ 448 0061 B5050000 		.4byte	.LASF7
+ 449 0065 02       		.uleb128 0x2
+ 450 0066 08       		.byte	0x8
+ 451 0067 05       		.byte	0x5
+ 452 0068 CA020000 		.4byte	.LASF8
+ 453 006c 02       		.uleb128 0x2
+ 454 006d 08       		.byte	0x8
+ 455 006e 07       		.byte	0x7
+ 456 006f D8020000 		.4byte	.LASF9
+ 457 0073 04       		.uleb128 0x4
+ 458 0074 04       		.byte	0x4
+ 459 0075 05       		.byte	0x5
+ 460 0076 696E7400 		.ascii	"int\000"
+ 461 007a 02       		.uleb128 0x2
+ 462 007b 04       		.byte	0x4
+ 463 007c 07       		.byte	0x7
+ 464 007d 2D040000 		.4byte	.LASF10
+ 465 0081 03       		.uleb128 0x3
+ 466 0082 2A020000 		.4byte	.LASF11
+ 467 0086 04       		.byte	0x4
+ 468 0087 2C       		.byte	0x2c
+ 469 0088 41000000 		.4byte	0x41
+ 470 008c 03       		.uleb128 0x3
+ 471 008d 24040000 		.4byte	.LASF12
+ 472 0091 04       		.byte	0x4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 19
+
+
+ 473 0092 30       		.byte	0x30
+ 474 0093 53000000 		.4byte	0x53
+ 475 0097 02       		.uleb128 0x2
+ 476 0098 04       		.byte	0x4
+ 477 0099 07       		.byte	0x7
+ 478 009a B2000000 		.4byte	.LASF13
+ 479 009e 05       		.uleb128 0x5
+ 480 009f 8C000000 		.4byte	0x8c
+ 481 00a3 06       		.uleb128 0x6
+ 482 00a4 9E000000 		.4byte	0x9e
+ 483 00a8 07       		.uleb128 0x7
+ 484 00a9 A3000000 		.4byte	0xa3
+ 485 00ad B8000000 		.4byte	0xb8
+ 486 00b1 08       		.uleb128 0x8
+ 487 00b2 97000000 		.4byte	0x97
+ 488 00b6 03       		.byte	0x3
+ 489 00b7 00       		.byte	0
+ 490 00b8 07       		.uleb128 0x7
+ 491 00b9 A3000000 		.4byte	0xa3
+ 492 00bd C8000000 		.4byte	0xc8
+ 493 00c1 08       		.uleb128 0x8
+ 494 00c2 97000000 		.4byte	0x97
+ 495 00c6 04       		.byte	0x4
+ 496 00c7 00       		.byte	0
+ 497 00c8 09       		.uleb128 0x9
+ 498 00c9 10       		.byte	0x10
+ 499 00ca 05       		.byte	0x5
+ 500 00cb F502     		.2byte	0x2f5
+ 501 00cd 06010000 		.4byte	0x106
+ 502 00d1 0A       		.uleb128 0xa
+ 503 00d2 E1010000 		.4byte	.LASF14
+ 504 00d6 05       		.byte	0x5
+ 505 00d7 F702     		.2byte	0x2f7
+ 506 00d9 9E000000 		.4byte	0x9e
+ 507 00dd 00       		.byte	0
+ 508 00de 0A       		.uleb128 0xa
+ 509 00df C9060000 		.4byte	.LASF15
+ 510 00e3 05       		.byte	0x5
+ 511 00e4 F802     		.2byte	0x2f8
+ 512 00e6 9E000000 		.4byte	0x9e
+ 513 00ea 04       		.byte	0x4
+ 514 00eb 0B       		.uleb128 0xb
+ 515 00ec 56414C00 		.ascii	"VAL\000"
+ 516 00f0 05       		.byte	0x5
+ 517 00f1 F902     		.2byte	0x2f9
+ 518 00f3 9E000000 		.4byte	0x9e
+ 519 00f7 08       		.byte	0x8
+ 520 00f8 0A       		.uleb128 0xa
+ 521 00f9 EF020000 		.4byte	.LASF16
+ 522 00fd 05       		.byte	0x5
+ 523 00fe FA02     		.2byte	0x2fa
+ 524 0100 A3000000 		.4byte	0xa3
+ 525 0104 0C       		.byte	0xc
+ 526 0105 00       		.byte	0
+ 527 0106 0C       		.uleb128 0xc
+ 528 0107 92040000 		.4byte	.LASF17
+ 529 010b 05       		.byte	0x5
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 20
+
+
+ 530 010c FB02     		.2byte	0x2fb
+ 531 010e C8000000 		.4byte	0xc8
+ 532 0112 07       		.uleb128 0x7
+ 533 0113 9E000000 		.4byte	0x9e
+ 534 0117 22010000 		.4byte	0x122
+ 535 011b 08       		.uleb128 0x8
+ 536 011c 97000000 		.4byte	0x97
+ 537 0120 0F       		.byte	0xf
+ 538 0121 00       		.byte	0
+ 539 0122 07       		.uleb128 0x7
+ 540 0123 A3000000 		.4byte	0xa3
+ 541 0127 32010000 		.4byte	0x132
+ 542 012b 08       		.uleb128 0x8
+ 543 012c 97000000 		.4byte	0x97
+ 544 0130 06       		.byte	0x6
+ 545 0131 00       		.byte	0
+ 546 0132 0D       		.uleb128 0xd
+ 547 0133 08F0     		.2byte	0xf008
+ 548 0135 06       		.byte	0x6
+ 549 0136 21       		.byte	0x21
+ 550 0137 72040000 		.4byte	0x472
+ 551 013b 0E       		.uleb128 0xe
+ 552 013c A4010000 		.4byte	.LASF18
+ 553 0140 06       		.byte	0x6
+ 554 0141 22       		.byte	0x22
+ 555 0142 9E000000 		.4byte	0x9e
+ 556 0146 00       		.byte	0
+ 557 0147 0E       		.uleb128 0xe
+ 558 0148 1A070000 		.4byte	.LASF19
+ 559 014c 06       		.byte	0x6
+ 560 014d 23       		.byte	0x23
+ 561 014e A3000000 		.4byte	0xa3
+ 562 0152 04       		.byte	0x4
+ 563 0153 0E       		.uleb128 0xe
+ 564 0154 90070000 		.4byte	.LASF20
+ 565 0158 06       		.byte	0x6
+ 566 0159 24       		.byte	0x24
+ 567 015a A3000000 		.4byte	0xa3
+ 568 015e 08       		.byte	0x8
+ 569 015f 0E       		.uleb128 0xe
+ 570 0160 6E050000 		.4byte	.LASF21
+ 571 0164 06       		.byte	0x6
+ 572 0165 25       		.byte	0x25
+ 573 0166 A3000000 		.4byte	0xa3
+ 574 016a 0C       		.byte	0xc
+ 575 016b 0E       		.uleb128 0xe
+ 576 016c 00000000 		.4byte	.LASF22
+ 577 0170 06       		.byte	0x6
+ 578 0171 26       		.byte	0x26
+ 579 0172 9E000000 		.4byte	0x9e
+ 580 0176 10       		.byte	0x10
+ 581 0177 0E       		.uleb128 0xe
+ 582 0178 78050000 		.4byte	.LASF23
+ 583 017c 06       		.byte	0x6
+ 584 017d 27       		.byte	0x27
+ 585 017e 87040000 		.4byte	0x487
+ 586 0182 14       		.byte	0x14
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 21
+
+
+ 587 0183 0E       		.uleb128 0xe
+ 588 0184 B9040000 		.4byte	.LASF24
+ 589 0188 06       		.byte	0x6
+ 590 0189 28       		.byte	0x28
+ 591 018a 9E000000 		.4byte	0x9e
+ 592 018e 20       		.byte	0x20
+ 593 018f 0E       		.uleb128 0xe
+ 594 0190 C6040000 		.4byte	.LASF25
+ 595 0194 06       		.byte	0x6
+ 596 0195 29       		.byte	0x29
+ 597 0196 9E000000 		.4byte	0x9e
+ 598 019a 24       		.byte	0x24
+ 599 019b 0E       		.uleb128 0xe
+ 600 019c D3040000 		.4byte	.LASF26
+ 601 01a0 06       		.byte	0x6
+ 602 01a1 2A       		.byte	0x2a
+ 603 01a2 9E000000 		.4byte	0x9e
+ 604 01a6 28       		.byte	0x28
+ 605 01a7 0E       		.uleb128 0xe
+ 606 01a8 E0040000 		.4byte	.LASF27
+ 607 01ac 06       		.byte	0x6
+ 608 01ad 2B       		.byte	0x2b
+ 609 01ae 9E000000 		.4byte	0x9e
+ 610 01b2 2C       		.byte	0x2c
+ 611 01b3 0E       		.uleb128 0xe
+ 612 01b4 ED040000 		.4byte	.LASF28
+ 613 01b8 06       		.byte	0x6
+ 614 01b9 2C       		.byte	0x2c
+ 615 01ba 9E000000 		.4byte	0x9e
+ 616 01be 30       		.byte	0x30
+ 617 01bf 0E       		.uleb128 0xe
+ 618 01c0 E9060000 		.4byte	.LASF29
+ 619 01c4 06       		.byte	0x6
+ 620 01c5 2D       		.byte	0x2d
+ 621 01c6 9E000000 		.4byte	0x9e
+ 622 01ca 34       		.byte	0x34
+ 623 01cb 0E       		.uleb128 0xe
+ 624 01cc 0D050000 		.4byte	.LASF30
+ 625 01d0 06       		.byte	0x6
+ 626 01d1 2E       		.byte	0x2e
+ 627 01d2 9E000000 		.4byte	0x9e
+ 628 01d6 38       		.byte	0x38
+ 629 01d7 0E       		.uleb128 0xe
+ 630 01d8 F6060000 		.4byte	.LASF31
+ 631 01dc 06       		.byte	0x6
+ 632 01dd 2F       		.byte	0x2f
+ 633 01de 9E000000 		.4byte	0x9e
+ 634 01e2 3C       		.byte	0x3c
+ 635 01e3 0E       		.uleb128 0xe
+ 636 01e4 82050000 		.4byte	.LASF32
+ 637 01e8 06       		.byte	0x6
+ 638 01e9 30       		.byte	0x30
+ 639 01ea A1040000 		.4byte	0x4a1
+ 640 01ee 40       		.byte	0x40
+ 641 01ef 0E       		.uleb128 0xe
+ 642 01f0 5C040000 		.4byte	.LASF33
+ 643 01f4 06       		.byte	0x6
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 22
+
+
+ 644 01f5 31       		.byte	0x31
+ 645 01f6 9E000000 		.4byte	0x9e
+ 646 01fa 80       		.byte	0x80
+ 647 01fb 0E       		.uleb128 0xe
+ 648 01fc 04020000 		.4byte	.LASF34
+ 649 0200 06       		.byte	0x6
+ 650 0201 32       		.byte	0x32
+ 651 0202 9E000000 		.4byte	0x9e
+ 652 0206 84       		.byte	0x84
+ 653 0207 0E       		.uleb128 0xe
+ 654 0208 F5020000 		.4byte	.LASF35
+ 655 020c 06       		.byte	0x6
+ 656 020d 33       		.byte	0x33
+ 657 020e A3000000 		.4byte	0xa3
+ 658 0212 88       		.byte	0x88
+ 659 0213 0E       		.uleb128 0xe
+ 660 0214 8C050000 		.4byte	.LASF36
+ 661 0218 06       		.byte	0x6
+ 662 0219 34       		.byte	0x34
+ 663 021a A3000000 		.4byte	0xa3
+ 664 021e 8C       		.byte	0x8c
+ 665 021f 0E       		.uleb128 0xe
+ 666 0220 BB000000 		.4byte	.LASF37
+ 667 0224 06       		.byte	0x6
+ 668 0225 35       		.byte	0x35
+ 669 0226 9E000000 		.4byte	0x9e
+ 670 022a 90       		.byte	0x90
+ 671 022b 0E       		.uleb128 0xe
+ 672 022c 16020000 		.4byte	.LASF38
+ 673 0230 06       		.byte	0x6
+ 674 0231 36       		.byte	0x36
+ 675 0232 AB040000 		.4byte	0x4ab
+ 676 0236 94       		.byte	0x94
+ 677 0237 0E       		.uleb128 0xe
+ 678 0238 A6000000 		.4byte	.LASF39
+ 679 023c 06       		.byte	0x6
+ 680 023d 37       		.byte	0x37
+ 681 023e 9E000000 		.4byte	0x9e
+ 682 0242 A0       		.byte	0xa0
+ 683 0243 0E       		.uleb128 0xe
+ 684 0244 20020000 		.4byte	.LASF40
+ 685 0248 06       		.byte	0x6
+ 686 0249 38       		.byte	0x38
+ 687 024a C5040000 		.4byte	0x4c5
+ 688 024e A4       		.byte	0xa4
+ 689 024f 0F       		.uleb128 0xf
+ 690 0250 5D020000 		.4byte	.LASF41
+ 691 0254 06       		.byte	0x6
+ 692 0255 39       		.byte	0x39
+ 693 0256 9E000000 		.4byte	0x9e
+ 694 025a 0001     		.2byte	0x100
+ 695 025c 0F       		.uleb128 0xf
+ 696 025d C7050000 		.4byte	.LASF42
+ 697 0261 06       		.byte	0x6
+ 698 0262 3A       		.byte	0x3a
+ 699 0263 DF040000 		.4byte	0x4df
+ 700 0267 0401     		.2byte	0x104
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 23
+
+
+ 701 0269 0F       		.uleb128 0xf
+ 702 026a FA040000 		.4byte	.LASF43
+ 703 026e 06       		.byte	0x6
+ 704 026f 3B       		.byte	0x3b
+ 705 0270 E4040000 		.4byte	0x4e4
+ 706 0274 4001     		.2byte	0x140
+ 707 0276 0F       		.uleb128 0xf
+ 708 0277 68040000 		.4byte	.LASF44
+ 709 027b 06       		.byte	0x6
+ 710 027c 3C       		.byte	0x3c
+ 711 027d 9E000000 		.4byte	0x9e
+ 712 0281 8001     		.2byte	0x180
+ 713 0283 0F       		.uleb128 0xf
+ 714 0284 3E020000 		.4byte	.LASF45
+ 715 0288 06       		.byte	0x6
+ 716 0289 3D       		.byte	0x3d
+ 717 028a EE040000 		.4byte	0x4ee
+ 718 028e 8401     		.2byte	0x184
+ 719 0290 0F       		.uleb128 0xf
+ 720 0291 3C060000 		.4byte	.LASF46
+ 721 0295 06       		.byte	0x6
+ 722 0296 3E       		.byte	0x3e
+ 723 0297 9E000000 		.4byte	0x9e
+ 724 029b 9001     		.2byte	0x190
+ 725 029d 0F       		.uleb128 0xf
+ 726 029e 53020000 		.4byte	.LASF47
+ 727 02a2 06       		.byte	0x6
+ 728 02a3 3F       		.byte	0x3f
+ 729 02a4 F8040000 		.4byte	0x4f8
+ 730 02a8 9401     		.2byte	0x194
+ 731 02aa 0F       		.uleb128 0xf
+ 732 02ab DC000000 		.4byte	.LASF48
+ 733 02af 06       		.byte	0x6
+ 734 02b0 40       		.byte	0x40
+ 735 02b1 9E000000 		.4byte	0x9e
+ 736 02b5 A001     		.2byte	0x1a0
+ 737 02b7 0F       		.uleb128 0xf
+ 738 02b8 A0030000 		.4byte	.LASF49
+ 739 02bc 06       		.byte	0x6
+ 740 02bd 41       		.byte	0x41
+ 741 02be 02050000 		.4byte	0x502
+ 742 02c2 A401     		.2byte	0x1a4
+ 743 02c4 0F       		.uleb128 0xf
+ 744 02c5 DC060000 		.4byte	.LASF50
+ 745 02c9 06       		.byte	0x6
+ 746 02ca 42       		.byte	0x42
+ 747 02cb 9E000000 		.4byte	0x9e
+ 748 02cf B001     		.2byte	0x1b0
+ 749 02d1 0F       		.uleb128 0xf
+ 750 02d2 AB030000 		.4byte	.LASF51
+ 751 02d6 06       		.byte	0x6
+ 752 02d7 43       		.byte	0x43
+ 753 02d8 0C050000 		.4byte	0x50c
+ 754 02dc B401     		.2byte	0x1b4
+ 755 02de 0F       		.uleb128 0xf
+ 756 02df C5010000 		.4byte	.LASF52
+ 757 02e3 06       		.byte	0x6
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 24
+
+
+ 758 02e4 44       		.byte	0x44
+ 759 02e5 9E000000 		.4byte	0x9e
+ 760 02e9 C001     		.2byte	0x1c0
+ 761 02eb 0F       		.uleb128 0xf
+ 762 02ec B6030000 		.4byte	.LASF53
+ 763 02f0 06       		.byte	0x6
+ 764 02f1 45       		.byte	0x45
+ 765 02f2 16050000 		.4byte	0x516
+ 766 02f6 C401     		.2byte	0x1c4
+ 767 02f8 0F       		.uleb128 0xf
+ 768 02f9 38000000 		.4byte	.LASF54
+ 769 02fd 06       		.byte	0x6
+ 770 02fe 46       		.byte	0x46
+ 771 02ff 9E000000 		.4byte	0x9e
+ 772 0303 D001     		.2byte	0x1d0
+ 773 0305 0F       		.uleb128 0xf
+ 774 0306 C1030000 		.4byte	.LASF55
+ 775 030a 06       		.byte	0x6
+ 776 030b 47       		.byte	0x47
+ 777 030c 20050000 		.4byte	0x520
+ 778 0310 D401     		.2byte	0x1d4
+ 779 0312 0F       		.uleb128 0xf
+ 780 0313 38070000 		.4byte	.LASF56
+ 781 0317 06       		.byte	0x6
+ 782 0318 48       		.byte	0x48
+ 783 0319 9E000000 		.4byte	0x9e
+ 784 031d F001     		.2byte	0x1f0
+ 785 031f 0F       		.uleb128 0xf
+ 786 0320 67020000 		.4byte	.LASF57
+ 787 0324 06       		.byte	0x6
+ 788 0325 49       		.byte	0x49
+ 789 0326 9E000000 		.4byte	0x9e
+ 790 032a F401     		.2byte	0x1f4
+ 791 032c 0F       		.uleb128 0xf
+ 792 032d CC030000 		.4byte	.LASF58
+ 793 0331 06       		.byte	0x6
+ 794 0332 4A       		.byte	0x4a
+ 795 0333 2A050000 		.4byte	0x52a
+ 796 0337 F801     		.2byte	0x1f8
+ 797 0339 0F       		.uleb128 0xf
+ 798 033a D2000000 		.4byte	.LASF59
+ 799 033e 06       		.byte	0x6
+ 800 033f 4B       		.byte	0x4b
+ 801 0340 A3000000 		.4byte	0xa3
+ 802 0344 0802     		.2byte	0x208
+ 803 0346 0F       		.uleb128 0xf
+ 804 0347 D7030000 		.4byte	.LASF60
+ 805 034b 06       		.byte	0x6
+ 806 034c 4C       		.byte	0x4c
+ 807 034d 34050000 		.4byte	0x534
+ 808 0351 0C02     		.2byte	0x20c
+ 809 0353 0F       		.uleb128 0xf
+ 810 0354 C9000000 		.4byte	.LASF61
+ 811 0358 06       		.byte	0x6
+ 812 0359 4D       		.byte	0x4d
+ 813 035a 9E000000 		.4byte	0x9e
+ 814 035e 2002     		.2byte	0x220
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 25
+
+
+ 815 0360 0F       		.uleb128 0xf
+ 816 0361 E2030000 		.4byte	.LASF62
+ 817 0365 06       		.byte	0x6
+ 818 0366 4E       		.byte	0x4e
+ 819 0367 3E050000 		.4byte	0x53e
+ 820 036b 2402     		.2byte	0x224
+ 821 036d 0F       		.uleb128 0xf
+ 822 036e 0A070000 		.4byte	.LASF63
+ 823 0372 06       		.byte	0x6
+ 824 0373 4F       		.byte	0x4f
+ 825 0374 9E000000 		.4byte	0x9e
+ 826 0378 3002     		.2byte	0x230
+ 827 037a 0F       		.uleb128 0xf
+ 828 037b ED030000 		.4byte	.LASF64
+ 829 037f 06       		.byte	0x6
+ 830 0380 50       		.byte	0x50
+ 831 0381 48050000 		.4byte	0x548
+ 832 0385 3402     		.2byte	0x234
+ 833 0387 0F       		.uleb128 0xf
+ 834 0388 32020000 		.4byte	.LASF65
+ 835 038c 06       		.byte	0x6
+ 836 038d 51       		.byte	0x51
+ 837 038e 9E000000 		.4byte	0x9e
+ 838 0392 4002     		.2byte	0x240
+ 839 0394 0F       		.uleb128 0xf
+ 840 0395 F8030000 		.4byte	.LASF66
+ 841 0399 06       		.byte	0x6
+ 842 039a 52       		.byte	0x52
+ 843 039b 62050000 		.4byte	0x562
+ 844 039f 4402     		.2byte	0x244
+ 845 03a1 0F       		.uleb128 0xf
+ 846 03a2 51070000 		.4byte	.LASF67
+ 847 03a6 06       		.byte	0x6
+ 848 03a7 53       		.byte	0x53
+ 849 03a8 9E000000 		.4byte	0x9e
+ 850 03ac B002     		.2byte	0x2b0
+ 851 03ae 0F       		.uleb128 0xf
+ 852 03af 03040000 		.4byte	.LASF68
+ 853 03b3 06       		.byte	0x6
+ 854 03b4 54       		.byte	0x54
+ 855 03b5 6C050000 		.4byte	0x56c
+ 856 03b9 B402     		.2byte	0x2b4
+ 857 03bb 0F       		.uleb128 0xf
+ 858 03bc 0E040000 		.4byte	.LASF69
+ 859 03c0 06       		.byte	0x6
+ 860 03c1 55       		.byte	0x55
+ 861 03c2 9E000000 		.4byte	0x9e
+ 862 03c6 C002     		.2byte	0x2c0
+ 863 03c8 0F       		.uleb128 0xf
+ 864 03c9 D1050000 		.4byte	.LASF70
+ 865 03cd 06       		.byte	0x6
+ 866 03ce 56       		.byte	0x56
+ 867 03cf 76050000 		.4byte	0x576
+ 868 03d3 C402     		.2byte	0x2c4
+ 869 03d5 0F       		.uleb128 0xf
+ 870 03d6 BA020000 		.4byte	.LASF71
+ 871 03da 06       		.byte	0x6
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 26
+
+
+ 872 03db 57       		.byte	0x57
+ 873 03dc 9E000000 		.4byte	0x9e
+ 874 03e0 2003     		.2byte	0x320
+ 875 03e2 0F       		.uleb128 0xf
+ 876 03e3 DC050000 		.4byte	.LASF72
+ 877 03e7 06       		.byte	0x6
+ 878 03e8 58       		.byte	0x58
+ 879 03e9 90050000 		.4byte	0x590
+ 880 03ed 2403     		.2byte	0x324
+ 881 03ef 0F       		.uleb128 0xf
+ 882 03f0 13060000 		.4byte	.LASF73
+ 883 03f4 06       		.byte	0x6
+ 884 03f5 59       		.byte	0x59
+ 885 03f6 A3000000 		.4byte	0xa3
+ 886 03fa 0004     		.2byte	0x400
+ 887 03fc 0F       		.uleb128 0xf
+ 888 03fd E7050000 		.4byte	.LASF74
+ 889 0401 06       		.byte	0x6
+ 890 0402 5A       		.byte	0x5a
+ 891 0403 AA050000 		.4byte	0x5aa
+ 892 0407 0404     		.2byte	0x404
+ 893 0409 0F       		.uleb128 0xf
+ 894 040a 48020000 		.4byte	.LASF75
+ 895 040e 06       		.byte	0x6
+ 896 040f 5B       		.byte	0x5b
+ 897 0410 9E000000 		.4byte	0x9e
+ 898 0414 0005     		.2byte	0x500
+ 899 0416 0F       		.uleb128 0xf
+ 900 0417 F2050000 		.4byte	.LASF76
+ 901 041b 06       		.byte	0x6
+ 902 041c 5C       		.byte	0x5c
+ 903 041d B4050000 		.4byte	0x5b4
+ 904 0421 0405     		.2byte	0x504
+ 905 0423 0F       		.uleb128 0xf
+ 906 0424 84070000 		.4byte	.LASF77
+ 907 0428 06       		.byte	0x6
+ 908 0429 5D       		.byte	0x5d
+ 909 042a 9E000000 		.4byte	0x9e
+ 910 042e 2005     		.2byte	0x520
+ 911 0430 0F       		.uleb128 0xf
+ 912 0431 FD050000 		.4byte	.LASF78
+ 913 0435 06       		.byte	0x6
+ 914 0436 5E       		.byte	0x5e
+ 915 0437 CE050000 		.4byte	0x5ce
+ 916 043b 2405     		.2byte	0x524
+ 917 043d 0F       		.uleb128 0xf
+ 918 043e 09030000 		.4byte	.LASF79
+ 919 0442 06       		.byte	0x6
+ 920 0443 5F       		.byte	0x5f
+ 921 0444 A3000000 		.4byte	0xa3
+ 922 0448 A005     		.2byte	0x5a0
+ 923 044a 0F       		.uleb128 0xf
+ 924 044b 08060000 		.4byte	.LASF80
+ 925 044f 06       		.byte	0x6
+ 926 0450 60       		.byte	0x60
+ 927 0451 E9050000 		.4byte	0x5e9
+ 928 0455 A405     		.2byte	0x5a4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 27
+
+
+ 929 0457 0F       		.uleb128 0xf
+ 930 0458 B8010000 		.4byte	.LASF81
+ 931 045c 06       		.byte	0x6
+ 932 045d 61       		.byte	0x61
+ 933 045e 9E000000 		.4byte	0x9e
+ 934 0462 00F0     		.2byte	0xf000
+ 935 0464 0F       		.uleb128 0xf
+ 936 0465 3C030000 		.4byte	.LASF82
+ 937 0469 06       		.byte	0x6
+ 938 046a 62       		.byte	0x62
+ 939 046b 9E000000 		.4byte	0x9e
+ 940 046f 04F0     		.2byte	0xf004
+ 941 0471 00       		.byte	0
+ 942 0472 07       		.uleb128 0x7
+ 943 0473 A3000000 		.4byte	0xa3
+ 944 0477 82040000 		.4byte	0x482
+ 945 047b 08       		.uleb128 0x8
+ 946 047c 97000000 		.4byte	0x97
+ 947 0480 02       		.byte	0x2
+ 948 0481 00       		.byte	0
+ 949 0482 05       		.uleb128 0x5
+ 950 0483 72040000 		.4byte	0x472
+ 951 0487 06       		.uleb128 0x6
+ 952 0488 82040000 		.4byte	0x482
+ 953 048c 07       		.uleb128 0x7
+ 954 048d A3000000 		.4byte	0xa3
+ 955 0491 9C040000 		.4byte	0x49c
+ 956 0495 08       		.uleb128 0x8
+ 957 0496 97000000 		.4byte	0x97
+ 958 049a 0F       		.byte	0xf
+ 959 049b 00       		.byte	0
+ 960 049c 05       		.uleb128 0x5
+ 961 049d 8C040000 		.4byte	0x48c
+ 962 04a1 06       		.uleb128 0x6
+ 963 04a2 9C040000 		.4byte	0x49c
+ 964 04a6 05       		.uleb128 0x5
+ 965 04a7 72040000 		.4byte	0x472
+ 966 04ab 06       		.uleb128 0x6
+ 967 04ac A6040000 		.4byte	0x4a6
+ 968 04b0 07       		.uleb128 0x7
+ 969 04b1 A3000000 		.4byte	0xa3
+ 970 04b5 C0040000 		.4byte	0x4c0
+ 971 04b9 08       		.uleb128 0x8
+ 972 04ba 97000000 		.4byte	0x97
+ 973 04be 16       		.byte	0x16
+ 974 04bf 00       		.byte	0
+ 975 04c0 05       		.uleb128 0x5
+ 976 04c1 B0040000 		.4byte	0x4b0
+ 977 04c5 06       		.uleb128 0x6
+ 978 04c6 C0040000 		.4byte	0x4c0
+ 979 04ca 07       		.uleb128 0x7
+ 980 04cb A3000000 		.4byte	0xa3
+ 981 04cf DA040000 		.4byte	0x4da
+ 982 04d3 08       		.uleb128 0x8
+ 983 04d4 97000000 		.4byte	0x97
+ 984 04d8 0E       		.byte	0xe
+ 985 04d9 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 28
+
+
+ 986 04da 05       		.uleb128 0x5
+ 987 04db CA040000 		.4byte	0x4ca
+ 988 04df 06       		.uleb128 0x6
+ 989 04e0 DA040000 		.4byte	0x4da
+ 990 04e4 05       		.uleb128 0x5
+ 991 04e5 12010000 		.4byte	0x112
+ 992 04e9 05       		.uleb128 0x5
+ 993 04ea 72040000 		.4byte	0x472
+ 994 04ee 06       		.uleb128 0x6
+ 995 04ef E9040000 		.4byte	0x4e9
+ 996 04f3 05       		.uleb128 0x5
+ 997 04f4 72040000 		.4byte	0x472
+ 998 04f8 06       		.uleb128 0x6
+ 999 04f9 F3040000 		.4byte	0x4f3
+ 1000 04fd 05       		.uleb128 0x5
+ 1001 04fe 72040000 		.4byte	0x472
+ 1002 0502 06       		.uleb128 0x6
+ 1003 0503 FD040000 		.4byte	0x4fd
+ 1004 0507 05       		.uleb128 0x5
+ 1005 0508 72040000 		.4byte	0x472
+ 1006 050c 06       		.uleb128 0x6
+ 1007 050d 07050000 		.4byte	0x507
+ 1008 0511 05       		.uleb128 0x5
+ 1009 0512 72040000 		.4byte	0x472
+ 1010 0516 06       		.uleb128 0x6
+ 1011 0517 11050000 		.4byte	0x511
+ 1012 051b 05       		.uleb128 0x5
+ 1013 051c 22010000 		.4byte	0x122
+ 1014 0520 06       		.uleb128 0x6
+ 1015 0521 1B050000 		.4byte	0x51b
+ 1016 0525 05       		.uleb128 0x5
+ 1017 0526 A8000000 		.4byte	0xa8
+ 1018 052a 06       		.uleb128 0x6
+ 1019 052b 25050000 		.4byte	0x525
+ 1020 052f 05       		.uleb128 0x5
+ 1021 0530 B8000000 		.4byte	0xb8
+ 1022 0534 06       		.uleb128 0x6
+ 1023 0535 2F050000 		.4byte	0x52f
+ 1024 0539 05       		.uleb128 0x5
+ 1025 053a 72040000 		.4byte	0x472
+ 1026 053e 06       		.uleb128 0x6
+ 1027 053f 39050000 		.4byte	0x539
+ 1028 0543 05       		.uleb128 0x5
+ 1029 0544 72040000 		.4byte	0x472
+ 1030 0548 06       		.uleb128 0x6
+ 1031 0549 43050000 		.4byte	0x543
+ 1032 054d 07       		.uleb128 0x7
+ 1033 054e A3000000 		.4byte	0xa3
+ 1034 0552 5D050000 		.4byte	0x55d
+ 1035 0556 08       		.uleb128 0x8
+ 1036 0557 97000000 		.4byte	0x97
+ 1037 055b 1A       		.byte	0x1a
+ 1038 055c 00       		.byte	0
+ 1039 055d 05       		.uleb128 0x5
+ 1040 055e 4D050000 		.4byte	0x54d
+ 1041 0562 06       		.uleb128 0x6
+ 1042 0563 5D050000 		.4byte	0x55d
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 29
+
+
+ 1043 0567 05       		.uleb128 0x5
+ 1044 0568 72040000 		.4byte	0x472
+ 1045 056c 06       		.uleb128 0x6
+ 1046 056d 67050000 		.4byte	0x567
+ 1047 0571 05       		.uleb128 0x5
+ 1048 0572 B0040000 		.4byte	0x4b0
+ 1049 0576 06       		.uleb128 0x6
+ 1050 0577 71050000 		.4byte	0x571
+ 1051 057b 07       		.uleb128 0x7
+ 1052 057c A3000000 		.4byte	0xa3
+ 1053 0580 8B050000 		.4byte	0x58b
+ 1054 0584 08       		.uleb128 0x8
+ 1055 0585 97000000 		.4byte	0x97
+ 1056 0589 36       		.byte	0x36
+ 1057 058a 00       		.byte	0
+ 1058 058b 05       		.uleb128 0x5
+ 1059 058c 7B050000 		.4byte	0x57b
+ 1060 0590 06       		.uleb128 0x6
+ 1061 0591 8B050000 		.4byte	0x58b
+ 1062 0595 07       		.uleb128 0x7
+ 1063 0596 A3000000 		.4byte	0xa3
+ 1064 059a A5050000 		.4byte	0x5a5
+ 1065 059e 08       		.uleb128 0x8
+ 1066 059f 97000000 		.4byte	0x97
+ 1067 05a3 3E       		.byte	0x3e
+ 1068 05a4 00       		.byte	0
+ 1069 05a5 05       		.uleb128 0x5
+ 1070 05a6 95050000 		.4byte	0x595
+ 1071 05aa 06       		.uleb128 0x6
+ 1072 05ab A5050000 		.4byte	0x5a5
+ 1073 05af 05       		.uleb128 0x5
+ 1074 05b0 22010000 		.4byte	0x122
+ 1075 05b4 06       		.uleb128 0x6
+ 1076 05b5 AF050000 		.4byte	0x5af
+ 1077 05b9 07       		.uleb128 0x7
+ 1078 05ba A3000000 		.4byte	0xa3
+ 1079 05be C9050000 		.4byte	0x5c9
+ 1080 05c2 08       		.uleb128 0x8
+ 1081 05c3 97000000 		.4byte	0x97
+ 1082 05c7 1E       		.byte	0x1e
+ 1083 05c8 00       		.byte	0
+ 1084 05c9 05       		.uleb128 0x5
+ 1085 05ca B9050000 		.4byte	0x5b9
+ 1086 05ce 06       		.uleb128 0x6
+ 1087 05cf C9050000 		.4byte	0x5c9
+ 1088 05d3 07       		.uleb128 0x7
+ 1089 05d4 A3000000 		.4byte	0xa3
+ 1090 05d8 E4050000 		.4byte	0x5e4
+ 1091 05dc 10       		.uleb128 0x10
+ 1092 05dd 97000000 		.4byte	0x97
+ 1093 05e1 963A     		.2byte	0x3a96
+ 1094 05e3 00       		.byte	0
+ 1095 05e4 05       		.uleb128 0x5
+ 1096 05e5 D3050000 		.4byte	0x5d3
+ 1097 05e9 06       		.uleb128 0x6
+ 1098 05ea E4050000 		.4byte	0x5e4
+ 1099 05ee 03       		.uleb128 0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 30
+
+
+ 1100 05ef 58000000 		.4byte	.LASF83
+ 1101 05f3 06       		.byte	0x6
+ 1102 05f4 63       		.byte	0x63
+ 1103 05f5 32010000 		.4byte	0x132
+ 1104 05f9 0C       		.uleb128 0xc
+ 1105 05fa CE060000 		.4byte	.LASF84
+ 1106 05fe 07       		.byte	0x7
+ 1107 05ff BC01     		.2byte	0x1bc
+ 1108 0601 05060000 		.4byte	0x605
+ 1109 0605 11       		.uleb128 0x11
+ 1110 0606 04       		.byte	0x4
+ 1111 0607 0B060000 		.4byte	0x60b
+ 1112 060b 12       		.uleb128 0x12
+ 1113 060c 02       		.uleb128 0x2
+ 1114 060d 01       		.byte	0x1
+ 1115 060e 08       		.byte	0x8
+ 1116 060f 40000000 		.4byte	.LASF85
+ 1117 0613 02       		.uleb128 0x2
+ 1118 0614 04       		.byte	0x4
+ 1119 0615 04       		.byte	0x4
+ 1120 0616 0E000000 		.4byte	.LASF86
+ 1121 061a 02       		.uleb128 0x2
+ 1122 061b 08       		.byte	0x8
+ 1123 061c 04       		.byte	0x4
+ 1124 061d 13070000 		.4byte	.LASF87
+ 1125 0621 03       		.uleb128 0x3
+ 1126 0622 24000000 		.4byte	.LASF88
+ 1127 0626 02       		.byte	0x2
+ 1128 0627 61       		.byte	0x61
+ 1129 0628 05060000 		.4byte	0x605
+ 1130 062c 13       		.uleb128 0x13
+ 1131 062d 01       		.byte	0x1
+ 1132 062e 2C000000 		.4byte	0x2c
+ 1133 0632 02       		.byte	0x2
+ 1134 0633 6A       		.byte	0x6a
+ 1135 0634 57060000 		.4byte	0x657
+ 1136 0638 14       		.uleb128 0x14
+ 1137 0639 96050000 		.4byte	.LASF89
+ 1138 063d 00       		.byte	0
+ 1139 063e 14       		.uleb128 0x14
+ 1140 063f 72040000 		.4byte	.LASF90
+ 1141 0643 01       		.byte	0x1
+ 1142 0644 14       		.uleb128 0x14
+ 1143 0645 66030000 		.4byte	.LASF91
+ 1144 0649 02       		.byte	0x2
+ 1145 064a 14       		.uleb128 0x14
+ 1146 064b 3A040000 		.4byte	.LASF92
+ 1147 064f 03       		.byte	0x3
+ 1148 0650 14       		.uleb128 0x14
+ 1149 0651 1C060000 		.4byte	.LASF93
+ 1150 0655 04       		.byte	0x4
+ 1151 0656 00       		.byte	0
+ 1152 0657 03       		.uleb128 0x3
+ 1153 0658 67070000 		.4byte	.LASF94
+ 1154 065c 02       		.byte	0x2
+ 1155 065d 70       		.byte	0x70
+ 1156 065e 2C060000 		.4byte	0x62c
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 31
+
+
+ 1157 0662 02       		.uleb128 0x2
+ 1158 0663 08       		.byte	0x8
+ 1159 0664 04       		.byte	0x4
+ 1160 0665 5A030000 		.4byte	.LASF95
+ 1161 0669 15       		.uleb128 0x15
+ 1162 066a EC010000 		.4byte	.LASF118
+ 1163 066e 02       		.byte	0x2
+ 1164 066f 0D01     		.2byte	0x10d
+ 1165 0671 8C000000 		.4byte	0x8c
+ 1166 0675 03       		.byte	0x3
+ 1167 0676 16       		.uleb128 0x16
+ 1168 0677 85020000 		.4byte	.LASF96
+ 1169 067b 02       		.byte	0x2
+ 1170 067c B0       		.byte	0xb0
+ 1171 067d 03       		.byte	0x3
+ 1172 067e 16       		.uleb128 0x16
+ 1173 067f 53060000 		.4byte	.LASF97
+ 1174 0683 02       		.byte	0x2
+ 1175 0684 BF       		.byte	0xbf
+ 1176 0685 03       		.byte	0x3
+ 1177 0686 16       		.uleb128 0x16
+ 1178 0687 49030000 		.4byte	.LASF98
+ 1179 068b 02       		.byte	0x2
+ 1180 068c FA       		.byte	0xfa
+ 1181 068d 03       		.byte	0x3
+ 1182 068e 17       		.uleb128 0x17
+ 1183 068f 3F050000 		.4byte	.LASF119
+ 1184 0693 02       		.byte	0x2
+ 1185 0694 D0       		.byte	0xd0
+ 1186 0695 03       		.byte	0x3
+ 1187 0696 A6060000 		.4byte	0x6a6
+ 1188 069a 18       		.uleb128 0x18
+ 1189 069b E6010000 		.4byte	.LASF120
+ 1190 069f 02       		.byte	0x2
+ 1191 06a0 D0       		.byte	0xd0
+ 1192 06a1 8C000000 		.4byte	0x8c
+ 1193 06a5 00       		.byte	0
+ 1194 06a6 19       		.uleb128 0x19
+ 1195 06a7 23050000 		.4byte	.LASF121
+ 1196 06ab 01       		.byte	0x1
+ 1197 06ac E4       		.byte	0xe4
+ 1198 06ad 00000000 		.4byte	.LFB139
+ 1199 06b1 2C000000 		.4byte	.LFE139-.LFB139
+ 1200 06b5 01       		.uleb128 0x1
+ 1201 06b6 9C       		.byte	0x9c
+ 1202 06b7 D8060000 		.4byte	0x6d8
+ 1203 06bb 1A       		.uleb128 0x1a
+ 1204 06bc 6900     		.ascii	"i\000"
+ 1205 06be 01       		.byte	0x1
+ 1206 06bf E6       		.byte	0xe6
+ 1207 06c0 8C000000 		.4byte	0x8c
+ 1208 06c4 00000000 		.4byte	.LLST0
+ 1209 06c8 1B       		.uleb128 0x1b
+ 1210 06c9 69060000 		.4byte	0x669
+ 1211 06cd 00000000 		.4byte	.LBB12
+ 1212 06d1 04000000 		.4byte	.LBE12-.LBB12
+ 1213 06d5 01       		.byte	0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 32
+
+
+ 1214 06d6 E9       		.byte	0xe9
+ 1215 06d7 00       		.byte	0
+ 1216 06d8 1C       		.uleb128 0x1c
+ 1217 06d9 14030000 		.4byte	.LASF99
+ 1218 06dd 01       		.byte	0x1
+ 1219 06de 46       		.byte	0x46
+ 1220 06df 00000000 		.4byte	.LFB133
+ 1221 06e3 18000000 		.4byte	.LFE133-.LFB133
+ 1222 06e7 01       		.uleb128 0x1
+ 1223 06e8 9C       		.byte	0x9c
+ 1224 06e9 FD060000 		.4byte	0x6fd
+ 1225 06ed 1B       		.uleb128 0x1b
+ 1226 06ee 76060000 		.4byte	0x676
+ 1227 06f2 00000000 		.4byte	.LBB14
+ 1228 06f6 0A000000 		.4byte	.LBE14-.LBB14
+ 1229 06fa 01       		.byte	0x1
+ 1230 06fb 48       		.byte	0x48
+ 1231 06fc 00       		.byte	0
+ 1232 06fd 1C       		.uleb128 0x1c
+ 1233 06fe 45000000 		.4byte	.LASF100
+ 1234 0702 01       		.byte	0x1
+ 1235 0703 56       		.byte	0x56
+ 1236 0704 00000000 		.4byte	.LFB134
+ 1237 0708 18000000 		.4byte	.LFE134-.LFB134
+ 1238 070c 01       		.uleb128 0x1
+ 1239 070d 9C       		.byte	0x9c
+ 1240 070e 22070000 		.4byte	0x722
+ 1241 0712 1B       		.uleb128 0x1b
+ 1242 0713 7E060000 		.4byte	0x67e
+ 1243 0717 00000000 		.4byte	.LBB16
+ 1244 071b 0A000000 		.4byte	.LBE16-.LBB16
+ 1245 071f 01       		.byte	0x1
+ 1246 0720 58       		.byte	0x58
+ 1247 0721 00       		.byte	0
+ 1248 0722 1C       		.uleb128 0x1c
+ 1249 0723 A0020000 		.4byte	.LASF101
+ 1250 0727 01       		.byte	0x1
+ 1251 0728 70       		.byte	0x70
+ 1252 0729 00000000 		.4byte	.LFB135
+ 1253 072d 30000000 		.4byte	.LFE135-.LFB135
+ 1254 0731 01       		.uleb128 0x1
+ 1255 0732 9C       		.byte	0x9c
+ 1256 0733 47070000 		.4byte	0x747
+ 1257 0737 1D       		.uleb128 0x1d
+ 1258 0738 AC010000 		.4byte	.LASF103
+ 1259 073c 01       		.byte	0x1
+ 1260 073d 70       		.byte	0x70
+ 1261 073e 57060000 		.4byte	0x657
+ 1262 0742 1E000000 		.4byte	.LLST1
+ 1263 0746 00       		.byte	0
+ 1264 0747 1C       		.uleb128 0x1c
+ 1265 0748 14000000 		.4byte	.LASF102
+ 1266 074c 01       		.byte	0x1
+ 1267 074d 2B       		.byte	0x2b
+ 1268 074e 00000000 		.4byte	.LFB132
+ 1269 0752 44000000 		.4byte	.LFE132-.LFB132
+ 1270 0756 01       		.uleb128 0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 33
+
+
+ 1271 0757 9C       		.byte	0x9c
+ 1272 0758 C6070000 		.4byte	0x7c6
+ 1273 075c 1D       		.uleb128 0x1d
+ 1274 075d AC010000 		.4byte	.LASF103
+ 1275 0761 01       		.byte	0x1
+ 1276 0762 2B       		.byte	0x2b
+ 1277 0763 57060000 		.4byte	0x657
+ 1278 0767 3F000000 		.4byte	.LLST2
+ 1279 076b 1D       		.uleb128 0x1d
+ 1280 076c 26030000 		.4byte	.LASF104
+ 1281 0770 01       		.byte	0x1
+ 1282 0771 2B       		.byte	0x2b
+ 1283 0772 8C000000 		.4byte	0x8c
+ 1284 0776 60000000 		.4byte	.LLST3
+ 1285 077a 1A       		.uleb128 0x1a
+ 1286 077b 6900     		.ascii	"i\000"
+ 1287 077d 01       		.byte	0x1
+ 1288 077e 2D       		.byte	0x2d
+ 1289 077f 8C000000 		.4byte	0x8c
+ 1290 0783 8C000000 		.4byte	.LLST4
+ 1291 0787 1E       		.uleb128 0x1e
+ 1292 0788 8E060000 		.4byte	0x68e
+ 1293 078c 20000000 		.4byte	.LBB18
+ 1294 0790 08000000 		.4byte	.LBE18-.LBB18
+ 1295 0794 01       		.byte	0x1
+ 1296 0795 37       		.byte	0x37
+ 1297 0796 A4070000 		.4byte	0x7a4
+ 1298 079a 1F       		.uleb128 0x1f
+ 1299 079b 9A060000 		.4byte	0x69a
+ 1300 079f AB000000 		.4byte	.LLST5
+ 1301 07a3 00       		.byte	0
+ 1302 07a4 1B       		.uleb128 0x1b
+ 1303 07a5 86060000 		.4byte	0x686
+ 1304 07a9 28000000 		.4byte	.LBB20
+ 1305 07ad 04000000 		.4byte	.LBE20-.LBB20
+ 1306 07b1 01       		.byte	0x1
+ 1307 07b2 38       		.byte	0x38
+ 1308 07b3 20       		.uleb128 0x20
+ 1309 07b4 20000000 		.4byte	.LVL13
+ 1310 07b8 22070000 		.4byte	0x722
+ 1311 07bc 20       		.uleb128 0x20
+ 1312 07bd 30000000 		.4byte	.LVL16
+ 1313 07c1 D8060000 		.4byte	0x6d8
+ 1314 07c5 00       		.byte	0
+ 1315 07c6 21       		.uleb128 0x21
+ 1316 07c7 54050000 		.4byte	.LASF106
+ 1317 07cb 01       		.byte	0x1
+ 1318 07cc 87       		.byte	0x87
+ 1319 07cd 57060000 		.4byte	0x657
+ 1320 07d1 00000000 		.4byte	.LFB136
+ 1321 07d5 24000000 		.4byte	.LFE136-.LFB136
+ 1322 07d9 01       		.uleb128 0x1
+ 1323 07da 9C       		.byte	0x9c
+ 1324 07db EF070000 		.4byte	0x7ef
+ 1325 07df 22       		.uleb128 0x22
+ 1326 07e0 86030000 		.4byte	.LASF105
+ 1327 07e4 01       		.byte	0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 34
+
+
+ 1328 07e5 89       		.byte	0x89
+ 1329 07e6 57060000 		.4byte	0x657
+ 1330 07ea CC000000 		.4byte	.LLST6
+ 1331 07ee 00       		.byte	0
+ 1332 07ef 21       		.uleb128 0x21
+ 1333 07f0 6F060000 		.4byte	.LASF107
+ 1334 07f4 01       		.byte	0x1
+ 1335 07f5 AC       		.byte	0xac
+ 1336 07f6 21060000 		.4byte	0x621
+ 1337 07fa 00000000 		.4byte	.LFB137
+ 1338 07fe 1C000000 		.4byte	.LFE137-.LFB137
+ 1339 0802 01       		.uleb128 0x1
+ 1340 0803 9C       		.byte	0x9c
+ 1341 0804 34080000 		.4byte	0x834
+ 1342 0808 1D       		.uleb128 0x1d
+ 1343 0809 B2040000 		.4byte	.LASF108
+ 1344 080d 01       		.byte	0x1
+ 1345 080e AC       		.byte	0xac
+ 1346 080f 8C000000 		.4byte	0x8c
+ 1347 0813 EA000000 		.4byte	.LLST7
+ 1348 0817 23       		.uleb128 0x23
+ 1349 0818 1A050000 		.4byte	.LASF109
+ 1350 081c 01       		.byte	0x1
+ 1351 081d AC       		.byte	0xac
+ 1352 081e 21060000 		.4byte	0x621
+ 1353 0822 01       		.uleb128 0x1
+ 1354 0823 51       		.byte	0x51
+ 1355 0824 22       		.uleb128 0x22
+ 1356 0825 03070000 		.4byte	.LASF110
+ 1357 0829 01       		.byte	0x1
+ 1358 082a AE       		.byte	0xae
+ 1359 082b 21060000 		.4byte	0x621
+ 1360 082f 1E010000 		.4byte	.LLST8
+ 1361 0833 00       		.byte	0
+ 1362 0834 21       		.uleb128 0x21
+ 1363 0835 9B070000 		.4byte	.LASF111
+ 1364 0839 01       		.byte	0x1
+ 1365 083a CC       		.byte	0xcc
+ 1366 083b 21060000 		.4byte	0x621
+ 1367 083f 00000000 		.4byte	.LFB138
+ 1368 0843 14000000 		.4byte	.LFE138-.LFB138
+ 1369 0847 01       		.uleb128 0x1
+ 1370 0848 9C       		.byte	0x9c
+ 1371 0849 6C080000 		.4byte	0x86c
+ 1372 084d 1D       		.uleb128 0x1d
+ 1373 084e B2040000 		.4byte	.LASF108
+ 1374 0852 01       		.byte	0x1
+ 1375 0853 CC       		.byte	0xcc
+ 1376 0854 8C000000 		.4byte	0x8c
+ 1377 0858 3C010000 		.4byte	.LLST9
+ 1378 085c 22       		.uleb128 0x22
+ 1379 085d 03070000 		.4byte	.LASF110
+ 1380 0861 01       		.byte	0x1
+ 1381 0862 CE       		.byte	0xce
+ 1382 0863 21060000 		.4byte	0x621
+ 1383 0867 76010000 		.4byte	.LLST10
+ 1384 086b 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 35
+
+
+ 1385 086c 07       		.uleb128 0x7
+ 1386 086d 21060000 		.4byte	0x621
+ 1387 0871 7C080000 		.4byte	0x87c
+ 1388 0875 08       		.uleb128 0x8
+ 1389 0876 97000000 		.4byte	0x97
+ 1390 087a 04       		.byte	0x4
+ 1391 087b 00       		.byte	0
+ 1392 087c 24       		.uleb128 0x24
+ 1393 087d 23070000 		.4byte	.LASF112
+ 1394 0881 01       		.byte	0x1
+ 1395 0882 13       		.byte	0x13
+ 1396 0883 6C080000 		.4byte	0x86c
+ 1397 0887 05       		.uleb128 0x5
+ 1398 0888 03       		.byte	0x3
+ 1399 0889 00000000 		.4byte	Cy_SysTick_Callbacks
+ 1400 088d 25       		.uleb128 0x25
+ 1401 088e 44070000 		.4byte	.LASF113
+ 1402 0892 05       		.byte	0x5
+ 1403 0893 EA07     		.2byte	0x7ea
+ 1404 0895 99080000 		.4byte	0x899
+ 1405 0899 05       		.uleb128 0x5
+ 1406 089a 81000000 		.4byte	0x81
+ 1407 089e 07       		.uleb128 0x7
+ 1408 089f F9050000 		.4byte	0x5f9
+ 1409 08a3 A9080000 		.4byte	0x8a9
+ 1410 08a7 26       		.uleb128 0x26
+ 1411 08a8 00       		.byte	0
+ 1412 08a9 27       		.uleb128 0x27
+ 1413 08aa 2F030000 		.4byte	.LASF114
+ 1414 08ae 02       		.byte	0x2
+ 1415 08af 60       		.byte	0x60
+ 1416 08b0 9E080000 		.4byte	0x89e
+ 1417 08b4 00       		.byte	0
+ 1418              		.section	.debug_abbrev,"",%progbits
+ 1419              	.Ldebug_abbrev0:
+ 1420 0000 01       		.uleb128 0x1
+ 1421 0001 11       		.uleb128 0x11
+ 1422 0002 01       		.byte	0x1
+ 1423 0003 25       		.uleb128 0x25
+ 1424 0004 0E       		.uleb128 0xe
+ 1425 0005 13       		.uleb128 0x13
+ 1426 0006 0B       		.uleb128 0xb
+ 1427 0007 03       		.uleb128 0x3
+ 1428 0008 0E       		.uleb128 0xe
+ 1429 0009 1B       		.uleb128 0x1b
+ 1430 000a 0E       		.uleb128 0xe
+ 1431 000b 55       		.uleb128 0x55
+ 1432 000c 17       		.uleb128 0x17
+ 1433 000d 11       		.uleb128 0x11
+ 1434 000e 01       		.uleb128 0x1
+ 1435 000f 10       		.uleb128 0x10
+ 1436 0010 17       		.uleb128 0x17
+ 1437 0011 00       		.byte	0
+ 1438 0012 00       		.byte	0
+ 1439 0013 02       		.uleb128 0x2
+ 1440 0014 24       		.uleb128 0x24
+ 1441 0015 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 36
+
+
+ 1442 0016 0B       		.uleb128 0xb
+ 1443 0017 0B       		.uleb128 0xb
+ 1444 0018 3E       		.uleb128 0x3e
+ 1445 0019 0B       		.uleb128 0xb
+ 1446 001a 03       		.uleb128 0x3
+ 1447 001b 0E       		.uleb128 0xe
+ 1448 001c 00       		.byte	0
+ 1449 001d 00       		.byte	0
+ 1450 001e 03       		.uleb128 0x3
+ 1451 001f 16       		.uleb128 0x16
+ 1452 0020 00       		.byte	0
+ 1453 0021 03       		.uleb128 0x3
+ 1454 0022 0E       		.uleb128 0xe
+ 1455 0023 3A       		.uleb128 0x3a
+ 1456 0024 0B       		.uleb128 0xb
+ 1457 0025 3B       		.uleb128 0x3b
+ 1458 0026 0B       		.uleb128 0xb
+ 1459 0027 49       		.uleb128 0x49
+ 1460 0028 13       		.uleb128 0x13
+ 1461 0029 00       		.byte	0
+ 1462 002a 00       		.byte	0
+ 1463 002b 04       		.uleb128 0x4
+ 1464 002c 24       		.uleb128 0x24
+ 1465 002d 00       		.byte	0
+ 1466 002e 0B       		.uleb128 0xb
+ 1467 002f 0B       		.uleb128 0xb
+ 1468 0030 3E       		.uleb128 0x3e
+ 1469 0031 0B       		.uleb128 0xb
+ 1470 0032 03       		.uleb128 0x3
+ 1471 0033 08       		.uleb128 0x8
+ 1472 0034 00       		.byte	0
+ 1473 0035 00       		.byte	0
+ 1474 0036 05       		.uleb128 0x5
+ 1475 0037 35       		.uleb128 0x35
+ 1476 0038 00       		.byte	0
+ 1477 0039 49       		.uleb128 0x49
+ 1478 003a 13       		.uleb128 0x13
+ 1479 003b 00       		.byte	0
+ 1480 003c 00       		.byte	0
+ 1481 003d 06       		.uleb128 0x6
+ 1482 003e 26       		.uleb128 0x26
+ 1483 003f 00       		.byte	0
+ 1484 0040 49       		.uleb128 0x49
+ 1485 0041 13       		.uleb128 0x13
+ 1486 0042 00       		.byte	0
+ 1487 0043 00       		.byte	0
+ 1488 0044 07       		.uleb128 0x7
+ 1489 0045 01       		.uleb128 0x1
+ 1490 0046 01       		.byte	0x1
+ 1491 0047 49       		.uleb128 0x49
+ 1492 0048 13       		.uleb128 0x13
+ 1493 0049 01       		.uleb128 0x1
+ 1494 004a 13       		.uleb128 0x13
+ 1495 004b 00       		.byte	0
+ 1496 004c 00       		.byte	0
+ 1497 004d 08       		.uleb128 0x8
+ 1498 004e 21       		.uleb128 0x21
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 37
+
+
+ 1499 004f 00       		.byte	0
+ 1500 0050 49       		.uleb128 0x49
+ 1501 0051 13       		.uleb128 0x13
+ 1502 0052 2F       		.uleb128 0x2f
+ 1503 0053 0B       		.uleb128 0xb
+ 1504 0054 00       		.byte	0
+ 1505 0055 00       		.byte	0
+ 1506 0056 09       		.uleb128 0x9
+ 1507 0057 13       		.uleb128 0x13
+ 1508 0058 01       		.byte	0x1
+ 1509 0059 0B       		.uleb128 0xb
+ 1510 005a 0B       		.uleb128 0xb
+ 1511 005b 3A       		.uleb128 0x3a
+ 1512 005c 0B       		.uleb128 0xb
+ 1513 005d 3B       		.uleb128 0x3b
+ 1514 005e 05       		.uleb128 0x5
+ 1515 005f 01       		.uleb128 0x1
+ 1516 0060 13       		.uleb128 0x13
+ 1517 0061 00       		.byte	0
+ 1518 0062 00       		.byte	0
+ 1519 0063 0A       		.uleb128 0xa
+ 1520 0064 0D       		.uleb128 0xd
+ 1521 0065 00       		.byte	0
+ 1522 0066 03       		.uleb128 0x3
+ 1523 0067 0E       		.uleb128 0xe
+ 1524 0068 3A       		.uleb128 0x3a
+ 1525 0069 0B       		.uleb128 0xb
+ 1526 006a 3B       		.uleb128 0x3b
+ 1527 006b 05       		.uleb128 0x5
+ 1528 006c 49       		.uleb128 0x49
+ 1529 006d 13       		.uleb128 0x13
+ 1530 006e 38       		.uleb128 0x38
+ 1531 006f 0B       		.uleb128 0xb
+ 1532 0070 00       		.byte	0
+ 1533 0071 00       		.byte	0
+ 1534 0072 0B       		.uleb128 0xb
+ 1535 0073 0D       		.uleb128 0xd
+ 1536 0074 00       		.byte	0
+ 1537 0075 03       		.uleb128 0x3
+ 1538 0076 08       		.uleb128 0x8
+ 1539 0077 3A       		.uleb128 0x3a
+ 1540 0078 0B       		.uleb128 0xb
+ 1541 0079 3B       		.uleb128 0x3b
+ 1542 007a 05       		.uleb128 0x5
+ 1543 007b 49       		.uleb128 0x49
+ 1544 007c 13       		.uleb128 0x13
+ 1545 007d 38       		.uleb128 0x38
+ 1546 007e 0B       		.uleb128 0xb
+ 1547 007f 00       		.byte	0
+ 1548 0080 00       		.byte	0
+ 1549 0081 0C       		.uleb128 0xc
+ 1550 0082 16       		.uleb128 0x16
+ 1551 0083 00       		.byte	0
+ 1552 0084 03       		.uleb128 0x3
+ 1553 0085 0E       		.uleb128 0xe
+ 1554 0086 3A       		.uleb128 0x3a
+ 1555 0087 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 38
+
+
+ 1556 0088 3B       		.uleb128 0x3b
+ 1557 0089 05       		.uleb128 0x5
+ 1558 008a 49       		.uleb128 0x49
+ 1559 008b 13       		.uleb128 0x13
+ 1560 008c 00       		.byte	0
+ 1561 008d 00       		.byte	0
+ 1562 008e 0D       		.uleb128 0xd
+ 1563 008f 13       		.uleb128 0x13
+ 1564 0090 01       		.byte	0x1
+ 1565 0091 0B       		.uleb128 0xb
+ 1566 0092 05       		.uleb128 0x5
+ 1567 0093 3A       		.uleb128 0x3a
+ 1568 0094 0B       		.uleb128 0xb
+ 1569 0095 3B       		.uleb128 0x3b
+ 1570 0096 0B       		.uleb128 0xb
+ 1571 0097 01       		.uleb128 0x1
+ 1572 0098 13       		.uleb128 0x13
+ 1573 0099 00       		.byte	0
+ 1574 009a 00       		.byte	0
+ 1575 009b 0E       		.uleb128 0xe
+ 1576 009c 0D       		.uleb128 0xd
+ 1577 009d 00       		.byte	0
+ 1578 009e 03       		.uleb128 0x3
+ 1579 009f 0E       		.uleb128 0xe
+ 1580 00a0 3A       		.uleb128 0x3a
+ 1581 00a1 0B       		.uleb128 0xb
+ 1582 00a2 3B       		.uleb128 0x3b
+ 1583 00a3 0B       		.uleb128 0xb
+ 1584 00a4 49       		.uleb128 0x49
+ 1585 00a5 13       		.uleb128 0x13
+ 1586 00a6 38       		.uleb128 0x38
+ 1587 00a7 0B       		.uleb128 0xb
+ 1588 00a8 00       		.byte	0
+ 1589 00a9 00       		.byte	0
+ 1590 00aa 0F       		.uleb128 0xf
+ 1591 00ab 0D       		.uleb128 0xd
+ 1592 00ac 00       		.byte	0
+ 1593 00ad 03       		.uleb128 0x3
+ 1594 00ae 0E       		.uleb128 0xe
+ 1595 00af 3A       		.uleb128 0x3a
+ 1596 00b0 0B       		.uleb128 0xb
+ 1597 00b1 3B       		.uleb128 0x3b
+ 1598 00b2 0B       		.uleb128 0xb
+ 1599 00b3 49       		.uleb128 0x49
+ 1600 00b4 13       		.uleb128 0x13
+ 1601 00b5 38       		.uleb128 0x38
+ 1602 00b6 05       		.uleb128 0x5
+ 1603 00b7 00       		.byte	0
+ 1604 00b8 00       		.byte	0
+ 1605 00b9 10       		.uleb128 0x10
+ 1606 00ba 21       		.uleb128 0x21
+ 1607 00bb 00       		.byte	0
+ 1608 00bc 49       		.uleb128 0x49
+ 1609 00bd 13       		.uleb128 0x13
+ 1610 00be 2F       		.uleb128 0x2f
+ 1611 00bf 05       		.uleb128 0x5
+ 1612 00c0 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 39
+
+
+ 1613 00c1 00       		.byte	0
+ 1614 00c2 11       		.uleb128 0x11
+ 1615 00c3 0F       		.uleb128 0xf
+ 1616 00c4 00       		.byte	0
+ 1617 00c5 0B       		.uleb128 0xb
+ 1618 00c6 0B       		.uleb128 0xb
+ 1619 00c7 49       		.uleb128 0x49
+ 1620 00c8 13       		.uleb128 0x13
+ 1621 00c9 00       		.byte	0
+ 1622 00ca 00       		.byte	0
+ 1623 00cb 12       		.uleb128 0x12
+ 1624 00cc 15       		.uleb128 0x15
+ 1625 00cd 00       		.byte	0
+ 1626 00ce 27       		.uleb128 0x27
+ 1627 00cf 19       		.uleb128 0x19
+ 1628 00d0 00       		.byte	0
+ 1629 00d1 00       		.byte	0
+ 1630 00d2 13       		.uleb128 0x13
+ 1631 00d3 04       		.uleb128 0x4
+ 1632 00d4 01       		.byte	0x1
+ 1633 00d5 0B       		.uleb128 0xb
+ 1634 00d6 0B       		.uleb128 0xb
+ 1635 00d7 49       		.uleb128 0x49
+ 1636 00d8 13       		.uleb128 0x13
+ 1637 00d9 3A       		.uleb128 0x3a
+ 1638 00da 0B       		.uleb128 0xb
+ 1639 00db 3B       		.uleb128 0x3b
+ 1640 00dc 0B       		.uleb128 0xb
+ 1641 00dd 01       		.uleb128 0x1
+ 1642 00de 13       		.uleb128 0x13
+ 1643 00df 00       		.byte	0
+ 1644 00e0 00       		.byte	0
+ 1645 00e1 14       		.uleb128 0x14
+ 1646 00e2 28       		.uleb128 0x28
+ 1647 00e3 00       		.byte	0
+ 1648 00e4 03       		.uleb128 0x3
+ 1649 00e5 0E       		.uleb128 0xe
+ 1650 00e6 1C       		.uleb128 0x1c
+ 1651 00e7 0B       		.uleb128 0xb
+ 1652 00e8 00       		.byte	0
+ 1653 00e9 00       		.byte	0
+ 1654 00ea 15       		.uleb128 0x15
+ 1655 00eb 2E       		.uleb128 0x2e
+ 1656 00ec 00       		.byte	0
+ 1657 00ed 03       		.uleb128 0x3
+ 1658 00ee 0E       		.uleb128 0xe
+ 1659 00ef 3A       		.uleb128 0x3a
+ 1660 00f0 0B       		.uleb128 0xb
+ 1661 00f1 3B       		.uleb128 0x3b
+ 1662 00f2 05       		.uleb128 0x5
+ 1663 00f3 27       		.uleb128 0x27
+ 1664 00f4 19       		.uleb128 0x19
+ 1665 00f5 49       		.uleb128 0x49
+ 1666 00f6 13       		.uleb128 0x13
+ 1667 00f7 20       		.uleb128 0x20
+ 1668 00f8 0B       		.uleb128 0xb
+ 1669 00f9 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 40
+
+
+ 1670 00fa 00       		.byte	0
+ 1671 00fb 16       		.uleb128 0x16
+ 1672 00fc 2E       		.uleb128 0x2e
+ 1673 00fd 00       		.byte	0
+ 1674 00fe 03       		.uleb128 0x3
+ 1675 00ff 0E       		.uleb128 0xe
+ 1676 0100 3A       		.uleb128 0x3a
+ 1677 0101 0B       		.uleb128 0xb
+ 1678 0102 3B       		.uleb128 0x3b
+ 1679 0103 0B       		.uleb128 0xb
+ 1680 0104 27       		.uleb128 0x27
+ 1681 0105 19       		.uleb128 0x19
+ 1682 0106 20       		.uleb128 0x20
+ 1683 0107 0B       		.uleb128 0xb
+ 1684 0108 00       		.byte	0
+ 1685 0109 00       		.byte	0
+ 1686 010a 17       		.uleb128 0x17
+ 1687 010b 2E       		.uleb128 0x2e
+ 1688 010c 01       		.byte	0x1
+ 1689 010d 03       		.uleb128 0x3
+ 1690 010e 0E       		.uleb128 0xe
+ 1691 010f 3A       		.uleb128 0x3a
+ 1692 0110 0B       		.uleb128 0xb
+ 1693 0111 3B       		.uleb128 0x3b
+ 1694 0112 0B       		.uleb128 0xb
+ 1695 0113 27       		.uleb128 0x27
+ 1696 0114 19       		.uleb128 0x19
+ 1697 0115 20       		.uleb128 0x20
+ 1698 0116 0B       		.uleb128 0xb
+ 1699 0117 01       		.uleb128 0x1
+ 1700 0118 13       		.uleb128 0x13
+ 1701 0119 00       		.byte	0
+ 1702 011a 00       		.byte	0
+ 1703 011b 18       		.uleb128 0x18
+ 1704 011c 05       		.uleb128 0x5
+ 1705 011d 00       		.byte	0
+ 1706 011e 03       		.uleb128 0x3
+ 1707 011f 0E       		.uleb128 0xe
+ 1708 0120 3A       		.uleb128 0x3a
+ 1709 0121 0B       		.uleb128 0xb
+ 1710 0122 3B       		.uleb128 0x3b
+ 1711 0123 0B       		.uleb128 0xb
+ 1712 0124 49       		.uleb128 0x49
+ 1713 0125 13       		.uleb128 0x13
+ 1714 0126 00       		.byte	0
+ 1715 0127 00       		.byte	0
+ 1716 0128 19       		.uleb128 0x19
+ 1717 0129 2E       		.uleb128 0x2e
+ 1718 012a 01       		.byte	0x1
+ 1719 012b 03       		.uleb128 0x3
+ 1720 012c 0E       		.uleb128 0xe
+ 1721 012d 3A       		.uleb128 0x3a
+ 1722 012e 0B       		.uleb128 0xb
+ 1723 012f 3B       		.uleb128 0x3b
+ 1724 0130 0B       		.uleb128 0xb
+ 1725 0131 27       		.uleb128 0x27
+ 1726 0132 19       		.uleb128 0x19
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 41
+
+
+ 1727 0133 11       		.uleb128 0x11
+ 1728 0134 01       		.uleb128 0x1
+ 1729 0135 12       		.uleb128 0x12
+ 1730 0136 06       		.uleb128 0x6
+ 1731 0137 40       		.uleb128 0x40
+ 1732 0138 18       		.uleb128 0x18
+ 1733 0139 9642     		.uleb128 0x2116
+ 1734 013b 19       		.uleb128 0x19
+ 1735 013c 01       		.uleb128 0x1
+ 1736 013d 13       		.uleb128 0x13
+ 1737 013e 00       		.byte	0
+ 1738 013f 00       		.byte	0
+ 1739 0140 1A       		.uleb128 0x1a
+ 1740 0141 34       		.uleb128 0x34
+ 1741 0142 00       		.byte	0
+ 1742 0143 03       		.uleb128 0x3
+ 1743 0144 08       		.uleb128 0x8
+ 1744 0145 3A       		.uleb128 0x3a
+ 1745 0146 0B       		.uleb128 0xb
+ 1746 0147 3B       		.uleb128 0x3b
+ 1747 0148 0B       		.uleb128 0xb
+ 1748 0149 49       		.uleb128 0x49
+ 1749 014a 13       		.uleb128 0x13
+ 1750 014b 02       		.uleb128 0x2
+ 1751 014c 17       		.uleb128 0x17
+ 1752 014d 00       		.byte	0
+ 1753 014e 00       		.byte	0
+ 1754 014f 1B       		.uleb128 0x1b
+ 1755 0150 1D       		.uleb128 0x1d
+ 1756 0151 00       		.byte	0
+ 1757 0152 31       		.uleb128 0x31
+ 1758 0153 13       		.uleb128 0x13
+ 1759 0154 11       		.uleb128 0x11
+ 1760 0155 01       		.uleb128 0x1
+ 1761 0156 12       		.uleb128 0x12
+ 1762 0157 06       		.uleb128 0x6
+ 1763 0158 58       		.uleb128 0x58
+ 1764 0159 0B       		.uleb128 0xb
+ 1765 015a 59       		.uleb128 0x59
+ 1766 015b 0B       		.uleb128 0xb
+ 1767 015c 00       		.byte	0
+ 1768 015d 00       		.byte	0
+ 1769 015e 1C       		.uleb128 0x1c
+ 1770 015f 2E       		.uleb128 0x2e
+ 1771 0160 01       		.byte	0x1
+ 1772 0161 3F       		.uleb128 0x3f
+ 1773 0162 19       		.uleb128 0x19
+ 1774 0163 03       		.uleb128 0x3
+ 1775 0164 0E       		.uleb128 0xe
+ 1776 0165 3A       		.uleb128 0x3a
+ 1777 0166 0B       		.uleb128 0xb
+ 1778 0167 3B       		.uleb128 0x3b
+ 1779 0168 0B       		.uleb128 0xb
+ 1780 0169 27       		.uleb128 0x27
+ 1781 016a 19       		.uleb128 0x19
+ 1782 016b 11       		.uleb128 0x11
+ 1783 016c 01       		.uleb128 0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 42
+
+
+ 1784 016d 12       		.uleb128 0x12
+ 1785 016e 06       		.uleb128 0x6
+ 1786 016f 40       		.uleb128 0x40
+ 1787 0170 18       		.uleb128 0x18
+ 1788 0171 9742     		.uleb128 0x2117
+ 1789 0173 19       		.uleb128 0x19
+ 1790 0174 01       		.uleb128 0x1
+ 1791 0175 13       		.uleb128 0x13
+ 1792 0176 00       		.byte	0
+ 1793 0177 00       		.byte	0
+ 1794 0178 1D       		.uleb128 0x1d
+ 1795 0179 05       		.uleb128 0x5
+ 1796 017a 00       		.byte	0
+ 1797 017b 03       		.uleb128 0x3
+ 1798 017c 0E       		.uleb128 0xe
+ 1799 017d 3A       		.uleb128 0x3a
+ 1800 017e 0B       		.uleb128 0xb
+ 1801 017f 3B       		.uleb128 0x3b
+ 1802 0180 0B       		.uleb128 0xb
+ 1803 0181 49       		.uleb128 0x49
+ 1804 0182 13       		.uleb128 0x13
+ 1805 0183 02       		.uleb128 0x2
+ 1806 0184 17       		.uleb128 0x17
+ 1807 0185 00       		.byte	0
+ 1808 0186 00       		.byte	0
+ 1809 0187 1E       		.uleb128 0x1e
+ 1810 0188 1D       		.uleb128 0x1d
+ 1811 0189 01       		.byte	0x1
+ 1812 018a 31       		.uleb128 0x31
+ 1813 018b 13       		.uleb128 0x13
+ 1814 018c 11       		.uleb128 0x11
+ 1815 018d 01       		.uleb128 0x1
+ 1816 018e 12       		.uleb128 0x12
+ 1817 018f 06       		.uleb128 0x6
+ 1818 0190 58       		.uleb128 0x58
+ 1819 0191 0B       		.uleb128 0xb
+ 1820 0192 59       		.uleb128 0x59
+ 1821 0193 0B       		.uleb128 0xb
+ 1822 0194 01       		.uleb128 0x1
+ 1823 0195 13       		.uleb128 0x13
+ 1824 0196 00       		.byte	0
+ 1825 0197 00       		.byte	0
+ 1826 0198 1F       		.uleb128 0x1f
+ 1827 0199 05       		.uleb128 0x5
+ 1828 019a 00       		.byte	0
+ 1829 019b 31       		.uleb128 0x31
+ 1830 019c 13       		.uleb128 0x13
+ 1831 019d 02       		.uleb128 0x2
+ 1832 019e 17       		.uleb128 0x17
+ 1833 019f 00       		.byte	0
+ 1834 01a0 00       		.byte	0
+ 1835 01a1 20       		.uleb128 0x20
+ 1836 01a2 898201   		.uleb128 0x4109
+ 1837 01a5 00       		.byte	0
+ 1838 01a6 11       		.uleb128 0x11
+ 1839 01a7 01       		.uleb128 0x1
+ 1840 01a8 31       		.uleb128 0x31
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 43
+
+
+ 1841 01a9 13       		.uleb128 0x13
+ 1842 01aa 00       		.byte	0
+ 1843 01ab 00       		.byte	0
+ 1844 01ac 21       		.uleb128 0x21
+ 1845 01ad 2E       		.uleb128 0x2e
+ 1846 01ae 01       		.byte	0x1
+ 1847 01af 3F       		.uleb128 0x3f
+ 1848 01b0 19       		.uleb128 0x19
+ 1849 01b1 03       		.uleb128 0x3
+ 1850 01b2 0E       		.uleb128 0xe
+ 1851 01b3 3A       		.uleb128 0x3a
+ 1852 01b4 0B       		.uleb128 0xb
+ 1853 01b5 3B       		.uleb128 0x3b
+ 1854 01b6 0B       		.uleb128 0xb
+ 1855 01b7 27       		.uleb128 0x27
+ 1856 01b8 19       		.uleb128 0x19
+ 1857 01b9 49       		.uleb128 0x49
+ 1858 01ba 13       		.uleb128 0x13
+ 1859 01bb 11       		.uleb128 0x11
+ 1860 01bc 01       		.uleb128 0x1
+ 1861 01bd 12       		.uleb128 0x12
+ 1862 01be 06       		.uleb128 0x6
+ 1863 01bf 40       		.uleb128 0x40
+ 1864 01c0 18       		.uleb128 0x18
+ 1865 01c1 9742     		.uleb128 0x2117
+ 1866 01c3 19       		.uleb128 0x19
+ 1867 01c4 01       		.uleb128 0x1
+ 1868 01c5 13       		.uleb128 0x13
+ 1869 01c6 00       		.byte	0
+ 1870 01c7 00       		.byte	0
+ 1871 01c8 22       		.uleb128 0x22
+ 1872 01c9 34       		.uleb128 0x34
+ 1873 01ca 00       		.byte	0
+ 1874 01cb 03       		.uleb128 0x3
+ 1875 01cc 0E       		.uleb128 0xe
+ 1876 01cd 3A       		.uleb128 0x3a
+ 1877 01ce 0B       		.uleb128 0xb
+ 1878 01cf 3B       		.uleb128 0x3b
+ 1879 01d0 0B       		.uleb128 0xb
+ 1880 01d1 49       		.uleb128 0x49
+ 1881 01d2 13       		.uleb128 0x13
+ 1882 01d3 02       		.uleb128 0x2
+ 1883 01d4 17       		.uleb128 0x17
+ 1884 01d5 00       		.byte	0
+ 1885 01d6 00       		.byte	0
+ 1886 01d7 23       		.uleb128 0x23
+ 1887 01d8 05       		.uleb128 0x5
+ 1888 01d9 00       		.byte	0
+ 1889 01da 03       		.uleb128 0x3
+ 1890 01db 0E       		.uleb128 0xe
+ 1891 01dc 3A       		.uleb128 0x3a
+ 1892 01dd 0B       		.uleb128 0xb
+ 1893 01de 3B       		.uleb128 0x3b
+ 1894 01df 0B       		.uleb128 0xb
+ 1895 01e0 49       		.uleb128 0x49
+ 1896 01e1 13       		.uleb128 0x13
+ 1897 01e2 02       		.uleb128 0x2
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 44
+
+
+ 1898 01e3 18       		.uleb128 0x18
+ 1899 01e4 00       		.byte	0
+ 1900 01e5 00       		.byte	0
+ 1901 01e6 24       		.uleb128 0x24
+ 1902 01e7 34       		.uleb128 0x34
+ 1903 01e8 00       		.byte	0
+ 1904 01e9 03       		.uleb128 0x3
+ 1905 01ea 0E       		.uleb128 0xe
+ 1906 01eb 3A       		.uleb128 0x3a
+ 1907 01ec 0B       		.uleb128 0xb
+ 1908 01ed 3B       		.uleb128 0x3b
+ 1909 01ee 0B       		.uleb128 0xb
+ 1910 01ef 49       		.uleb128 0x49
+ 1911 01f0 13       		.uleb128 0x13
+ 1912 01f1 02       		.uleb128 0x2
+ 1913 01f2 18       		.uleb128 0x18
+ 1914 01f3 00       		.byte	0
+ 1915 01f4 00       		.byte	0
+ 1916 01f5 25       		.uleb128 0x25
+ 1917 01f6 34       		.uleb128 0x34
+ 1918 01f7 00       		.byte	0
+ 1919 01f8 03       		.uleb128 0x3
+ 1920 01f9 0E       		.uleb128 0xe
+ 1921 01fa 3A       		.uleb128 0x3a
+ 1922 01fb 0B       		.uleb128 0xb
+ 1923 01fc 3B       		.uleb128 0x3b
+ 1924 01fd 05       		.uleb128 0x5
+ 1925 01fe 49       		.uleb128 0x49
+ 1926 01ff 13       		.uleb128 0x13
+ 1927 0200 3F       		.uleb128 0x3f
+ 1928 0201 19       		.uleb128 0x19
+ 1929 0202 3C       		.uleb128 0x3c
+ 1930 0203 19       		.uleb128 0x19
+ 1931 0204 00       		.byte	0
+ 1932 0205 00       		.byte	0
+ 1933 0206 26       		.uleb128 0x26
+ 1934 0207 21       		.uleb128 0x21
+ 1935 0208 00       		.byte	0
+ 1936 0209 00       		.byte	0
+ 1937 020a 00       		.byte	0
+ 1938 020b 27       		.uleb128 0x27
+ 1939 020c 34       		.uleb128 0x34
+ 1940 020d 00       		.byte	0
+ 1941 020e 03       		.uleb128 0x3
+ 1942 020f 0E       		.uleb128 0xe
+ 1943 0210 3A       		.uleb128 0x3a
+ 1944 0211 0B       		.uleb128 0xb
+ 1945 0212 3B       		.uleb128 0x3b
+ 1946 0213 0B       		.uleb128 0xb
+ 1947 0214 49       		.uleb128 0x49
+ 1948 0215 13       		.uleb128 0x13
+ 1949 0216 3F       		.uleb128 0x3f
+ 1950 0217 19       		.uleb128 0x19
+ 1951 0218 3C       		.uleb128 0x3c
+ 1952 0219 19       		.uleb128 0x19
+ 1953 021a 00       		.byte	0
+ 1954 021b 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 45
+
+
+ 1955 021c 00       		.byte	0
+ 1956              		.section	.debug_loc,"",%progbits
+ 1957              	.Ldebug_loc0:
+ 1958              	.LLST0:
+ 1959 0000 0C000000 		.4byte	.LVL0
+ 1960 0004 1A000000 		.4byte	.LVL3
+ 1961 0008 0100     		.2byte	0x1
+ 1962 000a 54       		.byte	0x54
+ 1963 000b 1E000000 		.4byte	.LVL4
+ 1964 000f 24000000 		.4byte	.LVL5
+ 1965 0013 0100     		.2byte	0x1
+ 1966 0015 54       		.byte	0x54
+ 1967 0016 00000000 		.4byte	0
+ 1968 001a 00000000 		.4byte	0
+ 1969              	.LLST1:
+ 1970 001e 00000000 		.4byte	.LVL6
+ 1971 0022 12000000 		.4byte	.LVL7
+ 1972 0026 0100     		.2byte	0x1
+ 1973 0028 50       		.byte	0x50
+ 1974 0029 12000000 		.4byte	.LVL7
+ 1975 002d 30000000 		.4byte	.LFE135
+ 1976 0031 0400     		.2byte	0x4
+ 1977 0033 F3       		.byte	0xf3
+ 1978 0034 01       		.uleb128 0x1
+ 1979 0035 50       		.byte	0x50
+ 1980 0036 9F       		.byte	0x9f
+ 1981 0037 00000000 		.4byte	0
+ 1982 003b 00000000 		.4byte	0
+ 1983              	.LLST2:
+ 1984 003f 00000000 		.4byte	.LVL8
+ 1985 0043 1F000000 		.4byte	.LVL13-1
+ 1986 0047 0100     		.2byte	0x1
+ 1987 0049 50       		.byte	0x50
+ 1988 004a 1F000000 		.4byte	.LVL13-1
+ 1989 004e 44000000 		.4byte	.LFE132
+ 1990 0052 0400     		.2byte	0x4
+ 1991 0054 F3       		.byte	0xf3
+ 1992 0055 01       		.uleb128 0x1
+ 1993 0056 50       		.byte	0x50
+ 1994 0057 9F       		.byte	0x9f
+ 1995 0058 00000000 		.4byte	0
+ 1996 005c 00000000 		.4byte	0
+ 1997              	.LLST3:
+ 1998 0060 00000000 		.4byte	.LVL8
+ 1999 0064 08000000 		.4byte	.LVL10
+ 2000 0068 0100     		.2byte	0x1
+ 2001 006a 51       		.byte	0x51
+ 2002 006b 08000000 		.4byte	.LVL10
+ 2003 006f 24000000 		.4byte	.LVL14
+ 2004 0073 0100     		.2byte	0x1
+ 2005 0075 54       		.byte	0x54
+ 2006 0076 24000000 		.4byte	.LVL14
+ 2007 007a 44000000 		.4byte	.LFE132
+ 2008 007e 0400     		.2byte	0x4
+ 2009 0080 F3       		.byte	0xf3
+ 2010 0081 01       		.uleb128 0x1
+ 2011 0082 51       		.byte	0x51
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 46
+
+
+ 2012 0083 9F       		.byte	0x9f
+ 2013 0084 00000000 		.4byte	0
+ 2014 0088 00000000 		.4byte	0
+ 2015              	.LLST4:
+ 2016 008c 04000000 		.4byte	.LVL9
+ 2017 0090 08000000 		.4byte	.LVL10
+ 2018 0094 0200     		.2byte	0x2
+ 2019 0096 30       		.byte	0x30
+ 2020 0097 9F       		.byte	0x9f
+ 2021 0098 08000000 		.4byte	.LVL10
+ 2022 009c 1A000000 		.4byte	.LVL12
+ 2023 00a0 0100     		.2byte	0x1
+ 2024 00a2 53       		.byte	0x53
+ 2025 00a3 00000000 		.4byte	0
+ 2026 00a7 00000000 		.4byte	0
+ 2027              	.LLST5:
+ 2028 00ab 20000000 		.4byte	.LVL13
+ 2029 00af 24000000 		.4byte	.LVL14
+ 2030 00b3 0100     		.2byte	0x1
+ 2031 00b5 54       		.byte	0x54
+ 2032 00b6 24000000 		.4byte	.LVL14
+ 2033 00ba 28000000 		.4byte	.LVL15
+ 2034 00be 0400     		.2byte	0x4
+ 2035 00c0 F3       		.byte	0xf3
+ 2036 00c1 01       		.uleb128 0x1
+ 2037 00c2 51       		.byte	0x51
+ 2038 00c3 9F       		.byte	0x9f
+ 2039 00c4 00000000 		.4byte	0
+ 2040 00c8 00000000 		.4byte	0
+ 2041              	.LLST6:
+ 2042 00cc 14000000 		.4byte	.LVL17
+ 2043 00d0 16000000 		.4byte	.LVL18
+ 2044 00d4 0100     		.2byte	0x1
+ 2045 00d6 50       		.byte	0x50
+ 2046 00d7 18000000 		.4byte	.LVL19
+ 2047 00db 24000000 		.4byte	.LFE136
+ 2048 00df 0100     		.2byte	0x1
+ 2049 00e1 50       		.byte	0x50
+ 2050 00e2 00000000 		.4byte	0
+ 2051 00e6 00000000 		.4byte	0
+ 2052              	.LLST7:
+ 2053 00ea 00000000 		.4byte	.LVL20
+ 2054 00ee 0C000000 		.4byte	.LVL21
+ 2055 00f2 0100     		.2byte	0x1
+ 2056 00f4 50       		.byte	0x50
+ 2057 00f5 0C000000 		.4byte	.LVL21
+ 2058 00f9 12000000 		.4byte	.LVL22
+ 2059 00fd 0100     		.2byte	0x1
+ 2060 00ff 53       		.byte	0x53
+ 2061 0100 12000000 		.4byte	.LVL22
+ 2062 0104 14000000 		.4byte	.LVL23
+ 2063 0108 0100     		.2byte	0x1
+ 2064 010a 50       		.byte	0x50
+ 2065 010b 14000000 		.4byte	.LVL23
+ 2066 010f 1C000000 		.4byte	.LFE137
+ 2067 0113 0100     		.2byte	0x1
+ 2068 0115 53       		.byte	0x53
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 47
+
+
+ 2069 0116 00000000 		.4byte	0
+ 2070 011a 00000000 		.4byte	0
+ 2071              	.LLST8:
+ 2072 011e 0C000000 		.4byte	.LVL21
+ 2073 0122 12000000 		.4byte	.LVL22
+ 2074 0126 0100     		.2byte	0x1
+ 2075 0128 50       		.byte	0x50
+ 2076 0129 14000000 		.4byte	.LVL23
+ 2077 012d 1C000000 		.4byte	.LFE137
+ 2078 0131 0100     		.2byte	0x1
+ 2079 0133 50       		.byte	0x50
+ 2080 0134 00000000 		.4byte	0
+ 2081 0138 00000000 		.4byte	0
+ 2082              	.LLST9:
+ 2083 013c 00000000 		.4byte	.LVL24
+ 2084 0140 0A000000 		.4byte	.LVL25
+ 2085 0144 0100     		.2byte	0x1
+ 2086 0146 50       		.byte	0x50
+ 2087 0147 0A000000 		.4byte	.LVL25
+ 2088 014b 0C000000 		.4byte	.LVL26
+ 2089 014f 0400     		.2byte	0x4
+ 2090 0151 F3       		.byte	0xf3
+ 2091 0152 01       		.uleb128 0x1
+ 2092 0153 50       		.byte	0x50
+ 2093 0154 9F       		.byte	0x9f
+ 2094 0155 0C000000 		.4byte	.LVL26
+ 2095 0159 0E000000 		.4byte	.LVL27
+ 2096 015d 0100     		.2byte	0x1
+ 2097 015f 50       		.byte	0x50
+ 2098 0160 0E000000 		.4byte	.LVL27
+ 2099 0164 14000000 		.4byte	.LFE138
+ 2100 0168 0400     		.2byte	0x4
+ 2101 016a F3       		.byte	0xf3
+ 2102 016b 01       		.uleb128 0x1
+ 2103 016c 50       		.byte	0x50
+ 2104 016d 9F       		.byte	0x9f
+ 2105 016e 00000000 		.4byte	0
+ 2106 0172 00000000 		.4byte	0
+ 2107              	.LLST10:
+ 2108 0176 0A000000 		.4byte	.LVL25
+ 2109 017a 0C000000 		.4byte	.LVL26
+ 2110 017e 0100     		.2byte	0x1
+ 2111 0180 50       		.byte	0x50
+ 2112 0181 0E000000 		.4byte	.LVL27
+ 2113 0185 14000000 		.4byte	.LFE138
+ 2114 0189 0100     		.2byte	0x1
+ 2115 018b 50       		.byte	0x50
+ 2116 018c 00000000 		.4byte	0
+ 2117 0190 00000000 		.4byte	0
+ 2118              		.section	.debug_aranges,"",%progbits
+ 2119 0000 54000000 		.4byte	0x54
+ 2120 0004 0200     		.2byte	0x2
+ 2121 0006 00000000 		.4byte	.Ldebug_info0
+ 2122 000a 04       		.byte	0x4
+ 2123 000b 00       		.byte	0
+ 2124 000c 0000     		.2byte	0
+ 2125 000e 0000     		.2byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 48
+
+
+ 2126 0010 00000000 		.4byte	.LFB139
+ 2127 0014 2C000000 		.4byte	.LFE139-.LFB139
+ 2128 0018 00000000 		.4byte	.LFB133
+ 2129 001c 18000000 		.4byte	.LFE133-.LFB133
+ 2130 0020 00000000 		.4byte	.LFB134
+ 2131 0024 18000000 		.4byte	.LFE134-.LFB134
+ 2132 0028 00000000 		.4byte	.LFB135
+ 2133 002c 30000000 		.4byte	.LFE135-.LFB135
+ 2134 0030 00000000 		.4byte	.LFB132
+ 2135 0034 44000000 		.4byte	.LFE132-.LFB132
+ 2136 0038 00000000 		.4byte	.LFB136
+ 2137 003c 24000000 		.4byte	.LFE136-.LFB136
+ 2138 0040 00000000 		.4byte	.LFB137
+ 2139 0044 1C000000 		.4byte	.LFE137-.LFB137
+ 2140 0048 00000000 		.4byte	.LFB138
+ 2141 004c 14000000 		.4byte	.LFE138-.LFB138
+ 2142 0050 00000000 		.4byte	0
+ 2143 0054 00000000 		.4byte	0
+ 2144              		.section	.debug_ranges,"",%progbits
+ 2145              	.Ldebug_ranges0:
+ 2146 0000 00000000 		.4byte	.LFB139
+ 2147 0004 2C000000 		.4byte	.LFE139
+ 2148 0008 00000000 		.4byte	.LFB133
+ 2149 000c 18000000 		.4byte	.LFE133
+ 2150 0010 00000000 		.4byte	.LFB134
+ 2151 0014 18000000 		.4byte	.LFE134
+ 2152 0018 00000000 		.4byte	.LFB135
+ 2153 001c 30000000 		.4byte	.LFE135
+ 2154 0020 00000000 		.4byte	.LFB132
+ 2155 0024 44000000 		.4byte	.LFE132
+ 2156 0028 00000000 		.4byte	.LFB136
+ 2157 002c 24000000 		.4byte	.LFE136
+ 2158 0030 00000000 		.4byte	.LFB137
+ 2159 0034 1C000000 		.4byte	.LFE137
+ 2160 0038 00000000 		.4byte	.LFB138
+ 2161 003c 14000000 		.4byte	.LFE138
+ 2162 0040 00000000 		.4byte	0
+ 2163 0044 00000000 		.4byte	0
+ 2164              		.section	.debug_line,"",%progbits
+ 2165              	.Ldebug_line0:
+ 2166 0000 07030000 		.section	.debug_str,"MS",%progbits,1
+ 2166      02001D02 
+ 2166      00000201 
+ 2166      FB0E0D00 
+ 2166      01010101 
+ 2167              	.LASF22:
+ 2168 0000 434D305F 		.ascii	"CM0_CLOCK_CTL\000"
+ 2168      434C4F43 
+ 2168      4B5F4354 
+ 2168      4C00
+ 2169              	.LASF86:
+ 2170 000e 666C6F61 		.ascii	"float\000"
+ 2170      7400
+ 2171              	.LASF102:
+ 2172 0014 43795F53 		.ascii	"Cy_SysTick_Init\000"
+ 2172      79735469 
+ 2172      636B5F49 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 49
+
+
+ 2172      6E697400 
+ 2173              	.LASF88:
+ 2174 0024 43795F53 		.ascii	"Cy_SysTick_Callback\000"
+ 2174      79735469 
+ 2174      636B5F43 
+ 2174      616C6C62 
+ 2174      61636B00 
+ 2175              	.LASF54:
+ 2176 0038 524F4D5F 		.ascii	"ROM_CTL\000"
+ 2176      43544C00 
+ 2177              	.LASF85:
+ 2178 0040 63686172 		.ascii	"char\000"
+ 2178      00
+ 2179              	.LASF100:
+ 2180 0045 43795F53 		.ascii	"Cy_SysTick_Disable\000"
+ 2180      79735469 
+ 2180      636B5F44 
+ 2180      69736162 
+ 2180      6C6500
+ 2181              	.LASF83:
+ 2182 0058 43505553 		.ascii	"CPUSS_Type\000"
+ 2182      535F5479 
+ 2182      706500
+ 2183              	.LASF116:
+ 2184 0063 47656E65 		.ascii	"Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\"
+ 2184      72617465 
+ 2184      645F536F 
+ 2184      75726365 
+ 2184      5C50536F 
+ 2185 0091 73797374 		.ascii	"systick\\cy_systick.c\000"
+ 2185      69636B5C 
+ 2185      63795F73 
+ 2185      79737469 
+ 2185      636B2E63 
+ 2186              	.LASF39:
+ 2187 00a6 434D345F 		.ascii	"CM4_NMI_CTL\000"
+ 2187      4E4D495F 
+ 2187      43544C00 
+ 2188              	.LASF13:
+ 2189 00b2 73697A65 		.ascii	"sizetype\000"
+ 2189      74797065 
+ 2189      00
+ 2190              	.LASF37:
+ 2191 00bb 434D345F 		.ascii	"CM4_CLOCK_CTL\000"
+ 2191      434C4F43 
+ 2191      4B5F4354 
+ 2191      4C00
+ 2192              	.LASF61:
+ 2193 00c9 42554646 		.ascii	"BUFF_CTL\000"
+ 2193      5F43544C 
+ 2193      00
+ 2194              	.LASF59:
+ 2195 00d2 44505F53 		.ascii	"DP_STATUS\000"
+ 2195      54415455 
+ 2195      5300
+ 2196              	.LASF48:
+ 2197 00dc 52414D32 		.ascii	"RAM2_CTL0\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 50
+
+
+ 2197      5F43544C 
+ 2197      3000
+ 2198              	.LASF115:
+ 2199 00e6 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2199      43313120 
+ 2199      352E342E 
+ 2199      31203230 
+ 2199      31363036 
+ 2200 0119 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m4 -mfloat-abi=s"
+ 2200      20726576 
+ 2200      6973696F 
+ 2200      6E203233 
+ 2200      37373135 
+ 2201 014c 6F667466 		.ascii	"oftfp -mfpu=fpv4-sp-d16 -mthumb -g -Og -ffunction-s"
+ 2201      70202D6D 
+ 2201      6670753D 
+ 2201      66707634 
+ 2201      2D73702D 
+ 2202 017f 65637469 		.ascii	"ections -ffat-lto-objects\000"
+ 2202      6F6E7320 
+ 2202      2D666661 
+ 2202      742D6C74 
+ 2202      6F2D6F62 
+ 2203              	.LASF6:
+ 2204 0199 5F5F7569 		.ascii	"__uint32_t\000"
+ 2204      6E743332 
+ 2204      5F7400
+ 2205              	.LASF18:
+ 2206 01a4 434D305F 		.ascii	"CM0_CTL\000"
+ 2206      43544C00 
+ 2207              	.LASF103:
+ 2208 01ac 636C6F63 		.ascii	"clockSource\000"
+ 2208      6B536F75 
+ 2208      72636500 
+ 2209              	.LASF81:
+ 2210 01b8 5452494D 		.ascii	"TRIM_ROM_CTL\000"
+ 2210      5F524F4D 
+ 2210      5F43544C 
+ 2210      00
+ 2211              	.LASF52:
+ 2212 01c5 52414D5F 		.ascii	"RAM_PWR_DELAY_CTL\000"
+ 2212      5057525F 
+ 2212      44454C41 
+ 2212      595F4354 
+ 2212      4C00
+ 2213              	.LASF2:
+ 2214 01d7 73686F72 		.ascii	"short int\000"
+ 2214      7420696E 
+ 2214      7400
+ 2215              	.LASF14:
+ 2216 01e1 4354524C 		.ascii	"CTRL\000"
+ 2216      00
+ 2217              	.LASF120:
+ 2218 01e6 76616C75 		.ascii	"value\000"
+ 2218      6500
+ 2219              	.LASF118:
+ 2220 01ec 43795F53 		.ascii	"Cy_SysTick_GetCountFlag\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 51
+
+
+ 2220      79735469 
+ 2220      636B5F47 
+ 2220      6574436F 
+ 2220      756E7446 
+ 2221              	.LASF34:
+ 2222 0204 434D345F 		.ascii	"CM4_PWR_DELAY_CTL\000"
+ 2222      5057525F 
+ 2222      44454C41 
+ 2222      595F4354 
+ 2222      4C00
+ 2223              	.LASF38:
+ 2224 0216 52455345 		.ascii	"RESERVED5\000"
+ 2224      52564544 
+ 2224      3500
+ 2225              	.LASF40:
+ 2226 0220 52455345 		.ascii	"RESERVED6\000"
+ 2226      52564544 
+ 2226      3600
+ 2227              	.LASF11:
+ 2228 022a 696E7433 		.ascii	"int32_t\000"
+ 2228      325F7400 
+ 2229              	.LASF65:
+ 2230 0232 53595354 		.ascii	"SYSTICK_CTL\000"
+ 2230      49434B5F 
+ 2230      43544C00 
+ 2231              	.LASF45:
+ 2232 023e 52455345 		.ascii	"RESERVED8\000"
+ 2232      52564544 
+ 2232      3800
+ 2233              	.LASF75:
+ 2234 0248 50524F54 		.ascii	"PROTECTION\000"
+ 2234      45435449 
+ 2234      4F4E00
+ 2235              	.LASF47:
+ 2236 0253 52455345 		.ascii	"RESERVED9\000"
+ 2236      52564544 
+ 2236      3900
+ 2237              	.LASF41:
+ 2238 025d 52414D30 		.ascii	"RAM0_CTL0\000"
+ 2238      5F43544C 
+ 2238      3000
+ 2239              	.LASF57:
+ 2240 0267 5544425F 		.ascii	"UDB_PWR_DELAY_CTL\000"
+ 2240      5057525F 
+ 2240      44454C41 
+ 2240      595F4354 
+ 2240      4C00
+ 2241              	.LASF0:
+ 2242 0279 7369676E 		.ascii	"signed char\000"
+ 2242      65642063 
+ 2242      68617200 
+ 2243              	.LASF96:
+ 2244 0285 43795F53 		.ascii	"Cy_SysTick_EnableInterrupt\000"
+ 2244      79735469 
+ 2244      636B5F45 
+ 2244      6E61626C 
+ 2244      65496E74 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 52
+
+
+ 2245              	.LASF101:
+ 2246 02a0 43795F53 		.ascii	"Cy_SysTick_SetClockSource\000"
+ 2246      79735469 
+ 2246      636B5F53 
+ 2246      6574436C 
+ 2246      6F636B53 
+ 2247              	.LASF71:
+ 2248 02ba 434D305F 		.ascii	"CM0_PC0_HANDLER\000"
+ 2248      5043305F 
+ 2248      48414E44 
+ 2248      4C455200 
+ 2249              	.LASF8:
+ 2250 02ca 6C6F6E67 		.ascii	"long long int\000"
+ 2250      206C6F6E 
+ 2250      6720696E 
+ 2250      7400
+ 2251              	.LASF9:
+ 2252 02d8 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2252      206C6F6E 
+ 2252      6720756E 
+ 2252      7369676E 
+ 2252      65642069 
+ 2253              	.LASF16:
+ 2254 02ef 43414C49 		.ascii	"CALIB\000"
+ 2254      4200
+ 2255              	.LASF35:
+ 2256 02f5 434D345F 		.ascii	"CM4_STATUS\000"
+ 2256      53544154 
+ 2256      555300
+ 2257              	.LASF4:
+ 2258 0300 6C6F6E67 		.ascii	"long int\000"
+ 2258      20696E74 
+ 2258      00
+ 2259              	.LASF79:
+ 2260 0309 4D424953 		.ascii	"MBIST_STAT\000"
+ 2260      545F5354 
+ 2260      415400
+ 2261              	.LASF99:
+ 2262 0314 43795F53 		.ascii	"Cy_SysTick_Enable\000"
+ 2262      79735469 
+ 2262      636B5F45 
+ 2262      6E61626C 
+ 2262      6500
+ 2263              	.LASF104:
+ 2264 0326 696E7465 		.ascii	"interval\000"
+ 2264      7276616C 
+ 2264      00
+ 2265              	.LASF114:
+ 2266 032f 5F5F7261 		.ascii	"__ramVectors\000"
+ 2266      6D566563 
+ 2266      746F7273 
+ 2266      00
+ 2267              	.LASF82:
+ 2268 033c 5452494D 		.ascii	"TRIM_RAM_CTL\000"
+ 2268      5F52414D 
+ 2268      5F43544C 
+ 2268      00
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 53
+
+
+ 2269              	.LASF98:
+ 2270 0349 43795F53 		.ascii	"Cy_SysTick_Clear\000"
+ 2270      79735469 
+ 2270      636B5F43 
+ 2270      6C656172 
+ 2270      00
+ 2271              	.LASF95:
+ 2272 035a 6C6F6E67 		.ascii	"long double\000"
+ 2272      20646F75 
+ 2272      626C6500 
+ 2273              	.LASF91:
+ 2274 0366 43595F53 		.ascii	"CY_SYSTICK_CLOCK_SOURCE_CLK_ECO\000"
+ 2274      59535449 
+ 2274      434B5F43 
+ 2274      4C4F434B 
+ 2274      5F534F55 
+ 2275              	.LASF105:
+ 2276 0386 72657475 		.ascii	"returnValue\000"
+ 2276      726E5661 
+ 2276      6C756500 
+ 2277              	.LASF1:
+ 2278 0392 756E7369 		.ascii	"unsigned char\000"
+ 2278      676E6564 
+ 2278      20636861 
+ 2278      7200
+ 2279              	.LASF49:
+ 2280 03a0 52455345 		.ascii	"RESERVED10\000"
+ 2280      52564544 
+ 2280      313000
+ 2281              	.LASF51:
+ 2282 03ab 52455345 		.ascii	"RESERVED11\000"
+ 2282      52564544 
+ 2282      313100
+ 2283              	.LASF53:
+ 2284 03b6 52455345 		.ascii	"RESERVED12\000"
+ 2284      52564544 
+ 2284      313200
+ 2285              	.LASF55:
+ 2286 03c1 52455345 		.ascii	"RESERVED13\000"
+ 2286      52564544 
+ 2286      313300
+ 2287              	.LASF58:
+ 2288 03cc 52455345 		.ascii	"RESERVED14\000"
+ 2288      52564544 
+ 2288      313400
+ 2289              	.LASF60:
+ 2290 03d7 52455345 		.ascii	"RESERVED15\000"
+ 2290      52564544 
+ 2290      313500
+ 2291              	.LASF62:
+ 2292 03e2 52455345 		.ascii	"RESERVED16\000"
+ 2292      52564544 
+ 2292      313600
+ 2293              	.LASF64:
+ 2294 03ed 52455345 		.ascii	"RESERVED17\000"
+ 2294      52564544 
+ 2294      313700
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 54
+
+
+ 2295              	.LASF66:
+ 2296 03f8 52455345 		.ascii	"RESERVED18\000"
+ 2296      52564544 
+ 2296      313800
+ 2297              	.LASF68:
+ 2298 0403 52455345 		.ascii	"RESERVED19\000"
+ 2298      52564544 
+ 2298      313900
+ 2299              	.LASF69:
+ 2300 040e 434D345F 		.ascii	"CM4_VECTOR_TABLE_BASE\000"
+ 2300      56454354 
+ 2300      4F525F54 
+ 2300      41424C45 
+ 2300      5F424153 
+ 2301              	.LASF12:
+ 2302 0424 75696E74 		.ascii	"uint32_t\000"
+ 2302      33325F74 
+ 2302      00
+ 2303              	.LASF10:
+ 2304 042d 756E7369 		.ascii	"unsigned int\000"
+ 2304      676E6564 
+ 2304      20696E74 
+ 2304      00
+ 2305              	.LASF92:
+ 2306 043a 43595F53 		.ascii	"CY_SYSTICK_CLOCK_SOURCE_CLK_TIMER\000"
+ 2306      59535449 
+ 2306      434B5F43 
+ 2306      4C4F434B 
+ 2306      5F534F55 
+ 2307              	.LASF33:
+ 2308 045c 434D345F 		.ascii	"CM4_PWR_CTL\000"
+ 2308      5057525F 
+ 2308      43544C00 
+ 2309              	.LASF44:
+ 2310 0468 52414D31 		.ascii	"RAM1_CTL0\000"
+ 2310      5F43544C 
+ 2310      3000
+ 2311              	.LASF90:
+ 2312 0472 43595F53 		.ascii	"CY_SYSTICK_CLOCK_SOURCE_CLK_IMO\000"
+ 2312      59535449 
+ 2312      434B5F43 
+ 2312      4C4F434B 
+ 2312      5F534F55 
+ 2313              	.LASF17:
+ 2314 0492 53797354 		.ascii	"SysTick_Type\000"
+ 2314      69636B5F 
+ 2314      54797065 
+ 2314      00
+ 2315              	.LASF3:
+ 2316 049f 73686F72 		.ascii	"short unsigned int\000"
+ 2316      7420756E 
+ 2316      7369676E 
+ 2316      65642069 
+ 2316      6E7400
+ 2317              	.LASF108:
+ 2318 04b2 6E756D62 		.ascii	"number\000"
+ 2318      657200
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 55
+
+
+ 2319              	.LASF24:
+ 2320 04b9 434D305F 		.ascii	"CM0_INT_CTL0\000"
+ 2320      494E545F 
+ 2320      43544C30 
+ 2320      00
+ 2321              	.LASF25:
+ 2322 04c6 434D305F 		.ascii	"CM0_INT_CTL1\000"
+ 2322      494E545F 
+ 2322      43544C31 
+ 2322      00
+ 2323              	.LASF26:
+ 2324 04d3 434D305F 		.ascii	"CM0_INT_CTL2\000"
+ 2324      494E545F 
+ 2324      43544C32 
+ 2324      00
+ 2325              	.LASF27:
+ 2326 04e0 434D305F 		.ascii	"CM0_INT_CTL3\000"
+ 2326      494E545F 
+ 2326      43544C33 
+ 2326      00
+ 2327              	.LASF28:
+ 2328 04ed 434D305F 		.ascii	"CM0_INT_CTL4\000"
+ 2328      494E545F 
+ 2328      43544C34 
+ 2328      00
+ 2329              	.LASF43:
+ 2330 04fa 52414D30 		.ascii	"RAM0_PWR_MACRO_CTL\000"
+ 2330      5F505752 
+ 2330      5F4D4143 
+ 2330      524F5F43 
+ 2330      544C00
+ 2331              	.LASF30:
+ 2332 050d 434D305F 		.ascii	"CM0_INT_CTL6\000"
+ 2332      494E545F 
+ 2332      43544C36 
+ 2332      00
+ 2333              	.LASF109:
+ 2334 051a 66756E63 		.ascii	"function\000"
+ 2334      74696F6E 
+ 2334      00
+ 2335              	.LASF121:
+ 2336 0523 43795F53 		.ascii	"Cy_SysTick_ServiceCallbacks\000"
+ 2336      79735469 
+ 2336      636B5F53 
+ 2336      65727669 
+ 2336      63654361 
+ 2337              	.LASF119:
+ 2338 053f 43795F53 		.ascii	"Cy_SysTick_SetReload\000"
+ 2338      79735469 
+ 2338      636B5F53 
+ 2338      65745265 
+ 2338      6C6F6164 
+ 2339              	.LASF106:
+ 2340 0554 43795F53 		.ascii	"Cy_SysTick_GetClockSource\000"
+ 2340      79735469 
+ 2340      636B5F47 
+ 2340      6574436C 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 56
+
+
+ 2340      6F636B53 
+ 2341              	.LASF21:
+ 2342 056e 52455345 		.ascii	"RESERVED1\000"
+ 2342      52564544 
+ 2342      3100
+ 2343              	.LASF23:
+ 2344 0578 52455345 		.ascii	"RESERVED2\000"
+ 2344      52564544 
+ 2344      3200
+ 2345              	.LASF32:
+ 2346 0582 52455345 		.ascii	"RESERVED3\000"
+ 2346      52564544 
+ 2346      3300
+ 2347              	.LASF36:
+ 2348 058c 52455345 		.ascii	"RESERVED4\000"
+ 2348      52564544 
+ 2348      3400
+ 2349              	.LASF89:
+ 2350 0596 43595F53 		.ascii	"CY_SYSTICK_CLOCK_SOURCE_CLK_LF\000"
+ 2350      59535449 
+ 2350      434B5F43 
+ 2350      4C4F434B 
+ 2350      5F534F55 
+ 2351              	.LASF7:
+ 2352 05b5 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2352      20756E73 
+ 2352      69676E65 
+ 2352      6420696E 
+ 2352      7400
+ 2353              	.LASF42:
+ 2354 05c7 52455345 		.ascii	"RESERVED7\000"
+ 2354      52564544 
+ 2354      3700
+ 2355              	.LASF70:
+ 2356 05d1 52455345 		.ascii	"RESERVED20\000"
+ 2356      52564544 
+ 2356      323000
+ 2357              	.LASF72:
+ 2358 05dc 52455345 		.ascii	"RESERVED21\000"
+ 2358      52564544 
+ 2358      323100
+ 2359              	.LASF74:
+ 2360 05e7 52455345 		.ascii	"RESERVED22\000"
+ 2360      52564544 
+ 2360      323200
+ 2361              	.LASF76:
+ 2362 05f2 52455345 		.ascii	"RESERVED23\000"
+ 2362      52564544 
+ 2362      323300
+ 2363              	.LASF78:
+ 2364 05fd 52455345 		.ascii	"RESERVED24\000"
+ 2364      52564544 
+ 2364      323400
+ 2365              	.LASF80:
+ 2366 0608 52455345 		.ascii	"RESERVED25\000"
+ 2366      52564544 
+ 2366      323500
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 57
+
+
+ 2367              	.LASF73:
+ 2368 0613 4944454E 		.ascii	"IDENTITY\000"
+ 2368      54495459 
+ 2368      00
+ 2369              	.LASF93:
+ 2370 061c 43595F53 		.ascii	"CY_SYSTICK_CLOCK_SOURCE_CLK_CPU\000"
+ 2370      59535449 
+ 2370      434B5F43 
+ 2370      4C4F434B 
+ 2370      5F534F55 
+ 2371              	.LASF46:
+ 2372 063c 52414D31 		.ascii	"RAM1_PWR_CTL\000"
+ 2372      5F505752 
+ 2372      5F43544C 
+ 2372      00
+ 2373              	.LASF5:
+ 2374 0649 5F5F696E 		.ascii	"__int32_t\000"
+ 2374      7433325F 
+ 2374      7400
+ 2375              	.LASF97:
+ 2376 0653 43795F53 		.ascii	"Cy_SysTick_DisableInterrupt\000"
+ 2376      79735469 
+ 2376      636B5F44 
+ 2376      69736162 
+ 2376      6C65496E 
+ 2377              	.LASF107:
+ 2378 066f 43795F53 		.ascii	"Cy_SysTick_SetCallback\000"
+ 2378      79735469 
+ 2378      636B5F53 
+ 2378      65744361 
+ 2378      6C6C6261 
+ 2379              	.LASF117:
+ 2380 0686 433A5C55 		.ascii	"C:\\Users\\gjl\\Documents\\PSoC Creator\\PSoC 6_101"
+ 2380      73657273 
+ 2380      5C676A6C 
+ 2380      5C446F63 
+ 2380      756D656E 
+ 2381 06b4 5C48656C 		.ascii	"\\HelloWorldCM4.cydsn\000"
+ 2381      6C6F576F 
+ 2381      726C6443 
+ 2381      4D342E63 
+ 2381      7964736E 
+ 2382              	.LASF15:
+ 2383 06c9 4C4F4144 		.ascii	"LOAD\000"
+ 2383      00
+ 2384              	.LASF84:
+ 2385 06ce 63795F69 		.ascii	"cy_israddress\000"
+ 2385      73726164 
+ 2385      64726573 
+ 2385      7300
+ 2386              	.LASF50:
+ 2387 06dc 52414D32 		.ascii	"RAM2_PWR_CTL\000"
+ 2387      5F505752 
+ 2387      5F43544C 
+ 2387      00
+ 2388              	.LASF29:
+ 2389 06e9 434D305F 		.ascii	"CM0_INT_CTL5\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 58
+
+
+ 2389      494E545F 
+ 2389      43544C35 
+ 2389      00
+ 2390              	.LASF31:
+ 2391 06f6 434D305F 		.ascii	"CM0_INT_CTL7\000"
+ 2391      494E545F 
+ 2391      43544C37 
+ 2391      00
+ 2392              	.LASF110:
+ 2393 0703 72657456 		.ascii	"retVal\000"
+ 2393      616C00
+ 2394              	.LASF63:
+ 2395 070a 44444654 		.ascii	"DDFT_CTL\000"
+ 2395      5F43544C 
+ 2395      00
+ 2396              	.LASF87:
+ 2397 0713 646F7562 		.ascii	"double\000"
+ 2397      6C6500
+ 2398              	.LASF19:
+ 2399 071a 52455345 		.ascii	"RESERVED\000"
+ 2399      52564544 
+ 2399      00
+ 2400              	.LASF112:
+ 2401 0723 43795F53 		.ascii	"Cy_SysTick_Callbacks\000"
+ 2401      79735469 
+ 2401      636B5F43 
+ 2401      616C6C62 
+ 2401      61636B73 
+ 2402              	.LASF56:
+ 2403 0738 5544425F 		.ascii	"UDB_PWR_CTL\000"
+ 2403      5057525F 
+ 2403      43544C00 
+ 2404              	.LASF113:
+ 2405 0744 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2405      52784275 
+ 2405      66666572 
+ 2405      00
+ 2406              	.LASF67:
+ 2407 0751 434D305F 		.ascii	"CM0_VECTOR_TABLE_BASE\000"
+ 2407      56454354 
+ 2407      4F525F54 
+ 2407      41424C45 
+ 2407      5F424153 
+ 2408              	.LASF94:
+ 2409 0767 63795F65 		.ascii	"cy_en_systick_clock_source_t\000"
+ 2409      6E5F7379 
+ 2409      73746963 
+ 2409      6B5F636C 
+ 2409      6F636B5F 
+ 2410              	.LASF77:
+ 2411 0784 434D305F 		.ascii	"CM0_NMI_CTL\000"
+ 2411      4E4D495F 
+ 2411      43544C00 
+ 2412              	.LASF20:
+ 2413 0790 434D305F 		.ascii	"CM0_STATUS\000"
+ 2413      53544154 
+ 2413      555300
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cceIWW10.s 			page 59
+
+
+ 2414              	.LASF111:
+ 2415 079b 43795F53 		.ascii	"Cy_SysTick_GetCallback\000"
+ 2415      79735469 
+ 2415      636B5F47 
+ 2415      65744361 
+ 2415      6C6C6261 
+ 2416              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

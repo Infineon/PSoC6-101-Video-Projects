@@ -1,0 +1,109 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc5cun3n.s 			page 1
+
+
+   1              	# 1 "Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\syslib\\gcc\\cy_syslib_gcc.S"
+   1              	/***************************************************************************//**
+   0              	
+   0              	
+   0              	
+   2              	* \file cy_syslib_core_armcc.s
+   3              	* \version 2.0.1
+   4              	*
+   5              	* \brief Assembly routines for GNU as.
+   6              	*
+   7              	********************************************************************************
+   8              	* \copyright
+   9              	* Copyright 2016-2018, Cypress Semiconductor Corporation.  All rights reserved.
+  10              	* You may use this file only in accordance with the license, terms, conditions,
+  11              	* disclaimers, and limitations in the end user license agreement accompanying
+  12              	* the software package with which this file was provided.
+  13              	*******************************************************************************/
+  14              	
+  15              	.syntax unified
+  16              	.text
+  17              	.thumb
+  18              	
+  19              	
+  20              	/*******************************************************************************
+  21              	* Function Name: Cy_SysLib_DelayCycles
+  22              	****************************************************************************//**
+  23              	*
+  24              	* Delays for the specified number of cycles.
+  25              	*
+  26              	* \param uint32_t cycles: The number of cycles to delay.
+  27              	*
+  28              	*******************************************************************************/
+  29              	/* void Cy_SysLib_DelayCycles(uint32_t cycles) */
+  30              	.align 3                    /* Align to 8 byte boundary (2^n) */
+  31              	.global Cy_SysLib_DelayCycles
+  32              	.func Cy_SysLib_DelayCycles, Cy_SysLib_DelayCycles
+  33              	.type Cy_SysLib_DelayCycles, %function
+  34              	.thumb_func
+  35              	Cy_SysLib_DelayCycles:      /* cycles bytes */
+  36 0000 0230     	    ADDS r0, r0, #2         /*    1    2    Round to nearest multiple of 4 */
+  37 0002 8008     	    LSRS r0, r0, #2         /*    1    2    Divide by 4 and set flags */
+  38 0004 03D0     	    BEQ Cy_DelayCycles_done /*    2    2    Skip if 0 */
+  39              	Cy_DelayCycles_loop:
+  40              	/* For CM0+ branch instruction takes 2 CPU cycles */
+  41 0006 0130     	    ADDS r0, r0, #1         /*    1    2    Increment counter */
+  42 0008 0238     	    SUBS r0, r0, #2         /*    1    2    Decrement counter by 2 */
+  43 000a FCD1     	    BNE Cy_DelayCycles_loop /*    2    2    2 CPU cycles (if branch is taken)*/
+  44 000c 00BF     	    NOP                     /*    1    2    Loop alignment padding */
+  45              	Cy_DelayCycles_done:
+  46 000e 00BF     	    NOP                     /*    1    2    Loop alignment padding */
+  47 0010 7047     	    BX lr                   /*    3    2 */
+  48              	.endfunc
+  49              	
+  50              	
+  51              	/*******************************************************************************
+  52              	* Function Name: Cy_SysLib_EnterCriticalSection
+  53              	****************************************************************************//**
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\cc5cun3n.s 			page 2
+
+
+  54              	*
+  55              	* Cy_SysLib_EnterCriticalSection disables interrupts and returns a value
+  56              	* indicating whether interrupts were previously enabled.
+  57              	*
+  58              	* Note Implementation of Cy_SysLib_EnterCriticalSection manipulates the IRQ
+  59              	* enable bit with interrupts still enabled.
+  60              	*
+  61              	* \return Returns 0 if interrupts were previously enabled or 1 if interrupts
+  62              	* were previously disabled.
+  63              	*
+  64              	*******************************************************************************/
+  65              	/* uint8_t Cy_SysLib_EnterCriticalSection(void) */
+  66              	.global Cy_SysLib_EnterCriticalSection
+  67              	.func Cy_SysLib_EnterCriticalSection, Cy_SysLib_EnterCriticalSection
+  68              	.type Cy_SysLib_EnterCriticalSection, %function
+  69              	.thumb_func
+  70              	Cy_SysLib_EnterCriticalSection:
+  71 0012 EFF31080 	    MRS r0, PRIMASK         /* Save and return interrupt state */
+  72 0016 72B6     	    CPSID I                 /* Disable interrupts */
+  73 0018 7047     	    BX lr
+  74              	.endfunc
+  75              	
+  76              	
+  77              	/*******************************************************************************
+  78              	* Function Name: Cy_SysLib_ExitCriticalSection
+  79              	****************************************************************************//**
+  80              	*
+  81              	*  Re-enables interrupts if they were enabled before
+  82              	*  Cy_SysLib_EnterCriticalSection() was called. The argument should be the value
+  83              	*  returned from \ref Cy_SysLib_EnterCriticalSection().
+  84              	*
+  85              	*  \param uint8_t savedIntrStatus:
+  86              	*   Saved interrupt status returned by the \ref Cy_SysLib_EnterCriticalSection().
+  87              	*
+  88              	*******************************************************************************/
+  89              	/* void Cy_SysLib_ExitCriticalSection(uint8_t savedIntrStatus) */
+  90              	.global Cy_SysLib_ExitCriticalSection
+  91              	.func Cy_SysLib_ExitCriticalSection, Cy_SysLib_ExitCriticalSection
+  92              	.type Cy_SysLib_ExitCriticalSection, %function
+  93              	.thumb_func
+  94              	Cy_SysLib_ExitCriticalSection:
+  95 001a 80F31088 	    MSR PRIMASK, r0         /* Restore interrupt state */
+  96 001e 7047     	    BX lr
+  97              	.endfunc
+  98              	
+  99              	.end

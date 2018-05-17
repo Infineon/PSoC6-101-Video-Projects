@@ -1,0 +1,1766 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.fpu fpv4-sp-d16
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.thumb
+  15              		.syntax unified
+  16              		.file	"retarget.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.syntax unified
+  21              		.global _printf_float
+  22              		.global _scanf_float
+  23              		.thumb
+  24              		.syntax unified
+  25              		.section	.text._write,"ax",%progbits
+  26              		.align	2
+  27              		.weak	_write
+  28              		.thumb
+  29              		.thumb_func
+  30              		.type	_write, %function
+  31              	_write:
+  32              	.LFB576:
+  33              		.file 1 "Generated_Source\\PSoC6\\pdl\\utilities\\retarget_io\\retarget.c"
+   1:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** /***************************************************************************//**
+   2:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** * \file retarget.c
+   3:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** * \version 1.10
+   4:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** *
+   5:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** * \brief
+   6:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** * 'Retarget' layer for target-dependent low level function.
+   7:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** *
+   8:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** ********************************************************************************
+   9:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** * \copyright
+  10:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** * Copyright 2016-2018, Cypress Semiconductor Corporation. All rights reserved.
+  11:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** * You may use this file only in accordance with the license, terms, conditions,
+  12:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  13:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** * the software package with which this file was provided.
+  14:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** *******************************************************************************/
+  15:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** 
+  16:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #include <stdio.h>
+  17:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #include "stdio_user.h"
+  18:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** 
+  19:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #if defined(__cplusplus)
+  20:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** extern "C" {
+  21:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #endif
+  22:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** 
+  23:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #ifdef IO_STDOUT_ENABLE
+  24:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 2
+
+
+  25:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #if defined(__ARMCC_VERSION) /* ARM-MDK */
+  26:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     /***************************************************************************
+  27:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     * Function Name: fputc
+  28:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     ***************************************************************************/
+  29:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     __attribute__((weak)) int fputc(int ch, FILE *f)
+  30:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     {
+  31:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         (void)f;
+  32:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     #if (STDOUT_CR_LF != 0)
+  33:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         if ((char)ch == '\n')
+  34:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         {
+  35:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             STDIO_PutChar('\r');
+  36:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         }
+  37:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     #endif /* STDOUT_CR_LF != 0 */
+  38:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         STDIO_PutChar(ch);
+  39:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         return (ch);
+  40:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     }
+  41:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #elif defined (__ICCARM__) /* IAR */
+  42:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     #include <yfuns.h>
+  43:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** 
+  44:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     /***************************************************************************
+  45:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     * Function Name: __write
+  46:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     ***************************************************************************/
+  47:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     __weak size_t __write(int handle, const unsigned char * buffer, size_t size)
+  48:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     {
+  49:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         size_t nChars = 0;
+  50:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         /* This template only writes to "standard out", for all other file
+  51:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         * handles it returns failure. */
+  52:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         if (handle != _LLIO_STDOUT)
+  53:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         {
+  54:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             return (_LLIO_ERROR);
+  55:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         }
+  56:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         if (buffer != NULL)
+  57:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         {
+  58:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             for (/* Empty */; nChars < size; ++nChars)
+  59:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             {
+  60:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             #if (STDOUT_CR_LF != 0)
+  61:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 if(*buffer == '\n')
+  62:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 {
+  63:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                     STDIO_PutChar('\r');
+  64:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 }
+  65:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             #endif /* STDOUT_CR_LF != 0 */
+  66:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 STDIO_PutChar(*buffer);
+  67:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 ++buffer;
+  68:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             }
+  69:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         }
+  70:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         return (nChars);
+  71:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     }
+  72:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #else /* (__GNUC__)  GCC */    
+  73:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     /* Add an explicit reference to the floating point printf library to allow
+  74:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     the usage of floating point conversion specifier. */
+  75:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     __asm (".global _printf_float");
+  76:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     /***************************************************************************
+  77:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     * Function Name: _write
+  78:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     ***************************************************************************/
+  79:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     __attribute__((weak)) int _write (int fd, const char *ptr, int len)
+  80:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     {
+  34              		.loc 1 80 0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 3
+
+
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 0
+  37              		@ frame_needed = 0, uses_anonymous_args = 0
+  38              	.LVL0:
+  39 0000 70B5     		push	{r4, r5, r6, lr}
+  40              		.cfi_def_cfa_offset 16
+  41              		.cfi_offset 4, -16
+  42              		.cfi_offset 5, -12
+  43              		.cfi_offset 6, -8
+  44              		.cfi_offset 14, -4
+  45              	.LVL1:
+  81:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         int nChars = 0;
+  82:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         (void)fd;
+  83:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         if (ptr != NULL)
+  46              		.loc 1 83 0
+  47 0002 39B9     		cbnz	r1, .L5
+  81:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         int nChars = 0;
+  48              		.loc 1 81 0
+  49 0004 0024     		movs	r4, #0
+  50 0006 0AE0     		b	.L3
+  51              	.LVL2:
+  52              	.L4:
+  84:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         {
+  85:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             for (/* Empty */; nChars < len; ++nChars)
+  86:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             {
+  87:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             #if (STDOUT_CR_LF != 0)
+  88:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 if(*ptr == '\n')
+  89:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 {
+  90:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                     STDIO_PutChar('\r');
+  91:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 }
+  92:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             #endif /* STDOUT_CR_LF != 0 */
+  93:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 STDIO_PutChar((uint32_t)*ptr);
+  53              		.loc 1 93 0 discriminator 2
+  54 0008 15F8010B 		ldrb	r0, [r5], #1	@ zero_extendqisi2
+  55              	.LVL3:
+  56 000c FFF7FEFF 		bl	STDIO_PutChar
+  57              	.LVL4:
+  85:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             {
+  58              		.loc 1 85 0 discriminator 2
+  59 0010 0134     		adds	r4, r4, #1
+  60              	.LVL5:
+  61 0012 02E0     		b	.L2
+  62              	.LVL6:
+  63              	.L5:
+  64 0014 1646     		mov	r6, r2
+  65 0016 0D46     		mov	r5, r1
+  66 0018 0024     		movs	r4, #0
+  67              	.LVL7:
+  68              	.L2:
+  85:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             {
+  69              		.loc 1 85 0 is_stmt 0 discriminator 1
+  70 001a B442     		cmp	r4, r6
+  71 001c F4DB     		blt	.L4
+  72              	.LVL8:
+  73              	.L3:
+  94:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 ++ptr;
+  95:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             }
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 4
+
+
+  96:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         }
+  97:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         return (nChars);
+  98:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     }
+  74              		.loc 1 98 0 is_stmt 1
+  75 001e 2046     		mov	r0, r4
+  76 0020 70BD     		pop	{r4, r5, r6, pc}
+  77              		.cfi_endproc
+  78              	.LFE576:
+  79              		.size	_write, .-_write
+  80 0022 00BF     		.section	.text._read,"ax",%progbits
+  81              		.align	2
+  82              		.weak	_read
+  83              		.thumb
+  84              		.thumb_func
+  85              		.type	_read, %function
+  86              	_read:
+  87              	.LFB577:
+  99:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #endif
+ 100:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** 
+ 101:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #endif /* IO_STDOUT_ENABLE */
+ 102:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** 
+ 103:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #if defined(IO_STDIN_ENABLE)
+ 104:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** 
+ 105:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #if defined(__ARMCC_VERSION) /* ARM-MDK */
+ 106:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     /***************************************************************************
+ 107:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     * Function Name: fgetc
+ 108:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     ***************************************************************************/
+ 109:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     __attribute__((weak)) int fgetc(FILE *f) 
+ 110:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     {
+ 111:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         (void)f;
+ 112:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         return (STDIO_GetChar());
+ 113:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     }
+ 114:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #elif defined (__ICCARM__) /* IAR */
+ 115:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     __weak size_t __read(int handle, unsigned char * buffer, size_t size)
+ 116:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     {
+ 117:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         /* This template only reads from "standard in", for all other file
+ 118:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         handles it returns failure. */
+ 119:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         if ((handle != _LLIO_STDIN) || (buffer == NULL))
+ 120:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         {
+ 121:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             return (_LLIO_ERROR);
+ 122:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         }
+ 123:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         else
+ 124:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         {
+ 125:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             *buffer = STDIO_GetChar();
+ 126:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             return (1);
+ 127:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         }
+ 128:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     }
+ 129:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c **** #else /* (__GNUC__)  GCC */
+ 130:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     /* Add an explicit reference to the floating point scanf library to allow
+ 131:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     the usage of floating point conversion specifier. */
+ 132:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     __asm (".global _scanf_float");
+ 133:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     __attribute__((weak)) int _read (int fd, char *ptr, int len)
+ 134:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     {
+  88              		.loc 1 134 0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 5
+
+
+  92              	.LVL9:
+  93 0000 70B5     		push	{r4, r5, r6, lr}
+  94              		.cfi_def_cfa_offset 16
+  95              		.cfi_offset 4, -16
+  96              		.cfi_offset 5, -12
+  97              		.cfi_offset 6, -8
+  98              		.cfi_offset 14, -4
+  99              	.LVL10:
+ 135:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         int nChars = 0;
+ 136:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         (void)fd;
+ 137:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         if (ptr != NULL)
+ 100              		.loc 1 137 0
+ 101 0002 51B9     		cbnz	r1, .L11
+ 135:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         int nChars = 0;
+ 102              		.loc 1 135 0
+ 103 0004 0024     		movs	r4, #0
+ 104 0006 0DE0     		b	.L9
+ 105              	.LVL11:
+ 106              	.L10:
+ 138:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         {
+ 139:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             for(/* Empty */;nChars < len;++ptr)
+ 140:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             {
+ 141:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 *ptr = (char)STDIO_GetChar();
+ 107              		.loc 1 141 0
+ 108 0008 FFF7FEFF 		bl	STDIO_GetChar
+ 109              	.LVL12:
+ 110 000c C0B2     		uxtb	r0, r0
+ 111 000e 2870     		strb	r0, [r5]
+ 142:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 ++nChars;
+ 112              		.loc 1 142 0
+ 113 0010 0134     		adds	r4, r4, #1
+ 114              	.LVL13:
+ 143:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 if(*ptr == '\n')
+ 115              		.loc 1 143 0
+ 116 0012 0A28     		cmp	r0, #10
+ 117 0014 06D0     		beq	.L9
+ 139:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             {
+ 118              		.loc 1 139 0
+ 119 0016 0135     		adds	r5, r5, #1
+ 120              	.LVL14:
+ 121 0018 02E0     		b	.L8
+ 122              	.LVL15:
+ 123              	.L11:
+ 124 001a 1646     		mov	r6, r2
+ 125 001c 0D46     		mov	r5, r1
+ 126 001e 0024     		movs	r4, #0
+ 127              	.LVL16:
+ 128              	.L8:
+ 139:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             {
+ 129              		.loc 1 139 0 is_stmt 0 discriminator 1
+ 130 0020 B442     		cmp	r4, r6
+ 131 0022 F1DB     		blt	.L10
+ 132              	.LVL17:
+ 133              	.L9:
+ 144:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 {
+ 145:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                     break;
+ 146:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****                 }
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 6
+
+
+ 147:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****             }
+ 148:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         }
+ 149:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****         return (nChars);
+ 150:Generated_Source\PSoC6\pdl\utilities\retarget_io/retarget.c ****     }
+ 134              		.loc 1 150 0 is_stmt 1
+ 135 0024 2046     		mov	r0, r4
+ 136 0026 70BD     		pop	{r4, r5, r6, pc}
+ 137              		.cfi_endproc
+ 138              	.LFE577:
+ 139              		.size	_read, .-_read
+ 140              		.text
+ 141              	.Letext0:
+ 142              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 143              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 144              		.file 4 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/tcpwm/cy_tcpwm_pwm.h"
+ 145              		.file 5 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/scb/cy_scb_uart.h"
+ 146              		.file 6 "Generated_Source\\PSoC6\\pdl\\cmsis/include/core_cm4.h"
+ 147              		.file 7 "Generated_Source\\PSoC6/UART.h"
+ 148              		.file 8 "Generated_Source\\PSoC6/PWM_1.h"
+ 149              		.file 9 "Generated_Source\\PSoC6/PWM_2.h"
+ 150              		.file 10 "./stdio_user.h"
+ 151              		.section	.debug_info,"",%progbits
+ 152              	.Ldebug_info0:
+ 153 0000 10040000 		.4byte	0x410
+ 154 0004 0400     		.2byte	0x4
+ 155 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 156 000a 04       		.byte	0x4
+ 157 000b 01       		.uleb128 0x1
+ 158 000c 1E010000 		.4byte	.LASF72
+ 159 0010 0C       		.byte	0xc
+ 160 0011 82040000 		.4byte	.LASF73
+ 161 0015 71000000 		.4byte	.LASF74
+ 162 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 163 001d 00000000 		.4byte	0
+ 164 0021 00000000 		.4byte	.Ldebug_line0
+ 165 0025 02       		.uleb128 0x2
+ 166 0026 01       		.byte	0x1
+ 167 0027 06       		.byte	0x6
+ 168 0028 3A030000 		.4byte	.LASF0
+ 169 002c 02       		.uleb128 0x2
+ 170 002d 01       		.byte	0x1
+ 171 002e 08       		.byte	0x8
+ 172 002f 0B030000 		.4byte	.LASF1
+ 173 0033 02       		.uleb128 0x2
+ 174 0034 02       		.byte	0x2
+ 175 0035 05       		.byte	0x5
+ 176 0036 DB000000 		.4byte	.LASF2
+ 177 003a 02       		.uleb128 0x2
+ 178 003b 02       		.byte	0x2
+ 179 003c 07       		.byte	0x7
+ 180 003d 8E030000 		.4byte	.LASF3
+ 181 0041 03       		.uleb128 0x3
+ 182 0042 1B040000 		.4byte	.LASF5
+ 183 0046 02       		.byte	0x2
+ 184 0047 3F       		.byte	0x3f
+ 185 0048 4C000000 		.4byte	0x4c
+ 186 004c 02       		.uleb128 0x2
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 7
+
+
+ 187 004d 04       		.byte	0x4
+ 188 004e 05       		.byte	0x5
+ 189 004f 0D020000 		.4byte	.LASF4
+ 190 0053 03       		.uleb128 0x3
+ 191 0054 E9010000 		.4byte	.LASF6
+ 192 0058 02       		.byte	0x2
+ 193 0059 41       		.byte	0x41
+ 194 005a 5E000000 		.4byte	0x5e
+ 195 005e 02       		.uleb128 0x2
+ 196 005f 04       		.byte	0x4
+ 197 0060 07       		.byte	0x7
+ 198 0061 E3030000 		.4byte	.LASF7
+ 199 0065 02       		.uleb128 0x2
+ 200 0066 08       		.byte	0x8
+ 201 0067 05       		.byte	0x5
+ 202 0068 9E020000 		.4byte	.LASF8
+ 203 006c 02       		.uleb128 0x2
+ 204 006d 08       		.byte	0x8
+ 205 006e 07       		.byte	0x7
+ 206 006f 46030000 		.4byte	.LASF9
+ 207 0073 04       		.uleb128 0x4
+ 208 0074 04       		.byte	0x4
+ 209 0075 05       		.byte	0x5
+ 210 0076 696E7400 		.ascii	"int\000"
+ 211 007a 02       		.uleb128 0x2
+ 212 007b 04       		.byte	0x4
+ 213 007c 07       		.byte	0x7
+ 214 007d 66030000 		.4byte	.LASF10
+ 215 0081 02       		.uleb128 0x2
+ 216 0082 08       		.byte	0x8
+ 217 0083 04       		.byte	0x4
+ 218 0084 E7020000 		.4byte	.LASF11
+ 219 0088 05       		.uleb128 0x5
+ 220 0089 04       		.byte	0x4
+ 221 008a 02       		.uleb128 0x2
+ 222 008b 04       		.byte	0x4
+ 223 008c 07       		.byte	0x7
+ 224 008d F3000000 		.4byte	.LASF12
+ 225 0091 06       		.uleb128 0x6
+ 226 0092 04       		.byte	0x4
+ 227 0093 97000000 		.4byte	0x97
+ 228 0097 02       		.uleb128 0x2
+ 229 0098 01       		.byte	0x1
+ 230 0099 08       		.byte	0x8
+ 231 009a A7030000 		.4byte	.LASF13
+ 232 009e 06       		.uleb128 0x6
+ 233 009f 04       		.byte	0x4
+ 234 00a0 A4000000 		.4byte	0xa4
+ 235 00a4 07       		.uleb128 0x7
+ 236 00a5 97000000 		.4byte	0x97
+ 237 00a9 03       		.uleb128 0x3
+ 238 00aa C4030000 		.4byte	.LASF14
+ 239 00ae 03       		.byte	0x3
+ 240 00af 2C       		.byte	0x2c
+ 241 00b0 41000000 		.4byte	0x41
+ 242 00b4 03       		.uleb128 0x3
+ 243 00b5 5D030000 		.4byte	.LASF15
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 8
+
+
+ 244 00b9 03       		.byte	0x3
+ 245 00ba 30       		.byte	0x30
+ 246 00bb 53000000 		.4byte	0x53
+ 247 00bf 08       		.uleb128 0x8
+ 248 00c0 B4000000 		.4byte	0xb4
+ 249 00c4 02       		.uleb128 0x2
+ 250 00c5 04       		.byte	0x4
+ 251 00c6 04       		.byte	0x4
+ 252 00c7 78020000 		.4byte	.LASF16
+ 253 00cb 02       		.uleb128 0x2
+ 254 00cc 08       		.byte	0x8
+ 255 00cd 04       		.byte	0x4
+ 256 00ce F5030000 		.4byte	.LASF17
+ 257 00d2 02       		.uleb128 0x2
+ 258 00d3 01       		.byte	0x1
+ 259 00d4 02       		.byte	0x2
+ 260 00d5 CC030000 		.4byte	.LASF18
+ 261 00d9 09       		.uleb128 0x9
+ 262 00da D1010000 		.4byte	.LASF46
+ 263 00de 64       		.byte	0x64
+ 264 00df 04       		.byte	0x4
+ 265 00e0 2B       		.byte	0x2b
+ 266 00e1 12020000 		.4byte	0x212
+ 267 00e5 0A       		.uleb128 0xa
+ 268 00e6 55040000 		.4byte	.LASF19
+ 269 00ea 04       		.byte	0x4
+ 270 00eb 2D       		.byte	0x2d
+ 271 00ec B4000000 		.4byte	0xb4
+ 272 00f0 00       		.byte	0
+ 273 00f1 0A       		.uleb128 0xa
+ 274 00f2 1D000000 		.4byte	.LASF20
+ 275 00f6 04       		.byte	0x4
+ 276 00f7 2F       		.byte	0x2f
+ 277 00f8 B4000000 		.4byte	0xb4
+ 278 00fc 04       		.byte	0x4
+ 279 00fd 0A       		.uleb128 0xa
+ 280 00fe 16020000 		.4byte	.LASF21
+ 281 0102 04       		.byte	0x4
+ 282 0103 30       		.byte	0x30
+ 283 0104 B4000000 		.4byte	0xb4
+ 284 0108 08       		.byte	0x8
+ 285 0109 0A       		.uleb128 0xa
+ 286 010a B5030000 		.4byte	.LASF22
+ 287 010e 04       		.byte	0x4
+ 288 010f 31       		.byte	0x31
+ 289 0110 B4000000 		.4byte	0xb4
+ 290 0114 0C       		.byte	0xc
+ 291 0115 0A       		.uleb128 0xa
+ 292 0116 AC020000 		.4byte	.LASF23
+ 293 011a 04       		.byte	0x4
+ 294 011b 32       		.byte	0x32
+ 295 011c B4000000 		.4byte	0xb4
+ 296 0120 10       		.byte	0x10
+ 297 0121 0A       		.uleb128 0xa
+ 298 0122 7E020000 		.4byte	.LASF24
+ 299 0126 04       		.byte	0x4
+ 300 0127 33       		.byte	0x33
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 9
+
+
+ 301 0128 B4000000 		.4byte	0xb4
+ 302 012c 14       		.byte	0x14
+ 303 012d 0A       		.uleb128 0xa
+ 304 012e 86020000 		.4byte	.LASF25
+ 305 0132 04       		.byte	0x4
+ 306 0133 34       		.byte	0x34
+ 307 0134 B4000000 		.4byte	0xb4
+ 308 0138 18       		.byte	0x18
+ 309 0139 0A       		.uleb128 0xa
+ 310 013a 29030000 		.4byte	.LASF26
+ 311 013e 04       		.byte	0x4
+ 312 013f 35       		.byte	0x35
+ 313 0140 D2000000 		.4byte	0xd2
+ 314 0144 1C       		.byte	0x1c
+ 315 0145 0A       		.uleb128 0xa
+ 316 0146 3B000000 		.4byte	.LASF27
+ 317 014a 04       		.byte	0x4
+ 318 014b 36       		.byte	0x36
+ 319 014c B4000000 		.4byte	0xb4
+ 320 0150 20       		.byte	0x20
+ 321 0151 0A       		.uleb128 0xa
+ 322 0152 44000000 		.4byte	.LASF28
+ 323 0156 04       		.byte	0x4
+ 324 0157 37       		.byte	0x37
+ 325 0158 B4000000 		.4byte	0xb4
+ 326 015c 24       		.byte	0x24
+ 327 015d 0A       		.uleb128 0xa
+ 328 015e 23020000 		.4byte	.LASF29
+ 329 0162 04       		.byte	0x4
+ 330 0163 38       		.byte	0x38
+ 331 0164 D2000000 		.4byte	0xd2
+ 332 0168 28       		.byte	0x28
+ 333 0169 0A       		.uleb128 0xa
+ 334 016a D2030000 		.4byte	.LASF30
+ 335 016e 04       		.byte	0x4
+ 336 016f 3A       		.byte	0x3a
+ 337 0170 B4000000 		.4byte	0xb4
+ 338 0174 2C       		.byte	0x2c
+ 339 0175 0A       		.uleb128 0xa
+ 340 0176 DA020000 		.4byte	.LASF31
+ 341 017a 04       		.byte	0x4
+ 342 017b 3B       		.byte	0x3b
+ 343 017c B4000000 		.4byte	0xb4
+ 344 0180 30       		.byte	0x30
+ 345 0181 0A       		.uleb128 0xa
+ 346 0182 80030000 		.4byte	.LASF32
+ 347 0186 04       		.byte	0x4
+ 348 0187 3C       		.byte	0x3c
+ 349 0188 B4000000 		.4byte	0xb4
+ 350 018c 34       		.byte	0x34
+ 351 018d 0A       		.uleb128 0xa
+ 352 018e 5A020000 		.4byte	.LASF33
+ 353 0192 04       		.byte	0x4
+ 354 0193 3D       		.byte	0x3d
+ 355 0194 B4000000 		.4byte	0xb4
+ 356 0198 38       		.byte	0x38
+ 357 0199 0A       		.uleb128 0xa
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 10
+
+
+ 358 019a FC030000 		.4byte	.LASF34
+ 359 019e 04       		.byte	0x4
+ 360 019f 3E       		.byte	0x3e
+ 361 01a0 B4000000 		.4byte	0xb4
+ 362 01a4 3C       		.byte	0x3c
+ 363 01a5 0A       		.uleb128 0xa
+ 364 01a6 14010000 		.4byte	.LASF35
+ 365 01aa 04       		.byte	0x4
+ 366 01ab 40       		.byte	0x40
+ 367 01ac B4000000 		.4byte	0xb4
+ 368 01b0 40       		.byte	0x40
+ 369 01b1 0A       		.uleb128 0xa
+ 370 01b2 8E020000 		.4byte	.LASF36
+ 371 01b6 04       		.byte	0x4
+ 372 01b7 41       		.byte	0x41
+ 373 01b8 B4000000 		.4byte	0xb4
+ 374 01bc 44       		.byte	0x44
+ 375 01bd 0A       		.uleb128 0xa
+ 376 01be 00000000 		.4byte	.LASF37
+ 377 01c2 04       		.byte	0x4
+ 378 01c3 43       		.byte	0x43
+ 379 01c4 B4000000 		.4byte	0xb4
+ 380 01c8 48       		.byte	0x48
+ 381 01c9 0A       		.uleb128 0xa
+ 382 01ca F3020000 		.4byte	.LASF38
+ 383 01ce 04       		.byte	0x4
+ 384 01cf 44       		.byte	0x44
+ 385 01d0 B4000000 		.4byte	0xb4
+ 386 01d4 4C       		.byte	0x4c
+ 387 01d5 0A       		.uleb128 0xa
+ 388 01d6 10040000 		.4byte	.LASF39
+ 389 01da 04       		.byte	0x4
+ 390 01db 46       		.byte	0x46
+ 391 01dc B4000000 		.4byte	0xb4
+ 392 01e0 50       		.byte	0x50
+ 393 01e1 0A       		.uleb128 0xa
+ 394 01e2 42020000 		.4byte	.LASF40
+ 395 01e6 04       		.byte	0x4
+ 396 01e7 47       		.byte	0x47
+ 397 01e8 B4000000 		.4byte	0xb4
+ 398 01ec 54       		.byte	0x54
+ 399 01ed 0A       		.uleb128 0xa
+ 400 01ee 50020000 		.4byte	.LASF41
+ 401 01f2 04       		.byte	0x4
+ 402 01f3 49       		.byte	0x49
+ 403 01f4 B4000000 		.4byte	0xb4
+ 404 01f8 58       		.byte	0x58
+ 405 01f9 0A       		.uleb128 0xa
+ 406 01fa 2C000000 		.4byte	.LASF42
+ 407 01fe 04       		.byte	0x4
+ 408 01ff 4A       		.byte	0x4a
+ 409 0200 B4000000 		.4byte	0xb4
+ 410 0204 5C       		.byte	0x5c
+ 411 0205 0A       		.uleb128 0xa
+ 412 0206 6A040000 		.4byte	.LASF43
+ 413 020a 04       		.byte	0x4
+ 414 020b 4C       		.byte	0x4c
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 11
+
+
+ 415 020c B4000000 		.4byte	0xb4
+ 416 0210 60       		.byte	0x60
+ 417 0211 00       		.byte	0
+ 418 0212 03       		.uleb128 0x3
+ 419 0213 4D000000 		.4byte	.LASF44
+ 420 0217 04       		.byte	0x4
+ 421 0218 4D       		.byte	0x4d
+ 422 0219 D9000000 		.4byte	0xd9
+ 423 021d 06       		.uleb128 0x6
+ 424 021e 04       		.byte	0x4
+ 425 021f 23020000 		.4byte	0x223
+ 426 0223 0B       		.uleb128 0xb
+ 427 0224 2E020000 		.4byte	0x22e
+ 428 0228 0C       		.uleb128 0xc
+ 429 0229 B4000000 		.4byte	0xb4
+ 430 022d 00       		.byte	0
+ 431 022e 0D       		.uleb128 0xd
+ 432 022f BC000000 		.4byte	.LASF45
+ 433 0233 05       		.byte	0x5
+ 434 0234 AB01     		.2byte	0x1ab
+ 435 0236 1D020000 		.4byte	0x21d
+ 436 023a 0E       		.uleb128 0xe
+ 437 023b FC000000 		.4byte	.LASF47
+ 438 023f 38       		.byte	0x38
+ 439 0240 05       		.byte	0x5
+ 440 0241 4702     		.2byte	0x247
+ 441 0243 FE020000 		.4byte	0x2fe
+ 442 0247 0F       		.uleb128 0xf
+ 443 0248 F4010000 		.4byte	.LASF48
+ 444 024c 05       		.byte	0x5
+ 445 024d 4A02     		.2byte	0x24a
+ 446 024f BF000000 		.4byte	0xbf
+ 447 0253 00       		.byte	0
+ 448 0254 0F       		.uleb128 0xf
+ 449 0255 02030000 		.4byte	.LASF49
+ 450 0259 05       		.byte	0x5
+ 451 025a 4B02     		.2byte	0x24b
+ 452 025c BF000000 		.4byte	0xbf
+ 453 0260 04       		.byte	0x4
+ 454 0261 0F       		.uleb128 0xf
+ 455 0262 19030000 		.4byte	.LASF50
+ 456 0266 05       		.byte	0x5
+ 457 0267 4D02     		.2byte	0x24d
+ 458 0269 88000000 		.4byte	0x88
+ 459 026d 08       		.byte	0x8
+ 460 026e 0F       		.uleb128 0xf
+ 461 026f B4020000 		.4byte	.LASF51
+ 462 0273 05       		.byte	0x5
+ 463 0274 4E02     		.2byte	0x24e
+ 464 0276 B4000000 		.4byte	0xb4
+ 465 027a 0C       		.byte	0xc
+ 466 027b 0F       		.uleb128 0xf
+ 467 027c 6A020000 		.4byte	.LASF52
+ 468 0280 05       		.byte	0x5
+ 469 0281 4F02     		.2byte	0x24f
+ 470 0283 BF000000 		.4byte	0xbf
+ 471 0287 10       		.byte	0x10
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 12
+
+
+ 472 0288 0F       		.uleb128 0xf
+ 473 0289 47040000 		.4byte	.LASF53
+ 474 028d 05       		.byte	0x5
+ 475 028e 5002     		.2byte	0x250
+ 476 0290 BF000000 		.4byte	0xbf
+ 477 0294 14       		.byte	0x14
+ 478 0295 0F       		.uleb128 0xf
+ 479 0296 A1030000 		.4byte	.LASF54
+ 480 029a 05       		.byte	0x5
+ 481 029b 5202     		.2byte	0x252
+ 482 029d 88000000 		.4byte	0x88
+ 483 02a1 18       		.byte	0x18
+ 484 02a2 0F       		.uleb128 0xf
+ 485 02a3 67000000 		.4byte	.LASF55
+ 486 02a7 05       		.byte	0x5
+ 487 02a8 5302     		.2byte	0x253
+ 488 02aa B4000000 		.4byte	0xb4
+ 489 02ae 1C       		.byte	0x1c
+ 490 02af 0F       		.uleb128 0xf
+ 491 02b0 04020000 		.4byte	.LASF56
+ 492 02b4 05       		.byte	0x5
+ 493 02b5 5402     		.2byte	0x254
+ 494 02b7 BF000000 		.4byte	0xbf
+ 495 02bb 20       		.byte	0x20
+ 496 02bc 0F       		.uleb128 0xf
+ 497 02bd 0A040000 		.4byte	.LASF57
+ 498 02c1 05       		.byte	0x5
+ 499 02c2 5602     		.2byte	0x256
+ 500 02c4 88000000 		.4byte	0x88
+ 501 02c8 24       		.byte	0x24
+ 502 02c9 0F       		.uleb128 0xf
+ 503 02ca C2020000 		.4byte	.LASF58
+ 504 02ce 05       		.byte	0x5
+ 505 02cf 5702     		.2byte	0x257
+ 506 02d1 B4000000 		.4byte	0xb4
+ 507 02d5 28       		.byte	0x28
+ 508 02d6 0F       		.uleb128 0xf
+ 509 02d7 0C000000 		.4byte	.LASF59
+ 510 02db 05       		.byte	0x5
+ 511 02dc 5802     		.2byte	0x258
+ 512 02de BF000000 		.4byte	0xbf
+ 513 02e2 2C       		.byte	0x2c
+ 514 02e3 0F       		.uleb128 0xf
+ 515 02e4 AC030000 		.4byte	.LASF60
+ 516 02e8 05       		.byte	0x5
+ 517 02e9 5D02     		.2byte	0x25d
+ 518 02eb 2E020000 		.4byte	0x22e
+ 519 02ef 30       		.byte	0x30
+ 520 02f0 0F       		.uleb128 0xf
+ 521 02f1 25040000 		.4byte	.LASF61
+ 522 02f5 05       		.byte	0x5
+ 523 02f6 6002     		.2byte	0x260
+ 524 02f8 B4000000 		.4byte	0xb4
+ 525 02fc 34       		.byte	0x34
+ 526 02fd 00       		.byte	0
+ 527 02fe 0D       		.uleb128 0xd
+ 528 02ff 2D040000 		.4byte	.LASF62
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 13
+
+
+ 529 0303 05       		.byte	0x5
+ 530 0304 6302     		.2byte	0x263
+ 531 0306 3A020000 		.4byte	0x23a
+ 532 030a 10       		.uleb128 0x10
+ 533 030b 63020000 		.4byte	.LASF63
+ 534 030f 01       		.byte	0x1
+ 535 0310 4F       		.byte	0x4f
+ 536 0311 73000000 		.4byte	0x73
+ 537 0315 00000000 		.4byte	.LFB576
+ 538 0319 22000000 		.4byte	.LFE576-.LFB576
+ 539 031d 01       		.uleb128 0x1
+ 540 031e 9C       		.byte	0x9c
+ 541 031f 68030000 		.4byte	0x368
+ 542 0323 11       		.uleb128 0x11
+ 543 0324 666400   		.ascii	"fd\000"
+ 544 0327 01       		.byte	0x1
+ 545 0328 4F       		.byte	0x4f
+ 546 0329 73000000 		.4byte	0x73
+ 547 032d 00000000 		.4byte	.LLST0
+ 548 0331 11       		.uleb128 0x11
+ 549 0332 70747200 		.ascii	"ptr\000"
+ 550 0336 01       		.byte	0x1
+ 551 0337 4F       		.byte	0x4f
+ 552 0338 9E000000 		.4byte	0x9e
+ 553 033c 3A000000 		.4byte	.LLST1
+ 554 0340 11       		.uleb128 0x11
+ 555 0341 6C656E00 		.ascii	"len\000"
+ 556 0345 01       		.byte	0x1
+ 557 0346 4F       		.byte	0x4f
+ 558 0347 73000000 		.4byte	0x73
+ 559 034b 86000000 		.4byte	.LLST2
+ 560 034f 12       		.uleb128 0x12
+ 561 0350 FD010000 		.4byte	.LASF65
+ 562 0354 01       		.byte	0x1
+ 563 0355 51       		.byte	0x51
+ 564 0356 73000000 		.4byte	0x73
+ 565 035a C8000000 		.4byte	.LLST3
+ 566 035e 13       		.uleb128 0x13
+ 567 035f 10000000 		.4byte	.LVL4
+ 568 0363 FD030000 		.4byte	0x3fd
+ 569 0367 00       		.byte	0
+ 570 0368 10       		.uleb128 0x10
+ 571 0369 23030000 		.4byte	.LASF64
+ 572 036d 01       		.byte	0x1
+ 573 036e 85       		.byte	0x85
+ 574 036f 73000000 		.4byte	0x73
+ 575 0373 00000000 		.4byte	.LFB577
+ 576 0377 28000000 		.4byte	.LFE577-.LFB577
+ 577 037b 01       		.uleb128 0x1
+ 578 037c 9C       		.byte	0x9c
+ 579 037d C6030000 		.4byte	0x3c6
+ 580 0381 11       		.uleb128 0x11
+ 581 0382 666400   		.ascii	"fd\000"
+ 582 0385 01       		.byte	0x1
+ 583 0386 85       		.byte	0x85
+ 584 0387 73000000 		.4byte	0x73
+ 585 038b FE000000 		.4byte	.LLST4
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 14
+
+
+ 586 038f 11       		.uleb128 0x11
+ 587 0390 70747200 		.ascii	"ptr\000"
+ 588 0394 01       		.byte	0x1
+ 589 0395 85       		.byte	0x85
+ 590 0396 91000000 		.4byte	0x91
+ 591 039a 38010000 		.4byte	.LLST5
+ 592 039e 11       		.uleb128 0x11
+ 593 039f 6C656E00 		.ascii	"len\000"
+ 594 03a3 01       		.byte	0x1
+ 595 03a4 85       		.byte	0x85
+ 596 03a5 73000000 		.4byte	0x73
+ 597 03a9 6C010000 		.4byte	.LLST6
+ 598 03ad 12       		.uleb128 0x12
+ 599 03ae FD010000 		.4byte	.LASF65
+ 600 03b2 01       		.byte	0x1
+ 601 03b3 87       		.byte	0x87
+ 602 03b4 73000000 		.4byte	0x73
+ 603 03b8 AE010000 		.4byte	.LLST7
+ 604 03bc 13       		.uleb128 0x13
+ 605 03bd 0C000000 		.4byte	.LVL12
+ 606 03c1 08040000 		.4byte	0x408
+ 607 03c5 00       		.byte	0
+ 608 03c6 14       		.uleb128 0x14
+ 609 03c7 75040000 		.4byte	.LASF66
+ 610 03cb 06       		.byte	0x6
+ 611 03cc EA07     		.2byte	0x7ea
+ 612 03ce D2030000 		.4byte	0x3d2
+ 613 03d2 08       		.uleb128 0x8
+ 614 03d3 A9000000 		.4byte	0xa9
+ 615 03d7 15       		.uleb128 0x15
+ 616 03d8 5D040000 		.4byte	.LASF67
+ 617 03dc 07       		.byte	0x7
+ 618 03dd 87       		.byte	0x87
+ 619 03de FE020000 		.4byte	0x2fe
+ 620 03e2 15       		.uleb128 0x15
+ 621 03e3 35020000 		.4byte	.LASF68
+ 622 03e7 08       		.byte	0x8
+ 623 03e8 1F       		.byte	0x1f
+ 624 03e9 ED030000 		.4byte	0x3ed
+ 625 03ed 07       		.uleb128 0x7
+ 626 03ee 12020000 		.4byte	0x212
+ 627 03f2 15       		.uleb128 0x15
+ 628 03f3 73030000 		.4byte	.LASF69
+ 629 03f7 09       		.byte	0x9
+ 630 03f8 1F       		.byte	0x1f
+ 631 03f9 ED030000 		.4byte	0x3ed
+ 632 03fd 16       		.uleb128 0x16
+ 633 03fe CC020000 		.4byte	.LASF70
+ 634 0402 CC020000 		.4byte	.LASF70
+ 635 0406 0A       		.byte	0xa
+ 636 0407 AE       		.byte	0xae
+ 637 0408 16       		.uleb128 0x16
+ 638 0409 E5000000 		.4byte	.LASF71
+ 639 040d E5000000 		.4byte	.LASF71
+ 640 0411 0A       		.byte	0xa
+ 641 0412 B2       		.byte	0xb2
+ 642 0413 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 15
+
+
+ 643              		.section	.debug_abbrev,"",%progbits
+ 644              	.Ldebug_abbrev0:
+ 645 0000 01       		.uleb128 0x1
+ 646 0001 11       		.uleb128 0x11
+ 647 0002 01       		.byte	0x1
+ 648 0003 25       		.uleb128 0x25
+ 649 0004 0E       		.uleb128 0xe
+ 650 0005 13       		.uleb128 0x13
+ 651 0006 0B       		.uleb128 0xb
+ 652 0007 03       		.uleb128 0x3
+ 653 0008 0E       		.uleb128 0xe
+ 654 0009 1B       		.uleb128 0x1b
+ 655 000a 0E       		.uleb128 0xe
+ 656 000b 55       		.uleb128 0x55
+ 657 000c 17       		.uleb128 0x17
+ 658 000d 11       		.uleb128 0x11
+ 659 000e 01       		.uleb128 0x1
+ 660 000f 10       		.uleb128 0x10
+ 661 0010 17       		.uleb128 0x17
+ 662 0011 00       		.byte	0
+ 663 0012 00       		.byte	0
+ 664 0013 02       		.uleb128 0x2
+ 665 0014 24       		.uleb128 0x24
+ 666 0015 00       		.byte	0
+ 667 0016 0B       		.uleb128 0xb
+ 668 0017 0B       		.uleb128 0xb
+ 669 0018 3E       		.uleb128 0x3e
+ 670 0019 0B       		.uleb128 0xb
+ 671 001a 03       		.uleb128 0x3
+ 672 001b 0E       		.uleb128 0xe
+ 673 001c 00       		.byte	0
+ 674 001d 00       		.byte	0
+ 675 001e 03       		.uleb128 0x3
+ 676 001f 16       		.uleb128 0x16
+ 677 0020 00       		.byte	0
+ 678 0021 03       		.uleb128 0x3
+ 679 0022 0E       		.uleb128 0xe
+ 680 0023 3A       		.uleb128 0x3a
+ 681 0024 0B       		.uleb128 0xb
+ 682 0025 3B       		.uleb128 0x3b
+ 683 0026 0B       		.uleb128 0xb
+ 684 0027 49       		.uleb128 0x49
+ 685 0028 13       		.uleb128 0x13
+ 686 0029 00       		.byte	0
+ 687 002a 00       		.byte	0
+ 688 002b 04       		.uleb128 0x4
+ 689 002c 24       		.uleb128 0x24
+ 690 002d 00       		.byte	0
+ 691 002e 0B       		.uleb128 0xb
+ 692 002f 0B       		.uleb128 0xb
+ 693 0030 3E       		.uleb128 0x3e
+ 694 0031 0B       		.uleb128 0xb
+ 695 0032 03       		.uleb128 0x3
+ 696 0033 08       		.uleb128 0x8
+ 697 0034 00       		.byte	0
+ 698 0035 00       		.byte	0
+ 699 0036 05       		.uleb128 0x5
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 16
+
+
+ 700 0037 0F       		.uleb128 0xf
+ 701 0038 00       		.byte	0
+ 702 0039 0B       		.uleb128 0xb
+ 703 003a 0B       		.uleb128 0xb
+ 704 003b 00       		.byte	0
+ 705 003c 00       		.byte	0
+ 706 003d 06       		.uleb128 0x6
+ 707 003e 0F       		.uleb128 0xf
+ 708 003f 00       		.byte	0
+ 709 0040 0B       		.uleb128 0xb
+ 710 0041 0B       		.uleb128 0xb
+ 711 0042 49       		.uleb128 0x49
+ 712 0043 13       		.uleb128 0x13
+ 713 0044 00       		.byte	0
+ 714 0045 00       		.byte	0
+ 715 0046 07       		.uleb128 0x7
+ 716 0047 26       		.uleb128 0x26
+ 717 0048 00       		.byte	0
+ 718 0049 49       		.uleb128 0x49
+ 719 004a 13       		.uleb128 0x13
+ 720 004b 00       		.byte	0
+ 721 004c 00       		.byte	0
+ 722 004d 08       		.uleb128 0x8
+ 723 004e 35       		.uleb128 0x35
+ 724 004f 00       		.byte	0
+ 725 0050 49       		.uleb128 0x49
+ 726 0051 13       		.uleb128 0x13
+ 727 0052 00       		.byte	0
+ 728 0053 00       		.byte	0
+ 729 0054 09       		.uleb128 0x9
+ 730 0055 13       		.uleb128 0x13
+ 731 0056 01       		.byte	0x1
+ 732 0057 03       		.uleb128 0x3
+ 733 0058 0E       		.uleb128 0xe
+ 734 0059 0B       		.uleb128 0xb
+ 735 005a 0B       		.uleb128 0xb
+ 736 005b 3A       		.uleb128 0x3a
+ 737 005c 0B       		.uleb128 0xb
+ 738 005d 3B       		.uleb128 0x3b
+ 739 005e 0B       		.uleb128 0xb
+ 740 005f 01       		.uleb128 0x1
+ 741 0060 13       		.uleb128 0x13
+ 742 0061 00       		.byte	0
+ 743 0062 00       		.byte	0
+ 744 0063 0A       		.uleb128 0xa
+ 745 0064 0D       		.uleb128 0xd
+ 746 0065 00       		.byte	0
+ 747 0066 03       		.uleb128 0x3
+ 748 0067 0E       		.uleb128 0xe
+ 749 0068 3A       		.uleb128 0x3a
+ 750 0069 0B       		.uleb128 0xb
+ 751 006a 3B       		.uleb128 0x3b
+ 752 006b 0B       		.uleb128 0xb
+ 753 006c 49       		.uleb128 0x49
+ 754 006d 13       		.uleb128 0x13
+ 755 006e 38       		.uleb128 0x38
+ 756 006f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 17
+
+
+ 757 0070 00       		.byte	0
+ 758 0071 00       		.byte	0
+ 759 0072 0B       		.uleb128 0xb
+ 760 0073 15       		.uleb128 0x15
+ 761 0074 01       		.byte	0x1
+ 762 0075 27       		.uleb128 0x27
+ 763 0076 19       		.uleb128 0x19
+ 764 0077 01       		.uleb128 0x1
+ 765 0078 13       		.uleb128 0x13
+ 766 0079 00       		.byte	0
+ 767 007a 00       		.byte	0
+ 768 007b 0C       		.uleb128 0xc
+ 769 007c 05       		.uleb128 0x5
+ 770 007d 00       		.byte	0
+ 771 007e 49       		.uleb128 0x49
+ 772 007f 13       		.uleb128 0x13
+ 773 0080 00       		.byte	0
+ 774 0081 00       		.byte	0
+ 775 0082 0D       		.uleb128 0xd
+ 776 0083 16       		.uleb128 0x16
+ 777 0084 00       		.byte	0
+ 778 0085 03       		.uleb128 0x3
+ 779 0086 0E       		.uleb128 0xe
+ 780 0087 3A       		.uleb128 0x3a
+ 781 0088 0B       		.uleb128 0xb
+ 782 0089 3B       		.uleb128 0x3b
+ 783 008a 05       		.uleb128 0x5
+ 784 008b 49       		.uleb128 0x49
+ 785 008c 13       		.uleb128 0x13
+ 786 008d 00       		.byte	0
+ 787 008e 00       		.byte	0
+ 788 008f 0E       		.uleb128 0xe
+ 789 0090 13       		.uleb128 0x13
+ 790 0091 01       		.byte	0x1
+ 791 0092 03       		.uleb128 0x3
+ 792 0093 0E       		.uleb128 0xe
+ 793 0094 0B       		.uleb128 0xb
+ 794 0095 0B       		.uleb128 0xb
+ 795 0096 3A       		.uleb128 0x3a
+ 796 0097 0B       		.uleb128 0xb
+ 797 0098 3B       		.uleb128 0x3b
+ 798 0099 05       		.uleb128 0x5
+ 799 009a 01       		.uleb128 0x1
+ 800 009b 13       		.uleb128 0x13
+ 801 009c 00       		.byte	0
+ 802 009d 00       		.byte	0
+ 803 009e 0F       		.uleb128 0xf
+ 804 009f 0D       		.uleb128 0xd
+ 805 00a0 00       		.byte	0
+ 806 00a1 03       		.uleb128 0x3
+ 807 00a2 0E       		.uleb128 0xe
+ 808 00a3 3A       		.uleb128 0x3a
+ 809 00a4 0B       		.uleb128 0xb
+ 810 00a5 3B       		.uleb128 0x3b
+ 811 00a6 05       		.uleb128 0x5
+ 812 00a7 49       		.uleb128 0x49
+ 813 00a8 13       		.uleb128 0x13
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 18
+
+
+ 814 00a9 38       		.uleb128 0x38
+ 815 00aa 0B       		.uleb128 0xb
+ 816 00ab 00       		.byte	0
+ 817 00ac 00       		.byte	0
+ 818 00ad 10       		.uleb128 0x10
+ 819 00ae 2E       		.uleb128 0x2e
+ 820 00af 01       		.byte	0x1
+ 821 00b0 3F       		.uleb128 0x3f
+ 822 00b1 19       		.uleb128 0x19
+ 823 00b2 03       		.uleb128 0x3
+ 824 00b3 0E       		.uleb128 0xe
+ 825 00b4 3A       		.uleb128 0x3a
+ 826 00b5 0B       		.uleb128 0xb
+ 827 00b6 3B       		.uleb128 0x3b
+ 828 00b7 0B       		.uleb128 0xb
+ 829 00b8 27       		.uleb128 0x27
+ 830 00b9 19       		.uleb128 0x19
+ 831 00ba 49       		.uleb128 0x49
+ 832 00bb 13       		.uleb128 0x13
+ 833 00bc 11       		.uleb128 0x11
+ 834 00bd 01       		.uleb128 0x1
+ 835 00be 12       		.uleb128 0x12
+ 836 00bf 06       		.uleb128 0x6
+ 837 00c0 40       		.uleb128 0x40
+ 838 00c1 18       		.uleb128 0x18
+ 839 00c2 9742     		.uleb128 0x2117
+ 840 00c4 19       		.uleb128 0x19
+ 841 00c5 01       		.uleb128 0x1
+ 842 00c6 13       		.uleb128 0x13
+ 843 00c7 00       		.byte	0
+ 844 00c8 00       		.byte	0
+ 845 00c9 11       		.uleb128 0x11
+ 846 00ca 05       		.uleb128 0x5
+ 847 00cb 00       		.byte	0
+ 848 00cc 03       		.uleb128 0x3
+ 849 00cd 08       		.uleb128 0x8
+ 850 00ce 3A       		.uleb128 0x3a
+ 851 00cf 0B       		.uleb128 0xb
+ 852 00d0 3B       		.uleb128 0x3b
+ 853 00d1 0B       		.uleb128 0xb
+ 854 00d2 49       		.uleb128 0x49
+ 855 00d3 13       		.uleb128 0x13
+ 856 00d4 02       		.uleb128 0x2
+ 857 00d5 17       		.uleb128 0x17
+ 858 00d6 00       		.byte	0
+ 859 00d7 00       		.byte	0
+ 860 00d8 12       		.uleb128 0x12
+ 861 00d9 34       		.uleb128 0x34
+ 862 00da 00       		.byte	0
+ 863 00db 03       		.uleb128 0x3
+ 864 00dc 0E       		.uleb128 0xe
+ 865 00dd 3A       		.uleb128 0x3a
+ 866 00de 0B       		.uleb128 0xb
+ 867 00df 3B       		.uleb128 0x3b
+ 868 00e0 0B       		.uleb128 0xb
+ 869 00e1 49       		.uleb128 0x49
+ 870 00e2 13       		.uleb128 0x13
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 19
+
+
+ 871 00e3 02       		.uleb128 0x2
+ 872 00e4 17       		.uleb128 0x17
+ 873 00e5 00       		.byte	0
+ 874 00e6 00       		.byte	0
+ 875 00e7 13       		.uleb128 0x13
+ 876 00e8 898201   		.uleb128 0x4109
+ 877 00eb 00       		.byte	0
+ 878 00ec 11       		.uleb128 0x11
+ 879 00ed 01       		.uleb128 0x1
+ 880 00ee 31       		.uleb128 0x31
+ 881 00ef 13       		.uleb128 0x13
+ 882 00f0 00       		.byte	0
+ 883 00f1 00       		.byte	0
+ 884 00f2 14       		.uleb128 0x14
+ 885 00f3 34       		.uleb128 0x34
+ 886 00f4 00       		.byte	0
+ 887 00f5 03       		.uleb128 0x3
+ 888 00f6 0E       		.uleb128 0xe
+ 889 00f7 3A       		.uleb128 0x3a
+ 890 00f8 0B       		.uleb128 0xb
+ 891 00f9 3B       		.uleb128 0x3b
+ 892 00fa 05       		.uleb128 0x5
+ 893 00fb 49       		.uleb128 0x49
+ 894 00fc 13       		.uleb128 0x13
+ 895 00fd 3F       		.uleb128 0x3f
+ 896 00fe 19       		.uleb128 0x19
+ 897 00ff 3C       		.uleb128 0x3c
+ 898 0100 19       		.uleb128 0x19
+ 899 0101 00       		.byte	0
+ 900 0102 00       		.byte	0
+ 901 0103 15       		.uleb128 0x15
+ 902 0104 34       		.uleb128 0x34
+ 903 0105 00       		.byte	0
+ 904 0106 03       		.uleb128 0x3
+ 905 0107 0E       		.uleb128 0xe
+ 906 0108 3A       		.uleb128 0x3a
+ 907 0109 0B       		.uleb128 0xb
+ 908 010a 3B       		.uleb128 0x3b
+ 909 010b 0B       		.uleb128 0xb
+ 910 010c 49       		.uleb128 0x49
+ 911 010d 13       		.uleb128 0x13
+ 912 010e 3F       		.uleb128 0x3f
+ 913 010f 19       		.uleb128 0x19
+ 914 0110 3C       		.uleb128 0x3c
+ 915 0111 19       		.uleb128 0x19
+ 916 0112 00       		.byte	0
+ 917 0113 00       		.byte	0
+ 918 0114 16       		.uleb128 0x16
+ 919 0115 2E       		.uleb128 0x2e
+ 920 0116 00       		.byte	0
+ 921 0117 3F       		.uleb128 0x3f
+ 922 0118 19       		.uleb128 0x19
+ 923 0119 3C       		.uleb128 0x3c
+ 924 011a 19       		.uleb128 0x19
+ 925 011b 6E       		.uleb128 0x6e
+ 926 011c 0E       		.uleb128 0xe
+ 927 011d 03       		.uleb128 0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 20
+
+
+ 928 011e 0E       		.uleb128 0xe
+ 929 011f 3A       		.uleb128 0x3a
+ 930 0120 0B       		.uleb128 0xb
+ 931 0121 3B       		.uleb128 0x3b
+ 932 0122 0B       		.uleb128 0xb
+ 933 0123 00       		.byte	0
+ 934 0124 00       		.byte	0
+ 935 0125 00       		.byte	0
+ 936              		.section	.debug_loc,"",%progbits
+ 937              	.Ldebug_loc0:
+ 938              	.LLST0:
+ 939 0000 00000000 		.4byte	.LVL0
+ 940 0004 08000000 		.4byte	.LVL2
+ 941 0008 0100     		.2byte	0x1
+ 942 000a 50       		.byte	0x50
+ 943 000b 08000000 		.4byte	.LVL2
+ 944 000f 14000000 		.4byte	.LVL6
+ 945 0013 0400     		.2byte	0x4
+ 946 0015 F3       		.byte	0xf3
+ 947 0016 01       		.uleb128 0x1
+ 948 0017 50       		.byte	0x50
+ 949 0018 9F       		.byte	0x9f
+ 950 0019 14000000 		.4byte	.LVL6
+ 951 001d 1A000000 		.4byte	.LVL7
+ 952 0021 0100     		.2byte	0x1
+ 953 0023 50       		.byte	0x50
+ 954 0024 1A000000 		.4byte	.LVL7
+ 955 0028 22000000 		.4byte	.LFE576
+ 956 002c 0400     		.2byte	0x4
+ 957 002e F3       		.byte	0xf3
+ 958 002f 01       		.uleb128 0x1
+ 959 0030 50       		.byte	0x50
+ 960 0031 9F       		.byte	0x9f
+ 961 0032 00000000 		.4byte	0
+ 962 0036 00000000 		.4byte	0
+ 963              	.LLST1:
+ 964 003a 00000000 		.4byte	.LVL0
+ 965 003e 08000000 		.4byte	.LVL2
+ 966 0042 0100     		.2byte	0x1
+ 967 0044 51       		.byte	0x51
+ 968 0045 08000000 		.4byte	.LVL2
+ 969 0049 0C000000 		.4byte	.LVL3
+ 970 004d 0100     		.2byte	0x1
+ 971 004f 55       		.byte	0x55
+ 972 0050 0C000000 		.4byte	.LVL3
+ 973 0054 10000000 		.4byte	.LVL4
+ 974 0058 0300     		.2byte	0x3
+ 975 005a 75       		.byte	0x75
+ 976 005b 7F       		.sleb128 -1
+ 977 005c 9F       		.byte	0x9f
+ 978 005d 10000000 		.4byte	.LVL4
+ 979 0061 14000000 		.4byte	.LVL6
+ 980 0065 0100     		.2byte	0x1
+ 981 0067 55       		.byte	0x55
+ 982 0068 14000000 		.4byte	.LVL6
+ 983 006c 1A000000 		.4byte	.LVL7
+ 984 0070 0100     		.2byte	0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 21
+
+
+ 985 0072 51       		.byte	0x51
+ 986 0073 1A000000 		.4byte	.LVL7
+ 987 0077 1E000000 		.4byte	.LVL8
+ 988 007b 0100     		.2byte	0x1
+ 989 007d 55       		.byte	0x55
+ 990 007e 00000000 		.4byte	0
+ 991 0082 00000000 		.4byte	0
+ 992              	.LLST2:
+ 993 0086 00000000 		.4byte	.LVL0
+ 994 008a 08000000 		.4byte	.LVL2
+ 995 008e 0100     		.2byte	0x1
+ 996 0090 52       		.byte	0x52
+ 997 0091 08000000 		.4byte	.LVL2
+ 998 0095 14000000 		.4byte	.LVL6
+ 999 0099 0100     		.2byte	0x1
+ 1000 009b 56       		.byte	0x56
+ 1001 009c 14000000 		.4byte	.LVL6
+ 1002 00a0 1A000000 		.4byte	.LVL7
+ 1003 00a4 0100     		.2byte	0x1
+ 1004 00a6 52       		.byte	0x52
+ 1005 00a7 1A000000 		.4byte	.LVL7
+ 1006 00ab 1E000000 		.4byte	.LVL8
+ 1007 00af 0100     		.2byte	0x1
+ 1008 00b1 56       		.byte	0x56
+ 1009 00b2 1E000000 		.4byte	.LVL8
+ 1010 00b6 22000000 		.4byte	.LFE576
+ 1011 00ba 0400     		.2byte	0x4
+ 1012 00bc F3       		.byte	0xf3
+ 1013 00bd 01       		.uleb128 0x1
+ 1014 00be 52       		.byte	0x52
+ 1015 00bf 9F       		.byte	0x9f
+ 1016 00c0 00000000 		.4byte	0
+ 1017 00c4 00000000 		.4byte	0
+ 1018              	.LLST3:
+ 1019 00c8 02000000 		.4byte	.LVL1
+ 1020 00cc 08000000 		.4byte	.LVL2
+ 1021 00d0 0200     		.2byte	0x2
+ 1022 00d2 30       		.byte	0x30
+ 1023 00d3 9F       		.byte	0x9f
+ 1024 00d4 08000000 		.4byte	.LVL2
+ 1025 00d8 14000000 		.4byte	.LVL6
+ 1026 00dc 0100     		.2byte	0x1
+ 1027 00de 54       		.byte	0x54
+ 1028 00df 14000000 		.4byte	.LVL6
+ 1029 00e3 1A000000 		.4byte	.LVL7
+ 1030 00e7 0200     		.2byte	0x2
+ 1031 00e9 30       		.byte	0x30
+ 1032 00ea 9F       		.byte	0x9f
+ 1033 00eb 1A000000 		.4byte	.LVL7
+ 1034 00ef 22000000 		.4byte	.LFE576
+ 1035 00f3 0100     		.2byte	0x1
+ 1036 00f5 54       		.byte	0x54
+ 1037 00f6 00000000 		.4byte	0
+ 1038 00fa 00000000 		.4byte	0
+ 1039              	.LLST4:
+ 1040 00fe 00000000 		.4byte	.LVL9
+ 1041 0102 08000000 		.4byte	.LVL11
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 22
+
+
+ 1042 0106 0100     		.2byte	0x1
+ 1043 0108 50       		.byte	0x50
+ 1044 0109 08000000 		.4byte	.LVL11
+ 1045 010d 1A000000 		.4byte	.LVL15
+ 1046 0111 0400     		.2byte	0x4
+ 1047 0113 F3       		.byte	0xf3
+ 1048 0114 01       		.uleb128 0x1
+ 1049 0115 50       		.byte	0x50
+ 1050 0116 9F       		.byte	0x9f
+ 1051 0117 1A000000 		.4byte	.LVL15
+ 1052 011b 20000000 		.4byte	.LVL16
+ 1053 011f 0100     		.2byte	0x1
+ 1054 0121 50       		.byte	0x50
+ 1055 0122 20000000 		.4byte	.LVL16
+ 1056 0126 28000000 		.4byte	.LFE577
+ 1057 012a 0400     		.2byte	0x4
+ 1058 012c F3       		.byte	0xf3
+ 1059 012d 01       		.uleb128 0x1
+ 1060 012e 50       		.byte	0x50
+ 1061 012f 9F       		.byte	0x9f
+ 1062 0130 00000000 		.4byte	0
+ 1063 0134 00000000 		.4byte	0
+ 1064              	.LLST5:
+ 1065 0138 00000000 		.4byte	.LVL9
+ 1066 013c 08000000 		.4byte	.LVL11
+ 1067 0140 0100     		.2byte	0x1
+ 1068 0142 51       		.byte	0x51
+ 1069 0143 08000000 		.4byte	.LVL11
+ 1070 0147 1A000000 		.4byte	.LVL15
+ 1071 014b 0100     		.2byte	0x1
+ 1072 014d 55       		.byte	0x55
+ 1073 014e 1A000000 		.4byte	.LVL15
+ 1074 0152 20000000 		.4byte	.LVL16
+ 1075 0156 0100     		.2byte	0x1
+ 1076 0158 51       		.byte	0x51
+ 1077 0159 20000000 		.4byte	.LVL16
+ 1078 015d 24000000 		.4byte	.LVL17
+ 1079 0161 0100     		.2byte	0x1
+ 1080 0163 55       		.byte	0x55
+ 1081 0164 00000000 		.4byte	0
+ 1082 0168 00000000 		.4byte	0
+ 1083              	.LLST6:
+ 1084 016c 00000000 		.4byte	.LVL9
+ 1085 0170 08000000 		.4byte	.LVL11
+ 1086 0174 0100     		.2byte	0x1
+ 1087 0176 52       		.byte	0x52
+ 1088 0177 08000000 		.4byte	.LVL11
+ 1089 017b 1A000000 		.4byte	.LVL15
+ 1090 017f 0100     		.2byte	0x1
+ 1091 0181 56       		.byte	0x56
+ 1092 0182 1A000000 		.4byte	.LVL15
+ 1093 0186 20000000 		.4byte	.LVL16
+ 1094 018a 0100     		.2byte	0x1
+ 1095 018c 52       		.byte	0x52
+ 1096 018d 20000000 		.4byte	.LVL16
+ 1097 0191 24000000 		.4byte	.LVL17
+ 1098 0195 0100     		.2byte	0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 23
+
+
+ 1099 0197 56       		.byte	0x56
+ 1100 0198 24000000 		.4byte	.LVL17
+ 1101 019c 28000000 		.4byte	.LFE577
+ 1102 01a0 0400     		.2byte	0x4
+ 1103 01a2 F3       		.byte	0xf3
+ 1104 01a3 01       		.uleb128 0x1
+ 1105 01a4 52       		.byte	0x52
+ 1106 01a5 9F       		.byte	0x9f
+ 1107 01a6 00000000 		.4byte	0
+ 1108 01aa 00000000 		.4byte	0
+ 1109              	.LLST7:
+ 1110 01ae 02000000 		.4byte	.LVL10
+ 1111 01b2 08000000 		.4byte	.LVL11
+ 1112 01b6 0200     		.2byte	0x2
+ 1113 01b8 30       		.byte	0x30
+ 1114 01b9 9F       		.byte	0x9f
+ 1115 01ba 08000000 		.4byte	.LVL11
+ 1116 01be 1A000000 		.4byte	.LVL15
+ 1117 01c2 0100     		.2byte	0x1
+ 1118 01c4 54       		.byte	0x54
+ 1119 01c5 1A000000 		.4byte	.LVL15
+ 1120 01c9 20000000 		.4byte	.LVL16
+ 1121 01cd 0200     		.2byte	0x2
+ 1122 01cf 30       		.byte	0x30
+ 1123 01d0 9F       		.byte	0x9f
+ 1124 01d1 20000000 		.4byte	.LVL16
+ 1125 01d5 28000000 		.4byte	.LFE577
+ 1126 01d9 0100     		.2byte	0x1
+ 1127 01db 54       		.byte	0x54
+ 1128 01dc 00000000 		.4byte	0
+ 1129 01e0 00000000 		.4byte	0
+ 1130              		.section	.debug_aranges,"",%progbits
+ 1131 0000 24000000 		.4byte	0x24
+ 1132 0004 0200     		.2byte	0x2
+ 1133 0006 00000000 		.4byte	.Ldebug_info0
+ 1134 000a 04       		.byte	0x4
+ 1135 000b 00       		.byte	0
+ 1136 000c 0000     		.2byte	0
+ 1137 000e 0000     		.2byte	0
+ 1138 0010 00000000 		.4byte	.LFB576
+ 1139 0014 22000000 		.4byte	.LFE576-.LFB576
+ 1140 0018 00000000 		.4byte	.LFB577
+ 1141 001c 28000000 		.4byte	.LFE577-.LFB577
+ 1142 0020 00000000 		.4byte	0
+ 1143 0024 00000000 		.4byte	0
+ 1144              		.section	.debug_ranges,"",%progbits
+ 1145              	.Ldebug_ranges0:
+ 1146 0000 00000000 		.4byte	.LFB576
+ 1147 0004 22000000 		.4byte	.LFE576
+ 1148 0008 00000000 		.4byte	.LFB577
+ 1149 000c 28000000 		.4byte	.LFE577
+ 1150 0010 00000000 		.4byte	0
+ 1151 0014 00000000 		.4byte	0
+ 1152              		.section	.debug_line,"",%progbits
+ 1153              	.Ldebug_line0:
+ 1154 0000 A8020000 		.section	.debug_str,"MS",%progbits,1
+ 1154      02005802 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 24
+
+
+ 1154      00000201 
+ 1154      FB0E0D00 
+ 1154      01010101 
+ 1155              	.LASF37:
+ 1156 0000 72656C6F 		.ascii	"reloadInput\000"
+ 1156      6164496E 
+ 1156      70757400 
+ 1157              	.LASF59:
+ 1158 000c 74784C65 		.ascii	"txLeftToTransmit\000"
+ 1158      6674546F 
+ 1158      5472616E 
+ 1158      736D6974 
+ 1158      00
+ 1159              	.LASF20:
+ 1160 001d 636C6F63 		.ascii	"clockPrescaler\000"
+ 1160      6B507265 
+ 1160      7363616C 
+ 1160      657200
+ 1161              	.LASF42:
+ 1162 002c 636F756E 		.ascii	"countInputMode\000"
+ 1162      74496E70 
+ 1162      75744D6F 
+ 1162      646500
+ 1163              	.LASF27:
+ 1164 003b 636F6D70 		.ascii	"compare0\000"
+ 1164      61726530 
+ 1164      00
+ 1165              	.LASF28:
+ 1166 0044 636F6D70 		.ascii	"compare1\000"
+ 1166      61726531 
+ 1166      00
+ 1167              	.LASF44:
+ 1168 004d 63795F73 		.ascii	"cy_stc_tcpwm_pwm_config_t\000"
+ 1168      74635F74 
+ 1168      6370776D 
+ 1168      5F70776D 
+ 1168      5F636F6E 
+ 1169              	.LASF55:
+ 1170 0067 72784275 		.ascii	"rxBufSize\000"
+ 1170      6653697A 
+ 1170      6500
+ 1171              	.LASF74:
+ 1172 0071 433A5C47 		.ascii	"C:\\Git\\PSoC6-101-Videos\\Projects_ScreenCapture\\"
+ 1172      69745C50 
+ 1172      536F4336 
+ 1172      2D313031 
+ 1172      2D566964 
+ 1173 00a0 50536F43 		.ascii	"PSoC 6_101\\MC-2-2-PWM.cydsn\000"
+ 1173      20365F31 
+ 1173      30315C4D 
+ 1173      432D322D 
+ 1173      322D5057 
+ 1174              	.LASF45:
+ 1175 00bc 63795F63 		.ascii	"cy_cb_scb_uart_handle_events_t\000"
+ 1175      625F7363 
+ 1175      625F7561 
+ 1175      72745F68 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 25
+
+
+ 1175      616E646C 
+ 1176              	.LASF2:
+ 1177 00db 73686F72 		.ascii	"short int\000"
+ 1177      7420696E 
+ 1177      7400
+ 1178              	.LASF71:
+ 1179 00e5 53544449 		.ascii	"STDIO_GetChar\000"
+ 1179      4F5F4765 
+ 1179      74436861 
+ 1179      7200
+ 1180              	.LASF12:
+ 1181 00f3 73697A65 		.ascii	"sizetype\000"
+ 1181      74797065 
+ 1181      00
+ 1182              	.LASF47:
+ 1183 00fc 63795F73 		.ascii	"cy_stc_scb_uart_context\000"
+ 1183      74635F73 
+ 1183      63625F75 
+ 1183      6172745F 
+ 1183      636F6E74 
+ 1184              	.LASF35:
+ 1185 0114 73776170 		.ascii	"swapInput\000"
+ 1185      496E7075 
+ 1185      7400
+ 1186              	.LASF72:
+ 1187 011e 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1187      43313120 
+ 1187      352E342E 
+ 1187      31203230 
+ 1187      31363036 
+ 1188 0151 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m4 -mfloat-abi=s"
+ 1188      20726576 
+ 1188      6973696F 
+ 1188      6E203233 
+ 1188      37373135 
+ 1189 0184 6F667466 		.ascii	"oftfp -mfpu=fpv4-sp-d16 -mthumb -g -Og -ffunction-s"
+ 1189      70202D6D 
+ 1189      6670753D 
+ 1189      66707634 
+ 1189      2D73702D 
+ 1190 01b7 65637469 		.ascii	"ections -ffat-lto-objects\000"
+ 1190      6F6E7320 
+ 1190      2D666661 
+ 1190      742D6C74 
+ 1190      6F2D6F62 
+ 1191              	.LASF46:
+ 1192 01d1 63795F73 		.ascii	"cy_stc_tcpwm_pwm_config\000"
+ 1192      74635F74 
+ 1192      6370776D 
+ 1192      5F70776D 
+ 1192      5F636F6E 
+ 1193              	.LASF6:
+ 1194 01e9 5F5F7569 		.ascii	"__uint32_t\000"
+ 1194      6E743332 
+ 1194      5F7400
+ 1195              	.LASF48:
+ 1196 01f4 74785374 		.ascii	"txStatus\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 26
+
+
+ 1196      61747573 
+ 1196      00
+ 1197              	.LASF65:
+ 1198 01fd 6E436861 		.ascii	"nChars\000"
+ 1198      727300
+ 1199              	.LASF56:
+ 1200 0204 72784275 		.ascii	"rxBufIdx\000"
+ 1200      66496478 
+ 1200      00
+ 1201              	.LASF4:
+ 1202 020d 6C6F6E67 		.ascii	"long int\000"
+ 1202      20696E74 
+ 1202      00
+ 1203              	.LASF21:
+ 1204 0216 70776D41 		.ascii	"pwmAlignment\000"
+ 1204      6C69676E 
+ 1204      6D656E74 
+ 1204      00
+ 1205              	.LASF29:
+ 1206 0223 656E6162 		.ascii	"enableCompareSwap\000"
+ 1206      6C65436F 
+ 1206      6D706172 
+ 1206      65537761 
+ 1206      7000
+ 1207              	.LASF68:
+ 1208 0235 50574D5F 		.ascii	"PWM_1_config\000"
+ 1208      315F636F 
+ 1208      6E666967 
+ 1208      00
+ 1209              	.LASF40:
+ 1210 0242 6B696C6C 		.ascii	"killInputMode\000"
+ 1210      496E7075 
+ 1210      744D6F64 
+ 1210      6500
+ 1211              	.LASF41:
+ 1212 0250 6B696C6C 		.ascii	"killInput\000"
+ 1212      496E7075 
+ 1212      7400
+ 1213              	.LASF33:
+ 1214 025a 6B696C6C 		.ascii	"killMode\000"
+ 1214      4D6F6465 
+ 1214      00
+ 1215              	.LASF63:
+ 1216 0263 5F777269 		.ascii	"_write\000"
+ 1216      746500
+ 1217              	.LASF52:
+ 1218 026a 72785269 		.ascii	"rxRingBufHead\000"
+ 1218      6E674275 
+ 1218      66486561 
+ 1218      6400
+ 1219              	.LASF16:
+ 1220 0278 666C6F61 		.ascii	"float\000"
+ 1220      7400
+ 1221              	.LASF24:
+ 1222 027e 70657269 		.ascii	"period0\000"
+ 1222      6F643000 
+ 1223              	.LASF25:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 27
+
+
+ 1224 0286 70657269 		.ascii	"period1\000"
+ 1224      6F643100 
+ 1225              	.LASF36:
+ 1226 028e 72656C6F 		.ascii	"reloadInputMode\000"
+ 1226      6164496E 
+ 1226      7075744D 
+ 1226      6F646500 
+ 1227              	.LASF8:
+ 1228 029e 6C6F6E67 		.ascii	"long long int\000"
+ 1228      206C6F6E 
+ 1228      6720696E 
+ 1228      7400
+ 1229              	.LASF23:
+ 1230 02ac 72756E4D 		.ascii	"runMode\000"
+ 1230      6F646500 
+ 1231              	.LASF51:
+ 1232 02b4 72785269 		.ascii	"rxRingBufSize\000"
+ 1232      6E674275 
+ 1232      6653697A 
+ 1232      6500
+ 1233              	.LASF58:
+ 1234 02c2 74784275 		.ascii	"txBufSize\000"
+ 1234      6653697A 
+ 1234      6500
+ 1235              	.LASF70:
+ 1236 02cc 53544449 		.ascii	"STDIO_PutChar\000"
+ 1236      4F5F5075 
+ 1236      74436861 
+ 1236      7200
+ 1237              	.LASF31:
+ 1238 02da 696E7665 		.ascii	"invertPWMOut\000"
+ 1238      72745057 
+ 1238      4D4F7574 
+ 1238      00
+ 1239              	.LASF11:
+ 1240 02e7 6C6F6E67 		.ascii	"long double\000"
+ 1240      20646F75 
+ 1240      626C6500 
+ 1241              	.LASF38:
+ 1242 02f3 73746172 		.ascii	"startInputMode\000"
+ 1242      74496E70 
+ 1242      75744D6F 
+ 1242      646500
+ 1243              	.LASF49:
+ 1244 0302 72785374 		.ascii	"rxStatus\000"
+ 1244      61747573 
+ 1244      00
+ 1245              	.LASF1:
+ 1246 030b 756E7369 		.ascii	"unsigned char\000"
+ 1246      676E6564 
+ 1246      20636861 
+ 1246      7200
+ 1247              	.LASF50:
+ 1248 0319 72785269 		.ascii	"rxRingBuf\000"
+ 1248      6E674275 
+ 1248      6600
+ 1249              	.LASF64:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 28
+
+
+ 1250 0323 5F726561 		.ascii	"_read\000"
+ 1250      6400
+ 1251              	.LASF26:
+ 1252 0329 656E6162 		.ascii	"enablePeriodSwap\000"
+ 1252      6C655065 
+ 1252      72696F64 
+ 1252      53776170 
+ 1252      00
+ 1253              	.LASF0:
+ 1254 033a 7369676E 		.ascii	"signed char\000"
+ 1254      65642063 
+ 1254      68617200 
+ 1255              	.LASF9:
+ 1256 0346 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1256      206C6F6E 
+ 1256      6720756E 
+ 1256      7369676E 
+ 1256      65642069 
+ 1257              	.LASF15:
+ 1258 035d 75696E74 		.ascii	"uint32_t\000"
+ 1258      33325F74 
+ 1258      00
+ 1259              	.LASF10:
+ 1260 0366 756E7369 		.ascii	"unsigned int\000"
+ 1260      676E6564 
+ 1260      20696E74 
+ 1260      00
+ 1261              	.LASF69:
+ 1262 0373 50574D5F 		.ascii	"PWM_2_config\000"
+ 1262      325F636F 
+ 1262      6E666967 
+ 1262      00
+ 1263              	.LASF32:
+ 1264 0380 696E7665 		.ascii	"invertPWMOutN\000"
+ 1264      72745057 
+ 1264      4D4F7574 
+ 1264      4E00
+ 1265              	.LASF3:
+ 1266 038e 73686F72 		.ascii	"short unsigned int\000"
+ 1266      7420756E 
+ 1266      7369676E 
+ 1266      65642069 
+ 1266      6E7400
+ 1267              	.LASF54:
+ 1268 03a1 72784275 		.ascii	"rxBuf\000"
+ 1268      6600
+ 1269              	.LASF13:
+ 1270 03a7 63686172 		.ascii	"char\000"
+ 1270      00
+ 1271              	.LASF60:
+ 1272 03ac 63624576 		.ascii	"cbEvents\000"
+ 1272      656E7473 
+ 1272      00
+ 1273              	.LASF22:
+ 1274 03b5 64656164 		.ascii	"deadTimeClocks\000"
+ 1274      54696D65 
+ 1274      436C6F63 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 29
+
+
+ 1274      6B7300
+ 1275              	.LASF14:
+ 1276 03c4 696E7433 		.ascii	"int32_t\000"
+ 1276      325F7400 
+ 1277              	.LASF18:
+ 1278 03cc 5F426F6F 		.ascii	"_Bool\000"
+ 1278      6C00
+ 1279              	.LASF30:
+ 1280 03d2 696E7465 		.ascii	"interruptSources\000"
+ 1280      72727570 
+ 1280      74536F75 
+ 1280      72636573 
+ 1280      00
+ 1281              	.LASF7:
+ 1282 03e3 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1282      20756E73 
+ 1282      69676E65 
+ 1282      6420696E 
+ 1282      7400
+ 1283              	.LASF17:
+ 1284 03f5 646F7562 		.ascii	"double\000"
+ 1284      6C6500
+ 1285              	.LASF34:
+ 1286 03fc 73776170 		.ascii	"swapInputMode\000"
+ 1286      496E7075 
+ 1286      744D6F64 
+ 1286      6500
+ 1287              	.LASF57:
+ 1288 040a 74784275 		.ascii	"txBuf\000"
+ 1288      6600
+ 1289              	.LASF39:
+ 1290 0410 73746172 		.ascii	"startInput\000"
+ 1290      74496E70 
+ 1290      757400
+ 1291              	.LASF5:
+ 1292 041b 5F5F696E 		.ascii	"__int32_t\000"
+ 1292      7433325F 
+ 1292      7400
+ 1293              	.LASF61:
+ 1294 0425 696E6974 		.ascii	"initKey\000"
+ 1294      4B657900 
+ 1295              	.LASF62:
+ 1296 042d 63795F73 		.ascii	"cy_stc_scb_uart_context_t\000"
+ 1296      74635F73 
+ 1296      63625F75 
+ 1296      6172745F 
+ 1296      636F6E74 
+ 1297              	.LASF53:
+ 1298 0447 72785269 		.ascii	"rxRingBufTail\000"
+ 1298      6E674275 
+ 1298      66546169 
+ 1298      6C00
+ 1299              	.LASF19:
+ 1300 0455 70776D4D 		.ascii	"pwmMode\000"
+ 1300      6F646500 
+ 1301              	.LASF67:
+ 1302 045d 55415254 		.ascii	"UART_context\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccLPw78b.s 			page 30
+
+
+ 1302      5F636F6E 
+ 1302      74657874 
+ 1302      00
+ 1303              	.LASF43:
+ 1304 046a 636F756E 		.ascii	"countInput\000"
+ 1304      74496E70 
+ 1304      757400
+ 1305              	.LASF66:
+ 1306 0475 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1306      52784275 
+ 1306      66666572 
+ 1306      00
+ 1307              	.LASF73:
+ 1308 0482 47656E65 		.ascii	"Generated_Source\\PSoC6\\pdl\\utilities\\retarget_i"
+ 1308      72617465 
+ 1308      645F536F 
+ 1308      75726365 
+ 1308      5C50536F 
+ 1309 04b1 6F5C7265 		.ascii	"o\\retarget.c\000"
+ 1309      74617267 
+ 1309      65742E63 
+ 1309      00
+ 1310              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

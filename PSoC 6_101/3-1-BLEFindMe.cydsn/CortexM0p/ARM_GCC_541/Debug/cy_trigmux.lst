@@ -1,0 +1,2090 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0plus
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"cy_trigmux.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.Cy_TrigMux_Connect,"ax",%progbits
+  20              		.align	2
+  21              		.global	Cy_TrigMux_Connect
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	Cy_TrigMux_Connect, %function
+  25              	Cy_TrigMux_Connect:
+  26              	.LFB36:
+  27              		.file 1 "Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\trigmux\\cy_trigmux.c"
+   1:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** /***************************************************************************//**
+   2:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \file cy_trigmux.c
+   3:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \version 1.10
+   4:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+   5:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \brief Trigger mux APIs.
+   6:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+   7:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** ********************************************************************************
+   8:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \copyright
+   9:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * Copyright 2016-2018, Cypress Semiconductor Corporation.  All rights reserved.
+  10:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *******************************************************************************/
+  14:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** #include "cy_trigmux.h"
+  15:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+  16:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+  17:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** /*******************************************************************************
+  18:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * Function Name: Cy_TrigMux_Connect
+  19:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** ****************************************************************************//**
+  20:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+  21:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * This function connects an input trigger source and output trigger.
+  22:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+  23:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \param inTrig
+  24:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * An input selection for the trigger mux.
+  25:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - Bits 11:8 represent the trigger group selection.
+  26:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - Bits 6:0 select the input trigger number in the trigger group.
+  27:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+  28:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \param outTrig
+  29:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * The output of the trigger mux. This refers to the consumer of the trigger mux. 
+  30:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - Bits 11:8 represent the trigger group selection.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 2
+
+
+  31:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - Bits 6:0 select the output trigger number in the trigger group.
+  32:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+  33:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \param invert
+  34:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - true: The output trigger is inverted.
+  35:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - false: The output trigger is not inverted.
+  36:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+  37:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \param trigType
+  38:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - TRIGGER_TYPE_EDGE: The trigger is synchronized to the consumer blocks clock
+  39:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *   and a two-cycle pulse is generated on this clock.
+  40:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - TRIGGER_TYPE_LEVEL: The trigger is a simple level output.
+  41:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+  42:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \return
+  43:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * A status
+  44:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - 0: Successful connection made.
+  45:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - 1: An invalid input selection corresponding to the output. 
+  46:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *      Generally when the trigger groups do not match.
+  47:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *  
+  48:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *******************************************************************************/
+  49:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** cy_en_trigmux_status_t Cy_TrigMux_Connect(uint32_t inTrig, uint32_t outTrig, bool invert, en_trig_t
+  50:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** {
+  28              		.loc 1 50 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  34              		.cfi_def_cfa_offset 24
+  35              		.cfi_offset 3, -24
+  36              		.cfi_offset 4, -20
+  37              		.cfi_offset 5, -16
+  38              		.cfi_offset 6, -12
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 0600     		movs	r6, r0
+  42 0004 0C00     		movs	r4, r1
+  43 0006 1500     		movs	r5, r2
+  44 0008 1F00     		movs	r7, r3
+  45              	.LVL1:
+  51:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     volatile uint32_t* trOutCtlAddr;
+  52:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     cy_en_trigmux_status_t retVal = CY_TRIGMUX_BAD_PARAM;
+  53:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+  54:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     CY_ASSERT_L3(CY_LPCOMP_IS_TRIGTYPE_VALID(trigType));
+  46              		.loc 1 54 0
+  47 000a 012B     		cmp	r3, #1
+  48 000c 03D9     		bls	.L2
+  49              		.loc 1 54 0 is_stmt 0 discriminator 1
+  50 000e 3621     		movs	r1, #54
+  51              	.LVL2:
+  52 0010 1248     		ldr	r0, .L6
+  53              	.LVL3:
+  54 0012 FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+  55              	.LVL4:
+  56              	.L2:
+  55:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     
+  56:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     /* inTrig and outTrig should be in the same group */
+  57:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     if ((inTrig & CY_TR_GROUP_MASK) == (outTrig & CY_TR_GROUP_MASK))
+  57              		.loc 1 57 0 is_stmt 1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 3
+
+
+  58 0016 3200     		movs	r2, r6
+  59 0018 6240     		eors	r2, r4
+  60 001a F023     		movs	r3, #240
+  61 001c 1B01     		lsls	r3, r3, #4
+  62 001e 1340     		ands	r3, r2
+  63 0020 19D1     		bne	.L5
+  58:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     {
+  59:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         trOutCtlAddr = &(PERI->TR_GR[(outTrig & CY_TR_GROUP_MASK) >> CY_TR_GROUP_SHIFT].TR_OUT_CTL[
+  64              		.loc 1 59 0
+  65 0022 220A     		lsrs	r2, r4, #8
+  66 0024 0F21     		movs	r1, #15
+  67 0026 0A40     		ands	r2, r1
+  68 0028 D201     		lsls	r2, r2, #7
+  69 002a 7031     		adds	r1, r1, #112
+  70 002c 0C40     		ands	r4, r1
+  71              	.LVL5:
+  72 002e 1419     		adds	r4, r2, r4
+  73 0030 A400     		lsls	r4, r4, #2
+  74 0032 0B4A     		ldr	r2, .L6+4
+  75 0034 9446     		mov	ip, r2
+  76 0036 6444     		add	r4, r4, ip
+  77              	.LVL6:
+  60:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+  61:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         *trOutCtlAddr = _VAL2FLD(PERI_TR_GR_TR_OUT_CTL_TR_SEL, inTrig) |
+  78              		.loc 1 61 0
+  79 0038 FF22     		movs	r2, #255
+  80 003a 1640     		ands	r6, r2
+  81              	.LVL7:
+  62:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         _BOOL2FLD(PERI_TR_GR_TR_OUT_CTL_TR_INV, invert) |
+  82              		.loc 1 62 0
+  83 003c 002D     		cmp	r5, #0
+  84 003e 01D0     		beq	.L4
+  85 0040 0133     		adds	r3, r3, #1
+  86 0042 FF33     		adds	r3, r3, #255
+  87              	.L4:
+  61:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         _BOOL2FLD(PERI_TR_GR_TR_OUT_CTL_TR_INV, invert) |
+  88              		.loc 1 61 0
+  89 0044 3343     		orrs	r3, r6
+  63:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         _VAL2FLD(PERI_TR_GR_TR_OUT_CTL_TR_EDGE, trigType);
+  90              		.loc 1 63 0
+  91 0046 7F02     		lsls	r7, r7, #9
+  92 0048 8026     		movs	r6, #128
+  93 004a B600     		lsls	r6, r6, #2
+  94 004c 3740     		ands	r7, r6
+  62:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         _BOOL2FLD(PERI_TR_GR_TR_OUT_CTL_TR_INV, invert) |
+  95              		.loc 1 62 0
+  96 004e 3B43     		orrs	r3, r7
+  61:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         _BOOL2FLD(PERI_TR_GR_TR_OUT_CTL_TR_INV, invert) |
+  97              		.loc 1 61 0
+  98 0050 2360     		str	r3, [r4]
+  99              	.LVL8:
+  64:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         
+  65:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         retVal = CY_TRIGMUX_SUCCESS;
+ 100              		.loc 1 65 0
+ 101 0052 0020     		movs	r0, #0
+ 102 0054 00E0     		b	.L3
+ 103              	.LVL9:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 4
+
+
+ 104              	.L5:
+  52:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+ 105              		.loc 1 52 0
+ 106 0056 0348     		ldr	r0, .L6+8
+ 107              	.LVL10:
+ 108              	.L3:
+  66:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     }
+  67:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+  68:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     return retVal;
+  69:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** }
+ 109              		.loc 1 69 0
+ 110              		@ sp needed
+ 111 0058 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 112              	.L7:
+ 113 005a C046     		.align	2
+ 114              	.L6:
+ 115 005c 00000000 		.word	.LC0
+ 116 0060 00200140 		.word	1073815552
+ 117 0064 0100CE00 		.word	13500417
+ 118              		.cfi_endproc
+ 119              	.LFE36:
+ 120              		.size	Cy_TrigMux_Connect, .-Cy_TrigMux_Connect
+ 121              		.section	.text.Cy_TrigMux_SwTrigger,"ax",%progbits
+ 122              		.align	2
+ 123              		.global	Cy_TrigMux_SwTrigger
+ 124              		.code	16
+ 125              		.thumb_func
+ 126              		.type	Cy_TrigMux_SwTrigger, %function
+ 127              	Cy_TrigMux_SwTrigger:
+ 128              	.LFB37:
+  70:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+  71:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+  72:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** /*******************************************************************************
+  73:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * Function Name: Cy_TrigMux_SwTrigger
+  74:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** ****************************************************************************//**
+  75:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+  76:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * This function generates a software trigger on an input trigger line. 
+  77:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * All output triggers connected to this input trigger will be triggered. 
+  78:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * The function also verifies that there is no activated trigger before 
+  79:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * generating another activation. 
+  80:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+  81:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \param trigLine
+  82:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * The input of the trigger mux.
+  83:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - Bit 30 represents if the signal is an input/output. When this bit is set, 
+  84:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *   the trigger activation is for an output trigger from the trigger multiplexer.
+  85:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *   When this bit is reset, the trigger activation is for an input trigger to 
+  86:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *   the trigger multiplexer. 
+  87:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - Bits 11:8 represent the trigger group selection.
+  88:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - Bits 6:0 select the output trigger number in the trigger group.
+  89:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+  90:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \param cycles
+  91:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * The number of cycles during which the trigger remains activated.
+  92:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * The valid range of cycles is 1-254. 
+  93:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * These two additional special values can be passed to this parameter:
+  94:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * * CY_TRIGGER_INFINITE - The trigger will be active until the user 
+  95:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * clears it;
+  96:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * * CY_TRIGGER_DEACTIVATE - The trigger will be deactivated forcibly.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 5
+
+
+  97:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * 
+  98:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * \return
+  99:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * A status
+ 100:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - 0: If there was not an already activated trigger.
+ 101:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** * - 1: If there was an already activated trigger.
+ 102:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *
+ 103:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** *******************************************************************************/
+ 104:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** cy_en_trigmux_status_t Cy_TrigMux_SwTrigger(uint32_t trigLine, uint32_t cycles)
+ 105:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** {
+ 129              		.loc 1 105 0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133              	.LVL11:
+ 134 0000 70B5     		push	{r4, r5, r6, lr}
+ 135              		.cfi_def_cfa_offset 16
+ 136              		.cfi_offset 4, -16
+ 137              		.cfi_offset 5, -12
+ 138              		.cfi_offset 6, -8
+ 139              		.cfi_offset 14, -4
+ 140 0002 0500     		movs	r5, r0
+ 141 0004 0C00     		movs	r4, r1
+ 142              	.LVL12:
+ 106:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     cy_en_trigmux_status_t retVal = CY_TRIGMUX_INVALID_STATE;
+ 107:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+ 108:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     CY_ASSERT_L2(0U == (trigLine & (uint32_t)~CY_TR_PARAM_MASK));
+ 143              		.loc 1 108 0
+ 144 0006 1D4B     		ldr	r3, .L15
+ 145 0008 1842     		tst	r0, r3
+ 146 000a 03D0     		beq	.L9
+ 147              		.loc 1 108 0 is_stmt 0 discriminator 1
+ 148 000c 6C21     		movs	r1, #108
+ 149              	.LVL13:
+ 150 000e 1C48     		ldr	r0, .L15+4
+ 151              	.LVL14:
+ 152 0010 FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+ 153              	.LVL15:
+ 154              	.L9:
+ 109:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     CY_ASSERT_L2(CY_TR_CYCLES_MAX >= cycles);
+ 155              		.loc 1 109 0 is_stmt 1
+ 156 0014 FF2C     		cmp	r4, #255
+ 157 0016 03D9     		bls	.L10
+ 158              		.loc 1 109 0 is_stmt 0 discriminator 1
+ 159 0018 6D21     		movs	r1, #109
+ 160 001a 1948     		ldr	r0, .L15+4
+ 161 001c FFF7FEFF 		bl	Cy_SysLib_AssertFailed
+ 162              	.LVL16:
+ 163              	.L10:
+ 110:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****  
+ 111:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+ 112:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     if (CY_TRIGGER_DEACTIVATE != cycles)
+ 164              		.loc 1 112 0 is_stmt 1
+ 165 0020 002C     		cmp	r4, #0
+ 166 0022 19D0     		beq	.L11
+ 113:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     {
+ 114:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         if (PERI_TR_CMD_ACTIVATE_Msk != (PERI->TR_CMD & PERI_TR_CMD_ACTIVATE_Msk))
+ 167              		.loc 1 114 0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 6
+
+
+ 168 0024 8023     		movs	r3, #128
+ 169 0026 5B01     		lsls	r3, r3, #5
+ 170 0028 164A     		ldr	r2, .L15+8
+ 171 002a D358     		ldr	r3, [r2, r3]
+ 172 002c 002B     		cmp	r3, #0
+ 173 002e 20DB     		blt	.L13
+ 115:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         {
+ 116:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****             /* Activate the trigger if it is not in the active state. */
+ 117:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****             PERI->TR_CMD = _VAL2FLD(PERI_TR_CMD_TR_SEL, (trigLine & CY_TR_MASK)) |
+ 174              		.loc 1 117 0
+ 175 0030 154A     		ldr	r2, .L15+12
+ 176 0032 2A40     		ands	r2, r5
+ 118:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_GROUP_SEL, ((trigLine & CY_TR_GROUP_MASK) >> CY_TR_GROUP_SHIFT
+ 119:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_COUNT, cycles) |
+ 177              		.loc 1 119 0
+ 178 0034 2404     		lsls	r4, r4, #16
+ 179              	.LVL17:
+ 180 0036 FF23     		movs	r3, #255
+ 181 0038 1B04     		lsls	r3, r3, #16
+ 182 003a 1C40     		ands	r4, r3
+ 118:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_GROUP_SEL, ((trigLine & CY_TR_GROUP_MASK) >> CY_TR_GROUP_SHIFT
+ 183              		.loc 1 118 0
+ 184 003c 1443     		orrs	r4, r2
+ 120:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_OUT_SEL, (trigLine & CY_TR_OUT_CTL_MASK) >> CY_TR_OUT_CTL_SHIF
+ 185              		.loc 1 120 0
+ 186 003e 8023     		movs	r3, #128
+ 187 0040 DB05     		lsls	r3, r3, #23
+ 188 0042 1D40     		ands	r5, r3
+ 189              	.LVL18:
+ 119:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_OUT_SEL, (trigLine & CY_TR_OUT_CTL_MASK) >> CY_TR_OUT_CTL_SHIF
+ 190              		.loc 1 119 0
+ 191 0044 2543     		orrs	r5, r4
+ 192              		.loc 1 120 0
+ 193 0046 8024     		movs	r4, #128
+ 194 0048 2406     		lsls	r4, r4, #24
+ 195 004a 2543     		orrs	r5, r4
+ 117:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_GROUP_SEL, ((trigLine & CY_TR_GROUP_MASK) >> CY_TR_GROUP_SHIFT
+ 196              		.loc 1 117 0
+ 197 004c 8023     		movs	r3, #128
+ 198 004e 5B01     		lsls	r3, r3, #5
+ 199 0050 0C4A     		ldr	r2, .L15+8
+ 200 0052 D550     		str	r5, [r2, r3]
+ 201              	.LVL19:
+ 121:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_ACTIVATE, CY_TR_ACTIVATE_ENABLE);
+ 122:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 
+ 123:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****             retVal = CY_TRIGMUX_SUCCESS;
+ 202              		.loc 1 123 0
+ 203 0054 0020     		movs	r0, #0
+ 204 0056 0FE0     		b	.L12
+ 205              	.LVL20:
+ 206              	.L11:
+ 124:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         }
+ 125:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     }
+ 126:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     else
+ 127:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     {
+ 128:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         if (PERI_TR_CMD_ACTIVATE_Msk == (PERI->TR_CMD & PERI_TR_CMD_ACTIVATE_Msk))
+ 207              		.loc 1 128 0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 7
+
+
+ 208 0058 8023     		movs	r3, #128
+ 209 005a 5B01     		lsls	r3, r3, #5
+ 210 005c 094A     		ldr	r2, .L15+8
+ 211 005e D358     		ldr	r3, [r2, r3]
+ 212 0060 002B     		cmp	r3, #0
+ 213 0062 08DA     		bge	.L14
+ 129:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         {
+ 130:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****             /* Forcibly deactivate the trigger. */
+ 131:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****             PERI->TR_CMD = _VAL2FLD(PERI_TR_CMD_TR_SEL, (trigLine & CY_TR_MASK)) |
+ 132:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_GROUP_SEL, ((trigLine & CY_TR_GROUP_MASK) >> CY_TR_GROUP_SHIFT
+ 214              		.loc 1 132 0
+ 215 0064 094B     		ldr	r3, .L15+16
+ 216 0066 1D40     		ands	r5, r3
+ 217              	.LVL21:
+ 131:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_GROUP_SEL, ((trigLine & CY_TR_GROUP_MASK) >> CY_TR_GROUP_SHIFT
+ 218              		.loc 1 131 0
+ 219 0068 8023     		movs	r3, #128
+ 220 006a 5B01     		lsls	r3, r3, #5
+ 221 006c D550     		str	r5, [r2, r3]
+ 222              	.LVL22:
+ 133:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 _VAL2FLD(PERI_TR_CMD_OUT_SEL, (trigLine & CY_TR_OUT_CTL_MASK) >> CY_TR_OUT_CTL_SHIF
+ 134:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****                 
+ 135:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****             retVal = CY_TRIGMUX_SUCCESS;
+ 223              		.loc 1 135 0
+ 224 006e 0020     		movs	r0, #0
+ 225 0070 02E0     		b	.L12
+ 226              	.LVL23:
+ 227              	.L13:
+ 106:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** 
+ 228              		.loc 1 106 0
+ 229 0072 0748     		ldr	r0, .L15+20
+ 230 0074 00E0     		b	.L12
+ 231              	.L14:
+ 232 0076 0648     		ldr	r0, .L15+20
+ 233              	.LVL24:
+ 234              	.L12:
+ 136:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****         }         
+ 137:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     }
+ 138:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     
+ 139:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c ****     return retVal;
+ 140:Generated_Source\PSoC6\pdl\drivers\peripheral\trigmux/cy_trigmux.c **** }
+ 235              		.loc 1 140 0
+ 236              		@ sp needed
+ 237 0078 70BD     		pop	{r4, r5, r6, pc}
+ 238              	.L16:
+ 239 007a C046     		.align	2
+ 240              	.L15:
+ 241 007c 80F0FFBF 		.word	-1073745792
+ 242 0080 00000000 		.word	.LC0
+ 243 0084 00000140 		.word	1073807360
+ 244 0088 7F0F0000 		.word	3967
+ 245 008c 7F0F0040 		.word	1073745791
+ 246 0090 0200CE00 		.word	13500418
+ 247              		.cfi_endproc
+ 248              	.LFE37:
+ 249              		.size	Cy_TrigMux_SwTrigger, .-Cy_TrigMux_SwTrigger
+ 250              		.section	.rodata.str1.4,"aMS",%progbits,1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 8
+
+
+ 251              		.align	2
+ 252              	.LC0:
+ 253 0000 47656E65 		.ascii	"Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\"
+ 253      72617465 
+ 253      645F536F 
+ 253      75726365 
+ 253      5C50536F 
+ 254 002e 74726967 		.ascii	"trigmux\\cy_trigmux.c\000"
+ 254      6D75785C 
+ 254      63795F74 
+ 254      7269676D 
+ 254      75782E63 
+ 255              		.text
+ 256              	.Letext0:
+ 257              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 258              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 259              		.file 4 "Generated_Source\\PSoC6\\pdl\\devices/psoc6/psoc63/include/psoc63_config.h"
+ 260              		.file 5 "Generated_Source\\PSoC6\\pdl\\devices/psoc6/ip/cyip_peri.h"
+ 261              		.file 6 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/syslib/cy_syslib.h"
+ 262              		.file 7 "Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\trigmux\\cy_trigmux.h"
+ 263              		.section	.debug_info,"",%progbits
+ 264              	.Ldebug_info0:
+ 265 0000 89050000 		.4byte	0x589
+ 266 0004 0400     		.2byte	0x4
+ 267 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 268 000a 04       		.byte	0x4
+ 269 000b 01       		.uleb128 0x1
+ 270 000c AD000000 		.4byte	.LASF61
+ 271 0010 0C       		.byte	0xc
+ 272 0011 44000000 		.4byte	.LASF62
+ 273 0015 78010000 		.4byte	.LASF63
+ 274 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 275 001d 00000000 		.4byte	0
+ 276 0021 00000000 		.4byte	.Ldebug_line0
+ 277 0025 02       		.uleb128 0x2
+ 278 0026 02       		.byte	0x2
+ 279 0027 05       		.byte	0x5
+ 280 0028 87000000 		.4byte	.LASF0
+ 281 002c 02       		.uleb128 0x2
+ 282 002d 01       		.byte	0x1
+ 283 002e 08       		.byte	0x8
+ 284 002f 79020000 		.4byte	.LASF1
+ 285 0033 02       		.uleb128 0x2
+ 286 0034 01       		.byte	0x1
+ 287 0035 06       		.byte	0x6
+ 288 0036 87020000 		.4byte	.LASF2
+ 289 003a 02       		.uleb128 0x2
+ 290 003b 02       		.byte	0x2
+ 291 003c 07       		.byte	0x7
+ 292 003d F0020000 		.4byte	.LASF3
+ 293 0041 02       		.uleb128 0x2
+ 294 0042 04       		.byte	0x4
+ 295 0043 05       		.byte	0x5
+ 296 0044 F8010000 		.4byte	.LASF4
+ 297 0048 03       		.uleb128 0x3
+ 298 0049 60010000 		.4byte	.LASF9
+ 299 004d 02       		.byte	0x2
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 9
+
+
+ 300 004e 41       		.byte	0x41
+ 301 004f 53000000 		.4byte	0x53
+ 302 0053 02       		.uleb128 0x2
+ 303 0054 04       		.byte	0x4
+ 304 0055 07       		.byte	0x7
+ 305 0056 81030000 		.4byte	.LASF5
+ 306 005a 02       		.uleb128 0x2
+ 307 005b 08       		.byte	0x8
+ 308 005c 05       		.byte	0x5
+ 309 005d E5010000 		.4byte	.LASF6
+ 310 0061 02       		.uleb128 0x2
+ 311 0062 08       		.byte	0x8
+ 312 0063 07       		.byte	0x7
+ 313 0064 93020000 		.4byte	.LASF7
+ 314 0068 04       		.uleb128 0x4
+ 315 0069 04       		.byte	0x4
+ 316 006a 05       		.byte	0x5
+ 317 006b 696E7400 		.ascii	"int\000"
+ 318 006f 02       		.uleb128 0x2
+ 319 0070 04       		.byte	0x4
+ 320 0071 07       		.byte	0x7
+ 321 0072 C4020000 		.4byte	.LASF8
+ 322 0076 03       		.uleb128 0x3
+ 323 0077 AA020000 		.4byte	.LASF10
+ 324 007b 03       		.byte	0x3
+ 325 007c 30       		.byte	0x30
+ 326 007d 48000000 		.4byte	0x48
+ 327 0081 02       		.uleb128 0x2
+ 328 0082 04       		.byte	0x4
+ 329 0083 07       		.byte	0x7
+ 330 0084 A4000000 		.4byte	.LASF11
+ 331 0088 05       		.uleb128 0x5
+ 332 0089 76000000 		.4byte	0x76
+ 333 008d 06       		.uleb128 0x6
+ 334 008e 88000000 		.4byte	0x88
+ 335 0092 07       		.uleb128 0x7
+ 336 0093 01       		.byte	0x1
+ 337 0094 2C000000 		.4byte	0x2c
+ 338 0098 04       		.byte	0x4
+ 339 0099 A005     		.2byte	0x5a0
+ 340 009b AC000000 		.4byte	0xac
+ 341 009f 08       		.uleb128 0x8
+ 342 00a0 91000000 		.4byte	.LASF12
+ 343 00a4 00       		.byte	0
+ 344 00a5 08       		.uleb128 0x8
+ 345 00a6 03030000 		.4byte	.LASF13
+ 346 00aa 01       		.byte	0x1
+ 347 00ab 00       		.byte	0
+ 348 00ac 09       		.uleb128 0x9
+ 349 00ad D1020000 		.4byte	.LASF14
+ 350 00b1 04       		.byte	0x4
+ 351 00b2 A605     		.2byte	0x5a6
+ 352 00b4 92000000 		.4byte	0x92
+ 353 00b8 0A       		.uleb128 0xa
+ 354 00b9 88000000 		.4byte	0x88
+ 355 00bd C8000000 		.4byte	0xc8
+ 356 00c1 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 10
+
+
+ 357 00c2 81000000 		.4byte	0x81
+ 358 00c6 7F       		.byte	0x7f
+ 359 00c7 00       		.byte	0
+ 360 00c8 0C       		.uleb128 0xc
+ 361 00c9 40       		.byte	0x40
+ 362 00ca 05       		.byte	0x5
+ 363 00cb 27       		.byte	0x27
+ 364 00cc 0D010000 		.4byte	0x10d
+ 365 00d0 0D       		.uleb128 0xd
+ 366 00d1 D3030000 		.4byte	.LASF15
+ 367 00d5 05       		.byte	0x5
+ 368 00d6 28       		.byte	0x28
+ 369 00d7 88000000 		.4byte	0x88
+ 370 00db 00       		.byte	0
+ 371 00dc 0D       		.uleb128 0xd
+ 372 00dd CA030000 		.4byte	.LASF16
+ 373 00e1 05       		.byte	0x5
+ 374 00e2 29       		.byte	0x29
+ 375 00e3 22010000 		.4byte	0x122
+ 376 00e7 04       		.byte	0x4
+ 377 00e8 0D       		.uleb128 0xd
+ 378 00e9 F4030000 		.4byte	.LASF17
+ 379 00ed 05       		.byte	0x5
+ 380 00ee 2A       		.byte	0x2a
+ 381 00ef 88000000 		.4byte	0x88
+ 382 00f3 20       		.byte	0x20
+ 383 00f4 0D       		.uleb128 0xd
+ 384 00f5 1D030000 		.4byte	.LASF18
+ 385 00f9 05       		.byte	0x5
+ 386 00fa 2B       		.byte	0x2b
+ 387 00fb 88000000 		.4byte	0x88
+ 388 00ff 24       		.byte	0x24
+ 389 0100 0D       		.uleb128 0xd
+ 390 0101 59030000 		.4byte	.LASF19
+ 391 0105 05       		.byte	0x5
+ 392 0106 2C       		.byte	0x2c
+ 393 0107 3C010000 		.4byte	0x13c
+ 394 010b 28       		.byte	0x28
+ 395 010c 00       		.byte	0
+ 396 010d 0A       		.uleb128 0xa
+ 397 010e 8D000000 		.4byte	0x8d
+ 398 0112 1D010000 		.4byte	0x11d
+ 399 0116 0B       		.uleb128 0xb
+ 400 0117 81000000 		.4byte	0x81
+ 401 011b 06       		.byte	0x6
+ 402 011c 00       		.byte	0
+ 403 011d 05       		.uleb128 0x5
+ 404 011e 0D010000 		.4byte	0x10d
+ 405 0122 06       		.uleb128 0x6
+ 406 0123 1D010000 		.4byte	0x11d
+ 407 0127 0A       		.uleb128 0xa
+ 408 0128 8D000000 		.4byte	0x8d
+ 409 012c 37010000 		.4byte	0x137
+ 410 0130 0B       		.uleb128 0xb
+ 411 0131 81000000 		.4byte	0x81
+ 412 0135 05       		.byte	0x5
+ 413 0136 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 11
+
+
+ 414 0137 05       		.uleb128 0x5
+ 415 0138 27010000 		.4byte	0x127
+ 416 013c 06       		.uleb128 0x6
+ 417 013d 37010000 		.4byte	0x137
+ 418 0141 03       		.uleb128 0x3
+ 419 0142 1F020000 		.4byte	.LASF20
+ 420 0146 05       		.byte	0x5
+ 421 0147 2D       		.byte	0x2d
+ 422 0148 C8000000 		.4byte	0xc8
+ 423 014c 0E       		.uleb128 0xe
+ 424 014d 0002     		.2byte	0x200
+ 425 014f 05       		.byte	0x5
+ 426 0150 32       		.byte	0x32
+ 427 0151 62010000 		.4byte	0x162
+ 428 0155 0D       		.uleb128 0xd
+ 429 0156 BF030000 		.4byte	.LASF21
+ 430 015a 05       		.byte	0x5
+ 431 015b 33       		.byte	0x33
+ 432 015c 62010000 		.4byte	0x162
+ 433 0160 00       		.byte	0
+ 434 0161 00       		.byte	0
+ 435 0162 05       		.uleb128 0x5
+ 436 0163 B8000000 		.4byte	0xb8
+ 437 0167 03       		.uleb128 0x3
+ 438 0168 00000000 		.4byte	.LASF22
+ 439 016c 05       		.byte	0x5
+ 440 016d 34       		.byte	0x34
+ 441 016e 4C010000 		.4byte	0x14c
+ 442 0172 0C       		.uleb128 0xc
+ 443 0173 40       		.byte	0x40
+ 444 0174 05       		.byte	0x5
+ 445 0175 39       		.byte	0x39
+ 446 0176 C3010000 		.4byte	0x1c3
+ 447 017a 0D       		.uleb128 0xd
+ 448 017b 29030000 		.4byte	.LASF23
+ 449 017f 05       		.byte	0x5
+ 450 0180 3A       		.byte	0x3a
+ 451 0181 88000000 		.4byte	0x88
+ 452 0185 00       		.byte	0
+ 453 0186 0D       		.uleb128 0xd
+ 454 0187 15020000 		.4byte	.LASF24
+ 455 018b 05       		.byte	0x5
+ 456 018c 3B       		.byte	0x3b
+ 457 018d 88000000 		.4byte	0x88
+ 458 0191 04       		.byte	0x4
+ 459 0192 0D       		.uleb128 0xd
+ 460 0193 CA030000 		.4byte	.LASF16
+ 461 0197 05       		.byte	0x5
+ 462 0198 3C       		.byte	0x3c
+ 463 0199 C8010000 		.4byte	0x1c8
+ 464 019d 08       		.byte	0x8
+ 465 019e 0D       		.uleb128 0xd
+ 466 019f 2F030000 		.4byte	.LASF25
+ 467 01a3 05       		.byte	0x5
+ 468 01a4 3D       		.byte	0x3d
+ 469 01a5 8D000000 		.4byte	0x8d
+ 470 01a9 20       		.byte	0x20
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 12
+
+
+ 471 01aa 0D       		.uleb128 0xd
+ 472 01ab 1A020000 		.4byte	.LASF26
+ 473 01af 05       		.byte	0x5
+ 474 01b0 3E       		.byte	0x3e
+ 475 01b1 88000000 		.4byte	0x88
+ 476 01b5 24       		.byte	0x24
+ 477 01b6 0D       		.uleb128 0xd
+ 478 01b7 59030000 		.4byte	.LASF19
+ 479 01bb 05       		.byte	0x5
+ 480 01bc 3F       		.byte	0x3f
+ 481 01bd D2010000 		.4byte	0x1d2
+ 482 01c1 28       		.byte	0x28
+ 483 01c2 00       		.byte	0
+ 484 01c3 05       		.uleb128 0x5
+ 485 01c4 27010000 		.4byte	0x127
+ 486 01c8 06       		.uleb128 0x6
+ 487 01c9 C3010000 		.4byte	0x1c3
+ 488 01cd 05       		.uleb128 0x5
+ 489 01ce 27010000 		.4byte	0x127
+ 490 01d2 06       		.uleb128 0x6
+ 491 01d3 CD010000 		.4byte	0x1cd
+ 492 01d7 03       		.uleb128 0x3
+ 493 01d8 CE010000 		.4byte	.LASF27
+ 494 01dc 05       		.byte	0x5
+ 495 01dd 40       		.byte	0x40
+ 496 01de 72010000 		.4byte	0x172
+ 497 01e2 0C       		.uleb128 0xc
+ 498 01e3 40       		.byte	0x40
+ 499 01e4 05       		.byte	0x5
+ 500 01e5 45       		.byte	0x45
+ 501 01e6 33020000 		.4byte	0x233
+ 502 01ea 0D       		.uleb128 0xd
+ 503 01eb 29030000 		.4byte	.LASF23
+ 504 01ef 05       		.byte	0x5
+ 505 01f0 46       		.byte	0x46
+ 506 01f1 8D000000 		.4byte	0x8d
+ 507 01f5 00       		.byte	0
+ 508 01f6 0D       		.uleb128 0xd
+ 509 01f7 15020000 		.4byte	.LASF24
+ 510 01fb 05       		.byte	0x5
+ 511 01fc 47       		.byte	0x47
+ 512 01fd 88000000 		.4byte	0x88
+ 513 0201 04       		.byte	0x4
+ 514 0202 0D       		.uleb128 0xd
+ 515 0203 CA030000 		.4byte	.LASF16
+ 516 0207 05       		.byte	0x5
+ 517 0208 48       		.byte	0x48
+ 518 0209 38020000 		.4byte	0x238
+ 519 020d 08       		.byte	0x8
+ 520 020e 0D       		.uleb128 0xd
+ 521 020f 2F030000 		.4byte	.LASF25
+ 522 0213 05       		.byte	0x5
+ 523 0214 49       		.byte	0x49
+ 524 0215 8D000000 		.4byte	0x8d
+ 525 0219 20       		.byte	0x20
+ 526 021a 0D       		.uleb128 0xd
+ 527 021b 1A020000 		.4byte	.LASF26
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 13
+
+
+ 528 021f 05       		.byte	0x5
+ 529 0220 4A       		.byte	0x4a
+ 530 0221 88000000 		.4byte	0x88
+ 531 0225 24       		.byte	0x24
+ 532 0226 0D       		.uleb128 0xd
+ 533 0227 59030000 		.4byte	.LASF19
+ 534 022b 05       		.byte	0x5
+ 535 022c 4B       		.byte	0x4b
+ 536 022d 42020000 		.4byte	0x242
+ 537 0231 28       		.byte	0x28
+ 538 0232 00       		.byte	0
+ 539 0233 05       		.uleb128 0x5
+ 540 0234 27010000 		.4byte	0x127
+ 541 0238 06       		.uleb128 0x6
+ 542 0239 33020000 		.4byte	0x233
+ 543 023d 05       		.uleb128 0x5
+ 544 023e 27010000 		.4byte	0x127
+ 545 0242 06       		.uleb128 0x6
+ 546 0243 3D020000 		.4byte	0x23d
+ 547 0247 03       		.uleb128 0x3
+ 548 0248 29000000 		.4byte	.LASF28
+ 549 024c 05       		.byte	0x5
+ 550 024d 4C       		.byte	0x4c
+ 551 024e E2010000 		.4byte	0x1e2
+ 552 0252 0E       		.uleb128 0xe
+ 553 0253 0054     		.2byte	0x5400
+ 554 0255 05       		.byte	0x5
+ 555 0256 69       		.byte	0x69
+ 556 0257 2A030000 		.4byte	0x32a
+ 557 025b 0F       		.uleb128 0xf
+ 558 025c 475200   		.ascii	"GR\000"
+ 559 025f 05       		.byte	0x5
+ 560 0260 6A       		.byte	0x6a
+ 561 0261 2A030000 		.4byte	0x32a
+ 562 0265 00       		.byte	0
+ 563 0266 10       		.uleb128 0x10
+ 564 0267 C6010000 		.4byte	.LASF29
+ 565 026b 05       		.byte	0x5
+ 566 026c 6B       		.byte	0x6b
+ 567 026d 88000000 		.4byte	0x88
+ 568 0271 0004     		.2byte	0x400
+ 569 0273 10       		.uleb128 0x10
+ 570 0274 CA030000 		.4byte	.LASF16
+ 571 0278 05       		.byte	0x5
+ 572 0279 6C       		.byte	0x6c
+ 573 027a 4F030000 		.4byte	0x34f
+ 574 027e 0404     		.2byte	0x404
+ 575 0280 10       		.uleb128 0x10
+ 576 0281 B3020000 		.4byte	.LASF30
+ 577 0285 05       		.byte	0x5
+ 578 0286 6D       		.byte	0x6d
+ 579 0287 64030000 		.4byte	0x364
+ 580 028b 0008     		.2byte	0x800
+ 581 028d 10       		.uleb128 0x10
+ 582 028e 55020000 		.4byte	.LASF31
+ 583 0292 05       		.byte	0x5
+ 584 0293 6E       		.byte	0x6e
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 14
+
+
+ 585 0294 69030000 		.4byte	0x369
+ 586 0298 0009     		.2byte	0x900
+ 587 029a 10       		.uleb128 0x10
+ 588 029b 6B010000 		.4byte	.LASF32
+ 589 029f 05       		.byte	0x5
+ 590 02a0 6F       		.byte	0x6f
+ 591 02a1 6E030000 		.4byte	0x36e
+ 592 02a5 000A     		.2byte	0xa00
+ 593 02a7 10       		.uleb128 0x10
+ 594 02a8 41020000 		.4byte	.LASF33
+ 595 02ac 05       		.byte	0x5
+ 596 02ad 70       		.byte	0x70
+ 597 02ae 83030000 		.4byte	0x383
+ 598 02b2 000B     		.2byte	0xb00
+ 599 02b4 10       		.uleb128 0x10
+ 600 02b5 59030000 		.4byte	.LASF19
+ 601 02b9 05       		.byte	0x5
+ 602 02ba 71       		.byte	0x71
+ 603 02bb 8D000000 		.4byte	0x8d
+ 604 02bf FC0B     		.2byte	0xbfc
+ 605 02c1 10       		.uleb128 0x10
+ 606 02c2 D3030000 		.4byte	.LASF15
+ 607 02c6 05       		.byte	0x5
+ 608 02c7 72       		.byte	0x72
+ 609 02c8 88030000 		.4byte	0x388
+ 610 02cc 000C     		.2byte	0xc00
+ 611 02ce 10       		.uleb128 0x10
+ 612 02cf 63030000 		.4byte	.LASF34
+ 613 02d3 05       		.byte	0x5
+ 614 02d4 73       		.byte	0x73
+ 615 02d5 A2030000 		.4byte	0x3a2
+ 616 02d9 000E     		.2byte	0xe00
+ 617 02db 10       		.uleb128 0x10
+ 618 02dc E9020000 		.4byte	.LASF35
+ 619 02e0 05       		.byte	0x5
+ 620 02e1 74       		.byte	0x74
+ 621 02e2 88000000 		.4byte	0x88
+ 622 02e6 0010     		.2byte	0x1000
+ 623 02e8 10       		.uleb128 0x10
+ 624 02e9 6D030000 		.4byte	.LASF36
+ 625 02ed 05       		.byte	0x5
+ 626 02ee 75       		.byte	0x75
+ 627 02ef BD030000 		.4byte	0x3bd
+ 628 02f3 0410     		.2byte	0x1004
+ 629 02f5 10       		.uleb128 0x10
+ 630 02f6 10000000 		.4byte	.LASF37
+ 631 02fa 05       		.byte	0x5
+ 632 02fb 76       		.byte	0x76
+ 633 02fc C2030000 		.4byte	0x3c2
+ 634 0300 0020     		.2byte	0x2000
+ 635 0302 10       		.uleb128 0x10
+ 636 0303 BD020000 		.4byte	.LASF38
+ 637 0307 05       		.byte	0x5
+ 638 0308 77       		.byte	0x77
+ 639 0309 D2030000 		.4byte	0x3d2
+ 640 030d 0040     		.2byte	0x4000
+ 641 030f 10       		.uleb128 0x10
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 15
+
+
+ 642 0310 77030000 		.4byte	.LASF39
+ 643 0314 05       		.byte	0x5
+ 644 0315 78       		.byte	0x78
+ 645 0316 F8030000 		.4byte	0x3f8
+ 646 031a 0048     		.2byte	0x4800
+ 647 031c 10       		.uleb128 0x10
+ 648 031d 3F010000 		.4byte	.LASF40
+ 649 0321 05       		.byte	0x5
+ 650 0322 79       		.byte	0x79
+ 651 0323 FD030000 		.4byte	0x3fd
+ 652 0327 0050     		.2byte	0x5000
+ 653 0329 00       		.byte	0
+ 654 032a 0A       		.uleb128 0xa
+ 655 032b 41010000 		.4byte	0x141
+ 656 032f 3A030000 		.4byte	0x33a
+ 657 0333 0B       		.uleb128 0xb
+ 658 0334 81000000 		.4byte	0x81
+ 659 0338 0F       		.byte	0xf
+ 660 0339 00       		.byte	0
+ 661 033a 0A       		.uleb128 0xa
+ 662 033b 8D000000 		.4byte	0x8d
+ 663 033f 4A030000 		.4byte	0x34a
+ 664 0343 0B       		.uleb128 0xb
+ 665 0344 81000000 		.4byte	0x81
+ 666 0348 FE       		.byte	0xfe
+ 667 0349 00       		.byte	0
+ 668 034a 05       		.uleb128 0x5
+ 669 034b 3A030000 		.4byte	0x33a
+ 670 034f 06       		.uleb128 0x6
+ 671 0350 4A030000 		.4byte	0x34a
+ 672 0354 0A       		.uleb128 0xa
+ 673 0355 88000000 		.4byte	0x88
+ 674 0359 64030000 		.4byte	0x364
+ 675 035d 0B       		.uleb128 0xb
+ 676 035e 81000000 		.4byte	0x81
+ 677 0362 3F       		.byte	0x3f
+ 678 0363 00       		.byte	0
+ 679 0364 05       		.uleb128 0x5
+ 680 0365 54030000 		.4byte	0x354
+ 681 0369 05       		.uleb128 0x5
+ 682 036a 54030000 		.4byte	0x354
+ 683 036e 05       		.uleb128 0x5
+ 684 036f 54030000 		.4byte	0x354
+ 685 0373 0A       		.uleb128 0xa
+ 686 0374 88000000 		.4byte	0x88
+ 687 0378 83030000 		.4byte	0x383
+ 688 037c 0B       		.uleb128 0xb
+ 689 037d 81000000 		.4byte	0x81
+ 690 0381 3E       		.byte	0x3e
+ 691 0382 00       		.byte	0
+ 692 0383 05       		.uleb128 0x5
+ 693 0384 73030000 		.4byte	0x373
+ 694 0388 05       		.uleb128 0x5
+ 695 0389 B8000000 		.4byte	0xb8
+ 696 038d 0A       		.uleb128 0xa
+ 697 038e 8D000000 		.4byte	0x8d
+ 698 0392 9D030000 		.4byte	0x39d
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 16
+
+
+ 699 0396 0B       		.uleb128 0xb
+ 700 0397 81000000 		.4byte	0x81
+ 701 039b 7F       		.byte	0x7f
+ 702 039c 00       		.byte	0
+ 703 039d 05       		.uleb128 0x5
+ 704 039e 8D030000 		.4byte	0x38d
+ 705 03a2 06       		.uleb128 0x6
+ 706 03a3 9D030000 		.4byte	0x39d
+ 707 03a7 0A       		.uleb128 0xa
+ 708 03a8 8D000000 		.4byte	0x8d
+ 709 03ac B8030000 		.4byte	0x3b8
+ 710 03b0 11       		.uleb128 0x11
+ 711 03b1 81000000 		.4byte	0x81
+ 712 03b5 FE03     		.2byte	0x3fe
+ 713 03b7 00       		.byte	0
+ 714 03b8 05       		.uleb128 0x5
+ 715 03b9 A7030000 		.4byte	0x3a7
+ 716 03bd 06       		.uleb128 0x6
+ 717 03be B8030000 		.4byte	0x3b8
+ 718 03c2 0A       		.uleb128 0xa
+ 719 03c3 67010000 		.4byte	0x167
+ 720 03c7 D2030000 		.4byte	0x3d2
+ 721 03cb 0B       		.uleb128 0xb
+ 722 03cc 81000000 		.4byte	0x81
+ 723 03d0 0F       		.byte	0xf
+ 724 03d1 00       		.byte	0
+ 725 03d2 0A       		.uleb128 0xa
+ 726 03d3 D7010000 		.4byte	0x1d7
+ 727 03d7 E2030000 		.4byte	0x3e2
+ 728 03db 0B       		.uleb128 0xb
+ 729 03dc 81000000 		.4byte	0x81
+ 730 03e0 1F       		.byte	0x1f
+ 731 03e1 00       		.byte	0
+ 732 03e2 0A       		.uleb128 0xa
+ 733 03e3 8D000000 		.4byte	0x8d
+ 734 03e7 F3030000 		.4byte	0x3f3
+ 735 03eb 11       		.uleb128 0x11
+ 736 03ec 81000000 		.4byte	0x81
+ 737 03f0 FF01     		.2byte	0x1ff
+ 738 03f2 00       		.byte	0
+ 739 03f3 05       		.uleb128 0x5
+ 740 03f4 E2030000 		.4byte	0x3e2
+ 741 03f8 06       		.uleb128 0x6
+ 742 03f9 F3030000 		.4byte	0x3f3
+ 743 03fd 0A       		.uleb128 0xa
+ 744 03fe 47020000 		.4byte	0x247
+ 745 0402 0D040000 		.4byte	0x40d
+ 746 0406 0B       		.uleb128 0xb
+ 747 0407 81000000 		.4byte	0x81
+ 748 040b 0F       		.byte	0xf
+ 749 040c 00       		.byte	0
+ 750 040d 03       		.uleb128 0x3
+ 751 040e 3A000000 		.4byte	.LASF41
+ 752 0412 05       		.byte	0x5
+ 753 0413 7B       		.byte	0x7b
+ 754 0414 52020000 		.4byte	0x252
+ 755 0418 09       		.uleb128 0x9
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 17
+
+
+ 756 0419 01020000 		.4byte	.LASF42
+ 757 041d 06       		.byte	0x6
+ 758 041e C401     		.2byte	0x1c4
+ 759 0420 24040000 		.4byte	0x424
+ 760 0424 02       		.uleb128 0x2
+ 761 0425 01       		.byte	0x1
+ 762 0426 08       		.byte	0x8
+ 763 0427 F3010000 		.4byte	.LASF43
+ 764 042b 02       		.uleb128 0x2
+ 765 042c 04       		.byte	0x4
+ 766 042d 04       		.byte	0x4
+ 767 042e DF010000 		.4byte	.LASF44
+ 768 0432 02       		.uleb128 0x2
+ 769 0433 08       		.byte	0x8
+ 770 0434 04       		.byte	0x4
+ 771 0435 93030000 		.4byte	.LASF45
+ 772 0439 12       		.uleb128 0x12
+ 773 043a 04       		.byte	0x4
+ 774 043b 6F000000 		.4byte	0x6f
+ 775 043f 07       		.byte	0x7
+ 776 0440 CB       		.byte	0xcb
+ 777 0441 5E040000 		.4byte	0x45e
+ 778 0445 08       		.uleb128 0x8
+ 779 0446 46010000 		.4byte	.LASF46
+ 780 044a 00       		.byte	0
+ 781 044b 13       		.uleb128 0x13
+ 782 044c 9A030000 		.4byte	.LASF47
+ 783 0450 0100CE00 		.4byte	0xce0001
+ 784 0454 13       		.uleb128 0x13
+ 785 0455 60020000 		.4byte	.LASF48
+ 786 0459 0200CE00 		.4byte	0xce0002
+ 787 045d 00       		.byte	0
+ 788 045e 03       		.uleb128 0x3
+ 789 045f 42030000 		.4byte	.LASF49
+ 790 0463 07       		.byte	0x7
+ 791 0464 CF       		.byte	0xcf
+ 792 0465 39040000 		.4byte	0x439
+ 793 0469 14       		.uleb128 0x14
+ 794 046a 16000000 		.4byte	.LASF57
+ 795 046e 01       		.byte	0x1
+ 796 046f 31       		.byte	0x31
+ 797 0470 5E040000 		.4byte	0x45e
+ 798 0474 00000000 		.4byte	.LFB36
+ 799 0478 68000000 		.4byte	.LFE36-.LFB36
+ 800 047c 01       		.uleb128 0x1
+ 801 047d 9C       		.byte	0x9c
+ 802 047e F6040000 		.4byte	0x4f6
+ 803 0482 15       		.uleb128 0x15
+ 804 0483 3B030000 		.4byte	.LASF50
+ 805 0487 01       		.byte	0x1
+ 806 0488 31       		.byte	0x31
+ 807 0489 76000000 		.4byte	0x76
+ 808 048d 00000000 		.4byte	.LLST0
+ 809 0491 15       		.uleb128 0x15
+ 810 0492 15030000 		.4byte	.LASF51
+ 811 0496 01       		.byte	0x1
+ 812 0497 31       		.byte	0x31
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 18
+
+
+ 813 0498 76000000 		.4byte	0x76
+ 814 049c 45000000 		.4byte	.LLST1
+ 815 04a0 15       		.uleb128 0x15
+ 816 04a1 4E020000 		.4byte	.LASF52
+ 817 04a5 01       		.byte	0x1
+ 818 04a6 31       		.byte	0x31
+ 819 04a7 F6040000 		.4byte	0x4f6
+ 820 04ab 8A000000 		.4byte	.LLST2
+ 821 04af 15       		.uleb128 0x15
+ 822 04b0 AF030000 		.4byte	.LASF53
+ 823 04b4 01       		.byte	0x1
+ 824 04b5 31       		.byte	0x31
+ 825 04b6 AC000000 		.4byte	0xac
+ 826 04ba AB000000 		.4byte	.LLST3
+ 827 04be 16       		.uleb128 0x16
+ 828 04bf 08020000 		.4byte	.LASF54
+ 829 04c3 01       		.byte	0x1
+ 830 04c4 33       		.byte	0x33
+ 831 04c5 FD040000 		.4byte	0x4fd
+ 832 04c9 CC000000 		.4byte	.LLST4
+ 833 04cd 16       		.uleb128 0x16
+ 834 04ce B8030000 		.4byte	.LASF55
+ 835 04d2 01       		.byte	0x1
+ 836 04d3 34       		.byte	0x34
+ 837 04d4 5E040000 		.4byte	0x45e
+ 838 04d8 DF000000 		.4byte	.LLST5
+ 839 04dc 17       		.uleb128 0x17
+ 840 04dd 16000000 		.4byte	.LVL4
+ 841 04e1 80050000 		.4byte	0x580
+ 842 04e5 18       		.uleb128 0x18
+ 843 04e6 01       		.uleb128 0x1
+ 844 04e7 50       		.byte	0x50
+ 845 04e8 05       		.uleb128 0x5
+ 846 04e9 03       		.byte	0x3
+ 847 04ea 00000000 		.4byte	.LC0
+ 848 04ee 18       		.uleb128 0x18
+ 849 04ef 01       		.uleb128 0x1
+ 850 04f0 51       		.byte	0x51
+ 851 04f1 02       		.uleb128 0x2
+ 852 04f2 08       		.byte	0x8
+ 853 04f3 36       		.byte	0x36
+ 854 04f4 00       		.byte	0
+ 855 04f5 00       		.byte	0
+ 856 04f6 02       		.uleb128 0x2
+ 857 04f7 01       		.byte	0x1
+ 858 04f8 02       		.byte	0x2
+ 859 04f9 35030000 		.4byte	.LASF56
+ 860 04fd 19       		.uleb128 0x19
+ 861 04fe 04       		.byte	0x4
+ 862 04ff 88000000 		.4byte	0x88
+ 863 0503 14       		.uleb128 0x14
+ 864 0504 2C020000 		.4byte	.LASF58
+ 865 0508 01       		.byte	0x1
+ 866 0509 68       		.byte	0x68
+ 867 050a 5E040000 		.4byte	0x45e
+ 868 050e 00000000 		.4byte	.LFB37
+ 869 0512 94000000 		.4byte	.LFE37-.LFB37
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 19
+
+
+ 870 0516 01       		.uleb128 0x1
+ 871 0517 9C       		.byte	0x9c
+ 872 0518 80050000 		.4byte	0x580
+ 873 051c 15       		.uleb128 0x15
+ 874 051d E0020000 		.4byte	.LASF59
+ 875 0521 01       		.byte	0x1
+ 876 0522 68       		.byte	0x68
+ 877 0523 76000000 		.4byte	0x76
+ 878 0527 1E010000 		.4byte	.LLST6
+ 879 052b 15       		.uleb128 0x15
+ 880 052c 59010000 		.4byte	.LASF60
+ 881 0530 01       		.byte	0x1
+ 882 0531 68       		.byte	0x68
+ 883 0532 76000000 		.4byte	0x76
+ 884 0536 7C010000 		.4byte	.LLST7
+ 885 053a 16       		.uleb128 0x16
+ 886 053b B8030000 		.4byte	.LASF55
+ 887 053f 01       		.byte	0x1
+ 888 0540 6A       		.byte	0x6a
+ 889 0541 5E040000 		.4byte	0x45e
+ 890 0545 C1010000 		.4byte	.LLST8
+ 891 0549 1A       		.uleb128 0x1a
+ 892 054a 14000000 		.4byte	.LVL15
+ 893 054e 80050000 		.4byte	0x580
+ 894 0552 66050000 		.4byte	0x566
+ 895 0556 18       		.uleb128 0x18
+ 896 0557 01       		.uleb128 0x1
+ 897 0558 50       		.byte	0x50
+ 898 0559 05       		.uleb128 0x5
+ 899 055a 03       		.byte	0x3
+ 900 055b 00000000 		.4byte	.LC0
+ 901 055f 18       		.uleb128 0x18
+ 902 0560 01       		.uleb128 0x1
+ 903 0561 51       		.byte	0x51
+ 904 0562 02       		.uleb128 0x2
+ 905 0563 08       		.byte	0x8
+ 906 0564 6C       		.byte	0x6c
+ 907 0565 00       		.byte	0
+ 908 0566 17       		.uleb128 0x17
+ 909 0567 20000000 		.4byte	.LVL16
+ 910 056b 80050000 		.4byte	0x580
+ 911 056f 18       		.uleb128 0x18
+ 912 0570 01       		.uleb128 0x1
+ 913 0571 50       		.byte	0x50
+ 914 0572 05       		.uleb128 0x5
+ 915 0573 03       		.byte	0x3
+ 916 0574 00000000 		.4byte	.LC0
+ 917 0578 18       		.uleb128 0x18
+ 918 0579 01       		.uleb128 0x1
+ 919 057a 51       		.byte	0x51
+ 920 057b 02       		.uleb128 0x2
+ 921 057c 08       		.byte	0x8
+ 922 057d 6D       		.byte	0x6d
+ 923 057e 00       		.byte	0
+ 924 057f 00       		.byte	0
+ 925 0580 1B       		.uleb128 0x1b
+ 926 0581 DD030000 		.4byte	.LASF64
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 20
+
+
+ 927 0585 DD030000 		.4byte	.LASF64
+ 928 0589 06       		.byte	0x6
+ 929 058a 2A03     		.2byte	0x32a
+ 930 058c 00       		.byte	0
+ 931              		.section	.debug_abbrev,"",%progbits
+ 932              	.Ldebug_abbrev0:
+ 933 0000 01       		.uleb128 0x1
+ 934 0001 11       		.uleb128 0x11
+ 935 0002 01       		.byte	0x1
+ 936 0003 25       		.uleb128 0x25
+ 937 0004 0E       		.uleb128 0xe
+ 938 0005 13       		.uleb128 0x13
+ 939 0006 0B       		.uleb128 0xb
+ 940 0007 03       		.uleb128 0x3
+ 941 0008 0E       		.uleb128 0xe
+ 942 0009 1B       		.uleb128 0x1b
+ 943 000a 0E       		.uleb128 0xe
+ 944 000b 55       		.uleb128 0x55
+ 945 000c 17       		.uleb128 0x17
+ 946 000d 11       		.uleb128 0x11
+ 947 000e 01       		.uleb128 0x1
+ 948 000f 10       		.uleb128 0x10
+ 949 0010 17       		.uleb128 0x17
+ 950 0011 00       		.byte	0
+ 951 0012 00       		.byte	0
+ 952 0013 02       		.uleb128 0x2
+ 953 0014 24       		.uleb128 0x24
+ 954 0015 00       		.byte	0
+ 955 0016 0B       		.uleb128 0xb
+ 956 0017 0B       		.uleb128 0xb
+ 957 0018 3E       		.uleb128 0x3e
+ 958 0019 0B       		.uleb128 0xb
+ 959 001a 03       		.uleb128 0x3
+ 960 001b 0E       		.uleb128 0xe
+ 961 001c 00       		.byte	0
+ 962 001d 00       		.byte	0
+ 963 001e 03       		.uleb128 0x3
+ 964 001f 16       		.uleb128 0x16
+ 965 0020 00       		.byte	0
+ 966 0021 03       		.uleb128 0x3
+ 967 0022 0E       		.uleb128 0xe
+ 968 0023 3A       		.uleb128 0x3a
+ 969 0024 0B       		.uleb128 0xb
+ 970 0025 3B       		.uleb128 0x3b
+ 971 0026 0B       		.uleb128 0xb
+ 972 0027 49       		.uleb128 0x49
+ 973 0028 13       		.uleb128 0x13
+ 974 0029 00       		.byte	0
+ 975 002a 00       		.byte	0
+ 976 002b 04       		.uleb128 0x4
+ 977 002c 24       		.uleb128 0x24
+ 978 002d 00       		.byte	0
+ 979 002e 0B       		.uleb128 0xb
+ 980 002f 0B       		.uleb128 0xb
+ 981 0030 3E       		.uleb128 0x3e
+ 982 0031 0B       		.uleb128 0xb
+ 983 0032 03       		.uleb128 0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 21
+
+
+ 984 0033 08       		.uleb128 0x8
+ 985 0034 00       		.byte	0
+ 986 0035 00       		.byte	0
+ 987 0036 05       		.uleb128 0x5
+ 988 0037 35       		.uleb128 0x35
+ 989 0038 00       		.byte	0
+ 990 0039 49       		.uleb128 0x49
+ 991 003a 13       		.uleb128 0x13
+ 992 003b 00       		.byte	0
+ 993 003c 00       		.byte	0
+ 994 003d 06       		.uleb128 0x6
+ 995 003e 26       		.uleb128 0x26
+ 996 003f 00       		.byte	0
+ 997 0040 49       		.uleb128 0x49
+ 998 0041 13       		.uleb128 0x13
+ 999 0042 00       		.byte	0
+ 1000 0043 00       		.byte	0
+ 1001 0044 07       		.uleb128 0x7
+ 1002 0045 04       		.uleb128 0x4
+ 1003 0046 01       		.byte	0x1
+ 1004 0047 0B       		.uleb128 0xb
+ 1005 0048 0B       		.uleb128 0xb
+ 1006 0049 49       		.uleb128 0x49
+ 1007 004a 13       		.uleb128 0x13
+ 1008 004b 3A       		.uleb128 0x3a
+ 1009 004c 0B       		.uleb128 0xb
+ 1010 004d 3B       		.uleb128 0x3b
+ 1011 004e 05       		.uleb128 0x5
+ 1012 004f 01       		.uleb128 0x1
+ 1013 0050 13       		.uleb128 0x13
+ 1014 0051 00       		.byte	0
+ 1015 0052 00       		.byte	0
+ 1016 0053 08       		.uleb128 0x8
+ 1017 0054 28       		.uleb128 0x28
+ 1018 0055 00       		.byte	0
+ 1019 0056 03       		.uleb128 0x3
+ 1020 0057 0E       		.uleb128 0xe
+ 1021 0058 1C       		.uleb128 0x1c
+ 1022 0059 0B       		.uleb128 0xb
+ 1023 005a 00       		.byte	0
+ 1024 005b 00       		.byte	0
+ 1025 005c 09       		.uleb128 0x9
+ 1026 005d 16       		.uleb128 0x16
+ 1027 005e 00       		.byte	0
+ 1028 005f 03       		.uleb128 0x3
+ 1029 0060 0E       		.uleb128 0xe
+ 1030 0061 3A       		.uleb128 0x3a
+ 1031 0062 0B       		.uleb128 0xb
+ 1032 0063 3B       		.uleb128 0x3b
+ 1033 0064 05       		.uleb128 0x5
+ 1034 0065 49       		.uleb128 0x49
+ 1035 0066 13       		.uleb128 0x13
+ 1036 0067 00       		.byte	0
+ 1037 0068 00       		.byte	0
+ 1038 0069 0A       		.uleb128 0xa
+ 1039 006a 01       		.uleb128 0x1
+ 1040 006b 01       		.byte	0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 22
+
+
+ 1041 006c 49       		.uleb128 0x49
+ 1042 006d 13       		.uleb128 0x13
+ 1043 006e 01       		.uleb128 0x1
+ 1044 006f 13       		.uleb128 0x13
+ 1045 0070 00       		.byte	0
+ 1046 0071 00       		.byte	0
+ 1047 0072 0B       		.uleb128 0xb
+ 1048 0073 21       		.uleb128 0x21
+ 1049 0074 00       		.byte	0
+ 1050 0075 49       		.uleb128 0x49
+ 1051 0076 13       		.uleb128 0x13
+ 1052 0077 2F       		.uleb128 0x2f
+ 1053 0078 0B       		.uleb128 0xb
+ 1054 0079 00       		.byte	0
+ 1055 007a 00       		.byte	0
+ 1056 007b 0C       		.uleb128 0xc
+ 1057 007c 13       		.uleb128 0x13
+ 1058 007d 01       		.byte	0x1
+ 1059 007e 0B       		.uleb128 0xb
+ 1060 007f 0B       		.uleb128 0xb
+ 1061 0080 3A       		.uleb128 0x3a
+ 1062 0081 0B       		.uleb128 0xb
+ 1063 0082 3B       		.uleb128 0x3b
+ 1064 0083 0B       		.uleb128 0xb
+ 1065 0084 01       		.uleb128 0x1
+ 1066 0085 13       		.uleb128 0x13
+ 1067 0086 00       		.byte	0
+ 1068 0087 00       		.byte	0
+ 1069 0088 0D       		.uleb128 0xd
+ 1070 0089 0D       		.uleb128 0xd
+ 1071 008a 00       		.byte	0
+ 1072 008b 03       		.uleb128 0x3
+ 1073 008c 0E       		.uleb128 0xe
+ 1074 008d 3A       		.uleb128 0x3a
+ 1075 008e 0B       		.uleb128 0xb
+ 1076 008f 3B       		.uleb128 0x3b
+ 1077 0090 0B       		.uleb128 0xb
+ 1078 0091 49       		.uleb128 0x49
+ 1079 0092 13       		.uleb128 0x13
+ 1080 0093 38       		.uleb128 0x38
+ 1081 0094 0B       		.uleb128 0xb
+ 1082 0095 00       		.byte	0
+ 1083 0096 00       		.byte	0
+ 1084 0097 0E       		.uleb128 0xe
+ 1085 0098 13       		.uleb128 0x13
+ 1086 0099 01       		.byte	0x1
+ 1087 009a 0B       		.uleb128 0xb
+ 1088 009b 05       		.uleb128 0x5
+ 1089 009c 3A       		.uleb128 0x3a
+ 1090 009d 0B       		.uleb128 0xb
+ 1091 009e 3B       		.uleb128 0x3b
+ 1092 009f 0B       		.uleb128 0xb
+ 1093 00a0 01       		.uleb128 0x1
+ 1094 00a1 13       		.uleb128 0x13
+ 1095 00a2 00       		.byte	0
+ 1096 00a3 00       		.byte	0
+ 1097 00a4 0F       		.uleb128 0xf
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 23
+
+
+ 1098 00a5 0D       		.uleb128 0xd
+ 1099 00a6 00       		.byte	0
+ 1100 00a7 03       		.uleb128 0x3
+ 1101 00a8 08       		.uleb128 0x8
+ 1102 00a9 3A       		.uleb128 0x3a
+ 1103 00aa 0B       		.uleb128 0xb
+ 1104 00ab 3B       		.uleb128 0x3b
+ 1105 00ac 0B       		.uleb128 0xb
+ 1106 00ad 49       		.uleb128 0x49
+ 1107 00ae 13       		.uleb128 0x13
+ 1108 00af 38       		.uleb128 0x38
+ 1109 00b0 0B       		.uleb128 0xb
+ 1110 00b1 00       		.byte	0
+ 1111 00b2 00       		.byte	0
+ 1112 00b3 10       		.uleb128 0x10
+ 1113 00b4 0D       		.uleb128 0xd
+ 1114 00b5 00       		.byte	0
+ 1115 00b6 03       		.uleb128 0x3
+ 1116 00b7 0E       		.uleb128 0xe
+ 1117 00b8 3A       		.uleb128 0x3a
+ 1118 00b9 0B       		.uleb128 0xb
+ 1119 00ba 3B       		.uleb128 0x3b
+ 1120 00bb 0B       		.uleb128 0xb
+ 1121 00bc 49       		.uleb128 0x49
+ 1122 00bd 13       		.uleb128 0x13
+ 1123 00be 38       		.uleb128 0x38
+ 1124 00bf 05       		.uleb128 0x5
+ 1125 00c0 00       		.byte	0
+ 1126 00c1 00       		.byte	0
+ 1127 00c2 11       		.uleb128 0x11
+ 1128 00c3 21       		.uleb128 0x21
+ 1129 00c4 00       		.byte	0
+ 1130 00c5 49       		.uleb128 0x49
+ 1131 00c6 13       		.uleb128 0x13
+ 1132 00c7 2F       		.uleb128 0x2f
+ 1133 00c8 05       		.uleb128 0x5
+ 1134 00c9 00       		.byte	0
+ 1135 00ca 00       		.byte	0
+ 1136 00cb 12       		.uleb128 0x12
+ 1137 00cc 04       		.uleb128 0x4
+ 1138 00cd 01       		.byte	0x1
+ 1139 00ce 0B       		.uleb128 0xb
+ 1140 00cf 0B       		.uleb128 0xb
+ 1141 00d0 49       		.uleb128 0x49
+ 1142 00d1 13       		.uleb128 0x13
+ 1143 00d2 3A       		.uleb128 0x3a
+ 1144 00d3 0B       		.uleb128 0xb
+ 1145 00d4 3B       		.uleb128 0x3b
+ 1146 00d5 0B       		.uleb128 0xb
+ 1147 00d6 01       		.uleb128 0x1
+ 1148 00d7 13       		.uleb128 0x13
+ 1149 00d8 00       		.byte	0
+ 1150 00d9 00       		.byte	0
+ 1151 00da 13       		.uleb128 0x13
+ 1152 00db 28       		.uleb128 0x28
+ 1153 00dc 00       		.byte	0
+ 1154 00dd 03       		.uleb128 0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 24
+
+
+ 1155 00de 0E       		.uleb128 0xe
+ 1156 00df 1C       		.uleb128 0x1c
+ 1157 00e0 06       		.uleb128 0x6
+ 1158 00e1 00       		.byte	0
+ 1159 00e2 00       		.byte	0
+ 1160 00e3 14       		.uleb128 0x14
+ 1161 00e4 2E       		.uleb128 0x2e
+ 1162 00e5 01       		.byte	0x1
+ 1163 00e6 3F       		.uleb128 0x3f
+ 1164 00e7 19       		.uleb128 0x19
+ 1165 00e8 03       		.uleb128 0x3
+ 1166 00e9 0E       		.uleb128 0xe
+ 1167 00ea 3A       		.uleb128 0x3a
+ 1168 00eb 0B       		.uleb128 0xb
+ 1169 00ec 3B       		.uleb128 0x3b
+ 1170 00ed 0B       		.uleb128 0xb
+ 1171 00ee 27       		.uleb128 0x27
+ 1172 00ef 19       		.uleb128 0x19
+ 1173 00f0 49       		.uleb128 0x49
+ 1174 00f1 13       		.uleb128 0x13
+ 1175 00f2 11       		.uleb128 0x11
+ 1176 00f3 01       		.uleb128 0x1
+ 1177 00f4 12       		.uleb128 0x12
+ 1178 00f5 06       		.uleb128 0x6
+ 1179 00f6 40       		.uleb128 0x40
+ 1180 00f7 18       		.uleb128 0x18
+ 1181 00f8 9742     		.uleb128 0x2117
+ 1182 00fa 19       		.uleb128 0x19
+ 1183 00fb 01       		.uleb128 0x1
+ 1184 00fc 13       		.uleb128 0x13
+ 1185 00fd 00       		.byte	0
+ 1186 00fe 00       		.byte	0
+ 1187 00ff 15       		.uleb128 0x15
+ 1188 0100 05       		.uleb128 0x5
+ 1189 0101 00       		.byte	0
+ 1190 0102 03       		.uleb128 0x3
+ 1191 0103 0E       		.uleb128 0xe
+ 1192 0104 3A       		.uleb128 0x3a
+ 1193 0105 0B       		.uleb128 0xb
+ 1194 0106 3B       		.uleb128 0x3b
+ 1195 0107 0B       		.uleb128 0xb
+ 1196 0108 49       		.uleb128 0x49
+ 1197 0109 13       		.uleb128 0x13
+ 1198 010a 02       		.uleb128 0x2
+ 1199 010b 17       		.uleb128 0x17
+ 1200 010c 00       		.byte	0
+ 1201 010d 00       		.byte	0
+ 1202 010e 16       		.uleb128 0x16
+ 1203 010f 34       		.uleb128 0x34
+ 1204 0110 00       		.byte	0
+ 1205 0111 03       		.uleb128 0x3
+ 1206 0112 0E       		.uleb128 0xe
+ 1207 0113 3A       		.uleb128 0x3a
+ 1208 0114 0B       		.uleb128 0xb
+ 1209 0115 3B       		.uleb128 0x3b
+ 1210 0116 0B       		.uleb128 0xb
+ 1211 0117 49       		.uleb128 0x49
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 25
+
+
+ 1212 0118 13       		.uleb128 0x13
+ 1213 0119 02       		.uleb128 0x2
+ 1214 011a 17       		.uleb128 0x17
+ 1215 011b 00       		.byte	0
+ 1216 011c 00       		.byte	0
+ 1217 011d 17       		.uleb128 0x17
+ 1218 011e 898201   		.uleb128 0x4109
+ 1219 0121 01       		.byte	0x1
+ 1220 0122 11       		.uleb128 0x11
+ 1221 0123 01       		.uleb128 0x1
+ 1222 0124 31       		.uleb128 0x31
+ 1223 0125 13       		.uleb128 0x13
+ 1224 0126 00       		.byte	0
+ 1225 0127 00       		.byte	0
+ 1226 0128 18       		.uleb128 0x18
+ 1227 0129 8A8201   		.uleb128 0x410a
+ 1228 012c 00       		.byte	0
+ 1229 012d 02       		.uleb128 0x2
+ 1230 012e 18       		.uleb128 0x18
+ 1231 012f 9142     		.uleb128 0x2111
+ 1232 0131 18       		.uleb128 0x18
+ 1233 0132 00       		.byte	0
+ 1234 0133 00       		.byte	0
+ 1235 0134 19       		.uleb128 0x19
+ 1236 0135 0F       		.uleb128 0xf
+ 1237 0136 00       		.byte	0
+ 1238 0137 0B       		.uleb128 0xb
+ 1239 0138 0B       		.uleb128 0xb
+ 1240 0139 49       		.uleb128 0x49
+ 1241 013a 13       		.uleb128 0x13
+ 1242 013b 00       		.byte	0
+ 1243 013c 00       		.byte	0
+ 1244 013d 1A       		.uleb128 0x1a
+ 1245 013e 898201   		.uleb128 0x4109
+ 1246 0141 01       		.byte	0x1
+ 1247 0142 11       		.uleb128 0x11
+ 1248 0143 01       		.uleb128 0x1
+ 1249 0144 31       		.uleb128 0x31
+ 1250 0145 13       		.uleb128 0x13
+ 1251 0146 01       		.uleb128 0x1
+ 1252 0147 13       		.uleb128 0x13
+ 1253 0148 00       		.byte	0
+ 1254 0149 00       		.byte	0
+ 1255 014a 1B       		.uleb128 0x1b
+ 1256 014b 2E       		.uleb128 0x2e
+ 1257 014c 00       		.byte	0
+ 1258 014d 3F       		.uleb128 0x3f
+ 1259 014e 19       		.uleb128 0x19
+ 1260 014f 3C       		.uleb128 0x3c
+ 1261 0150 19       		.uleb128 0x19
+ 1262 0151 6E       		.uleb128 0x6e
+ 1263 0152 0E       		.uleb128 0xe
+ 1264 0153 03       		.uleb128 0x3
+ 1265 0154 0E       		.uleb128 0xe
+ 1266 0155 3A       		.uleb128 0x3a
+ 1267 0156 0B       		.uleb128 0xb
+ 1268 0157 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 26
+
+
+ 1269 0158 05       		.uleb128 0x5
+ 1270 0159 00       		.byte	0
+ 1271 015a 00       		.byte	0
+ 1272 015b 00       		.byte	0
+ 1273              		.section	.debug_loc,"",%progbits
+ 1274              	.Ldebug_loc0:
+ 1275              	.LLST0:
+ 1276 0000 00000000 		.4byte	.LVL0
+ 1277 0004 12000000 		.4byte	.LVL3
+ 1278 0008 0100     		.2byte	0x1
+ 1279 000a 50       		.byte	0x50
+ 1280 000b 12000000 		.4byte	.LVL3
+ 1281 000f 3C000000 		.4byte	.LVL7
+ 1282 0013 0100     		.2byte	0x1
+ 1283 0015 56       		.byte	0x56
+ 1284 0016 3C000000 		.4byte	.LVL7
+ 1285 001a 56000000 		.4byte	.LVL9
+ 1286 001e 0400     		.2byte	0x4
+ 1287 0020 F3       		.byte	0xf3
+ 1288 0021 01       		.uleb128 0x1
+ 1289 0022 50       		.byte	0x50
+ 1290 0023 9F       		.byte	0x9f
+ 1291 0024 56000000 		.4byte	.LVL9
+ 1292 0028 58000000 		.4byte	.LVL10
+ 1293 002c 0100     		.2byte	0x1
+ 1294 002e 56       		.byte	0x56
+ 1295 002f 58000000 		.4byte	.LVL10
+ 1296 0033 68000000 		.4byte	.LFE36
+ 1297 0037 0400     		.2byte	0x4
+ 1298 0039 F3       		.byte	0xf3
+ 1299 003a 01       		.uleb128 0x1
+ 1300 003b 50       		.byte	0x50
+ 1301 003c 9F       		.byte	0x9f
+ 1302 003d 00000000 		.4byte	0
+ 1303 0041 00000000 		.4byte	0
+ 1304              	.LLST1:
+ 1305 0045 00000000 		.4byte	.LVL0
+ 1306 0049 10000000 		.4byte	.LVL2
+ 1307 004d 0100     		.2byte	0x1
+ 1308 004f 51       		.byte	0x51
+ 1309 0050 10000000 		.4byte	.LVL2
+ 1310 0054 2E000000 		.4byte	.LVL5
+ 1311 0058 0100     		.2byte	0x1
+ 1312 005a 54       		.byte	0x54
+ 1313 005b 2E000000 		.4byte	.LVL5
+ 1314 005f 56000000 		.4byte	.LVL9
+ 1315 0063 0400     		.2byte	0x4
+ 1316 0065 F3       		.byte	0xf3
+ 1317 0066 01       		.uleb128 0x1
+ 1318 0067 51       		.byte	0x51
+ 1319 0068 9F       		.byte	0x9f
+ 1320 0069 56000000 		.4byte	.LVL9
+ 1321 006d 58000000 		.4byte	.LVL10
+ 1322 0071 0100     		.2byte	0x1
+ 1323 0073 54       		.byte	0x54
+ 1324 0074 58000000 		.4byte	.LVL10
+ 1325 0078 68000000 		.4byte	.LFE36
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 27
+
+
+ 1326 007c 0400     		.2byte	0x4
+ 1327 007e F3       		.byte	0xf3
+ 1328 007f 01       		.uleb128 0x1
+ 1329 0080 51       		.byte	0x51
+ 1330 0081 9F       		.byte	0x9f
+ 1331 0082 00000000 		.4byte	0
+ 1332 0086 00000000 		.4byte	0
+ 1333              	.LLST2:
+ 1334 008a 00000000 		.4byte	.LVL0
+ 1335 008e 15000000 		.4byte	.LVL4-1
+ 1336 0092 0100     		.2byte	0x1
+ 1337 0094 52       		.byte	0x52
+ 1338 0095 15000000 		.4byte	.LVL4-1
+ 1339 0099 68000000 		.4byte	.LFE36
+ 1340 009d 0400     		.2byte	0x4
+ 1341 009f F3       		.byte	0xf3
+ 1342 00a0 01       		.uleb128 0x1
+ 1343 00a1 52       		.byte	0x52
+ 1344 00a2 9F       		.byte	0x9f
+ 1345 00a3 00000000 		.4byte	0
+ 1346 00a7 00000000 		.4byte	0
+ 1347              	.LLST3:
+ 1348 00ab 00000000 		.4byte	.LVL0
+ 1349 00af 15000000 		.4byte	.LVL4-1
+ 1350 00b3 0100     		.2byte	0x1
+ 1351 00b5 53       		.byte	0x53
+ 1352 00b6 15000000 		.4byte	.LVL4-1
+ 1353 00ba 68000000 		.4byte	.LFE36
+ 1354 00be 0400     		.2byte	0x4
+ 1355 00c0 F3       		.byte	0xf3
+ 1356 00c1 01       		.uleb128 0x1
+ 1357 00c2 53       		.byte	0x53
+ 1358 00c3 9F       		.byte	0x9f
+ 1359 00c4 00000000 		.4byte	0
+ 1360 00c8 00000000 		.4byte	0
+ 1361              	.LLST4:
+ 1362 00cc 38000000 		.4byte	.LVL6
+ 1363 00d0 56000000 		.4byte	.LVL9
+ 1364 00d4 0100     		.2byte	0x1
+ 1365 00d6 54       		.byte	0x54
+ 1366 00d7 00000000 		.4byte	0
+ 1367 00db 00000000 		.4byte	0
+ 1368              	.LLST5:
+ 1369 00df 0A000000 		.4byte	.LVL1
+ 1370 00e3 52000000 		.4byte	.LVL8
+ 1371 00e7 0600     		.2byte	0x6
+ 1372 00e9 0C       		.byte	0xc
+ 1373 00ea 0100CE00 		.4byte	0xce0001
+ 1374 00ee 9F       		.byte	0x9f
+ 1375 00ef 52000000 		.4byte	.LVL8
+ 1376 00f3 56000000 		.4byte	.LVL9
+ 1377 00f7 0200     		.2byte	0x2
+ 1378 00f9 30       		.byte	0x30
+ 1379 00fa 9F       		.byte	0x9f
+ 1380 00fb 56000000 		.4byte	.LVL9
+ 1381 00ff 58000000 		.4byte	.LVL10
+ 1382 0103 0600     		.2byte	0x6
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 28
+
+
+ 1383 0105 0C       		.byte	0xc
+ 1384 0106 0100CE00 		.4byte	0xce0001
+ 1385 010a 9F       		.byte	0x9f
+ 1386 010b 58000000 		.4byte	.LVL10
+ 1387 010f 68000000 		.4byte	.LFE36
+ 1388 0113 0100     		.2byte	0x1
+ 1389 0115 50       		.byte	0x50
+ 1390 0116 00000000 		.4byte	0
+ 1391 011a 00000000 		.4byte	0
+ 1392              	.LLST6:
+ 1393 011e 00000000 		.4byte	.LVL11
+ 1394 0122 10000000 		.4byte	.LVL14
+ 1395 0126 0100     		.2byte	0x1
+ 1396 0128 50       		.byte	0x50
+ 1397 0129 10000000 		.4byte	.LVL14
+ 1398 012d 44000000 		.4byte	.LVL18
+ 1399 0131 0100     		.2byte	0x1
+ 1400 0133 55       		.byte	0x55
+ 1401 0134 44000000 		.4byte	.LVL18
+ 1402 0138 58000000 		.4byte	.LVL20
+ 1403 013c 0400     		.2byte	0x4
+ 1404 013e F3       		.byte	0xf3
+ 1405 013f 01       		.uleb128 0x1
+ 1406 0140 50       		.byte	0x50
+ 1407 0141 9F       		.byte	0x9f
+ 1408 0142 58000000 		.4byte	.LVL20
+ 1409 0146 68000000 		.4byte	.LVL21
+ 1410 014a 0100     		.2byte	0x1
+ 1411 014c 55       		.byte	0x55
+ 1412 014d 68000000 		.4byte	.LVL21
+ 1413 0151 72000000 		.4byte	.LVL23
+ 1414 0155 0400     		.2byte	0x4
+ 1415 0157 F3       		.byte	0xf3
+ 1416 0158 01       		.uleb128 0x1
+ 1417 0159 50       		.byte	0x50
+ 1418 015a 9F       		.byte	0x9f
+ 1419 015b 72000000 		.4byte	.LVL23
+ 1420 015f 78000000 		.4byte	.LVL24
+ 1421 0163 0100     		.2byte	0x1
+ 1422 0165 55       		.byte	0x55
+ 1423 0166 78000000 		.4byte	.LVL24
+ 1424 016a 94000000 		.4byte	.LFE37
+ 1425 016e 0400     		.2byte	0x4
+ 1426 0170 F3       		.byte	0xf3
+ 1427 0171 01       		.uleb128 0x1
+ 1428 0172 50       		.byte	0x50
+ 1429 0173 9F       		.byte	0x9f
+ 1430 0174 00000000 		.4byte	0
+ 1431 0178 00000000 		.4byte	0
+ 1432              	.LLST7:
+ 1433 017c 00000000 		.4byte	.LVL11
+ 1434 0180 0E000000 		.4byte	.LVL13
+ 1435 0184 0100     		.2byte	0x1
+ 1436 0186 51       		.byte	0x51
+ 1437 0187 0E000000 		.4byte	.LVL13
+ 1438 018b 36000000 		.4byte	.LVL17
+ 1439 018f 0100     		.2byte	0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 29
+
+
+ 1440 0191 54       		.byte	0x54
+ 1441 0192 36000000 		.4byte	.LVL17
+ 1442 0196 58000000 		.4byte	.LVL20
+ 1443 019a 0400     		.2byte	0x4
+ 1444 019c F3       		.byte	0xf3
+ 1445 019d 01       		.uleb128 0x1
+ 1446 019e 51       		.byte	0x51
+ 1447 019f 9F       		.byte	0x9f
+ 1448 01a0 58000000 		.4byte	.LVL20
+ 1449 01a4 78000000 		.4byte	.LVL24
+ 1450 01a8 0100     		.2byte	0x1
+ 1451 01aa 54       		.byte	0x54
+ 1452 01ab 78000000 		.4byte	.LVL24
+ 1453 01af 94000000 		.4byte	.LFE37
+ 1454 01b3 0400     		.2byte	0x4
+ 1455 01b5 F3       		.byte	0xf3
+ 1456 01b6 01       		.uleb128 0x1
+ 1457 01b7 51       		.byte	0x51
+ 1458 01b8 9F       		.byte	0x9f
+ 1459 01b9 00000000 		.4byte	0
+ 1460 01bd 00000000 		.4byte	0
+ 1461              	.LLST8:
+ 1462 01c1 06000000 		.4byte	.LVL12
+ 1463 01c5 54000000 		.4byte	.LVL19
+ 1464 01c9 0600     		.2byte	0x6
+ 1465 01cb 0C       		.byte	0xc
+ 1466 01cc 0200CE00 		.4byte	0xce0002
+ 1467 01d0 9F       		.byte	0x9f
+ 1468 01d1 54000000 		.4byte	.LVL19
+ 1469 01d5 58000000 		.4byte	.LVL20
+ 1470 01d9 0200     		.2byte	0x2
+ 1471 01db 30       		.byte	0x30
+ 1472 01dc 9F       		.byte	0x9f
+ 1473 01dd 58000000 		.4byte	.LVL20
+ 1474 01e1 6E000000 		.4byte	.LVL22
+ 1475 01e5 0600     		.2byte	0x6
+ 1476 01e7 0C       		.byte	0xc
+ 1477 01e8 0200CE00 		.4byte	0xce0002
+ 1478 01ec 9F       		.byte	0x9f
+ 1479 01ed 6E000000 		.4byte	.LVL22
+ 1480 01f1 72000000 		.4byte	.LVL23
+ 1481 01f5 0200     		.2byte	0x2
+ 1482 01f7 30       		.byte	0x30
+ 1483 01f8 9F       		.byte	0x9f
+ 1484 01f9 72000000 		.4byte	.LVL23
+ 1485 01fd 78000000 		.4byte	.LVL24
+ 1486 0201 0600     		.2byte	0x6
+ 1487 0203 0C       		.byte	0xc
+ 1488 0204 0200CE00 		.4byte	0xce0002
+ 1489 0208 9F       		.byte	0x9f
+ 1490 0209 78000000 		.4byte	.LVL24
+ 1491 020d 94000000 		.4byte	.LFE37
+ 1492 0211 0100     		.2byte	0x1
+ 1493 0213 50       		.byte	0x50
+ 1494 0214 00000000 		.4byte	0
+ 1495 0218 00000000 		.4byte	0
+ 1496              		.section	.debug_aranges,"",%progbits
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 30
+
+
+ 1497 0000 24000000 		.4byte	0x24
+ 1498 0004 0200     		.2byte	0x2
+ 1499 0006 00000000 		.4byte	.Ldebug_info0
+ 1500 000a 04       		.byte	0x4
+ 1501 000b 00       		.byte	0
+ 1502 000c 0000     		.2byte	0
+ 1503 000e 0000     		.2byte	0
+ 1504 0010 00000000 		.4byte	.LFB36
+ 1505 0014 68000000 		.4byte	.LFE36-.LFB36
+ 1506 0018 00000000 		.4byte	.LFB37
+ 1507 001c 94000000 		.4byte	.LFE37-.LFB37
+ 1508 0020 00000000 		.4byte	0
+ 1509 0024 00000000 		.4byte	0
+ 1510              		.section	.debug_ranges,"",%progbits
+ 1511              	.Ldebug_ranges0:
+ 1512 0000 00000000 		.4byte	.LFB36
+ 1513 0004 68000000 		.4byte	.LFE36
+ 1514 0008 00000000 		.4byte	.LFB37
+ 1515 000c 94000000 		.4byte	.LFE37
+ 1516 0010 00000000 		.4byte	0
+ 1517 0014 00000000 		.4byte	0
+ 1518              		.section	.debug_line,"",%progbits
+ 1519              	.Ldebug_line0:
+ 1520 0000 90020000 		.section	.debug_str,"MS",%progbits,1
+ 1520      02003002 
+ 1520      00000201 
+ 1520      FB0E0D00 
+ 1520      01010101 
+ 1521              	.LASF22:
+ 1522 0000 50455249 		.ascii	"PERI_TR_GR_Type\000"
+ 1522      5F54525F 
+ 1522      47525F54 
+ 1522      79706500 
+ 1523              	.LASF37:
+ 1524 0010 54525F47 		.ascii	"TR_GR\000"
+ 1524      5200
+ 1525              	.LASF57:
+ 1526 0016 43795F54 		.ascii	"Cy_TrigMux_Connect\000"
+ 1526      7269674D 
+ 1526      75785F43 
+ 1526      6F6E6E65 
+ 1526      637400
+ 1527              	.LASF28:
+ 1528 0029 50455249 		.ascii	"PERI_PPU_GR_Type\000"
+ 1528      5F505055 
+ 1528      5F47525F 
+ 1528      54797065 
+ 1528      00
+ 1529              	.LASF41:
+ 1530 003a 50455249 		.ascii	"PERI_Type\000"
+ 1530      5F547970 
+ 1530      6500
+ 1531              	.LASF62:
+ 1532 0044 47656E65 		.ascii	"Generated_Source\\PSoC6\\pdl\\drivers\\peripheral\\"
+ 1532      72617465 
+ 1532      645F536F 
+ 1532      75726365 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 31
+
+
+ 1532      5C50536F 
+ 1533 0072 74726967 		.ascii	"trigmux\\cy_trigmux.c\000"
+ 1533      6D75785C 
+ 1533      63795F74 
+ 1533      7269676D 
+ 1533      75782E63 
+ 1534              	.LASF0:
+ 1535 0087 73686F72 		.ascii	"short int\000"
+ 1535      7420696E 
+ 1535      7400
+ 1536              	.LASF12:
+ 1537 0091 54524947 		.ascii	"TRIGGER_TYPE_LEVEL\000"
+ 1537      4745525F 
+ 1537      54595045 
+ 1537      5F4C4556 
+ 1537      454C00
+ 1538              	.LASF11:
+ 1539 00a4 73697A65 		.ascii	"sizetype\000"
+ 1539      74797065 
+ 1539      00
+ 1540              	.LASF61:
+ 1541 00ad 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1541      43313120 
+ 1541      352E342E 
+ 1541      31203230 
+ 1541      31363036 
+ 1542 00e0 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0plus -mthumb -"
+ 1542      20726576 
+ 1542      6973696F 
+ 1542      6E203233 
+ 1542      37373135 
+ 1543 0113 67202D4F 		.ascii	"g -Og -ffunction-sections -ffat-lto-objects\000"
+ 1543      67202D66 
+ 1543      66756E63 
+ 1543      74696F6E 
+ 1543      2D736563 
+ 1544              	.LASF40:
+ 1545 013f 5050555F 		.ascii	"PPU_GR\000"
+ 1545      475200
+ 1546              	.LASF46:
+ 1547 0146 43595F54 		.ascii	"CY_TRIGMUX_SUCCESS\000"
+ 1547      5249474D 
+ 1547      55585F53 
+ 1547      55434345 
+ 1547      535300
+ 1548              	.LASF60:
+ 1549 0159 6379636C 		.ascii	"cycles\000"
+ 1549      657300
+ 1550              	.LASF9:
+ 1551 0160 5F5F7569 		.ascii	"__uint32_t\000"
+ 1551      6E743332 
+ 1551      5F7400
+ 1552              	.LASF32:
+ 1553 016b 4449565F 		.ascii	"DIV_16_5_CTL\000"
+ 1553      31365F35 
+ 1553      5F43544C 
+ 1553      00
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 32
+
+
+ 1554              	.LASF63:
+ 1555 0178 433A5C47 		.ascii	"C:\\Git\\PSoC6-101-Videos\\Projects_ScreenCapture\\"
+ 1555      69745C50 
+ 1555      536F4336 
+ 1555      2D313031 
+ 1555      2D566964 
+ 1556 01a7 50536F43 		.ascii	"PSoC 6_101\\3-1-BLEFindMe.cydsn\000"
+ 1556      20365F31 
+ 1556      30315C33 
+ 1556      2D312D42 
+ 1556      4C454669 
+ 1557              	.LASF29:
+ 1558 01c6 4449565F 		.ascii	"DIV_CMD\000"
+ 1558      434D4400 
+ 1559              	.LASF27:
+ 1560 01ce 50455249 		.ascii	"PERI_PPU_PR_Type\000"
+ 1560      5F505055 
+ 1560      5F50525F 
+ 1560      54797065 
+ 1560      00
+ 1561              	.LASF44:
+ 1562 01df 666C6F61 		.ascii	"float\000"
+ 1562      7400
+ 1563              	.LASF6:
+ 1564 01e5 6C6F6E67 		.ascii	"long long int\000"
+ 1564      206C6F6E 
+ 1564      6720696E 
+ 1564      7400
+ 1565              	.LASF43:
+ 1566 01f3 63686172 		.ascii	"char\000"
+ 1566      00
+ 1567              	.LASF4:
+ 1568 01f8 6C6F6E67 		.ascii	"long int\000"
+ 1568      20696E74 
+ 1568      00
+ 1569              	.LASF42:
+ 1570 0201 63686172 		.ascii	"char_t\000"
+ 1570      5F7400
+ 1571              	.LASF54:
+ 1572 0208 74724F75 		.ascii	"trOutCtlAddr\000"
+ 1572      7443746C 
+ 1572      41646472 
+ 1572      00
+ 1573              	.LASF24:
+ 1574 0215 41545430 		.ascii	"ATT0\000"
+ 1574      00
+ 1575              	.LASF26:
+ 1576 021a 41545431 		.ascii	"ATT1\000"
+ 1576      00
+ 1577              	.LASF20:
+ 1578 021f 50455249 		.ascii	"PERI_GR_Type\000"
+ 1578      5F47525F 
+ 1578      54797065 
+ 1578      00
+ 1579              	.LASF58:
+ 1580 022c 43795F54 		.ascii	"Cy_TrigMux_SwTrigger\000"
+ 1580      7269674D 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 33
+
+
+ 1580      75785F53 
+ 1580      77547269 
+ 1580      67676572 
+ 1581              	.LASF33:
+ 1582 0241 4449565F 		.ascii	"DIV_24_5_CTL\000"
+ 1582      32345F35 
+ 1582      5F43544C 
+ 1582      00
+ 1583              	.LASF52:
+ 1584 024e 696E7665 		.ascii	"invert\000"
+ 1584      727400
+ 1585              	.LASF31:
+ 1586 0255 4449565F 		.ascii	"DIV_16_CTL\000"
+ 1586      31365F43 
+ 1586      544C00
+ 1587              	.LASF48:
+ 1588 0260 43595F54 		.ascii	"CY_TRIGMUX_INVALID_STATE\000"
+ 1588      5249474D 
+ 1588      55585F49 
+ 1588      4E56414C 
+ 1588      49445F53 
+ 1589              	.LASF1:
+ 1590 0279 756E7369 		.ascii	"unsigned char\000"
+ 1590      676E6564 
+ 1590      20636861 
+ 1590      7200
+ 1591              	.LASF2:
+ 1592 0287 7369676E 		.ascii	"signed char\000"
+ 1592      65642063 
+ 1592      68617200 
+ 1593              	.LASF7:
+ 1594 0293 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1594      206C6F6E 
+ 1594      6720756E 
+ 1594      7369676E 
+ 1594      65642069 
+ 1595              	.LASF10:
+ 1596 02aa 75696E74 		.ascii	"uint32_t\000"
+ 1596      33325F74 
+ 1596      00
+ 1597              	.LASF30:
+ 1598 02b3 4449565F 		.ascii	"DIV_8_CTL\000"
+ 1598      385F4354 
+ 1598      4C00
+ 1599              	.LASF38:
+ 1600 02bd 5050555F 		.ascii	"PPU_PR\000"
+ 1600      505200
+ 1601              	.LASF8:
+ 1602 02c4 756E7369 		.ascii	"unsigned int\000"
+ 1602      676E6564 
+ 1602      20696E74 
+ 1602      00
+ 1603              	.LASF14:
+ 1604 02d1 656E5F74 		.ascii	"en_trig_type_t\000"
+ 1604      7269675F 
+ 1604      74797065 
+ 1604      5F7400
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 34
+
+
+ 1605              	.LASF59:
+ 1606 02e0 74726967 		.ascii	"trigLine\000"
+ 1606      4C696E65 
+ 1606      00
+ 1607              	.LASF35:
+ 1608 02e9 54525F43 		.ascii	"TR_CMD\000"
+ 1608      4D4400
+ 1609              	.LASF3:
+ 1610 02f0 73686F72 		.ascii	"short unsigned int\000"
+ 1610      7420756E 
+ 1610      7369676E 
+ 1610      65642069 
+ 1610      6E7400
+ 1611              	.LASF13:
+ 1612 0303 54524947 		.ascii	"TRIGGER_TYPE_EDGE\000"
+ 1612      4745525F 
+ 1612      54595045 
+ 1612      5F454447 
+ 1612      4500
+ 1613              	.LASF51:
+ 1614 0315 6F757454 		.ascii	"outTrig\000"
+ 1614      72696700 
+ 1615              	.LASF18:
+ 1616 031d 54494D45 		.ascii	"TIMEOUT_CTL\000"
+ 1616      4F55545F 
+ 1616      43544C00 
+ 1617              	.LASF23:
+ 1618 0329 41444452 		.ascii	"ADDR0\000"
+ 1618      3000
+ 1619              	.LASF25:
+ 1620 032f 41444452 		.ascii	"ADDR1\000"
+ 1620      3100
+ 1621              	.LASF56:
+ 1622 0335 5F426F6F 		.ascii	"_Bool\000"
+ 1622      6C00
+ 1623              	.LASF50:
+ 1624 033b 696E5472 		.ascii	"inTrig\000"
+ 1624      696700
+ 1625              	.LASF49:
+ 1626 0342 63795F65 		.ascii	"cy_en_trigmux_status_t\000"
+ 1626      6E5F7472 
+ 1626      69676D75 
+ 1626      785F7374 
+ 1626      61747573 
+ 1627              	.LASF19:
+ 1628 0359 52455345 		.ascii	"RESERVED1\000"
+ 1628      52564544 
+ 1628      3100
+ 1629              	.LASF34:
+ 1630 0363 52455345 		.ascii	"RESERVED2\000"
+ 1630      52564544 
+ 1630      3200
+ 1631              	.LASF36:
+ 1632 036d 52455345 		.ascii	"RESERVED3\000"
+ 1632      52564544 
+ 1632      3300
+ 1633              	.LASF39:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccfPgIT9.s 			page 35
+
+
+ 1634 0377 52455345 		.ascii	"RESERVED4\000"
+ 1634      52564544 
+ 1634      3400
+ 1635              	.LASF5:
+ 1636 0381 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1636      20756E73 
+ 1636      69676E65 
+ 1636      6420696E 
+ 1636      7400
+ 1637              	.LASF45:
+ 1638 0393 646F7562 		.ascii	"double\000"
+ 1638      6C6500
+ 1639              	.LASF47:
+ 1640 039a 43595F54 		.ascii	"CY_TRIGMUX_BAD_PARAM\000"
+ 1640      5249474D 
+ 1640      55585F42 
+ 1640      41445F50 
+ 1640      4152414D 
+ 1641              	.LASF53:
+ 1642 03af 74726967 		.ascii	"trigType\000"
+ 1642      54797065 
+ 1642      00
+ 1643              	.LASF55:
+ 1644 03b8 72657456 		.ascii	"retVal\000"
+ 1644      616C00
+ 1645              	.LASF21:
+ 1646 03bf 54525F4F 		.ascii	"TR_OUT_CTL\000"
+ 1646      55545F43 
+ 1646      544C00
+ 1647              	.LASF16:
+ 1648 03ca 52455345 		.ascii	"RESERVED\000"
+ 1648      52564544 
+ 1648      00
+ 1649              	.LASF15:
+ 1650 03d3 434C4F43 		.ascii	"CLOCK_CTL\000"
+ 1650      4B5F4354 
+ 1650      4C00
+ 1651              	.LASF64:
+ 1652 03dd 43795F53 		.ascii	"Cy_SysLib_AssertFailed\000"
+ 1652      79734C69 
+ 1652      625F4173 
+ 1652      73657274 
+ 1652      4661696C 
+ 1653              	.LASF17:
+ 1654 03f4 534C5F43 		.ascii	"SL_CTL\000"
+ 1654      544C00
+ 1655              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

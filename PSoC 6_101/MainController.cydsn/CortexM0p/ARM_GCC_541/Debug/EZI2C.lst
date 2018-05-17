@@ -1,0 +1,2962 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0plus
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"EZI2C.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.EZI2C_Start,"ax",%progbits
+  20              		.align	2
+  21              		.global	EZI2C_Start
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	EZI2C_Start, %function
+  25              	EZI2C_Start:
+  26              	.LFB133:
+  27              		.file 1 "Generated_Source\\PSoC6\\EZI2C.c"
+   1:Generated_Source\PSoC6/EZI2C.c **** /***************************************************************************//**
+   2:Generated_Source\PSoC6/EZI2C.c **** * \file EZI2C.c
+   3:Generated_Source\PSoC6/EZI2C.c **** * \version 2.0
+   4:Generated_Source\PSoC6/EZI2C.c **** *
+   5:Generated_Source\PSoC6/EZI2C.c **** *  This file provides the source code to the API for the EZI2C Component.
+   6:Generated_Source\PSoC6/EZI2C.c **** *
+   7:Generated_Source\PSoC6/EZI2C.c **** ********************************************************************************
+   8:Generated_Source\PSoC6/EZI2C.c **** * \copyright
+   9:Generated_Source\PSoC6/EZI2C.c **** * Copyright 2016-2017, Cypress Semiconductor Corporation. All rights reserved.
+  10:Generated_Source\PSoC6/EZI2C.c **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC6/EZI2C.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC6/EZI2C.c **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC6/EZI2C.c **** *******************************************************************************/
+  14:Generated_Source\PSoC6/EZI2C.c **** 
+  15:Generated_Source\PSoC6/EZI2C.c **** #include "EZI2C.h"
+  16:Generated_Source\PSoC6/EZI2C.c **** #include "sysint/cy_sysint.h"
+  17:Generated_Source\PSoC6/EZI2C.c **** #include "cyfitter_sysint.h"
+  18:Generated_Source\PSoC6/EZI2C.c **** #include "cyfitter_sysint_cfg.h"
+  19:Generated_Source\PSoC6/EZI2C.c **** 
+  20:Generated_Source\PSoC6/EZI2C.c **** #if defined(__cplusplus)
+  21:Generated_Source\PSoC6/EZI2C.c **** extern "C" {
+  22:Generated_Source\PSoC6/EZI2C.c **** #endif
+  23:Generated_Source\PSoC6/EZI2C.c **** 
+  24:Generated_Source\PSoC6/EZI2C.c **** /***************************************
+  25:Generated_Source\PSoC6/EZI2C.c **** *     Global variables
+  26:Generated_Source\PSoC6/EZI2C.c **** ***************************************/
+  27:Generated_Source\PSoC6/EZI2C.c **** 
+  28:Generated_Source\PSoC6/EZI2C.c **** /** EZI2C_initVar indicates whether the EZI2C
+  29:Generated_Source\PSoC6/EZI2C.c **** *  component has been initialized. The variable is initialized to 0
+  30:Generated_Source\PSoC6/EZI2C.c **** *  and set to 1 the first time EZI2C_Start() is called.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 2
+
+
+  31:Generated_Source\PSoC6/EZI2C.c **** *  This allows  the component to restart without reinitialization
+  32:Generated_Source\PSoC6/EZI2C.c **** *  after the first call to the EZI2C_Start() routine.
+  33:Generated_Source\PSoC6/EZI2C.c **** *
+  34:Generated_Source\PSoC6/EZI2C.c **** *  If re-initialization of the component is required, then the
+  35:Generated_Source\PSoC6/EZI2C.c **** *  EZI2C_Init() function can be called before the
+  36:Generated_Source\PSoC6/EZI2C.c **** *  EZI2C_Start() or EZI2C_Enable() function.
+  37:Generated_Source\PSoC6/EZI2C.c **** */
+  38:Generated_Source\PSoC6/EZI2C.c **** uint8_t EZI2C_initVar = 0U;
+  39:Generated_Source\PSoC6/EZI2C.c **** 
+  40:Generated_Source\PSoC6/EZI2C.c **** /** The instance-specific configuration structure.
+  41:Generated_Source\PSoC6/EZI2C.c **** * The pointer to this structure should be passed to Cy_SCB_EZI2C_Init function
+  42:Generated_Source\PSoC6/EZI2C.c **** * to initialize component with GUI selected settings.
+  43:Generated_Source\PSoC6/EZI2C.c **** */
+  44:Generated_Source\PSoC6/EZI2C.c **** cy_stc_scb_ezi2c_config_t const EZI2C_config =
+  45:Generated_Source\PSoC6/EZI2C.c **** {
+  46:Generated_Source\PSoC6/EZI2C.c ****     .numberOfAddresses = CY_SCB_EZI2C_ONE_ADDRESS,
+  47:Generated_Source\PSoC6/EZI2C.c ****     .slaveAddress1     = 0x8U,
+  48:Generated_Source\PSoC6/EZI2C.c ****     .slaveAddress2     = 0U,
+  49:Generated_Source\PSoC6/EZI2C.c ****     .subAddressSize    = CY_SCB_EZI2C_SUB_ADDR8_BITS,
+  50:Generated_Source\PSoC6/EZI2C.c **** 
+  51:Generated_Source\PSoC6/EZI2C.c ****     .enableWakeFromSleep = false
+  52:Generated_Source\PSoC6/EZI2C.c **** };
+  53:Generated_Source\PSoC6/EZI2C.c **** 
+  54:Generated_Source\PSoC6/EZI2C.c **** /** The instance-specific context structure.
+  55:Generated_Source\PSoC6/EZI2C.c **** * It is used while the driver operation for internal configuration and
+  56:Generated_Source\PSoC6/EZI2C.c **** * data keeping for the EZI2C. The user should not modify anything in this 
+  57:Generated_Source\PSoC6/EZI2C.c **** * structure.
+  58:Generated_Source\PSoC6/EZI2C.c **** */
+  59:Generated_Source\PSoC6/EZI2C.c **** cy_stc_scb_ezi2c_context_t EZI2C_context;
+  60:Generated_Source\PSoC6/EZI2C.c **** 
+  61:Generated_Source\PSoC6/EZI2C.c **** 
+  62:Generated_Source\PSoC6/EZI2C.c **** /*******************************************************************************
+  63:Generated_Source\PSoC6/EZI2C.c **** * Function Name: EZI2C_Start
+  64:Generated_Source\PSoC6/EZI2C.c **** ****************************************************************************//**
+  65:Generated_Source\PSoC6/EZI2C.c **** *
+  66:Generated_Source\PSoC6/EZI2C.c **** * Invokes EZI2C_Init() and EZI2C_Enable().
+  67:Generated_Source\PSoC6/EZI2C.c **** * Also configures interrupt and low and high oversampling phases.
+  68:Generated_Source\PSoC6/EZI2C.c **** * After this function call the component is enabled and ready for operation.
+  69:Generated_Source\PSoC6/EZI2C.c **** * This is the preferred method to begin component operation.
+  70:Generated_Source\PSoC6/EZI2C.c **** *
+  71:Generated_Source\PSoC6/EZI2C.c **** * \globalvars
+  72:Generated_Source\PSoC6/EZI2C.c **** * \ref EZI2C_initVar - used to check initial configuration,
+  73:Generated_Source\PSoC6/EZI2C.c **** * modified  on first function call.
+  74:Generated_Source\PSoC6/EZI2C.c **** *
+  75:Generated_Source\PSoC6/EZI2C.c **** *******************************************************************************/
+  76:Generated_Source\PSoC6/EZI2C.c **** void EZI2C_Start(void)
+  77:Generated_Source\PSoC6/EZI2C.c **** {
+  28              		.loc 1 77 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  78:Generated_Source\PSoC6/EZI2C.c ****     if (0U == EZI2C_initVar)
+  36              		.loc 1 78 0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 3
+
+
+  37 0002 094B     		ldr	r3, .L3
+  38 0004 1B78     		ldrb	r3, [r3]
+  39 0006 002B     		cmp	r3, #0
+  40 0008 07D1     		bne	.L2
+  79:Generated_Source\PSoC6/EZI2C.c ****     {
+  80:Generated_Source\PSoC6/EZI2C.c ****         /* Configure component */
+  81:Generated_Source\PSoC6/EZI2C.c ****         (void) Cy_SCB_EZI2C_Init(EZI2C_HW, &EZI2C_config, &EZI2C_context);
+  41              		.loc 1 81 0
+  42 000a 084A     		ldr	r2, .L3+4
+  43 000c 0849     		ldr	r1, .L3+8
+  44 000e 0948     		ldr	r0, .L3+12
+  45 0010 FFF7FEFF 		bl	Cy_SCB_EZI2C_Init
+  46              	.LVL0:
+  82:Generated_Source\PSoC6/EZI2C.c **** 
+  83:Generated_Source\PSoC6/EZI2C.c ****         /* Hook interrupt service routine */
+  84:Generated_Source\PSoC6/EZI2C.c ****         #if defined(EZI2C_SCB_IRQ__INTC_ASSIGNED)
+  85:Generated_Source\PSoC6/EZI2C.c ****             (void) Cy_SysInt_Init(&EZI2C_SCB_IRQ_cfg, &EZI2C_Interrupt);
+  86:Generated_Source\PSoC6/EZI2C.c ****         #endif /* (EZI2C_SCB_IRQ__INTC_ASSIGNED) */
+  87:Generated_Source\PSoC6/EZI2C.c **** 
+  88:Generated_Source\PSoC6/EZI2C.c ****         EZI2C_initVar = 1U;
+  47              		.loc 1 88 0
+  48 0014 0122     		movs	r2, #1
+  49 0016 044B     		ldr	r3, .L3
+  50 0018 1A70     		strb	r2, [r3]
+  51              	.L2:
+  52              	.LVL1:
+  53              	.LBB4:
+  54              	.LBB5:
+  55              		.file 2 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/scb/cy_scb_ezi2c.h"
+   1:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /***************************************************************************//**
+   2:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \file cy_scb_ezi2c.h
+   3:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \version 2.10
+   4:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+   5:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Provides EZI2C API declarations of the SCB driver.
+   6:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+   7:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** ********************************************************************************
+   8:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \copyright
+   9:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Copyright 2016-2018, Cypress Semiconductor Corporation.  All rights reserved.
+  10:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *******************************************************************************/
+  14:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+  15:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+  16:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \addtogroup group_scb_ezi2c
+  17:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+  18:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Driver API for EZI2C Slave Peripheral
+  19:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  20:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * I2C - The Inter-Integrated Circuit (I2C) bus is an industry-standard.
+  21:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The two-wire hardware interface was developed by Philips Semiconductors
+  22:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * (now NXP Semiconductors).
+  23:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  24:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The EZI2C slave peripheral driver provides an API to implement the I2C slave
+  25:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * device based on the SCB hardware block. This slave device emulates a common
+  26:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * I2C EEPROM interface that acts like dual-port memory between the external
+  27:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * master and your code. I2C devices based on the SCB hardware are compatible
+  28:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * with the I2C Standard mode, Fast mode, and Fast mode Plus specifications, as
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 4
+
+
+  29:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * defined in the I2C bus specification.
+  30:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  31:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Features:
+  32:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * An industry-standard I2C bus interface
+  33:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * Supports standard data rates of 100/400/1000 kbps
+  34:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * Emulates a common I2C EEPROM Interface
+  35:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * Acts like dual-port memory between the external master and your code
+  36:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * Supports Hardware Address Match
+  37:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * Supports two hardware addresses with separate buffers
+  38:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * Supports Wake from Deep Sleep on address match
+  39:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * Simple to set up and use; does not require calling EZI2C API
+  40:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   at run time.
+  41:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  42:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \section group_scb_ezi2c_configuration Configuration Considerations
+  43:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The EZI2C slave driver configuration can be divided to number of sequential 
+  44:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * steps listed below: 
+  45:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * \ref group_scb_ezi2c_config
+  46:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * \ref group_scb_ezi2c_pins
+  47:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * \ref group_scb_ezi2c_clock
+  48:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * \ref group_scb_ezi2c_data_rate
+  49:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * \ref group_scb_ezi2c_intr
+  50:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * * \ref group_scb_ezi2c_enable
+  51:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * 
+  52:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \note 
+  53:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * EZI2C slave driver is built on top of the SCB hardware block. The SCB3 
+  54:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * instance is used as an example for all code snippets. Modify the code to 
+  55:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * match your design.
+  56:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  57:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \subsection group_scb_ezi2c_config Configure EZI2C slave
+  58:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * To set up the EZI2C slave driver, provide the configuration parameters in the 
+  59:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \ref cy_stc_scb_ezi2c_config_t structure. The primary slave address 
+  60:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * slaveAddress1 must be provided. The other parameters are optional for 
+  61:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * operation. To initialize the driver, call \ref Cy_SCB_EZI2C_Init 
+  62:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * function providing a pointer to the filled \ref cy_stc_scb_ezi2c_config_t 
+  63:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * structure and allocated \ref cy_stc_scb_ezi2c_context_t.
+  64:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  65:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \snippet SCB_CompDatasheet_sut_01_revA.cydsn\ezi2c_snippets.c EZI2C_CFG
+  66:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  67:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Set up the EZI2C slave buffer before enabling its 
+  68:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * operation by using \ref Cy_SCB_EZI2C_SetBuffer1 for the primary slave address  
+  69:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * and \ref Cy_SCB_EZI2C_SetBuffer2 for the secondary (if the secondary is enabled).
+  70:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  71:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \snippet SCB_CompDatasheet_sut_01_revA.cydsn\ezi2c_snippets.c EZI2C_CFG_BUFFER
+  72:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  73:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \subsection group_scb_ezi2c_pins Assign and Configure Pins
+  74:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Only dedicated SCB pins can be used for I2C operation. The HSIOM 
+  75:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * register must be configured to connect the block to the pins. Also the I2C pins 
+  76:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * must be configured in Open-Drain, Drives Low mode (this pin configuration 
+  77:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * implies usage of external pull-up resistors):
+  78:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  79:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \snippet SCB_CompDatasheet_sut_01_revA.cydsn\ezi2c_snippets.c EZI2C_CFG_PINS
+  80:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  81:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \note
+  82:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The alternative pins configuration is Resistive Pull-ups which implies usage 
+  83:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * internal pull-up resistors. This configuration is not recommended because 
+  84:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * resistor value is fixed and cannot be used for all supported data rates. 
+  85:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Refer to device datasheet parameter RPULLUP for resistor value specifications.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 5
+
+
+  86:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  87:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \subsection group_scb_ezi2c_clock Assign Clock Divider
+  88:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The clock source must be connected to the SCB block to oversample input and 
+  89:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * output signals. You must use one of the 8-bit or 16-bit dividers <em><b>(the  
+  90:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * source clock of this divider must be Clk_Peri)</b></em>. Use the  
+  91:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \ref group_sysclk driver API to do that.
+  92:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  93:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \snippet SCB_CompDatasheet_sut_01_revA.cydsn\ezi2c_snippets.c EZI2C_CFG_ASSIGN_CLOCK
+  94:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+  95:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \subsection group_scb_ezi2c_data_rate Configure Data Rate
+  96:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * To get EZI2C slave to operate at the desired data rate, the source clock must be 
+  97:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * fast enough to provide sufficient oversampling. Therefore, the clock divider 
+  98:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * must be configured to provide desired clock frequency. Use the 
+  99:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \ref group_sysclk driver API to do that. 
+ 100:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Refer to the technical reference manual (TRM) section I2C sub-section 
+ 101:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Oversampling and Bit Rate to get information about how to configure the I2C to run 
+ 102:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * at the desired data rate.
+ 103:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 104:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \snippet SCB_CompDatasheet_sut_01_revA.cydsn\ezi2c_snippets.c EZI2C_CFG_DATA_RATE
+ 105:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 106:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \subsection group_scb_ezi2c_intr Configure Interrupt
+ 107:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The interrupt is mandatory for the EZI2C slave operation. 
+ 108:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The \ref Cy_SCB_EZI2C_Interrupt function must be called in the interrupt 
+ 109:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * handler for the selected SCB instance. Also, this interrupt must be enabled 
+ 110:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * in the NVIC or it will not work.
+ 111:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 112:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \snippet SCB_CompDatasheet_sut_01_revA.cydsn\ezi2c_snippets.c EZI2C_INTR_A
+ 113:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \snippet SCB_CompDatasheet_sut_01_revA.cydsn\ezi2c_snippets.c EZI2C_INTR_B
+ 114:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 115:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \subsection group_scb_ezi2c_enable Enable EZI2C slave
+ 116:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Finally, enable the EZI2C slave operation by calling \ref Cy_SCB_EZI2C_Enable. 
+ 117:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Now the I2C device responds to the assigned address.
+ 118:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \snippet SCB_CompDatasheet_sut_01_revA.cydsn\ezi2c_snippets.c EZI2C_ENABLE
+ 119:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 120:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \section group_scb_ezi2c_use_cases Common Use Cases 
+ 121:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The EZI2C slave operation might not require calling any EZI2C slave function
+ 122:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * because the I2C master is able to access the slave buffer. The application
+ 123:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * can directly access it as well. Note that this is an application-level task
+ 124:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * to ensure the buffer content integrity.
+ 125:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * 
+ 126:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \subsection group_scb_ezi2c_master_wr Master Write operation
+ 127:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * This operation starts with sending a base address that is one
+ 128:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * or two bytes, depending on the sub-address size configuration. This base
+ 129:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * address is retained and will be used for later read operations. Following
+ 130:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * the base address, there is a sequence of bytes written into the buffer
+ 131:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * starting from the base address location. The buffer index is incremented
+ 132:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * for each written byte, but this does not affect the base address that is
+ 133:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * retained. The length of a write operation is limited by the maximum buffer
+ 134:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * read/write region size.\n
+ 135:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * When a master attempts to write outside the read/write region or past the
+ 136:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * end of the buffer, the last byte is NACKed.
+ 137:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * 
+ 138:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \image html scb_ezi2c_write.png
+ 139:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * 
+ 140:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \subsection group_scb_ezi2c_master_rd Master Read operation
+ 141:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * This operation always starts from the base address set by the most
+ 142:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * recent write operation. The buffer index is incremented for each read byte.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 6
+
+
+ 143:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Two sequential read operations start from the same base address no matter
+ 144:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * how many bytes are read. The length of a read operation is not limited by
+ 145:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * the maximum size of the data buffer. The EZI2C slave returns 0xFF bytes
+ 146:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * if the read operation passes the end of the buffer.\n
+ 147:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Typically, a read operation requires the base address to be updated before
+ 148:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * starting the read. In this case, the write and read operations must be
+ 149:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * combined together.
+ 150:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 151:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \image html scb_ezi2c_read.png
+ 152:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 153:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The I2C master may use the ReStart or Stop/Start conditions to combine the 
+ 154:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * operations. The write operation sets only the base address and the following
+ 155:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * read operation will start from the new base address. In cases where the base
+ 156:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * address remains the same, there is no need for a write operation.
+ 157:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \image html scb_ezi2c_set_ba_read.png
+ 158:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 159:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \section group_scb_ezi2c_lp Low Power Support
+ 160:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The EZI2C slave provides the callback functions to handle power mode 
+ 161:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * transition. The callback \ref Cy_SCB_EZI2C_DeepSleepCallback must be called 
+ 162:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * during execution of \ref Cy_SysPm_DeepSleep; 
+ 163:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \ref Cy_SCB_EZI2C_HibernateCallback must be called during execution of 
+ 164:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \ref Cy_SysPm_Hibernate. To trigger the callback execution, the callback must 
+ 165:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * be registered before calling the power mode transition function. Refer to 
+ 166:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \ref group_syspm driver for more information about power mode transitions and 
+ 167:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * callback registration.
+ 168:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 169:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \note
+ 170:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Only applicable for <b>rev-08 of the CY8CKIT-062-BLE</b>.
+ 171:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * For proper operation, when the EZI2C slave is configured to be a wakeup 
+ 172:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * source from Deep Sleep mode, the \ref Cy_SCB_EZI2C_DeepSleepCallback must 
+ 173:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * be copied and modified. Refer to the function description to get the details.
+ 174:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 175:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \section group_scb_ezi2c_more_information More Information
+ 176:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 177:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * For more information on the SCB peripheral, refer to the technical reference
+ 178:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * manual (TRM).
+ 179:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 180:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \section group_scb_ezi2c_MISRA MISRA-C Compliance
+ 181:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * <table class="doxtable">
+ 182:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr>
+ 183:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <th>MISRA Rule</th>
+ 184:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <th>Rule Class (Required/Advisory)</th>
+ 185:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <th>Rule Description</th>
+ 186:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <th>Description of Deviation(s)</th>
+ 187:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   </tr>
+ 188:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr>
+ 189:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>11.4</td>
+ 190:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>A</td>
+ 191:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>A cast should not be performed between a pointer to object type and
+ 192:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         a different pointer to object type.</td>
+ 193:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>The functions \ref Cy_SCB_EZI2C_DeepSleepCallback and
+ 194:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         \ref Cy_SCB_EZI2C_HibernateCallback are callback of
+ 195:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         \ref cy_en_syspm_status_t type. The cast operation safety in these
+ 196:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         functions becomes the user's responsibility because pointers are
+ 197:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         initialized when callback is registered in SysPm driver.</td>
+ 198:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   </tr>
+ 199:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr>
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 7
+
+
+ 200:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>14.1</td>
+ 201:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>R</td>
+ 202:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>There shall be no unreachable code.</td>
+ 203:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>The SCB block parameters can be a constant false or true depending on
+ 204:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         the selected device and cause code to be unreachable.</td>
+ 205:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   </tr>
+ 206:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr>
+ 207:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>14.2</td>
+ 208:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>R</td>
+ 209:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>All non-null statements shall either: a) have at least one side-effect
+ 210:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         however executed, or b) cause control flow to change.</td>
+ 211:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>The unused function parameters are cast to void. This statement
+ 212:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         has no side-effect and is used to suppress a compiler warning.</td>
+ 213:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   </tr>
+ 214:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr>
+ 215:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>14.7</td>
+ 216:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>R</td>
+ 217:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>A function shall have a single point of exit at the end of the
+ 218:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         function.</td>
+ 219:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>The functions can return from several points. This is done to improve
+ 220:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         code clarity when returning error status code if input parameter
+ 221:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         validation fails.</td>
+ 222:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   </tr>
+ 223:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * </table>
+ 224:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 225:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \section group_scb_ezi2c_changelog Changelog
+ 226:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * <table class="doxtable">
+ 227:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr><th>Version</th><th>Changes</th><th>Reason for Change</th></tr>
+ 228:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr>
+ 229:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>2.10</td>
+ 230:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>None.</td>
+ 231:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>SCB I2C driver updated.</td>
+ 232:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   </tr>
+ 233:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr>
+ 234:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td rowspan="2"> 2.0</td>
+ 235:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>Added parameters validation for public API.</td>
+ 236:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td></td>
+ 237:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   </tr>
+ 238:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr>
+ 239:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>Replaced variables that have limited range of values with enumerated
+ 240:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         types.</td>
+ 241:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td></td>
+ 242:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   </tr>
+ 243:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   <tr>
+ 244:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>1.0</td>
+ 245:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td>Initial version.</td>
+ 246:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *     <td></td>
+ 247:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *   </tr>
+ 248:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * </table>
+ 249:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 250:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \defgroup group_scb_ezi2c_macros Macros
+ 251:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \defgroup group_scb_ezi2c_functions Functions
+ 252:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+ 253:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \defgroup group_scb_ezi2c_general_functions General
+ 254:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \defgroup group_scb_ezi2c_slave_functions Slave
+ 255:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \defgroup group_scb_ezi2c_low_power_functions Low Power Callbacks
+ 256:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \}
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 8
+
+
+ 257:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \defgroup group_scb_ezi2c_data_structures Data Structures
+ 258:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \defgroup group_scb_ezi2c_enums Enumerated Types
+ 259:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 260:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 261:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #if !defined(CY_SCB_EZI2C_H)
+ 262:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_H
+ 263:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 264:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #include "cy_scb_common.h"
+ 265:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 266:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #if defined(__cplusplus)
+ 267:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** extern "C" {
+ 268:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #endif
+ 269:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 270:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /***************************************
+ 271:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *       Enumerated Types
+ 272:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** ***************************************/
+ 273:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 274:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 275:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \addtogroup group_scb_ezi2c_enums
+ 276:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+ 277:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 278:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 279:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** EZI2C slave status codes */
+ 280:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** typedef enum
+ 281:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** {
+ 282:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     /** Operation completed successfully */
+ 283:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_SUCCESS = 0U,
+ 284:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 285:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     /** One or more of input parameters are invalid */
+ 286:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_BAD_PARAM = (CY_SCB_ID | CY_PDL_STATUS_ERROR | CY_SCB_EZI2C_ID | 1U),
+ 287:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** } cy_en_scb_ezi2c_status_t;
+ 288:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 289:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** Number of Addresses */
+ 290:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** typedef enum
+ 291:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** {
+ 292:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_ONE_ADDRESS,   /**< Only one address */
+ 293:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_TWO_ADDRESSES  /**< Two addresses */
+ 294:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** } cy_en_scb_ezi2c_num_of_addr_t;
+ 295:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 296:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** Size of Sub-Address */
+ 297:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** typedef enum
+ 298:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** {
+ 299:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_SUB_ADDR8_BITS,    /**< Sub-address is 8 bits  */
+ 300:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_SUB_ADDR16_BITS    /**< Sub-address is 16 bits */
+ 301:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** } cy_en_scb_ezi2c_sub_addr_size_t;
+ 302:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 303:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \cond INTERNAL */
+ 304:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** EZI2C slave FSM states */
+ 305:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** typedef enum
+ 306:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** {
+ 307:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_STATE_IDLE,
+ 308:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_STATE_ADDR,
+ 309:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_STATE_RX_OFFSET_MSB,
+ 310:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_STATE_RX_OFFSET_LSB,
+ 311:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_STATE_RX_DATA0,
+ 312:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_STATE_RX_DATA1,
+ 313:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     CY_SCB_EZI2C_STATE_TX_DATA
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 9
+
+
+ 314:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** } cy_en_scb_ezi2c_state_t;
+ 315:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \endcond */
+ 316:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \} group_scb_ezi2c_enums */
+ 317:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 318:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 319:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /***************************************
+ 320:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *       Type Definitions
+ 321:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** ***************************************/
+ 322:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 323:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 324:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \addtogroup group_scb_ezi2c_data_structures
+ 325:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+ 326:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 327:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 328:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** EZI2C slave configuration structure */
+ 329:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** typedef struct cy_stc_scb_ezi2c_config
+ 330:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** {
+ 331:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     /** The number of supported addresses either */
+ 332:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     cy_en_scb_ezi2c_num_of_addr_t numberOfAddresses;
+ 333:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 334:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     /** The 7-bit right justified primary slave address */
+ 335:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint8_t slaveAddress1;
+ 336:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 337:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     /** The 7-bit right justified secondary slave address */
+ 338:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint8_t slaveAddress2;
+ 339:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 340:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     /** The size of the sub-address, can either be 8 or 16 bits */
+ 341:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     cy_en_scb_ezi2c_sub_addr_size_t subAddressSize;
+ 342:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 343:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     /**
+ 344:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     * When set, the slave will wake the device from Deep Sleep on an address
+ 345:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     * match (The device datasheet must be consulted to determine which SCBs
+ 346:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     * support this mode)
+ 347:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     */
+ 348:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     bool enableWakeFromSleep;
+ 349:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** } cy_stc_scb_ezi2c_config_t;
+ 350:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 351:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** EZI2C slave context structure.
+ 352:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * All fields for the context structure are internal. Firmware never reads or 
+ 353:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * writes these values. Firmware allocates the structure and provides the 
+ 354:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * address of the structure to the driver in function calls. Firmware must 
+ 355:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * ensure that the defined instance of this structure remains in scope 
+ 356:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * while the drive is in use.
+ 357:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 358:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** typedef struct cy_stc_scb_ezi2c_context
+ 359:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** {
+ 360:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     /** \cond INTERNAL */
+ 361:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     volatile cy_en_scb_ezi2c_state_t state;  /**< The driver state */
+ 362:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     volatile uint32_t status;                /**< The slave status */
+ 363:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 364:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint8_t  address1;      /**< The primary slave address (7-bits right justified) */
+ 365:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint8_t  address2;      /**< The secondary slave address (7-bits right justified) */
+ 366:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     cy_en_scb_ezi2c_sub_addr_size_t subAddrSize;   /**< The sub-address size */
+ 367:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 368:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint32_t idx;       /**< The index within the buffer during operation */
+ 369:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint32_t baseAddr1; /**< The valid base address for the primary slave address */
+ 370:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint32_t baseAddr2; /**< The valid base address for the secondary slave address */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 10
+
+
+ 371:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 372:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     bool     addr1Active; /**< Defines whether the request is intended for the primary slave addres
+ 373:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint8_t  *curBuf;     /**< The pointer to the current location in the buffer (while it is acces
+ 374:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint32_t bufSize;     /**< Specifies how many bytes are left in the current buffer */
+ 375:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 376:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint8_t *buf1;          /**< The pointer to the buffer exposed  on the request intended for the
+ 377:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint32_t buf1Size;      /**< The buffer size assigned to the primary slave address */
+ 378:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint32_t buf1rwBondary; /**< The Read/Write boundary within the buffer assigned to the primary 
+ 379:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 380:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint8_t *buf2;          /**< The pointer to the buffer exposed on the request intended for the 
+ 381:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint32_t buf2Size;      /**< The buffer size assigned to the secondary slave address */
+ 382:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     uint32_t buf2rwBondary; /**< The Read/Write boundary within the buffer assigned for the seconda
+ 383:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     /** \endcond */
+ 384:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** } cy_stc_scb_ezi2c_context_t;
+ 385:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \} group_scb_ezi2c_data_structures */
+ 386:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 387:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 388:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /***************************************
+ 389:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *        Function Prototypes
+ 390:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** ***************************************/
+ 391:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 392:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 393:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \addtogroup group_scb_ezi2c_general_functions
+ 394:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+ 395:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 396:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** cy_en_scb_ezi2c_status_t Cy_SCB_EZI2C_Init(CySCB_Type *base, cy_stc_scb_ezi2c_config_t const *confi
+ 397:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****                                            cy_stc_scb_ezi2c_context_t *context);
+ 398:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** void     Cy_SCB_EZI2C_DeInit(CySCB_Type *base);
+ 399:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** __STATIC_INLINE void Cy_SCB_EZI2C_Enable(CySCB_Type *base);
+ 400:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** void     Cy_SCB_EZI2C_Disable(CySCB_Type *base, cy_stc_scb_ezi2c_context_t *context);
+ 401:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 402:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** void     Cy_SCB_EZI2C_SetAddress1(CySCB_Type *base, uint8_t addr, cy_stc_scb_ezi2c_context_t *conte
+ 403:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** uint32_t Cy_SCB_EZI2C_GetAddress1(CySCB_Type const *base, cy_stc_scb_ezi2c_context_t const *context
+ 404:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 405:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** void     Cy_SCB_EZI2C_SetAddress2(CySCB_Type *base, uint8_t addr, cy_stc_scb_ezi2c_context_t *conte
+ 406:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** uint32_t Cy_SCB_EZI2C_GetAddress2(CySCB_Type const *base, cy_stc_scb_ezi2c_context_t const *context
+ 407:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \} group_scb_ezi2c_general_functions */
+ 408:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 409:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 410:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \addtogroup group_scb_ezi2c_slave_functions
+ 411:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+ 412:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 413:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** void Cy_SCB_EZI2C_SetBuffer1(CySCB_Type const *base, uint8_t *buffer, uint32_t size, uint32_t rwBou
+ 414:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****                              cy_stc_scb_ezi2c_context_t *context);
+ 415:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** void Cy_SCB_EZI2C_SetBuffer2(CySCB_Type const *base, uint8_t *buffer, uint32_t size, uint32_t rwBou
+ 416:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****                              cy_stc_scb_ezi2c_context_t *context);
+ 417:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 418:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** uint32_t Cy_SCB_EZI2C_GetActivity(CySCB_Type const *base, cy_stc_scb_ezi2c_context_t *context);
+ 419:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 420:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** void Cy_SCB_EZI2C_Interrupt(CySCB_Type *base, cy_stc_scb_ezi2c_context_t *context);
+ 421:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \} group_scb_ezi2c_slave_functions */
+ 422:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 423:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 424:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \addtogroup group_scb_ezi2c_low_power_functions
+ 425:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+ 426:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 427:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** cy_en_syspm_status_t Cy_SCB_EZI2C_DeepSleepCallback(cy_stc_syspm_callback_params_t *callbackParams)
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 11
+
+
+ 428:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** cy_en_syspm_status_t Cy_SCB_EZI2C_HibernateCallback(cy_stc_syspm_callback_params_t *callbackParams)
+ 429:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \} group_scb_ezi2c_low_power_functions */
+ 430:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 431:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 432:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /***************************************
+ 433:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *            API Constants
+ 434:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** ***************************************/
+ 435:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 436:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 437:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \addtogroup group_scb_ezi2c_macros
+ 438:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+ 439:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 440:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 441:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 442:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \defgroup group_scb_ezi2c_macros_get_activity EZI2C Activity Status
+ 443:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Each EZI2C slave status is encoded in a separate bit, therefore multiple bits
+ 444:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * may be set to indicate the current status.
+ 445:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+ 446:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 447:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 448:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 449:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The Read transfer intended for the primary slave address is complete.
+ 450:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The error condition status bit must be checked to ensure that the Read
+ 451:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * transfer was completed successfully.
+ 452:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 453:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_STATUS_READ1       (0x01UL)
+ 454:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 455:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 456:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The Write transfer intended for the primary slave address is complete.
+ 457:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The buffer content was modified.
+ 458:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The error condition status bit must be checked to ensure that the Write
+ 459:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * transfer was completed successfully.
+ 460:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 461:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_STATUS_WRITE1      (0x02UL)
+ 462:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 463:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 464:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The Read transfer intended for the secondary slave address is complete.
+ 465:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The error condition status bit must be checked to ensure that the Read
+ 466:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * transfer was completed successfully.
+ 467:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 468:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_STATUS_READ2       (0x04UL)
+ 469:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 470:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 471:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The Write transfer intended for the secondary slave address is complete.
+ 472:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The buffer content was modified.
+ 473:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The error condition status bit must be checked to ensure that the Write
+ 474:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * transfer was completed successfully.
+ 475:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 476:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_STATUS_WRITE2       (0x08UL)
+ 477:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 478:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 479:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * A transfer intended for the primary address or secondary address is in
+ 480:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * progress. The status bit is set after an address match and cleared
+ 481:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * on a Stop or ReStart condition.
+ 482:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 483:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_STATUS_BUSY        (0x10UL)
+ 484:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 12
+
+
+ 485:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 486:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * An error occurred during a transfer intended for the primary or secondary
+ 487:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * slave address. The sources of the error are: a misplaced Start or Stop
+ 488:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * condition or lost arbitration while the slave drives SDA.
+ 489:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * When CY_SCB_EZI2C_STATUS_ERR is set, the slave buffer may contain an
+ 490:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * invalid byte. Discard the buffer content in this case.
+ 491:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 492:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_STATUS_ERR         (0x20UL)
+ 493:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \} group_scb_ezi2c_macros_get_activity */
+ 494:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 495:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 496:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * This value is returned by the slave when the buffer is not configured or
+ 497:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * the master requests more bytes than are available in the buffer.
+ 498:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 499:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_DEFAULT_TX  (0xFFUL)
+ 500:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 501:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 502:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /***************************************
+ 503:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *         Internal Constants
+ 504:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** ***************************************/
+ 505:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 506:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \cond INTERNAL */
+ 507:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /* Default registers values */
+ 508:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_I2C_CTRL   (SCB_I2C_CTRL_S_GENERAL_IGNORE_Msk | SCB_I2C_CTRL_SLAVE_MODE_Msk)
+ 509:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_RX_CTRL    (CY_SCB_I2C_RX_CTRL)
+ 510:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_TX_CTRL    (CY_SCB_I2C_TX_CTRL)
+ 511:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 512:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_SLAVE_INTR     (CY_SCB_SLAVE_INTR_I2C_ADDR_MATCH | CY_SCB_SLAVE_INTR_I2C_STOP 
+ 513:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****                                      CY_SCB_SLAVE_INTR_I2C_BUS_ERROR  | CY_SCB_SLAVE_INTR_I2C_ARB_L
+ 514:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /* Error interrupt sources */
+ 515:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_SLAVE_INTR_ERROR   (CY_SCB_SLAVE_INTR_I2C_BUS_ERROR  | CY_SCB_SLAVE_INTR_I2C_A
+ 516:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 517:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /* Disables Stop interrupt source */
+ 518:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_SLAVE_INTR_NO_STOP (CY_SCB_EZI2C_SLAVE_INTR & ((uint32_t) ~CY_SCB_SLAVE_INTR_I
+ 519:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 520:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /* Disable Address interrupt source */
+ 521:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_SLAVE_INTR_NO_ADDR (CY_SCB_EZI2C_SLAVE_INTR & ((uint32_t) ~CY_SCB_SLAVE_INTR_I
+ 522:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 523:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /* FIFO size */
+ 524:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_FIFO_SIZE(base)          CY_SCB_FIFO_SIZE(base)
+ 525:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_HALF_FIFO_SIZE(base)    (CY_SCB_FIFO_SIZE(base) / 2UL)
+ 526:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 527:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_ONE_ADDRESS_MASK   (0xFFUL)
+ 528:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 529:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_IS_NUM_OF_ADDR_VALID(numAddr)  ( (CY_SCB_EZI2C_ONE_ADDRESS   == (numAddr)) || 
+ 530:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****                                                       (CY_SCB_EZI2C_TWO_ADDRESSES == (numAddr)) )
+ 531:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 532:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** #define CY_SCB_EZI2C_IS_SUB_ADDR_SIZE_VALID(subAddrSize)    ( (CY_SCB_EZI2C_SUB_ADDR8_BITS  == (sub
+ 533:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****                                                               (CY_SCB_EZI2C_SUB_ADDR16_BITS == (sub
+ 534:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \endcond */
+ 535:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /** \} group_scb_ezi2c_macros */
+ 536:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 537:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ 538:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /***************************************
+ 539:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *    Inline Function Implementation
+ 540:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** ***************************************/
+ 541:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 13
+
+
+ 542:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /**
+ 543:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \addtogroup group_scb_ezi2c_general_functions
+ 544:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \{
+ 545:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** */
+ 546:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** /*******************************************************************************
+ 547:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Function Name: Cy_SCB_EZI2C_Enable
+ 548:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** ****************************************************************************//**
+ 549:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 550:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * Enables the SCB block for the EZI2C operation
+ 551:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 552:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * \param base
+ 553:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** * The pointer to the EZI2C SCB instance.
+ 554:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *
+ 555:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** *******************************************************************************/
+ 556:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** __STATIC_INLINE void Cy_SCB_EZI2C_Enable(CySCB_Type *base)
+ 557:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h **** {
+ 558:Generated_Source\PSoC6\pdl\drivers/peripheral/scb/cy_scb_ezi2c.h ****     base->CTRL |= SCB_CTRL_ENABLED_Msk;
+  56              		.loc 2 558 0
+  57 001a 064A     		ldr	r2, .L3+12
+  58 001c 1368     		ldr	r3, [r2]
+  59 001e 8021     		movs	r1, #128
+  60 0020 0906     		lsls	r1, r1, #24
+  61 0022 0B43     		orrs	r3, r1
+  62 0024 1360     		str	r3, [r2]
+  63              	.LVL2:
+  64              	.LBE5:
+  65              	.LBE4:
+  89:Generated_Source\PSoC6/EZI2C.c ****     }
+  90:Generated_Source\PSoC6/EZI2C.c **** 
+  91:Generated_Source\PSoC6/EZI2C.c ****     /* Enable interrupt in NVIC */
+  92:Generated_Source\PSoC6/EZI2C.c ****     #if defined(EZI2C_SCB_IRQ__INTC_ASSIGNED)
+  93:Generated_Source\PSoC6/EZI2C.c ****         NVIC_EnableIRQ((IRQn_Type) EZI2C_SCB_IRQ_cfg.intrSrc);
+  94:Generated_Source\PSoC6/EZI2C.c ****     #endif /* (EZI2C_SCB_IRQ__INTC_ASSIGNED) */
+  95:Generated_Source\PSoC6/EZI2C.c ****     
+  96:Generated_Source\PSoC6/EZI2C.c ****     Cy_SCB_EZI2C_Enable(EZI2C_HW);
+  97:Generated_Source\PSoC6/EZI2C.c **** }
+  66              		.loc 1 97 0
+  67              		@ sp needed
+  68 0026 10BD     		pop	{r4, pc}
+  69              	.L4:
+  70              		.align	2
+  71              	.L3:
+  72 0028 00000000 		.word	.LANCHOR0
+  73 002c 00000000 		.word	EZI2C_context
+  74 0030 00000000 		.word	.LANCHOR1
+  75 0034 00006440 		.word	1080295424
+  76              		.cfi_endproc
+  77              	.LFE133:
+  78              		.size	EZI2C_Start, .-EZI2C_Start
+  79              		.comm	EZI2C_context,60,4
+  80              		.global	EZI2C_config
+  81              		.global	EZI2C_initVar
+  82              		.section	.rodata
+  83              		.align	2
+  84              		.set	.LANCHOR1,. + 0
+  85              		.type	EZI2C_config, %object
+  86              		.size	EZI2C_config, 5
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 14
+
+
+  87              	EZI2C_config:
+  88 0000 00       		.byte	0
+  89 0001 08       		.byte	8
+  90 0002 00       		.byte	0
+  91 0003 00       		.byte	0
+  92 0004 00       		.byte	0
+  93              		.bss
+  94              		.set	.LANCHOR0,. + 0
+  95              		.type	EZI2C_initVar, %object
+  96              		.size	EZI2C_initVar, 1
+  97              	EZI2C_initVar:
+  98 0000 00       		.space	1
+  99              		.text
+ 100              	.Letext0:
+ 101              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 102              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 103              		.file 5 "Generated_Source\\PSoC6\\pdl\\devices/psoc6/ip/cyip_scb.h"
+ 104              		.section	.debug_info,"",%progbits
+ 105              	.Ldebug_info0:
+ 106 0000 76080000 		.4byte	0x876
+ 107 0004 0400     		.2byte	0x4
+ 108 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 109 000a 04       		.byte	0x4
+ 110 000b 01       		.uleb128 0x1
+ 111 000c 23030000 		.4byte	.LASF132
+ 112 0010 0C       		.byte	0xc
+ 113 0011 D8010000 		.4byte	.LASF133
+ 114 0015 A9060000 		.4byte	.LASF134
+ 115 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 116 001d 00000000 		.4byte	0
+ 117 0021 00000000 		.4byte	.Ldebug_line0
+ 118 0025 02       		.uleb128 0x2
+ 119 0026 02       		.byte	0x2
+ 120 0027 05       		.byte	0x5
+ 121 0028 76050000 		.4byte	.LASF0
+ 122 002c 02       		.uleb128 0x2
+ 123 002d 01       		.byte	0x1
+ 124 002e 08       		.byte	0x8
+ 125 002f 59050000 		.4byte	.LASF1
+ 126 0033 02       		.uleb128 0x2
+ 127 0034 01       		.byte	0x1
+ 128 0035 06       		.byte	0x6
+ 129 0036 D5000000 		.4byte	.LASF2
+ 130 003a 03       		.uleb128 0x3
+ 131 003b 56000000 		.4byte	.LASF5
+ 132 003f 03       		.byte	0x3
+ 133 0040 1D       		.byte	0x1d
+ 134 0041 2C000000 		.4byte	0x2c
+ 135 0045 02       		.uleb128 0x2
+ 136 0046 02       		.byte	0x2
+ 137 0047 07       		.byte	0x7
+ 138 0048 E3020000 		.4byte	.LASF3
+ 139 004c 02       		.uleb128 0x2
+ 140 004d 04       		.byte	0x4
+ 141 004e 05       		.byte	0x5
+ 142 004f 66010000 		.4byte	.LASF4
+ 143 0053 03       		.uleb128 0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 15
+
+
+ 144 0054 2A020000 		.4byte	.LASF6
+ 145 0058 03       		.byte	0x3
+ 146 0059 41       		.byte	0x41
+ 147 005a 5E000000 		.4byte	0x5e
+ 148 005e 02       		.uleb128 0x2
+ 149 005f 04       		.byte	0x4
+ 150 0060 07       		.byte	0x7
+ 151 0061 A2020000 		.4byte	.LASF7
+ 152 0065 02       		.uleb128 0x2
+ 153 0066 08       		.byte	0x8
+ 154 0067 05       		.byte	0x5
+ 155 0068 C7000000 		.4byte	.LASF8
+ 156 006c 02       		.uleb128 0x2
+ 157 006d 08       		.byte	0x8
+ 158 006e 07       		.byte	0x7
+ 159 006f 6F000000 		.4byte	.LASF9
+ 160 0073 04       		.uleb128 0x4
+ 161 0074 04       		.byte	0x4
+ 162 0075 05       		.byte	0x5
+ 163 0076 696E7400 		.ascii	"int\000"
+ 164 007a 02       		.uleb128 0x2
+ 165 007b 04       		.byte	0x4
+ 166 007c 07       		.byte	0x7
+ 167 007d 61020000 		.4byte	.LASF10
+ 168 0081 03       		.uleb128 0x3
+ 169 0082 9A070000 		.4byte	.LASF11
+ 170 0086 04       		.byte	0x4
+ 171 0087 18       		.byte	0x18
+ 172 0088 3A000000 		.4byte	0x3a
+ 173 008c 03       		.uleb128 0x3
+ 174 008d DC050000 		.4byte	.LASF12
+ 175 0091 04       		.byte	0x4
+ 176 0092 30       		.byte	0x30
+ 177 0093 53000000 		.4byte	0x53
+ 178 0097 02       		.uleb128 0x2
+ 179 0098 04       		.byte	0x4
+ 180 0099 07       		.byte	0x7
+ 181 009a AC070000 		.4byte	.LASF13
+ 182 009e 05       		.uleb128 0x5
+ 183 009f 8C000000 		.4byte	0x8c
+ 184 00a3 06       		.uleb128 0x6
+ 185 00a4 9E000000 		.4byte	0x9e
+ 186 00a8 07       		.uleb128 0x7
+ 187 00a9 A3000000 		.4byte	0xa3
+ 188 00ad B8000000 		.4byte	0xb8
+ 189 00b1 08       		.uleb128 0x8
+ 190 00b2 97000000 		.4byte	0x97
+ 191 00b6 05       		.byte	0x5
+ 192 00b7 00       		.byte	0
+ 193 00b8 07       		.uleb128 0x7
+ 194 00b9 A3000000 		.4byte	0xa3
+ 195 00bd C8000000 		.4byte	0xc8
+ 196 00c1 08       		.uleb128 0x8
+ 197 00c2 97000000 		.4byte	0x97
+ 198 00c6 7F       		.byte	0x7f
+ 199 00c7 00       		.byte	0
+ 200 00c8 07       		.uleb128 0x7
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 16
+
+
+ 201 00c9 A3000000 		.4byte	0xa3
+ 202 00cd D8000000 		.4byte	0xd8
+ 203 00d1 08       		.uleb128 0x8
+ 204 00d2 97000000 		.4byte	0x97
+ 205 00d6 02       		.byte	0x2
+ 206 00d7 00       		.byte	0
+ 207 00d8 07       		.uleb128 0x7
+ 208 00d9 A3000000 		.4byte	0xa3
+ 209 00dd E8000000 		.4byte	0xe8
+ 210 00e1 08       		.uleb128 0x8
+ 211 00e2 97000000 		.4byte	0x97
+ 212 00e6 03       		.byte	0x3
+ 213 00e7 00       		.byte	0
+ 214 00e8 07       		.uleb128 0x7
+ 215 00e9 A3000000 		.4byte	0xa3
+ 216 00ed F8000000 		.4byte	0xf8
+ 217 00f1 08       		.uleb128 0x8
+ 218 00f2 97000000 		.4byte	0x97
+ 219 00f6 3E       		.byte	0x3e
+ 220 00f7 00       		.byte	0
+ 221 00f8 07       		.uleb128 0x7
+ 222 00f9 A3000000 		.4byte	0xa3
+ 223 00fd 08010000 		.4byte	0x108
+ 224 0101 08       		.uleb128 0x8
+ 225 0102 97000000 		.4byte	0x97
+ 226 0106 1E       		.byte	0x1e
+ 227 0107 00       		.byte	0
+ 228 0108 07       		.uleb128 0x7
+ 229 0109 A3000000 		.4byte	0xa3
+ 230 010d 18010000 		.4byte	0x118
+ 231 0111 08       		.uleb128 0x8
+ 232 0112 97000000 		.4byte	0x97
+ 233 0116 0B       		.byte	0xb
+ 234 0117 00       		.byte	0
+ 235 0118 07       		.uleb128 0x7
+ 236 0119 A3000000 		.4byte	0xa3
+ 237 011d 28010000 		.4byte	0x128
+ 238 0121 08       		.uleb128 0x8
+ 239 0122 97000000 		.4byte	0x97
+ 240 0126 0C       		.byte	0xc
+ 241 0127 00       		.byte	0
+ 242 0128 07       		.uleb128 0x7
+ 243 0129 A3000000 		.4byte	0xa3
+ 244 012d 38010000 		.4byte	0x138
+ 245 0131 08       		.uleb128 0x8
+ 246 0132 97000000 		.4byte	0x97
+ 247 0136 0A       		.byte	0xa
+ 248 0137 00       		.byte	0
+ 249 0138 07       		.uleb128 0x7
+ 250 0139 A3000000 		.4byte	0xa3
+ 251 013d 48010000 		.4byte	0x148
+ 252 0141 08       		.uleb128 0x8
+ 253 0142 97000000 		.4byte	0x97
+ 254 0146 2E       		.byte	0x2e
+ 255 0147 00       		.byte	0
+ 256 0148 07       		.uleb128 0x7
+ 257 0149 A3000000 		.4byte	0xa3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 17
+
+
+ 258 014d 58010000 		.4byte	0x158
+ 259 0151 08       		.uleb128 0x8
+ 260 0152 97000000 		.4byte	0x97
+ 261 0156 2D       		.byte	0x2d
+ 262 0157 00       		.byte	0
+ 263 0158 09       		.uleb128 0x9
+ 264 0159 D00F     		.2byte	0xfd0
+ 265 015b 05       		.byte	0x5
+ 266 015c 21       		.byte	0x21
+ 267 015d DC040000 		.4byte	0x4dc
+ 268 0161 0A       		.uleb128 0xa
+ 269 0162 50070000 		.4byte	.LASF14
+ 270 0166 05       		.byte	0x5
+ 271 0167 22       		.byte	0x22
+ 272 0168 9E000000 		.4byte	0x9e
+ 273 016c 00       		.byte	0
+ 274 016d 0A       		.uleb128 0xa
+ 275 016e 71070000 		.4byte	.LASF15
+ 276 0172 05       		.byte	0x5
+ 277 0173 23       		.byte	0x23
+ 278 0174 A3000000 		.4byte	0xa3
+ 279 0178 04       		.byte	0x4
+ 280 0179 0A       		.uleb128 0xa
+ 281 017a F6030000 		.4byte	.LASF16
+ 282 017e 05       		.byte	0x5
+ 283 017f 24       		.byte	0x24
+ 284 0180 9E000000 		.4byte	0x9e
+ 285 0184 08       		.byte	0x8
+ 286 0185 0A       		.uleb128 0xa
+ 287 0186 B4020000 		.4byte	.LASF17
+ 288 018a 05       		.byte	0x5
+ 289 018b 25       		.byte	0x25
+ 290 018c A3000000 		.4byte	0xa3
+ 291 0190 0C       		.byte	0xc
+ 292 0191 0A       		.uleb128 0xa
+ 293 0192 84060000 		.4byte	.LASF18
+ 294 0196 05       		.byte	0x5
+ 295 0197 26       		.byte	0x26
+ 296 0198 E1040000 		.4byte	0x4e1
+ 297 019c 10       		.byte	0x10
+ 298 019d 0A       		.uleb128 0xa
+ 299 019e 4F020000 		.4byte	.LASF19
+ 300 01a2 05       		.byte	0x5
+ 301 01a3 27       		.byte	0x27
+ 302 01a4 9E000000 		.4byte	0x9e
+ 303 01a8 20       		.byte	0x20
+ 304 01a9 0A       		.uleb128 0xa
+ 305 01aa 14060000 		.4byte	.LASF20
+ 306 01ae 05       		.byte	0x5
+ 307 01af 28       		.byte	0x28
+ 308 01b0 A3000000 		.4byte	0xa3
+ 309 01b4 24       		.byte	0x24
+ 310 01b5 0A       		.uleb128 0xa
+ 311 01b6 DD040000 		.4byte	.LASF21
+ 312 01ba 05       		.byte	0x5
+ 313 01bb 29       		.byte	0x29
+ 314 01bc EB040000 		.4byte	0x4eb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 18
+
+
+ 315 01c0 28       		.byte	0x28
+ 316 01c1 0A       		.uleb128 0xa
+ 317 01c2 75040000 		.4byte	.LASF22
+ 318 01c6 05       		.byte	0x5
+ 319 01c7 2A       		.byte	0x2a
+ 320 01c8 9E000000 		.4byte	0x9e
+ 321 01cc 40       		.byte	0x40
+ 322 01cd 0A       		.uleb128 0xa
+ 323 01ce D6020000 		.4byte	.LASF23
+ 324 01d2 05       		.byte	0x5
+ 325 01d3 2B       		.byte	0x2b
+ 326 01d4 9E000000 		.4byte	0x9e
+ 327 01d8 44       		.byte	0x44
+ 328 01d9 0A       		.uleb128 0xa
+ 329 01da 86020000 		.4byte	.LASF24
+ 330 01de 05       		.byte	0x5
+ 331 01df 2C       		.byte	0x2c
+ 332 01e0 9E000000 		.4byte	0x9e
+ 333 01e4 48       		.byte	0x48
+ 334 01e5 0A       		.uleb128 0xa
+ 335 01e6 0C030000 		.4byte	.LASF25
+ 336 01ea 05       		.byte	0x5
+ 337 01eb 2D       		.byte	0x2d
+ 338 01ec A3000000 		.4byte	0xa3
+ 339 01f0 4C       		.byte	0x4c
+ 340 01f1 0A       		.uleb128 0xa
+ 341 01f2 04040000 		.4byte	.LASF26
+ 342 01f6 05       		.byte	0x5
+ 343 01f7 2E       		.byte	0x2e
+ 344 01f8 9E000000 		.4byte	0x9e
+ 345 01fc 50       		.byte	0x50
+ 346 01fd 0A       		.uleb128 0xa
+ 347 01fe C1050000 		.4byte	.LASF27
+ 348 0202 05       		.byte	0x5
+ 349 0203 2F       		.byte	0x2f
+ 350 0204 F5040000 		.4byte	0x4f5
+ 351 0208 54       		.byte	0x54
+ 352 0209 0A       		.uleb128 0xa
+ 353 020a 50050000 		.4byte	.LASF28
+ 354 020e 05       		.byte	0x5
+ 355 020f 30       		.byte	0x30
+ 356 0210 9E000000 		.4byte	0x9e
+ 357 0214 60       		.byte	0x60
+ 358 0215 0A       		.uleb128 0xa
+ 359 0216 46000000 		.4byte	.LASF29
+ 360 021a 05       		.byte	0x5
+ 361 021b 31       		.byte	0x31
+ 362 021c A3000000 		.4byte	0xa3
+ 363 0220 64       		.byte	0x64
+ 364 0221 0A       		.uleb128 0xa
+ 365 0222 A2070000 		.4byte	.LASF30
+ 366 0226 05       		.byte	0x5
+ 367 0227 32       		.byte	0x32
+ 368 0228 9E000000 		.4byte	0x9e
+ 369 022c 68       		.byte	0x68
+ 370 022d 0A       		.uleb128 0xa
+ 371 022e 80050000 		.4byte	.LASF31
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 19
+
+
+ 372 0232 05       		.byte	0x5
+ 373 0233 33       		.byte	0x33
+ 374 0234 9E000000 		.4byte	0x9e
+ 375 0238 6C       		.byte	0x6c
+ 376 0239 0A       		.uleb128 0xa
+ 377 023a 04030000 		.4byte	.LASF32
+ 378 023e 05       		.byte	0x5
+ 379 023f 34       		.byte	0x34
+ 380 0240 9E000000 		.4byte	0x9e
+ 381 0244 70       		.byte	0x70
+ 382 0245 0A       		.uleb128 0xa
+ 383 0246 F6040000 		.4byte	.LASF33
+ 384 024a 05       		.byte	0x5
+ 385 024b 35       		.byte	0x35
+ 386 024c 0F050000 		.4byte	0x50f
+ 387 0250 74       		.byte	0x74
+ 388 0251 0B       		.uleb128 0xb
+ 389 0252 86000000 		.4byte	.LASF34
+ 390 0256 05       		.byte	0x5
+ 391 0257 36       		.byte	0x36
+ 392 0258 9E000000 		.4byte	0x9e
+ 393 025c 0001     		.2byte	0x100
+ 394 025e 0B       		.uleb128 0xb
+ 395 025f 00050000 		.4byte	.LASF35
+ 396 0263 05       		.byte	0x5
+ 397 0264 37       		.byte	0x37
+ 398 0265 19050000 		.4byte	0x519
+ 399 0269 0401     		.2byte	0x104
+ 400 026b 0B       		.uleb128 0xb
+ 401 026c 28070000 		.4byte	.LASF36
+ 402 0270 05       		.byte	0x5
+ 403 0271 38       		.byte	0x38
+ 404 0272 9E000000 		.4byte	0x9e
+ 405 0276 0002     		.2byte	0x200
+ 406 0278 0B       		.uleb128 0xb
+ 407 0279 39000000 		.4byte	.LASF37
+ 408 027d 05       		.byte	0x5
+ 409 027e 39       		.byte	0x39
+ 410 027f 9E000000 		.4byte	0x9e
+ 411 0283 0402     		.2byte	0x204
+ 412 0285 0B       		.uleb128 0xb
+ 413 0286 60000000 		.4byte	.LASF38
+ 414 028a 05       		.byte	0x5
+ 415 028b 3A       		.byte	0x3a
+ 416 028c A3000000 		.4byte	0xa3
+ 417 0290 0802     		.2byte	0x208
+ 418 0292 0B       		.uleb128 0xb
+ 419 0293 0A050000 		.4byte	.LASF39
+ 420 0297 05       		.byte	0x5
+ 421 0298 3B       		.byte	0x3b
+ 422 0299 23050000 		.4byte	0x523
+ 423 029d 0C02     		.2byte	0x20c
+ 424 029f 0B       		.uleb128 0xb
+ 425 02a0 9A010000 		.4byte	.LASF40
+ 426 02a4 05       		.byte	0x5
+ 427 02a5 3C       		.byte	0x3c
+ 428 02a6 9E000000 		.4byte	0x9e
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 20
+
+
+ 429 02aa 4002     		.2byte	0x240
+ 430 02ac 0B       		.uleb128 0xb
+ 431 02ad 14050000 		.4byte	.LASF41
+ 432 02b1 05       		.byte	0x5
+ 433 02b2 3D       		.byte	0x3d
+ 434 02b3 2D050000 		.4byte	0x52d
+ 435 02b7 4402     		.2byte	0x244
+ 436 02b9 0B       		.uleb128 0xb
+ 437 02ba F8060000 		.4byte	.LASF42
+ 438 02be 05       		.byte	0x5
+ 439 02bf 3E       		.byte	0x3e
+ 440 02c0 9E000000 		.4byte	0x9e
+ 441 02c4 0003     		.2byte	0x300
+ 442 02c6 0B       		.uleb128 0xb
+ 443 02c7 8D070000 		.4byte	.LASF43
+ 444 02cb 05       		.byte	0x5
+ 445 02cc 3F       		.byte	0x3f
+ 446 02cd 9E000000 		.4byte	0x9e
+ 447 02d1 0403     		.2byte	0x304
+ 448 02d3 0B       		.uleb128 0xb
+ 449 02d4 8D060000 		.4byte	.LASF44
+ 450 02d8 05       		.byte	0x5
+ 451 02d9 40       		.byte	0x40
+ 452 02da A3000000 		.4byte	0xa3
+ 453 02de 0803     		.2byte	0x308
+ 454 02e0 0B       		.uleb128 0xb
+ 455 02e1 1E050000 		.4byte	.LASF45
+ 456 02e5 05       		.byte	0x5
+ 457 02e6 41       		.byte	0x41
+ 458 02e7 A3000000 		.4byte	0xa3
+ 459 02eb 0C03     		.2byte	0x30c
+ 460 02ed 0B       		.uleb128 0xb
+ 461 02ee BE000000 		.4byte	.LASF46
+ 462 02f2 05       		.byte	0x5
+ 463 02f3 42       		.byte	0x42
+ 464 02f4 9E000000 		.4byte	0x9e
+ 465 02f8 1003     		.2byte	0x310
+ 466 02fa 0B       		.uleb128 0xb
+ 467 02fb 28050000 		.4byte	.LASF47
+ 468 02ff 05       		.byte	0x5
+ 469 0300 43       		.byte	0x43
+ 470 0301 37050000 		.4byte	0x537
+ 471 0305 1403     		.2byte	0x314
+ 472 0307 0B       		.uleb128 0xb
+ 473 0308 00070000 		.4byte	.LASF48
+ 474 030c 05       		.byte	0x5
+ 475 030d 44       		.byte	0x44
+ 476 030e A3000000 		.4byte	0xa3
+ 477 0312 4003     		.2byte	0x340
+ 478 0314 0B       		.uleb128 0xb
+ 479 0315 C4020000 		.4byte	.LASF49
+ 480 0319 05       		.byte	0x5
+ 481 031a 45       		.byte	0x45
+ 482 031b A3000000 		.4byte	0xa3
+ 483 031f 4403     		.2byte	0x344
+ 484 0321 0B       		.uleb128 0xb
+ 485 0322 32050000 		.4byte	.LASF50
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 21
+
+
+ 486 0326 05       		.byte	0x5
+ 487 0327 46       		.byte	0x46
+ 488 0328 41050000 		.4byte	0x541
+ 489 032c 4803     		.2byte	0x348
+ 490 032e 0B       		.uleb128 0xb
+ 491 032f 1B030000 		.4byte	.LASF51
+ 492 0333 05       		.byte	0x5
+ 493 0334 47       		.byte	0x47
+ 494 0335 57050000 		.4byte	0x557
+ 495 0339 0004     		.2byte	0x400
+ 496 033b 0B       		.uleb128 0xb
+ 497 033c FD000000 		.4byte	.LASF52
+ 498 0340 05       		.byte	0x5
+ 499 0341 48       		.byte	0x48
+ 500 0342 61050000 		.4byte	0x561
+ 501 0346 000C     		.2byte	0xc00
+ 502 0348 0B       		.uleb128 0xb
+ 503 0349 6F010000 		.4byte	.LASF53
+ 504 034d 05       		.byte	0x5
+ 505 034e 49       		.byte	0x49
+ 506 034f A3000000 		.4byte	0xa3
+ 507 0353 000E     		.2byte	0xe00
+ 508 0355 0B       		.uleb128 0xb
+ 509 0356 08010000 		.4byte	.LASF54
+ 510 035a 05       		.byte	0x5
+ 511 035b 4A       		.byte	0x4a
+ 512 035c 6B050000 		.4byte	0x56b
+ 513 0360 040E     		.2byte	0xe04
+ 514 0362 0B       		.uleb128 0xb
+ 515 0363 7A010000 		.4byte	.LASF55
+ 516 0367 05       		.byte	0x5
+ 517 0368 4B       		.byte	0x4b
+ 518 0369 9E000000 		.4byte	0x9e
+ 519 036d 800E     		.2byte	0xe80
+ 520 036f 0B       		.uleb128 0xb
+ 521 0370 13010000 		.4byte	.LASF56
+ 522 0374 05       		.byte	0x5
+ 523 0375 4C       		.byte	0x4c
+ 524 0376 A3000000 		.4byte	0xa3
+ 525 037a 840E     		.2byte	0xe84
+ 526 037c 0B       		.uleb128 0xb
+ 527 037d F9070000 		.4byte	.LASF57
+ 528 0381 05       		.byte	0x5
+ 529 0382 4D       		.byte	0x4d
+ 530 0383 9E000000 		.4byte	0x9e
+ 531 0387 880E     		.2byte	0xe88
+ 532 0389 0B       		.uleb128 0xb
+ 533 038a 13040000 		.4byte	.LASF58
+ 534 038e 05       		.byte	0x5
+ 535 038f 4E       		.byte	0x4e
+ 536 0390 A3000000 		.4byte	0xa3
+ 537 0394 8C0E     		.2byte	0xe8c
+ 538 0396 0B       		.uleb128 0xb
+ 539 0397 1E010000 		.4byte	.LASF59
+ 540 039b 05       		.byte	0x5
+ 541 039c 4F       		.byte	0x4f
+ 542 039d 75050000 		.4byte	0x575
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 22
+
+
+ 543 03a1 900E     		.2byte	0xe90
+ 544 03a3 0B       		.uleb128 0xb
+ 545 03a4 30070000 		.4byte	.LASF60
+ 546 03a8 05       		.byte	0x5
+ 547 03a9 50       		.byte	0x50
+ 548 03aa 9E000000 		.4byte	0x9e
+ 549 03ae C00E     		.2byte	0xec0
+ 550 03b0 0B       		.uleb128 0xb
+ 551 03b1 29010000 		.4byte	.LASF61
+ 552 03b5 05       		.byte	0x5
+ 553 03b6 51       		.byte	0x51
+ 554 03b7 A3000000 		.4byte	0xa3
+ 555 03bb C40E     		.2byte	0xec4
+ 556 03bd 0B       		.uleb128 0xb
+ 557 03be CB050000 		.4byte	.LASF62
+ 558 03c2 05       		.byte	0x5
+ 559 03c3 52       		.byte	0x52
+ 560 03c4 9E000000 		.4byte	0x9e
+ 561 03c8 C80E     		.2byte	0xec8
+ 562 03ca 0B       		.uleb128 0xb
+ 563 03cb 3C020000 		.4byte	.LASF63
+ 564 03cf 05       		.byte	0x5
+ 565 03d0 53       		.byte	0x53
+ 566 03d1 A3000000 		.4byte	0xa3
+ 567 03d5 CC0E     		.2byte	0xecc
+ 568 03d7 0B       		.uleb128 0xb
+ 569 03d8 34010000 		.4byte	.LASF64
+ 570 03dc 05       		.byte	0x5
+ 571 03dd 54       		.byte	0x54
+ 572 03de 7F050000 		.4byte	0x57f
+ 573 03e2 D00E     		.2byte	0xed0
+ 574 03e4 0B       		.uleb128 0xb
+ 575 03e5 7F040000 		.4byte	.LASF65
+ 576 03e9 05       		.byte	0x5
+ 577 03ea 55       		.byte	0x55
+ 578 03eb 9E000000 		.4byte	0x9e
+ 579 03ef 000F     		.2byte	0xf00
+ 580 03f1 0B       		.uleb128 0xb
+ 581 03f2 09060000 		.4byte	.LASF66
+ 582 03f6 05       		.byte	0x5
+ 583 03f7 56       		.byte	0x56
+ 584 03f8 9E000000 		.4byte	0x9e
+ 585 03fc 040F     		.2byte	0xf04
+ 586 03fe 0B       		.uleb128 0xb
+ 587 03ff 6C060000 		.4byte	.LASF67
+ 588 0403 05       		.byte	0x5
+ 589 0404 57       		.byte	0x57
+ 590 0405 9E000000 		.4byte	0x9e
+ 591 0409 080F     		.2byte	0xf08
+ 592 040b 0B       		.uleb128 0xb
+ 593 040c E8030000 		.4byte	.LASF68
+ 594 0410 05       		.byte	0x5
+ 595 0411 58       		.byte	0x58
+ 596 0412 A3000000 		.4byte	0xa3
+ 597 0416 0C0F     		.2byte	0xf0c
+ 598 0418 0B       		.uleb128 0xb
+ 599 0419 3F010000 		.4byte	.LASF69
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 23
+
+
+ 600 041d 05       		.byte	0x5
+ 601 041e 59       		.byte	0x59
+ 602 041f 89050000 		.4byte	0x589
+ 603 0423 100F     		.2byte	0xf10
+ 604 0425 0B       		.uleb128 0xb
+ 605 0426 86040000 		.4byte	.LASF70
+ 606 042a 05       		.byte	0x5
+ 607 042b 5A       		.byte	0x5a
+ 608 042c 9E000000 		.4byte	0x9e
+ 609 0430 400F     		.2byte	0xf40
+ 610 0432 0B       		.uleb128 0xb
+ 611 0433 2C080000 		.4byte	.LASF71
+ 612 0437 05       		.byte	0x5
+ 613 0438 5B       		.byte	0x5b
+ 614 0439 9E000000 		.4byte	0x9e
+ 615 043d 440F     		.2byte	0xf44
+ 616 043f 0B       		.uleb128 0xb
+ 617 0440 90000000 		.4byte	.LASF72
+ 618 0444 05       		.byte	0x5
+ 619 0445 5C       		.byte	0x5c
+ 620 0446 9E000000 		.4byte	0x9e
+ 621 044a 480F     		.2byte	0xf48
+ 622 044c 0B       		.uleb128 0xb
+ 623 044d 1E080000 		.4byte	.LASF73
+ 624 0451 05       		.byte	0x5
+ 625 0452 5D       		.byte	0x5d
+ 626 0453 A3000000 		.4byte	0xa3
+ 627 0457 4C0F     		.2byte	0xf4c
+ 628 0459 0B       		.uleb128 0xb
+ 629 045a 4A010000 		.4byte	.LASF74
+ 630 045e 05       		.byte	0x5
+ 631 045f 5E       		.byte	0x5e
+ 632 0460 93050000 		.4byte	0x593
+ 633 0464 500F     		.2byte	0xf50
+ 634 0466 0B       		.uleb128 0xb
+ 635 0467 DB030000 		.4byte	.LASF75
+ 636 046b 05       		.byte	0x5
+ 637 046c 5F       		.byte	0x5f
+ 638 046d 9E000000 		.4byte	0x9e
+ 639 0471 800F     		.2byte	0xf80
+ 640 0473 0B       		.uleb128 0xb
+ 641 0474 60060000 		.4byte	.LASF76
+ 642 0478 05       		.byte	0x5
+ 643 0479 60       		.byte	0x60
+ 644 047a 9E000000 		.4byte	0x9e
+ 645 047e 840F     		.2byte	0xf84
+ 646 0480 0B       		.uleb128 0xb
+ 647 0481 9C060000 		.4byte	.LASF77
+ 648 0485 05       		.byte	0x5
+ 649 0486 61       		.byte	0x61
+ 650 0487 9E000000 		.4byte	0x9e
+ 651 048b 880F     		.2byte	0xf88
+ 652 048d 0B       		.uleb128 0xb
+ 653 048e 67050000 		.4byte	.LASF78
+ 654 0492 05       		.byte	0x5
+ 655 0493 62       		.byte	0x62
+ 656 0494 A3000000 		.4byte	0xa3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 24
+
+
+ 657 0498 8C0F     		.2byte	0xf8c
+ 658 049a 0B       		.uleb128 0xb
+ 659 049b 55010000 		.4byte	.LASF79
+ 660 049f 05       		.byte	0x5
+ 661 04a0 63       		.byte	0x63
+ 662 04a1 9D050000 		.4byte	0x59d
+ 663 04a5 900F     		.2byte	0xf90
+ 664 04a7 0B       		.uleb128 0xb
+ 665 04a8 86010000 		.4byte	.LASF80
+ 666 04ac 05       		.byte	0x5
+ 667 04ad 64       		.byte	0x64
+ 668 04ae 9E000000 		.4byte	0x9e
+ 669 04b2 C00F     		.2byte	0xfc0
+ 670 04b4 0B       		.uleb128 0xb
+ 671 04b5 8E010000 		.4byte	.LASF81
+ 672 04b9 05       		.byte	0x5
+ 673 04ba 65       		.byte	0x65
+ 674 04bb 9E000000 		.4byte	0x9e
+ 675 04bf C40F     		.2byte	0xfc4
+ 676 04c1 0B       		.uleb128 0xb
+ 677 04c2 53060000 		.4byte	.LASF82
+ 678 04c6 05       		.byte	0x5
+ 679 04c7 66       		.byte	0x66
+ 680 04c8 9E000000 		.4byte	0x9e
+ 681 04cc C80F     		.2byte	0xfc8
+ 682 04ce 0B       		.uleb128 0xb
+ 683 04cf 93020000 		.4byte	.LASF83
+ 684 04d3 05       		.byte	0x5
+ 685 04d4 67       		.byte	0x67
+ 686 04d5 A3000000 		.4byte	0xa3
+ 687 04d9 CC0F     		.2byte	0xfcc
+ 688 04db 00       		.byte	0
+ 689 04dc 05       		.uleb128 0x5
+ 690 04dd D8000000 		.4byte	0xd8
+ 691 04e1 06       		.uleb128 0x6
+ 692 04e2 DC040000 		.4byte	0x4dc
+ 693 04e6 05       		.uleb128 0x5
+ 694 04e7 A8000000 		.4byte	0xa8
+ 695 04eb 06       		.uleb128 0x6
+ 696 04ec E6040000 		.4byte	0x4e6
+ 697 04f0 05       		.uleb128 0x5
+ 698 04f1 C8000000 		.4byte	0xc8
+ 699 04f5 06       		.uleb128 0x6
+ 700 04f6 F0040000 		.4byte	0x4f0
+ 701 04fa 07       		.uleb128 0x7
+ 702 04fb A3000000 		.4byte	0xa3
+ 703 04ff 0A050000 		.4byte	0x50a
+ 704 0503 08       		.uleb128 0x8
+ 705 0504 97000000 		.4byte	0x97
+ 706 0508 22       		.byte	0x22
+ 707 0509 00       		.byte	0
+ 708 050a 05       		.uleb128 0x5
+ 709 050b FA040000 		.4byte	0x4fa
+ 710 050f 06       		.uleb128 0x6
+ 711 0510 0A050000 		.4byte	0x50a
+ 712 0514 05       		.uleb128 0x5
+ 713 0515 E8000000 		.4byte	0xe8
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 25
+
+
+ 714 0519 06       		.uleb128 0x6
+ 715 051a 14050000 		.4byte	0x514
+ 716 051e 05       		.uleb128 0x5
+ 717 051f 18010000 		.4byte	0x118
+ 718 0523 06       		.uleb128 0x6
+ 719 0524 1E050000 		.4byte	0x51e
+ 720 0528 05       		.uleb128 0x5
+ 721 0529 38010000 		.4byte	0x138
+ 722 052d 06       		.uleb128 0x6
+ 723 052e 28050000 		.4byte	0x528
+ 724 0532 05       		.uleb128 0x5
+ 725 0533 28010000 		.4byte	0x128
+ 726 0537 06       		.uleb128 0x6
+ 727 0538 32050000 		.4byte	0x532
+ 728 053c 05       		.uleb128 0x5
+ 729 053d 48010000 		.4byte	0x148
+ 730 0541 06       		.uleb128 0x6
+ 731 0542 3C050000 		.4byte	0x53c
+ 732 0546 07       		.uleb128 0x7
+ 733 0547 9E000000 		.4byte	0x9e
+ 734 054b 57050000 		.4byte	0x557
+ 735 054f 0C       		.uleb128 0xc
+ 736 0550 97000000 		.4byte	0x97
+ 737 0554 FF01     		.2byte	0x1ff
+ 738 0556 00       		.byte	0
+ 739 0557 05       		.uleb128 0x5
+ 740 0558 46050000 		.4byte	0x546
+ 741 055c 05       		.uleb128 0x5
+ 742 055d B8000000 		.4byte	0xb8
+ 743 0561 06       		.uleb128 0x6
+ 744 0562 5C050000 		.4byte	0x55c
+ 745 0566 05       		.uleb128 0x5
+ 746 0567 F8000000 		.4byte	0xf8
+ 747 056b 06       		.uleb128 0x6
+ 748 056c 66050000 		.4byte	0x566
+ 749 0570 05       		.uleb128 0x5
+ 750 0571 08010000 		.4byte	0x108
+ 751 0575 06       		.uleb128 0x6
+ 752 0576 70050000 		.4byte	0x570
+ 753 057a 05       		.uleb128 0x5
+ 754 057b 08010000 		.4byte	0x108
+ 755 057f 06       		.uleb128 0x6
+ 756 0580 7A050000 		.4byte	0x57a
+ 757 0584 05       		.uleb128 0x5
+ 758 0585 08010000 		.4byte	0x108
+ 759 0589 06       		.uleb128 0x6
+ 760 058a 84050000 		.4byte	0x584
+ 761 058e 05       		.uleb128 0x5
+ 762 058f 08010000 		.4byte	0x108
+ 763 0593 06       		.uleb128 0x6
+ 764 0594 8E050000 		.4byte	0x58e
+ 765 0598 05       		.uleb128 0x5
+ 766 0599 08010000 		.4byte	0x108
+ 767 059d 06       		.uleb128 0x6
+ 768 059e 98050000 		.4byte	0x598
+ 769 05a2 03       		.uleb128 0x3
+ 770 05a3 38040000 		.4byte	.LASF84
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 26
+
+
+ 771 05a7 05       		.byte	0x5
+ 772 05a8 68       		.byte	0x68
+ 773 05a9 58010000 		.4byte	0x158
+ 774 05ad 02       		.uleb128 0x2
+ 775 05ae 08       		.byte	0x8
+ 776 05af 04       		.byte	0x4
+ 777 05b0 1F060000 		.4byte	.LASF85
+ 778 05b4 02       		.uleb128 0x2
+ 779 05b5 01       		.byte	0x1
+ 780 05b6 08       		.byte	0x8
+ 781 05b7 33060000 		.4byte	.LASF86
+ 782 05bb 02       		.uleb128 0x2
+ 783 05bc 04       		.byte	0x4
+ 784 05bd 04       		.byte	0x4
+ 785 05be D7040000 		.4byte	.LASF87
+ 786 05c2 02       		.uleb128 0x2
+ 787 05c3 08       		.byte	0x8
+ 788 05c4 04       		.byte	0x4
+ 789 05c5 BD010000 		.4byte	.LASF88
+ 790 05c9 0D       		.uleb128 0xd
+ 791 05ca 01       		.byte	0x1
+ 792 05cb 2C000000 		.4byte	0x2c
+ 793 05cf 02       		.byte	0x2
+ 794 05d0 2301     		.2byte	0x123
+ 795 05d2 E3050000 		.4byte	0x5e3
+ 796 05d6 0E       		.uleb128 0xe
+ 797 05d7 A8050000 		.4byte	.LASF89
+ 798 05db 00       		.byte	0
+ 799 05dc 0E       		.uleb128 0xe
+ 800 05dd DE070000 		.4byte	.LASF90
+ 801 05e1 01       		.byte	0x1
+ 802 05e2 00       		.byte	0
+ 803 05e3 0F       		.uleb128 0xf
+ 804 05e4 8A050000 		.4byte	.LASF91
+ 805 05e8 02       		.byte	0x2
+ 806 05e9 2601     		.2byte	0x126
+ 807 05eb C9050000 		.4byte	0x5c9
+ 808 05ef 0D       		.uleb128 0xd
+ 809 05f0 01       		.byte	0x1
+ 810 05f1 2C000000 		.4byte	0x2c
+ 811 05f5 02       		.byte	0x2
+ 812 05f6 2A01     		.2byte	0x12a
+ 813 05f8 09060000 		.4byte	0x609
+ 814 05fc 0E       		.uleb128 0xe
+ 815 05fd 55070000 		.4byte	.LASF92
+ 816 0601 00       		.byte	0
+ 817 0602 0E       		.uleb128 0xe
+ 818 0603 0B070000 		.4byte	.LASF93
+ 819 0607 01       		.byte	0x1
+ 820 0608 00       		.byte	0
+ 821 0609 0F       		.uleb128 0xf
+ 822 060a 19000000 		.4byte	.LASF94
+ 823 060e 02       		.byte	0x2
+ 824 060f 2D01     		.2byte	0x12d
+ 825 0611 EF050000 		.4byte	0x5ef
+ 826 0615 0D       		.uleb128 0xd
+ 827 0616 01       		.byte	0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 27
+
+
+ 828 0617 2C000000 		.4byte	0x2c
+ 829 061b 02       		.byte	0x2
+ 830 061c 3201     		.2byte	0x132
+ 831 061e 4D060000 		.4byte	0x64d
+ 832 0622 0E       		.uleb128 0xe
+ 833 0623 5D040000 		.4byte	.LASF95
+ 834 0627 00       		.byte	0
+ 835 0628 0E       		.uleb128 0xe
+ 836 0629 F1050000 		.4byte	.LASF96
+ 837 062d 01       		.byte	0x1
+ 838 062e 0E       		.uleb128 0xe
+ 839 062f F7010000 		.4byte	.LASF97
+ 840 0633 02       		.byte	0x2
+ 841 0634 0E       		.uleb128 0xe
+ 842 0635 B5030000 		.4byte	.LASF98
+ 843 0639 03       		.byte	0x3
+ 844 063a 0E       		.uleb128 0xe
+ 845 063b 9F040000 		.4byte	.LASF99
+ 846 063f 04       		.byte	0x4
+ 847 0640 0E       		.uleb128 0xe
+ 848 0641 BB040000 		.4byte	.LASF100
+ 849 0645 05       		.byte	0x5
+ 850 0646 0E       		.uleb128 0xe
+ 851 0647 38060000 		.4byte	.LASF101
+ 852 064b 06       		.byte	0x6
+ 853 064c 00       		.byte	0
+ 854 064d 0F       		.uleb128 0xf
+ 855 064e 6E020000 		.4byte	.LASF102
+ 856 0652 02       		.byte	0x2
+ 857 0653 3A01     		.2byte	0x13a
+ 858 0655 15060000 		.4byte	0x615
+ 859 0659 10       		.uleb128 0x10
+ 860 065a A5010000 		.4byte	.LASF110
+ 861 065e 05       		.byte	0x5
+ 862 065f 02       		.byte	0x2
+ 863 0660 4901     		.2byte	0x149
+ 864 0662 A8060000 		.4byte	0x6a8
+ 865 0666 11       		.uleb128 0x11
+ 866 0667 18020000 		.4byte	.LASF103
+ 867 066b 02       		.byte	0x2
+ 868 066c 4C01     		.2byte	0x14c
+ 869 066e E3050000 		.4byte	0x5e3
+ 870 0672 00       		.byte	0
+ 871 0673 11       		.uleb128 0x11
+ 872 0674 E1000000 		.4byte	.LASF104
+ 873 0678 02       		.byte	0x2
+ 874 0679 4F01     		.2byte	0x14f
+ 875 067b 81000000 		.4byte	0x81
+ 876 067f 01       		.byte	0x1
+ 877 0680 11       		.uleb128 0x11
+ 878 0681 EF000000 		.4byte	.LASF105
+ 879 0685 02       		.byte	0x2
+ 880 0686 5201     		.2byte	0x152
+ 881 0688 81000000 		.4byte	0x81
+ 882 068c 02       		.byte	0x2
+ 883 068d 11       		.uleb128 0x11
+ 884 068e E7040000 		.4byte	.LASF106
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 28
+
+
+ 885 0692 02       		.byte	0x2
+ 886 0693 5501     		.2byte	0x155
+ 887 0695 09060000 		.4byte	0x609
+ 888 0699 03       		.byte	0x3
+ 889 069a 11       		.uleb128 0x11
+ 890 069b C4010000 		.4byte	.LASF107
+ 891 069f 02       		.byte	0x2
+ 892 06a0 5C01     		.2byte	0x15c
+ 893 06a2 A8060000 		.4byte	0x6a8
+ 894 06a6 04       		.byte	0x4
+ 895 06a7 00       		.byte	0
+ 896 06a8 02       		.uleb128 0x2
+ 897 06a9 01       		.byte	0x1
+ 898 06aa 02       		.byte	0x2
+ 899 06ab 4A050000 		.4byte	.LASF108
+ 900 06af 0F       		.uleb128 0xf
+ 901 06b0 43040000 		.4byte	.LASF109
+ 902 06b4 02       		.byte	0x2
+ 903 06b5 5D01     		.2byte	0x15d
+ 904 06b7 59060000 		.4byte	0x659
+ 905 06bb 10       		.uleb128 0x10
+ 906 06bc 00000000 		.4byte	.LASF111
+ 907 06c0 3C       		.byte	0x3c
+ 908 06c1 02       		.byte	0x2
+ 909 06c2 6601     		.2byte	0x166
+ 910 06c4 A6070000 		.4byte	0x7a6
+ 911 06c8 11       		.uleb128 0x11
+ 912 06c9 60010000 		.4byte	.LASF112
+ 913 06cd 02       		.byte	0x2
+ 914 06ce 6901     		.2byte	0x169
+ 915 06d0 A6070000 		.4byte	0x7a6
+ 916 06d4 00       		.byte	0
+ 917 06d5 11       		.uleb128 0x11
+ 918 06d6 78070000 		.4byte	.LASF113
+ 919 06da 02       		.byte	0x2
+ 920 06db 6A01     		.2byte	0x16a
+ 921 06dd 9E000000 		.4byte	0x9e
+ 922 06e1 04       		.byte	0x4
+ 923 06e2 11       		.uleb128 0x11
+ 924 06e3 26040000 		.4byte	.LASF114
+ 925 06e7 02       		.byte	0x2
+ 926 06e8 6C01     		.2byte	0x16c
+ 927 06ea 81000000 		.4byte	0x81
+ 928 06ee 08       		.byte	0x8
+ 929 06ef 11       		.uleb128 0x11
+ 930 06f0 2F040000 		.4byte	.LASF115
+ 931 06f4 02       		.byte	0x2
+ 932 06f5 6D01     		.2byte	0x16d
+ 933 06f7 81000000 		.4byte	0x81
+ 934 06fb 09       		.byte	0x9
+ 935 06fc 11       		.uleb128 0x11
+ 936 06fd B2000000 		.4byte	.LASF116
+ 937 0701 02       		.byte	0x2
+ 938 0702 6E01     		.2byte	0x16e
+ 939 0704 09060000 		.4byte	0x609
+ 940 0708 0A       		.byte	0xa
+ 941 0709 12       		.uleb128 0x12
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 29
+
+
+ 942 070a 69647800 		.ascii	"idx\000"
+ 943 070e 02       		.byte	0x2
+ 944 070f 7001     		.2byte	0x170
+ 945 0711 8C000000 		.4byte	0x8c
+ 946 0715 0C       		.byte	0xc
+ 947 0716 11       		.uleb128 0x11
+ 948 0717 0A080000 		.4byte	.LASF117
+ 949 071b 02       		.byte	0x2
+ 950 071c 7101     		.2byte	0x171
+ 951 071e 8C000000 		.4byte	0x8c
+ 952 0722 10       		.byte	0x10
+ 953 0723 11       		.uleb128 0x11
+ 954 0724 14080000 		.4byte	.LASF118
+ 955 0728 02       		.byte	0x2
+ 956 0729 7201     		.2byte	0x172
+ 957 072b 8C000000 		.4byte	0x8c
+ 958 072f 14       		.byte	0x14
+ 959 0730 11       		.uleb128 0x11
+ 960 0731 E5050000 		.4byte	.LASF119
+ 961 0735 02       		.byte	0x2
+ 962 0736 7401     		.2byte	0x174
+ 963 0738 A8060000 		.4byte	0x6a8
+ 964 073c 18       		.byte	0x18
+ 965 073d 11       		.uleb128 0x11
+ 966 073e 35020000 		.4byte	.LASF120
+ 967 0742 02       		.byte	0x2
+ 968 0743 7501     		.2byte	0x175
+ 969 0745 AB070000 		.4byte	0x7ab
+ 970 0749 1C       		.byte	0x1c
+ 971 074a 11       		.uleb128 0x11
+ 972 074b 2B060000 		.4byte	.LASF121
+ 973 074f 02       		.byte	0x2
+ 974 0750 7601     		.2byte	0x176
+ 975 0752 8C000000 		.4byte	0x8c
+ 976 0756 20       		.byte	0x20
+ 977 0757 11       		.uleb128 0x11
+ 978 0758 51000000 		.4byte	.LASF122
+ 979 075c 02       		.byte	0x2
+ 980 075d 7801     		.2byte	0x178
+ 981 075f AB070000 		.4byte	0x7ab
+ 982 0763 24       		.byte	0x24
+ 983 0764 11       		.uleb128 0x11
+ 984 0765 9C000000 		.4byte	.LASF123
+ 985 0769 02       		.byte	0x2
+ 986 076a 7901     		.2byte	0x179
+ 987 076c 8C000000 		.4byte	0x8c
+ 988 0770 28       		.byte	0x28
+ 989 0771 11       		.uleb128 0x11
+ 990 0772 D0070000 		.4byte	.LASF124
+ 991 0776 02       		.byte	0x2
+ 992 0777 7A01     		.2byte	0x17a
+ 993 0779 8C000000 		.4byte	0x8c
+ 994 077d 2C       		.byte	0x2c
+ 995 077e 11       		.uleb128 0x11
+ 996 077f D6030000 		.4byte	.LASF125
+ 997 0783 02       		.byte	0x2
+ 998 0784 7C01     		.2byte	0x17c
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 30
+
+
+ 999 0786 AB070000 		.4byte	0x7ab
+ 1000 078a 30       		.byte	0x30
+ 1001 078b 11       		.uleb128 0x11
+ 1002 078c 58020000 		.4byte	.LASF126
+ 1003 0790 02       		.byte	0x2
+ 1004 0791 7D01     		.2byte	0x17d
+ 1005 0793 8C000000 		.4byte	0x8c
+ 1006 0797 34       		.byte	0x34
+ 1007 0798 11       		.uleb128 0x11
+ 1008 0799 3C050000 		.4byte	.LASF127
+ 1009 079d 02       		.byte	0x2
+ 1010 079e 7E01     		.2byte	0x17e
+ 1011 07a0 8C000000 		.4byte	0x8c
+ 1012 07a4 38       		.byte	0x38
+ 1013 07a5 00       		.byte	0
+ 1014 07a6 05       		.uleb128 0x5
+ 1015 07a7 4D060000 		.4byte	0x64d
+ 1016 07ab 13       		.uleb128 0x13
+ 1017 07ac 04       		.byte	0x4
+ 1018 07ad 81000000 		.4byte	0x81
+ 1019 07b1 0F       		.uleb128 0xf
+ 1020 07b2 B5070000 		.4byte	.LASF128
+ 1021 07b6 02       		.byte	0x2
+ 1022 07b7 8001     		.2byte	0x180
+ 1023 07b9 BB060000 		.4byte	0x6bb
+ 1024 07bd 14       		.uleb128 0x14
+ 1025 07be 3C070000 		.4byte	.LASF135
+ 1026 07c2 02       		.byte	0x2
+ 1027 07c3 2C02     		.2byte	0x22c
+ 1028 07c5 03       		.byte	0x3
+ 1029 07c6 D7070000 		.4byte	0x7d7
+ 1030 07ca 15       		.uleb128 0x15
+ 1031 07cb E3030000 		.4byte	.LASF136
+ 1032 07cf 02       		.byte	0x2
+ 1033 07d0 2C02     		.2byte	0x22c
+ 1034 07d2 D7070000 		.4byte	0x7d7
+ 1035 07d6 00       		.byte	0
+ 1036 07d7 13       		.uleb128 0x13
+ 1037 07d8 04       		.byte	0x4
+ 1038 07d9 A2050000 		.4byte	0x5a2
+ 1039 07dd 16       		.uleb128 0x16
+ 1040 07de 78060000 		.4byte	.LASF137
+ 1041 07e2 01       		.byte	0x1
+ 1042 07e3 4C       		.byte	0x4c
+ 1043 07e4 00000000 		.4byte	.LFB133
+ 1044 07e8 38000000 		.4byte	.LFE133-.LFB133
+ 1045 07ec 01       		.uleb128 0x1
+ 1046 07ed 9C       		.byte	0x9c
+ 1047 07ee 35080000 		.4byte	0x835
+ 1048 07f2 17       		.uleb128 0x17
+ 1049 07f3 BD070000 		.4byte	0x7bd
+ 1050 07f7 1A000000 		.4byte	.LBB4
+ 1051 07fb 0C000000 		.4byte	.LBE4-.LBB4
+ 1052 07ff 01       		.byte	0x1
+ 1053 0800 60       		.byte	0x60
+ 1054 0801 0F080000 		.4byte	0x80f
+ 1055 0805 18       		.uleb128 0x18
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 31
+
+
+ 1056 0806 CA070000 		.4byte	0x7ca
+ 1057 080a 00000000 		.4byte	.LLST0
+ 1058 080e 00       		.byte	0
+ 1059 080f 19       		.uleb128 0x19
+ 1060 0810 14000000 		.4byte	.LVL0
+ 1061 0814 6D080000 		.4byte	0x86d
+ 1062 0818 1A       		.uleb128 0x1a
+ 1063 0819 01       		.uleb128 0x1
+ 1064 081a 50       		.byte	0x50
+ 1065 081b 05       		.uleb128 0x5
+ 1066 081c 0C       		.byte	0xc
+ 1067 081d 00006440 		.4byte	0x40640000
+ 1068 0821 1A       		.uleb128 0x1a
+ 1069 0822 01       		.uleb128 0x1
+ 1070 0823 51       		.byte	0x51
+ 1071 0824 05       		.uleb128 0x5
+ 1072 0825 03       		.byte	0x3
+ 1073 0826 00000000 		.4byte	.LANCHOR1
+ 1074 082a 1A       		.uleb128 0x1a
+ 1075 082b 01       		.uleb128 0x1
+ 1076 082c 52       		.byte	0x52
+ 1077 082d 05       		.uleb128 0x5
+ 1078 082e 03       		.byte	0x3
+ 1079 082f 00000000 		.4byte	EZI2C_context
+ 1080 0833 00       		.byte	0
+ 1081 0834 00       		.byte	0
+ 1082 0835 1B       		.uleb128 0x1b
+ 1083 0836 F6020000 		.4byte	.LASF129
+ 1084 083a 01       		.byte	0x1
+ 1085 083b 26       		.byte	0x26
+ 1086 083c 81000000 		.4byte	0x81
+ 1087 0840 05       		.uleb128 0x5
+ 1088 0841 03       		.byte	0x3
+ 1089 0842 00000000 		.4byte	EZI2C_initVar
+ 1090 0846 1B       		.uleb128 0x1b
+ 1091 0847 A5000000 		.4byte	.LASF130
+ 1092 084b 01       		.byte	0x1
+ 1093 084c 2C       		.byte	0x2c
+ 1094 084d 57080000 		.4byte	0x857
+ 1095 0851 05       		.uleb128 0x5
+ 1096 0852 03       		.byte	0x3
+ 1097 0853 00000000 		.4byte	EZI2C_config
+ 1098 0857 06       		.uleb128 0x6
+ 1099 0858 AF060000 		.4byte	0x6af
+ 1100 085c 1B       		.uleb128 0x1b
+ 1101 085d 7F070000 		.4byte	.LASF131
+ 1102 0861 01       		.byte	0x1
+ 1103 0862 3B       		.byte	0x3b
+ 1104 0863 B1070000 		.4byte	0x7b1
+ 1105 0867 05       		.uleb128 0x5
+ 1106 0868 03       		.byte	0x3
+ 1107 0869 00000000 		.4byte	EZI2C_context
+ 1108 086d 1C       		.uleb128 0x1c
+ 1109 086e 8D040000 		.4byte	.LASF138
+ 1110 0872 8D040000 		.4byte	.LASF138
+ 1111 0876 02       		.byte	0x2
+ 1112 0877 8C01     		.2byte	0x18c
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 32
+
+
+ 1113 0879 00       		.byte	0
+ 1114              		.section	.debug_abbrev,"",%progbits
+ 1115              	.Ldebug_abbrev0:
+ 1116 0000 01       		.uleb128 0x1
+ 1117 0001 11       		.uleb128 0x11
+ 1118 0002 01       		.byte	0x1
+ 1119 0003 25       		.uleb128 0x25
+ 1120 0004 0E       		.uleb128 0xe
+ 1121 0005 13       		.uleb128 0x13
+ 1122 0006 0B       		.uleb128 0xb
+ 1123 0007 03       		.uleb128 0x3
+ 1124 0008 0E       		.uleb128 0xe
+ 1125 0009 1B       		.uleb128 0x1b
+ 1126 000a 0E       		.uleb128 0xe
+ 1127 000b 55       		.uleb128 0x55
+ 1128 000c 17       		.uleb128 0x17
+ 1129 000d 11       		.uleb128 0x11
+ 1130 000e 01       		.uleb128 0x1
+ 1131 000f 10       		.uleb128 0x10
+ 1132 0010 17       		.uleb128 0x17
+ 1133 0011 00       		.byte	0
+ 1134 0012 00       		.byte	0
+ 1135 0013 02       		.uleb128 0x2
+ 1136 0014 24       		.uleb128 0x24
+ 1137 0015 00       		.byte	0
+ 1138 0016 0B       		.uleb128 0xb
+ 1139 0017 0B       		.uleb128 0xb
+ 1140 0018 3E       		.uleb128 0x3e
+ 1141 0019 0B       		.uleb128 0xb
+ 1142 001a 03       		.uleb128 0x3
+ 1143 001b 0E       		.uleb128 0xe
+ 1144 001c 00       		.byte	0
+ 1145 001d 00       		.byte	0
+ 1146 001e 03       		.uleb128 0x3
+ 1147 001f 16       		.uleb128 0x16
+ 1148 0020 00       		.byte	0
+ 1149 0021 03       		.uleb128 0x3
+ 1150 0022 0E       		.uleb128 0xe
+ 1151 0023 3A       		.uleb128 0x3a
+ 1152 0024 0B       		.uleb128 0xb
+ 1153 0025 3B       		.uleb128 0x3b
+ 1154 0026 0B       		.uleb128 0xb
+ 1155 0027 49       		.uleb128 0x49
+ 1156 0028 13       		.uleb128 0x13
+ 1157 0029 00       		.byte	0
+ 1158 002a 00       		.byte	0
+ 1159 002b 04       		.uleb128 0x4
+ 1160 002c 24       		.uleb128 0x24
+ 1161 002d 00       		.byte	0
+ 1162 002e 0B       		.uleb128 0xb
+ 1163 002f 0B       		.uleb128 0xb
+ 1164 0030 3E       		.uleb128 0x3e
+ 1165 0031 0B       		.uleb128 0xb
+ 1166 0032 03       		.uleb128 0x3
+ 1167 0033 08       		.uleb128 0x8
+ 1168 0034 00       		.byte	0
+ 1169 0035 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 33
+
+
+ 1170 0036 05       		.uleb128 0x5
+ 1171 0037 35       		.uleb128 0x35
+ 1172 0038 00       		.byte	0
+ 1173 0039 49       		.uleb128 0x49
+ 1174 003a 13       		.uleb128 0x13
+ 1175 003b 00       		.byte	0
+ 1176 003c 00       		.byte	0
+ 1177 003d 06       		.uleb128 0x6
+ 1178 003e 26       		.uleb128 0x26
+ 1179 003f 00       		.byte	0
+ 1180 0040 49       		.uleb128 0x49
+ 1181 0041 13       		.uleb128 0x13
+ 1182 0042 00       		.byte	0
+ 1183 0043 00       		.byte	0
+ 1184 0044 07       		.uleb128 0x7
+ 1185 0045 01       		.uleb128 0x1
+ 1186 0046 01       		.byte	0x1
+ 1187 0047 49       		.uleb128 0x49
+ 1188 0048 13       		.uleb128 0x13
+ 1189 0049 01       		.uleb128 0x1
+ 1190 004a 13       		.uleb128 0x13
+ 1191 004b 00       		.byte	0
+ 1192 004c 00       		.byte	0
+ 1193 004d 08       		.uleb128 0x8
+ 1194 004e 21       		.uleb128 0x21
+ 1195 004f 00       		.byte	0
+ 1196 0050 49       		.uleb128 0x49
+ 1197 0051 13       		.uleb128 0x13
+ 1198 0052 2F       		.uleb128 0x2f
+ 1199 0053 0B       		.uleb128 0xb
+ 1200 0054 00       		.byte	0
+ 1201 0055 00       		.byte	0
+ 1202 0056 09       		.uleb128 0x9
+ 1203 0057 13       		.uleb128 0x13
+ 1204 0058 01       		.byte	0x1
+ 1205 0059 0B       		.uleb128 0xb
+ 1206 005a 05       		.uleb128 0x5
+ 1207 005b 3A       		.uleb128 0x3a
+ 1208 005c 0B       		.uleb128 0xb
+ 1209 005d 3B       		.uleb128 0x3b
+ 1210 005e 0B       		.uleb128 0xb
+ 1211 005f 01       		.uleb128 0x1
+ 1212 0060 13       		.uleb128 0x13
+ 1213 0061 00       		.byte	0
+ 1214 0062 00       		.byte	0
+ 1215 0063 0A       		.uleb128 0xa
+ 1216 0064 0D       		.uleb128 0xd
+ 1217 0065 00       		.byte	0
+ 1218 0066 03       		.uleb128 0x3
+ 1219 0067 0E       		.uleb128 0xe
+ 1220 0068 3A       		.uleb128 0x3a
+ 1221 0069 0B       		.uleb128 0xb
+ 1222 006a 3B       		.uleb128 0x3b
+ 1223 006b 0B       		.uleb128 0xb
+ 1224 006c 49       		.uleb128 0x49
+ 1225 006d 13       		.uleb128 0x13
+ 1226 006e 38       		.uleb128 0x38
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 34
+
+
+ 1227 006f 0B       		.uleb128 0xb
+ 1228 0070 00       		.byte	0
+ 1229 0071 00       		.byte	0
+ 1230 0072 0B       		.uleb128 0xb
+ 1231 0073 0D       		.uleb128 0xd
+ 1232 0074 00       		.byte	0
+ 1233 0075 03       		.uleb128 0x3
+ 1234 0076 0E       		.uleb128 0xe
+ 1235 0077 3A       		.uleb128 0x3a
+ 1236 0078 0B       		.uleb128 0xb
+ 1237 0079 3B       		.uleb128 0x3b
+ 1238 007a 0B       		.uleb128 0xb
+ 1239 007b 49       		.uleb128 0x49
+ 1240 007c 13       		.uleb128 0x13
+ 1241 007d 38       		.uleb128 0x38
+ 1242 007e 05       		.uleb128 0x5
+ 1243 007f 00       		.byte	0
+ 1244 0080 00       		.byte	0
+ 1245 0081 0C       		.uleb128 0xc
+ 1246 0082 21       		.uleb128 0x21
+ 1247 0083 00       		.byte	0
+ 1248 0084 49       		.uleb128 0x49
+ 1249 0085 13       		.uleb128 0x13
+ 1250 0086 2F       		.uleb128 0x2f
+ 1251 0087 05       		.uleb128 0x5
+ 1252 0088 00       		.byte	0
+ 1253 0089 00       		.byte	0
+ 1254 008a 0D       		.uleb128 0xd
+ 1255 008b 04       		.uleb128 0x4
+ 1256 008c 01       		.byte	0x1
+ 1257 008d 0B       		.uleb128 0xb
+ 1258 008e 0B       		.uleb128 0xb
+ 1259 008f 49       		.uleb128 0x49
+ 1260 0090 13       		.uleb128 0x13
+ 1261 0091 3A       		.uleb128 0x3a
+ 1262 0092 0B       		.uleb128 0xb
+ 1263 0093 3B       		.uleb128 0x3b
+ 1264 0094 05       		.uleb128 0x5
+ 1265 0095 01       		.uleb128 0x1
+ 1266 0096 13       		.uleb128 0x13
+ 1267 0097 00       		.byte	0
+ 1268 0098 00       		.byte	0
+ 1269 0099 0E       		.uleb128 0xe
+ 1270 009a 28       		.uleb128 0x28
+ 1271 009b 00       		.byte	0
+ 1272 009c 03       		.uleb128 0x3
+ 1273 009d 0E       		.uleb128 0xe
+ 1274 009e 1C       		.uleb128 0x1c
+ 1275 009f 0B       		.uleb128 0xb
+ 1276 00a0 00       		.byte	0
+ 1277 00a1 00       		.byte	0
+ 1278 00a2 0F       		.uleb128 0xf
+ 1279 00a3 16       		.uleb128 0x16
+ 1280 00a4 00       		.byte	0
+ 1281 00a5 03       		.uleb128 0x3
+ 1282 00a6 0E       		.uleb128 0xe
+ 1283 00a7 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 35
+
+
+ 1284 00a8 0B       		.uleb128 0xb
+ 1285 00a9 3B       		.uleb128 0x3b
+ 1286 00aa 05       		.uleb128 0x5
+ 1287 00ab 49       		.uleb128 0x49
+ 1288 00ac 13       		.uleb128 0x13
+ 1289 00ad 00       		.byte	0
+ 1290 00ae 00       		.byte	0
+ 1291 00af 10       		.uleb128 0x10
+ 1292 00b0 13       		.uleb128 0x13
+ 1293 00b1 01       		.byte	0x1
+ 1294 00b2 03       		.uleb128 0x3
+ 1295 00b3 0E       		.uleb128 0xe
+ 1296 00b4 0B       		.uleb128 0xb
+ 1297 00b5 0B       		.uleb128 0xb
+ 1298 00b6 3A       		.uleb128 0x3a
+ 1299 00b7 0B       		.uleb128 0xb
+ 1300 00b8 3B       		.uleb128 0x3b
+ 1301 00b9 05       		.uleb128 0x5
+ 1302 00ba 01       		.uleb128 0x1
+ 1303 00bb 13       		.uleb128 0x13
+ 1304 00bc 00       		.byte	0
+ 1305 00bd 00       		.byte	0
+ 1306 00be 11       		.uleb128 0x11
+ 1307 00bf 0D       		.uleb128 0xd
+ 1308 00c0 00       		.byte	0
+ 1309 00c1 03       		.uleb128 0x3
+ 1310 00c2 0E       		.uleb128 0xe
+ 1311 00c3 3A       		.uleb128 0x3a
+ 1312 00c4 0B       		.uleb128 0xb
+ 1313 00c5 3B       		.uleb128 0x3b
+ 1314 00c6 05       		.uleb128 0x5
+ 1315 00c7 49       		.uleb128 0x49
+ 1316 00c8 13       		.uleb128 0x13
+ 1317 00c9 38       		.uleb128 0x38
+ 1318 00ca 0B       		.uleb128 0xb
+ 1319 00cb 00       		.byte	0
+ 1320 00cc 00       		.byte	0
+ 1321 00cd 12       		.uleb128 0x12
+ 1322 00ce 0D       		.uleb128 0xd
+ 1323 00cf 00       		.byte	0
+ 1324 00d0 03       		.uleb128 0x3
+ 1325 00d1 08       		.uleb128 0x8
+ 1326 00d2 3A       		.uleb128 0x3a
+ 1327 00d3 0B       		.uleb128 0xb
+ 1328 00d4 3B       		.uleb128 0x3b
+ 1329 00d5 05       		.uleb128 0x5
+ 1330 00d6 49       		.uleb128 0x49
+ 1331 00d7 13       		.uleb128 0x13
+ 1332 00d8 38       		.uleb128 0x38
+ 1333 00d9 0B       		.uleb128 0xb
+ 1334 00da 00       		.byte	0
+ 1335 00db 00       		.byte	0
+ 1336 00dc 13       		.uleb128 0x13
+ 1337 00dd 0F       		.uleb128 0xf
+ 1338 00de 00       		.byte	0
+ 1339 00df 0B       		.uleb128 0xb
+ 1340 00e0 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 36
+
+
+ 1341 00e1 49       		.uleb128 0x49
+ 1342 00e2 13       		.uleb128 0x13
+ 1343 00e3 00       		.byte	0
+ 1344 00e4 00       		.byte	0
+ 1345 00e5 14       		.uleb128 0x14
+ 1346 00e6 2E       		.uleb128 0x2e
+ 1347 00e7 01       		.byte	0x1
+ 1348 00e8 03       		.uleb128 0x3
+ 1349 00e9 0E       		.uleb128 0xe
+ 1350 00ea 3A       		.uleb128 0x3a
+ 1351 00eb 0B       		.uleb128 0xb
+ 1352 00ec 3B       		.uleb128 0x3b
+ 1353 00ed 05       		.uleb128 0x5
+ 1354 00ee 27       		.uleb128 0x27
+ 1355 00ef 19       		.uleb128 0x19
+ 1356 00f0 20       		.uleb128 0x20
+ 1357 00f1 0B       		.uleb128 0xb
+ 1358 00f2 01       		.uleb128 0x1
+ 1359 00f3 13       		.uleb128 0x13
+ 1360 00f4 00       		.byte	0
+ 1361 00f5 00       		.byte	0
+ 1362 00f6 15       		.uleb128 0x15
+ 1363 00f7 05       		.uleb128 0x5
+ 1364 00f8 00       		.byte	0
+ 1365 00f9 03       		.uleb128 0x3
+ 1366 00fa 0E       		.uleb128 0xe
+ 1367 00fb 3A       		.uleb128 0x3a
+ 1368 00fc 0B       		.uleb128 0xb
+ 1369 00fd 3B       		.uleb128 0x3b
+ 1370 00fe 05       		.uleb128 0x5
+ 1371 00ff 49       		.uleb128 0x49
+ 1372 0100 13       		.uleb128 0x13
+ 1373 0101 00       		.byte	0
+ 1374 0102 00       		.byte	0
+ 1375 0103 16       		.uleb128 0x16
+ 1376 0104 2E       		.uleb128 0x2e
+ 1377 0105 01       		.byte	0x1
+ 1378 0106 3F       		.uleb128 0x3f
+ 1379 0107 19       		.uleb128 0x19
+ 1380 0108 03       		.uleb128 0x3
+ 1381 0109 0E       		.uleb128 0xe
+ 1382 010a 3A       		.uleb128 0x3a
+ 1383 010b 0B       		.uleb128 0xb
+ 1384 010c 3B       		.uleb128 0x3b
+ 1385 010d 0B       		.uleb128 0xb
+ 1386 010e 27       		.uleb128 0x27
+ 1387 010f 19       		.uleb128 0x19
+ 1388 0110 11       		.uleb128 0x11
+ 1389 0111 01       		.uleb128 0x1
+ 1390 0112 12       		.uleb128 0x12
+ 1391 0113 06       		.uleb128 0x6
+ 1392 0114 40       		.uleb128 0x40
+ 1393 0115 18       		.uleb128 0x18
+ 1394 0116 9742     		.uleb128 0x2117
+ 1395 0118 19       		.uleb128 0x19
+ 1396 0119 01       		.uleb128 0x1
+ 1397 011a 13       		.uleb128 0x13
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 37
+
+
+ 1398 011b 00       		.byte	0
+ 1399 011c 00       		.byte	0
+ 1400 011d 17       		.uleb128 0x17
+ 1401 011e 1D       		.uleb128 0x1d
+ 1402 011f 01       		.byte	0x1
+ 1403 0120 31       		.uleb128 0x31
+ 1404 0121 13       		.uleb128 0x13
+ 1405 0122 11       		.uleb128 0x11
+ 1406 0123 01       		.uleb128 0x1
+ 1407 0124 12       		.uleb128 0x12
+ 1408 0125 06       		.uleb128 0x6
+ 1409 0126 58       		.uleb128 0x58
+ 1410 0127 0B       		.uleb128 0xb
+ 1411 0128 59       		.uleb128 0x59
+ 1412 0129 0B       		.uleb128 0xb
+ 1413 012a 01       		.uleb128 0x1
+ 1414 012b 13       		.uleb128 0x13
+ 1415 012c 00       		.byte	0
+ 1416 012d 00       		.byte	0
+ 1417 012e 18       		.uleb128 0x18
+ 1418 012f 05       		.uleb128 0x5
+ 1419 0130 00       		.byte	0
+ 1420 0131 31       		.uleb128 0x31
+ 1421 0132 13       		.uleb128 0x13
+ 1422 0133 02       		.uleb128 0x2
+ 1423 0134 17       		.uleb128 0x17
+ 1424 0135 00       		.byte	0
+ 1425 0136 00       		.byte	0
+ 1426 0137 19       		.uleb128 0x19
+ 1427 0138 898201   		.uleb128 0x4109
+ 1428 013b 01       		.byte	0x1
+ 1429 013c 11       		.uleb128 0x11
+ 1430 013d 01       		.uleb128 0x1
+ 1431 013e 31       		.uleb128 0x31
+ 1432 013f 13       		.uleb128 0x13
+ 1433 0140 00       		.byte	0
+ 1434 0141 00       		.byte	0
+ 1435 0142 1A       		.uleb128 0x1a
+ 1436 0143 8A8201   		.uleb128 0x410a
+ 1437 0146 00       		.byte	0
+ 1438 0147 02       		.uleb128 0x2
+ 1439 0148 18       		.uleb128 0x18
+ 1440 0149 9142     		.uleb128 0x2111
+ 1441 014b 18       		.uleb128 0x18
+ 1442 014c 00       		.byte	0
+ 1443 014d 00       		.byte	0
+ 1444 014e 1B       		.uleb128 0x1b
+ 1445 014f 34       		.uleb128 0x34
+ 1446 0150 00       		.byte	0
+ 1447 0151 03       		.uleb128 0x3
+ 1448 0152 0E       		.uleb128 0xe
+ 1449 0153 3A       		.uleb128 0x3a
+ 1450 0154 0B       		.uleb128 0xb
+ 1451 0155 3B       		.uleb128 0x3b
+ 1452 0156 0B       		.uleb128 0xb
+ 1453 0157 49       		.uleb128 0x49
+ 1454 0158 13       		.uleb128 0x13
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 38
+
+
+ 1455 0159 3F       		.uleb128 0x3f
+ 1456 015a 19       		.uleb128 0x19
+ 1457 015b 02       		.uleb128 0x2
+ 1458 015c 18       		.uleb128 0x18
+ 1459 015d 00       		.byte	0
+ 1460 015e 00       		.byte	0
+ 1461 015f 1C       		.uleb128 0x1c
+ 1462 0160 2E       		.uleb128 0x2e
+ 1463 0161 00       		.byte	0
+ 1464 0162 3F       		.uleb128 0x3f
+ 1465 0163 19       		.uleb128 0x19
+ 1466 0164 3C       		.uleb128 0x3c
+ 1467 0165 19       		.uleb128 0x19
+ 1468 0166 6E       		.uleb128 0x6e
+ 1469 0167 0E       		.uleb128 0xe
+ 1470 0168 03       		.uleb128 0x3
+ 1471 0169 0E       		.uleb128 0xe
+ 1472 016a 3A       		.uleb128 0x3a
+ 1473 016b 0B       		.uleb128 0xb
+ 1474 016c 3B       		.uleb128 0x3b
+ 1475 016d 05       		.uleb128 0x5
+ 1476 016e 00       		.byte	0
+ 1477 016f 00       		.byte	0
+ 1478 0170 00       		.byte	0
+ 1479              		.section	.debug_loc,"",%progbits
+ 1480              	.Ldebug_loc0:
+ 1481              	.LLST0:
+ 1482 0000 1A000000 		.4byte	.LVL1
+ 1483 0004 26000000 		.4byte	.LVL2
+ 1484 0008 0600     		.2byte	0x6
+ 1485 000a 0C       		.byte	0xc
+ 1486 000b 00006440 		.4byte	0x40640000
+ 1487 000f 9F       		.byte	0x9f
+ 1488 0010 00000000 		.4byte	0
+ 1489 0014 00000000 		.4byte	0
+ 1490              		.section	.debug_aranges,"",%progbits
+ 1491 0000 1C000000 		.4byte	0x1c
+ 1492 0004 0200     		.2byte	0x2
+ 1493 0006 00000000 		.4byte	.Ldebug_info0
+ 1494 000a 04       		.byte	0x4
+ 1495 000b 00       		.byte	0
+ 1496 000c 0000     		.2byte	0
+ 1497 000e 0000     		.2byte	0
+ 1498 0010 00000000 		.4byte	.LFB133
+ 1499 0014 38000000 		.4byte	.LFE133-.LFB133
+ 1500 0018 00000000 		.4byte	0
+ 1501 001c 00000000 		.4byte	0
+ 1502              		.section	.debug_ranges,"",%progbits
+ 1503              	.Ldebug_ranges0:
+ 1504 0000 00000000 		.4byte	.LFB133
+ 1505 0004 38000000 		.4byte	.LFE133
+ 1506 0008 00000000 		.4byte	0
+ 1507 000c 00000000 		.4byte	0
+ 1508              		.section	.debug_line,"",%progbits
+ 1509              	.Ldebug_line0:
+ 1510 0000 D5010000 		.section	.debug_str,"MS",%progbits,1
+ 1510      0200B001 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 39
+
+
+ 1510      00000201 
+ 1510      FB0E0D00 
+ 1510      01010101 
+ 1511              	.LASF111:
+ 1512 0000 63795F73 		.ascii	"cy_stc_scb_ezi2c_context\000"
+ 1512      74635F73 
+ 1512      63625F65 
+ 1512      7A693263 
+ 1512      5F636F6E 
+ 1513              	.LASF94:
+ 1514 0019 63795F65 		.ascii	"cy_en_scb_ezi2c_sub_addr_size_t\000"
+ 1514      6E5F7363 
+ 1514      625F657A 
+ 1514      6932635F 
+ 1514      7375625F 
+ 1515              	.LASF37:
+ 1516 0039 54585F46 		.ascii	"TX_FIFO_CTRL\000"
+ 1516      49464F5F 
+ 1516      4354524C 
+ 1516      00
+ 1517              	.LASF29:
+ 1518 0046 4932435F 		.ascii	"I2C_STATUS\000"
+ 1518      53544154 
+ 1518      555300
+ 1519              	.LASF122:
+ 1520 0051 62756631 		.ascii	"buf1\000"
+ 1520      00
+ 1521              	.LASF5:
+ 1522 0056 5F5F7569 		.ascii	"__uint8_t\000"
+ 1522      6E74385F 
+ 1522      7400
+ 1523              	.LASF38:
+ 1524 0060 54585F46 		.ascii	"TX_FIFO_STATUS\000"
+ 1524      49464F5F 
+ 1524      53544154 
+ 1524      555300
+ 1525              	.LASF9:
+ 1526 006f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1526      206C6F6E 
+ 1526      6720756E 
+ 1526      7369676E 
+ 1526      65642069 
+ 1527              	.LASF34:
+ 1528 0086 44444654 		.ascii	"DDFT_CTRL\000"
+ 1528      5F435452 
+ 1528      4C00
+ 1529              	.LASF72:
+ 1530 0090 494E5452 		.ascii	"INTR_S_MASK\000"
+ 1530      5F535F4D 
+ 1530      41534B00 
+ 1531              	.LASF123:
+ 1532 009c 62756631 		.ascii	"buf1Size\000"
+ 1532      53697A65 
+ 1532      00
+ 1533              	.LASF130:
+ 1534 00a5 455A4932 		.ascii	"EZI2C_config\000"
+ 1534      435F636F 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 40
+
+
+ 1534      6E666967 
+ 1534      00
+ 1535              	.LASF116:
+ 1536 00b2 73756241 		.ascii	"subAddrSize\000"
+ 1536      64647253 
+ 1536      697A6500 
+ 1537              	.LASF46:
+ 1538 00be 52585F4D 		.ascii	"RX_MATCH\000"
+ 1538      41544348 
+ 1538      00
+ 1539              	.LASF8:
+ 1540 00c7 6C6F6E67 		.ascii	"long long int\000"
+ 1540      206C6F6E 
+ 1540      6720696E 
+ 1540      7400
+ 1541              	.LASF2:
+ 1542 00d5 7369676E 		.ascii	"signed char\000"
+ 1542      65642063 
+ 1542      68617200 
+ 1543              	.LASF104:
+ 1544 00e1 736C6176 		.ascii	"slaveAddress1\000"
+ 1544      65416464 
+ 1544      72657373 
+ 1544      3100
+ 1545              	.LASF105:
+ 1546 00ef 736C6176 		.ascii	"slaveAddress2\000"
+ 1546      65416464 
+ 1546      72657373 
+ 1546      3200
+ 1547              	.LASF52:
+ 1548 00fd 52455345 		.ascii	"RESERVED10\000"
+ 1548      52564544 
+ 1548      313000
+ 1549              	.LASF54:
+ 1550 0108 52455345 		.ascii	"RESERVED11\000"
+ 1550      52564544 
+ 1550      313100
+ 1551              	.LASF56:
+ 1552 0113 52455345 		.ascii	"RESERVED12\000"
+ 1552      52564544 
+ 1552      313200
+ 1553              	.LASF59:
+ 1554 011e 52455345 		.ascii	"RESERVED13\000"
+ 1554      52564544 
+ 1554      313300
+ 1555              	.LASF61:
+ 1556 0129 52455345 		.ascii	"RESERVED14\000"
+ 1556      52564544 
+ 1556      313400
+ 1557              	.LASF64:
+ 1558 0134 52455345 		.ascii	"RESERVED15\000"
+ 1558      52564544 
+ 1558      313500
+ 1559              	.LASF69:
+ 1560 013f 52455345 		.ascii	"RESERVED16\000"
+ 1560      52564544 
+ 1560      313600
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 41
+
+
+ 1561              	.LASF74:
+ 1562 014a 52455345 		.ascii	"RESERVED17\000"
+ 1562      52564544 
+ 1562      313700
+ 1563              	.LASF79:
+ 1564 0155 52455345 		.ascii	"RESERVED18\000"
+ 1564      52564544 
+ 1564      313800
+ 1565              	.LASF112:
+ 1566 0160 73746174 		.ascii	"state\000"
+ 1566      6500
+ 1567              	.LASF4:
+ 1568 0166 6C6F6E67 		.ascii	"long int\000"
+ 1568      20696E74 
+ 1568      00
+ 1569              	.LASF53:
+ 1570 016f 494E5452 		.ascii	"INTR_CAUSE\000"
+ 1570      5F434155 
+ 1570      534500
+ 1571              	.LASF55:
+ 1572 017a 494E5452 		.ascii	"INTR_I2C_EC\000"
+ 1572      5F493243 
+ 1572      5F454300 
+ 1573              	.LASF80:
+ 1574 0186 494E5452 		.ascii	"INTR_RX\000"
+ 1574      5F525800 
+ 1575              	.LASF81:
+ 1576 018e 494E5452 		.ascii	"INTR_RX_SET\000"
+ 1576      5F52585F 
+ 1576      53455400 
+ 1577              	.LASF40:
+ 1578 019a 54585F46 		.ascii	"TX_FIFO_WR\000"
+ 1578      49464F5F 
+ 1578      575200
+ 1579              	.LASF110:
+ 1580 01a5 63795F73 		.ascii	"cy_stc_scb_ezi2c_config\000"
+ 1580      74635F73 
+ 1580      63625F65 
+ 1580      7A693263 
+ 1580      5F636F6E 
+ 1581              	.LASF88:
+ 1582 01bd 646F7562 		.ascii	"double\000"
+ 1582      6C6500
+ 1583              	.LASF107:
+ 1584 01c4 656E6162 		.ascii	"enableWakeFromSleep\000"
+ 1584      6C655761 
+ 1584      6B654672 
+ 1584      6F6D536C 
+ 1584      65657000 
+ 1585              	.LASF133:
+ 1586 01d8 47656E65 		.ascii	"Generated_Source\\PSoC6\\EZI2C.c\000"
+ 1586      72617465 
+ 1586      645F536F 
+ 1586      75726365 
+ 1586      5C50536F 
+ 1587              	.LASF97:
+ 1588 01f7 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_RX_OFFSET_MSB\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 42
+
+
+ 1588      43425F45 
+ 1588      5A493243 
+ 1588      5F535441 
+ 1588      54455F52 
+ 1589              	.LASF103:
+ 1590 0218 6E756D62 		.ascii	"numberOfAddresses\000"
+ 1590      65724F66 
+ 1590      41646472 
+ 1590      65737365 
+ 1590      7300
+ 1591              	.LASF6:
+ 1592 022a 5F5F7569 		.ascii	"__uint32_t\000"
+ 1592      6E743332 
+ 1592      5F7400
+ 1593              	.LASF120:
+ 1594 0235 63757242 		.ascii	"curBuf\000"
+ 1594      756600
+ 1595              	.LASF63:
+ 1596 023c 494E5452 		.ascii	"INTR_SPI_EC_MASKED\000"
+ 1596      5F535049 
+ 1596      5F45435F 
+ 1596      4D41534B 
+ 1596      454400
+ 1597              	.LASF19:
+ 1598 024f 5350495F 		.ascii	"SPI_CTRL\000"
+ 1598      4354524C 
+ 1598      00
+ 1599              	.LASF126:
+ 1600 0258 62756632 		.ascii	"buf2Size\000"
+ 1600      53697A65 
+ 1600      00
+ 1601              	.LASF10:
+ 1602 0261 756E7369 		.ascii	"unsigned int\000"
+ 1602      676E6564 
+ 1602      20696E74 
+ 1602      00
+ 1603              	.LASF102:
+ 1604 026e 63795F65 		.ascii	"cy_en_scb_ezi2c_state_t\000"
+ 1604      6E5F7363 
+ 1604      625F657A 
+ 1604      6932635F 
+ 1604      73746174 
+ 1605              	.LASF24:
+ 1606 0286 55415254 		.ascii	"UART_RX_CTRL\000"
+ 1606      5F52585F 
+ 1606      4354524C 
+ 1606      00
+ 1607              	.LASF83:
+ 1608 0293 494E5452 		.ascii	"INTR_RX_MASKED\000"
+ 1608      5F52585F 
+ 1608      4D41534B 
+ 1608      454400
+ 1609              	.LASF7:
+ 1610 02a2 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1610      20756E73 
+ 1610      69676E65 
+ 1610      6420696E 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 43
+
+
+ 1610      7400
+ 1611              	.LASF17:
+ 1612 02b4 434D445F 		.ascii	"CMD_RESP_STATUS\000"
+ 1612      52455350 
+ 1612      5F535441 
+ 1612      54555300 
+ 1613              	.LASF49:
+ 1614 02c4 52585F46 		.ascii	"RX_FIFO_RD_SILENT\000"
+ 1614      49464F5F 
+ 1614      52445F53 
+ 1614      494C454E 
+ 1614      5400
+ 1615              	.LASF23:
+ 1616 02d6 55415254 		.ascii	"UART_TX_CTRL\000"
+ 1616      5F54585F 
+ 1616      4354524C 
+ 1616      00
+ 1617              	.LASF3:
+ 1618 02e3 73686F72 		.ascii	"short unsigned int\000"
+ 1618      7420756E 
+ 1618      7369676E 
+ 1618      65642069 
+ 1618      6E7400
+ 1619              	.LASF129:
+ 1620 02f6 455A4932 		.ascii	"EZI2C_initVar\000"
+ 1620      435F696E 
+ 1620      69745661 
+ 1620      7200
+ 1621              	.LASF32:
+ 1622 0304 4932435F 		.ascii	"I2C_CFG\000"
+ 1622      43464700 
+ 1623              	.LASF25:
+ 1624 030c 55415254 		.ascii	"UART_RX_STATUS\000"
+ 1624      5F52585F 
+ 1624      53544154 
+ 1624      555300
+ 1625              	.LASF51:
+ 1626 031b 455A5F44 		.ascii	"EZ_DATA\000"
+ 1626      41544100 
+ 1627              	.LASF132:
+ 1628 0323 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1628      43313120 
+ 1628      352E342E 
+ 1628      31203230 
+ 1628      31363036 
+ 1629 0356 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0plus -mthumb -"
+ 1629      20726576 
+ 1629      6973696F 
+ 1629      6E203233 
+ 1629      37373135 
+ 1630 0389 67202D4F 		.ascii	"g -Og -ffunction-sections -ffat-lto-objects\000"
+ 1630      67202D66 
+ 1630      66756E63 
+ 1630      74696F6E 
+ 1630      2D736563 
+ 1631              	.LASF98:
+ 1632 03b5 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_RX_OFFSET_LSB\000"
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 44
+
+
+ 1632      43425F45 
+ 1632      5A493243 
+ 1632      5F535441 
+ 1632      54455F52 
+ 1633              	.LASF125:
+ 1634 03d6 62756632 		.ascii	"buf2\000"
+ 1634      00
+ 1635              	.LASF75:
+ 1636 03db 494E5452 		.ascii	"INTR_TX\000"
+ 1636      5F545800 
+ 1637              	.LASF136:
+ 1638 03e3 62617365 		.ascii	"base\000"
+ 1638      00
+ 1639              	.LASF68:
+ 1640 03e8 494E5452 		.ascii	"INTR_M_MASKED\000"
+ 1640      5F4D5F4D 
+ 1640      41534B45 
+ 1640      4400
+ 1641              	.LASF16:
+ 1642 03f6 434D445F 		.ascii	"CMD_RESP_CTRL\000"
+ 1642      52455350 
+ 1642      5F435452 
+ 1642      4C00
+ 1643              	.LASF26:
+ 1644 0404 55415254 		.ascii	"UART_FLOW_CTRL\000"
+ 1644      5F464C4F 
+ 1644      575F4354 
+ 1644      524C00
+ 1645              	.LASF58:
+ 1646 0413 494E5452 		.ascii	"INTR_I2C_EC_MASKED\000"
+ 1646      5F493243 
+ 1646      5F45435F 
+ 1646      4D41534B 
+ 1646      454400
+ 1647              	.LASF114:
+ 1648 0426 61646472 		.ascii	"address1\000"
+ 1648      65737331 
+ 1648      00
+ 1649              	.LASF115:
+ 1650 042f 61646472 		.ascii	"address2\000"
+ 1650      65737332 
+ 1650      00
+ 1651              	.LASF84:
+ 1652 0438 43795343 		.ascii	"CySCB_Type\000"
+ 1652      425F5479 
+ 1652      706500
+ 1653              	.LASF109:
+ 1654 0443 63795F73 		.ascii	"cy_stc_scb_ezi2c_config_t\000"
+ 1654      74635F73 
+ 1654      63625F65 
+ 1654      7A693263 
+ 1654      5F636F6E 
+ 1655              	.LASF95:
+ 1656 045d 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_IDLE\000"
+ 1656      43425F45 
+ 1656      5A493243 
+ 1656      5F535441 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 45
+
+
+ 1656      54455F49 
+ 1657              	.LASF22:
+ 1658 0475 55415254 		.ascii	"UART_CTRL\000"
+ 1658      5F435452 
+ 1658      4C00
+ 1659              	.LASF65:
+ 1660 047f 494E5452 		.ascii	"INTR_M\000"
+ 1660      5F4D00
+ 1661              	.LASF70:
+ 1662 0486 494E5452 		.ascii	"INTR_S\000"
+ 1662      5F5300
+ 1663              	.LASF138:
+ 1664 048d 43795F53 		.ascii	"Cy_SCB_EZI2C_Init\000"
+ 1664      43425F45 
+ 1664      5A493243 
+ 1664      5F496E69 
+ 1664      7400
+ 1665              	.LASF99:
+ 1666 049f 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_RX_DATA0\000"
+ 1666      43425F45 
+ 1666      5A493243 
+ 1666      5F535441 
+ 1666      54455F52 
+ 1667              	.LASF100:
+ 1668 04bb 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_RX_DATA1\000"
+ 1668      43425F45 
+ 1668      5A493243 
+ 1668      5F535441 
+ 1668      54455F52 
+ 1669              	.LASF87:
+ 1670 04d7 666C6F61 		.ascii	"float\000"
+ 1670      7400
+ 1671              	.LASF21:
+ 1672 04dd 52455345 		.ascii	"RESERVED1\000"
+ 1672      52564544 
+ 1672      3100
+ 1673              	.LASF106:
+ 1674 04e7 73756241 		.ascii	"subAddressSize\000"
+ 1674      64647265 
+ 1674      73735369 
+ 1674      7A6500
+ 1675              	.LASF33:
+ 1676 04f6 52455345 		.ascii	"RESERVED3\000"
+ 1676      52564544 
+ 1676      3300
+ 1677              	.LASF35:
+ 1678 0500 52455345 		.ascii	"RESERVED4\000"
+ 1678      52564544 
+ 1678      3400
+ 1679              	.LASF39:
+ 1680 050a 52455345 		.ascii	"RESERVED5\000"
+ 1680      52564544 
+ 1680      3500
+ 1681              	.LASF41:
+ 1682 0514 52455345 		.ascii	"RESERVED6\000"
+ 1682      52564544 
+ 1682      3600
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 46
+
+
+ 1683              	.LASF45:
+ 1684 051e 52455345 		.ascii	"RESERVED7\000"
+ 1684      52564544 
+ 1684      3700
+ 1685              	.LASF47:
+ 1686 0528 52455345 		.ascii	"RESERVED8\000"
+ 1686      52564544 
+ 1686      3800
+ 1687              	.LASF50:
+ 1688 0532 52455345 		.ascii	"RESERVED9\000"
+ 1688      52564544 
+ 1688      3900
+ 1689              	.LASF127:
+ 1690 053c 62756632 		.ascii	"buf2rwBondary\000"
+ 1690      7277426F 
+ 1690      6E646172 
+ 1690      7900
+ 1691              	.LASF108:
+ 1692 054a 5F426F6F 		.ascii	"_Bool\000"
+ 1692      6C00
+ 1693              	.LASF28:
+ 1694 0550 4932435F 		.ascii	"I2C_CTRL\000"
+ 1694      4354524C 
+ 1694      00
+ 1695              	.LASF1:
+ 1696 0559 756E7369 		.ascii	"unsigned char\000"
+ 1696      676E6564 
+ 1696      20636861 
+ 1696      7200
+ 1697              	.LASF78:
+ 1698 0567 494E5452 		.ascii	"INTR_TX_MASKED\000"
+ 1698      5F54585F 
+ 1698      4D41534B 
+ 1698      454400
+ 1699              	.LASF0:
+ 1700 0576 73686F72 		.ascii	"short int\000"
+ 1700      7420696E 
+ 1700      7400
+ 1701              	.LASF31:
+ 1702 0580 4932435F 		.ascii	"I2C_S_CMD\000"
+ 1702      535F434D 
+ 1702      4400
+ 1703              	.LASF91:
+ 1704 058a 63795F65 		.ascii	"cy_en_scb_ezi2c_num_of_addr_t\000"
+ 1704      6E5F7363 
+ 1704      625F657A 
+ 1704      6932635F 
+ 1704      6E756D5F 
+ 1705              	.LASF89:
+ 1706 05a8 43595F53 		.ascii	"CY_SCB_EZI2C_ONE_ADDRESS\000"
+ 1706      43425F45 
+ 1706      5A493243 
+ 1706      5F4F4E45 
+ 1706      5F414444 
+ 1707              	.LASF27:
+ 1708 05c1 52455345 		.ascii	"RESERVED2\000"
+ 1708      52564544 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 47
+
+
+ 1708      3200
+ 1709              	.LASF62:
+ 1710 05cb 494E5452 		.ascii	"INTR_SPI_EC_MASK\000"
+ 1710      5F535049 
+ 1710      5F45435F 
+ 1710      4D41534B 
+ 1710      00
+ 1711              	.LASF12:
+ 1712 05dc 75696E74 		.ascii	"uint32_t\000"
+ 1712      33325F74 
+ 1712      00
+ 1713              	.LASF119:
+ 1714 05e5 61646472 		.ascii	"addr1Active\000"
+ 1714      31416374 
+ 1714      69766500 
+ 1715              	.LASF96:
+ 1716 05f1 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_ADDR\000"
+ 1716      43425F45 
+ 1716      5A493243 
+ 1716      5F535441 
+ 1716      54455F41 
+ 1717              	.LASF66:
+ 1718 0609 494E5452 		.ascii	"INTR_M_SET\000"
+ 1718      5F4D5F53 
+ 1718      455400
+ 1719              	.LASF20:
+ 1720 0614 5350495F 		.ascii	"SPI_STATUS\000"
+ 1720      53544154 
+ 1720      555300
+ 1721              	.LASF85:
+ 1722 061f 6C6F6E67 		.ascii	"long double\000"
+ 1722      20646F75 
+ 1722      626C6500 
+ 1723              	.LASF121:
+ 1724 062b 62756653 		.ascii	"bufSize\000"
+ 1724      697A6500 
+ 1725              	.LASF86:
+ 1726 0633 63686172 		.ascii	"char\000"
+ 1726      00
+ 1727              	.LASF101:
+ 1728 0638 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_TX_DATA\000"
+ 1728      43425F45 
+ 1728      5A493243 
+ 1728      5F535441 
+ 1728      54455F54 
+ 1729              	.LASF82:
+ 1730 0653 494E5452 		.ascii	"INTR_RX_MASK\000"
+ 1730      5F52585F 
+ 1730      4D41534B 
+ 1730      00
+ 1731              	.LASF76:
+ 1732 0660 494E5452 		.ascii	"INTR_TX_SET\000"
+ 1732      5F54585F 
+ 1732      53455400 
+ 1733              	.LASF67:
+ 1734 066c 494E5452 		.ascii	"INTR_M_MASK\000"
+ 1734      5F4D5F4D 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 48
+
+
+ 1734      41534B00 
+ 1735              	.LASF137:
+ 1736 0678 455A4932 		.ascii	"EZI2C_Start\000"
+ 1736      435F5374 
+ 1736      61727400 
+ 1737              	.LASF18:
+ 1738 0684 52455345 		.ascii	"RESERVED\000"
+ 1738      52564544 
+ 1738      00
+ 1739              	.LASF44:
+ 1740 068d 52585F46 		.ascii	"RX_FIFO_STATUS\000"
+ 1740      49464F5F 
+ 1740      53544154 
+ 1740      555300
+ 1741              	.LASF77:
+ 1742 069c 494E5452 		.ascii	"INTR_TX_MASK\000"
+ 1742      5F54585F 
+ 1742      4D41534B 
+ 1742      00
+ 1743              	.LASF134:
+ 1744 06a9 433A5C47 		.ascii	"C:\\Git\\PSoC6-101-Videos\\Projects_ScreenCapture\\"
+ 1744      69745C50 
+ 1744      536F4336 
+ 1744      2D313031 
+ 1744      2D566964 
+ 1745 06d8 50536F43 		.ascii	"PSoC 6_101\\MainController.cydsn\000"
+ 1745      20365F31 
+ 1745      30315C4D 
+ 1745      61696E43 
+ 1745      6F6E7472 
+ 1746              	.LASF42:
+ 1747 06f8 52585F43 		.ascii	"RX_CTRL\000"
+ 1747      54524C00 
+ 1748              	.LASF48:
+ 1749 0700 52585F46 		.ascii	"RX_FIFO_RD\000"
+ 1749      49464F5F 
+ 1749      524400
+ 1750              	.LASF93:
+ 1751 070b 43595F53 		.ascii	"CY_SCB_EZI2C_SUB_ADDR16_BITS\000"
+ 1751      43425F45 
+ 1751      5A493243 
+ 1751      5F535542 
+ 1751      5F414444 
+ 1752              	.LASF36:
+ 1753 0728 54585F43 		.ascii	"TX_CTRL\000"
+ 1753      54524C00 
+ 1754              	.LASF60:
+ 1755 0730 494E5452 		.ascii	"INTR_SPI_EC\000"
+ 1755      5F535049 
+ 1755      5F454300 
+ 1756              	.LASF135:
+ 1757 073c 43795F53 		.ascii	"Cy_SCB_EZI2C_Enable\000"
+ 1757      43425F45 
+ 1757      5A493243 
+ 1757      5F456E61 
+ 1757      626C6500 
+ 1758              	.LASF14:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 49
+
+
+ 1759 0750 4354524C 		.ascii	"CTRL\000"
+ 1759      00
+ 1760              	.LASF92:
+ 1761 0755 43595F53 		.ascii	"CY_SCB_EZI2C_SUB_ADDR8_BITS\000"
+ 1761      43425F45 
+ 1761      5A493243 
+ 1761      5F535542 
+ 1761      5F414444 
+ 1762              	.LASF15:
+ 1763 0771 53544154 		.ascii	"STATUS\000"
+ 1763      555300
+ 1764              	.LASF113:
+ 1765 0778 73746174 		.ascii	"status\000"
+ 1765      757300
+ 1766              	.LASF131:
+ 1767 077f 455A4932 		.ascii	"EZI2C_context\000"
+ 1767      435F636F 
+ 1767      6E746578 
+ 1767      7400
+ 1768              	.LASF43:
+ 1769 078d 52585F46 		.ascii	"RX_FIFO_CTRL\000"
+ 1769      49464F5F 
+ 1769      4354524C 
+ 1769      00
+ 1770              	.LASF11:
+ 1771 079a 75696E74 		.ascii	"uint8_t\000"
+ 1771      385F7400 
+ 1772              	.LASF30:
+ 1773 07a2 4932435F 		.ascii	"I2C_M_CMD\000"
+ 1773      4D5F434D 
+ 1773      4400
+ 1774              	.LASF13:
+ 1775 07ac 73697A65 		.ascii	"sizetype\000"
+ 1775      74797065 
+ 1775      00
+ 1776              	.LASF128:
+ 1777 07b5 63795F73 		.ascii	"cy_stc_scb_ezi2c_context_t\000"
+ 1777      74635F73 
+ 1777      63625F65 
+ 1777      7A693263 
+ 1777      5F636F6E 
+ 1778              	.LASF124:
+ 1779 07d0 62756631 		.ascii	"buf1rwBondary\000"
+ 1779      7277426F 
+ 1779      6E646172 
+ 1779      7900
+ 1780              	.LASF90:
+ 1781 07de 43595F53 		.ascii	"CY_SCB_EZI2C_TWO_ADDRESSES\000"
+ 1781      43425F45 
+ 1781      5A493243 
+ 1781      5F54574F 
+ 1781      5F414444 
+ 1782              	.LASF57:
+ 1783 07f9 494E5452 		.ascii	"INTR_I2C_EC_MASK\000"
+ 1783      5F493243 
+ 1783      5F45435F 
+ 1783      4D41534B 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccM1ZmEg.s 			page 50
+
+
+ 1783      00
+ 1784              	.LASF117:
+ 1785 080a 62617365 		.ascii	"baseAddr1\000"
+ 1785      41646472 
+ 1785      3100
+ 1786              	.LASF118:
+ 1787 0814 62617365 		.ascii	"baseAddr2\000"
+ 1787      41646472 
+ 1787      3200
+ 1788              	.LASF73:
+ 1789 081e 494E5452 		.ascii	"INTR_S_MASKED\000"
+ 1789      5F535F4D 
+ 1789      41534B45 
+ 1789      4400
+ 1790              	.LASF71:
+ 1791 082c 494E5452 		.ascii	"INTR_S_SET\000"
+ 1791      5F535F53 
+ 1791      455400
+ 1792              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

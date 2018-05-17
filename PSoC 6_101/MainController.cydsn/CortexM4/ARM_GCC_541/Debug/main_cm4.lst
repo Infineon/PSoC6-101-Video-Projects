@@ -1,0 +1,3673 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.fpu fpv4-sp-d16
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.thumb
+  15              		.syntax unified
+  16              		.file	"main_cm4.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.main,"ax",%progbits
+  21              		.align	2
+  22              		.global	main
+  23              		.thumb
+  24              		.thumb_func
+  25              		.type	main, %function
+  26              	main:
+  27              	.LFB644:
+  28              		.file 1 "main_cm4.c"
+   1:main_cm4.c    **** /* ========================================
+   2:main_cm4.c    ****  *
+   3:main_cm4.c    ****  * Copyright YOUR COMPANY, THE YEAR
+   4:main_cm4.c    ****  * All Rights Reserved
+   5:main_cm4.c    ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main_cm4.c    ****  *
+   7:main_cm4.c    ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:main_cm4.c    ****  * WHICH IS THE PROPERTY OF your company.
+   9:main_cm4.c    ****  *
+  10:main_cm4.c    ****  * ========================================
+  11:main_cm4.c    **** */
+  12:main_cm4.c    **** #include "project.h"
+  13:main_cm4.c    **** #include "uartTask.h"
+  14:main_cm4.c    **** #include "pwmTask.h"
+  15:main_cm4.c    **** #include "FreeRTOS.h"
+  16:main_cm4.c    **** #include "task.h"
+  17:main_cm4.c    **** #include "ezi2cTask.h"
+  18:main_cm4.c    **** #include "event_groups.h"
+  19:main_cm4.c    **** #include "capSenseTask.h"
+  20:main_cm4.c    **** #include "bleTask.h"
+  21:main_cm4.c    **** 
+  22:main_cm4.c    **** QueueHandle_t pwmQueue;
+  23:main_cm4.c    **** EventGroupHandle_t pwmEventGroup;
+  24:main_cm4.c    **** 
+  25:main_cm4.c    **** int main(void)
+  26:main_cm4.c    **** {
+  29              		.loc 1 26 0
+  30              		.cfi_startproc
+  31              		@ Volatile: function does not return.
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 2
+
+
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 00B5     		push	{lr}
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 14, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              		.cfi_def_cfa_offset 16
+  39              	.LBB4:
+  40              	.LBB5:
+  41              		.file 2 "Generated_Source\\PSoC6\\pdl\\cmsis/include/cmsis_gcc.h"
+   1:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** /**************************************************************************//**
+   2:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
+   4:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * @version  V5.0.1
+   5:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * @date     02. February 2017
+   6:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  ******************************************************************************/
+   7:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** /*
+   8:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * Copyright (c) 2009-2017 ARM Limited. All rights reserved.
+   9:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  *
+  10:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  *
+  12:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
+  14:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * You may obtain a copy of the License at
+  15:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  *
+  16:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  *
+  18:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * See the License for the specific language governing permissions and
+  22:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  * limitations under the License.
+  23:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  */
+  24:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** 
+  25:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  26:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #define __CMSIS_GCC_H
+  27:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** 
+  28:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** /* ignore some GCC warnings */
+  29:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  30:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  31:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  32:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  33:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** 
+  34:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** /* CMSIS compiler specific defines */
+  35:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __ASM
+  36:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __ASM                     __asm
+  37:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  38:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __INLINE
+  39:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __INLINE                  inline
+  40:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  41:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __STATIC_INLINE
+  42:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __STATIC_INLINE           static inline
+  43:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  44:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __NO_RETURN
+  45:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __NO_RETURN               __attribute__((noreturn))
+  46:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  47:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __USED
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 3
+
+
+  48:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __USED                    __attribute__((used))
+  49:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  50:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __WEAK
+  51:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __WEAK                    __attribute__((weak))
+  52:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  53:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32
+  54:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  55:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wpacked"
+  56:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wattributes"
+  57:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   struct __attribute__((packed)) T_UINT32 { uint32_t v; };
+  58:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #pragma GCC diagnostic pop
+  59:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32(x)     (((struct T_UINT32 *)(x))->v)
+  60:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  61:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __ALIGNED
+  62:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __ALIGNED(x)              __attribute__((aligned(x)))
+  63:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  64:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __PACKED
+  65:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __PACKED                  __attribute__((packed, aligned(1)))
+  66:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  67:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
+  68:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   #define __PACKED_STRUCT           struct __attribute__((packed, aligned(1)))
+  69:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** #endif
+  70:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** 
+  71:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** 
+  72:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+  73:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+  74:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+  75:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   @{
+  76:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  */
+  77:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** 
+  78:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** /**
+  79:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+  80:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
+  81:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+  82:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****  */
+  83:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** __attribute__((always_inline)) __STATIC_INLINE void __enable_irq(void)
+  84:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h **** {
+  85:Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+  42              		.loc 2 85 0
+  43              		.syntax unified
+  44              	@ 85 "Generated_Source\PSoC6\pdl\cmsis/include/cmsis_gcc.h" 1
+  45 0004 62B6     		cpsie i
+  46              	@ 0 "" 2
+  47              		.thumb
+  48              		.syntax unified
+  49              	.LBE5:
+  50              	.LBE4:
+  27:main_cm4.c    ****     __enable_irq(); /* Enable global interrupts. */
+  28:main_cm4.c    **** 
+  29:main_cm4.c    ****     LEDBlink_Start(); // Start PWM for the red/green LEDs controlled by the kill switch
+  51              		.loc 1 29 0
+  52 0006 FFF7FEFF 		bl	LEDBlink_Start
+  53              	.LVL0:
+  30:main_cm4.c    ****     
+  31:main_cm4.c    ****     pwmQueue = xQueueCreate(4, sizeof(PWM_Message_t)); // Create queue used for sending changes to 
+  54              		.loc 1 31 0
+  55 000a 0022     		movs	r2, #0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 4
+
+
+  56 000c 0821     		movs	r1, #8
+  57 000e 0420     		movs	r0, #4
+  58 0010 FFF7FEFF 		bl	xQueueGenericCreate
+  59              	.LVL1:
+  60 0014 1C4B     		ldr	r3, .L4
+  61 0016 1860     		str	r0, [r3]
+  32:main_cm4.c    ****     pwmEventGroup = xEventGroupCreate(); // Create event group that allows taskPWM to notify other 
+  62              		.loc 1 32 0
+  63 0018 FFF7FEFF 		bl	xEventGroupCreate
+  64              	.LVL2:
+  65 001c 1B4B     		ldr	r3, .L4+4
+  66 001e 1860     		str	r0, [r3]
+  33:main_cm4.c    ****     
+  34:main_cm4.c    ****     /* Create RTOS tasks and start the scheduler */
+  35:main_cm4.c    ****     xTaskCreate ( uartTask,  "UART Task", 400, 0, 2, 0);
+  67              		.loc 1 35 0
+  68 0020 0024     		movs	r4, #0
+  69 0022 0194     		str	r4, [sp, #4]
+  70 0024 0225     		movs	r5, #2
+  71 0026 0095     		str	r5, [sp]
+  72 0028 2346     		mov	r3, r4
+  73 002a 4FF4C872 		mov	r2, #400
+  74 002e 1849     		ldr	r1, .L4+8
+  75 0030 1848     		ldr	r0, .L4+12
+  76 0032 FFF7FEFF 		bl	xTaskCreate
+  77              	.LVL3:
+  36:main_cm4.c    ****     xTaskCreate ( pwmTask,   "PWM Task",  400, 0, 2, 0);
+  78              		.loc 1 36 0
+  79 0036 0194     		str	r4, [sp, #4]
+  80 0038 0095     		str	r5, [sp]
+  81 003a 2346     		mov	r3, r4
+  82 003c 4FF4C872 		mov	r2, #400
+  83 0040 1549     		ldr	r1, .L4+16
+  84 0042 1648     		ldr	r0, .L4+20
+  85 0044 FFF7FEFF 		bl	xTaskCreate
+  86              	.LVL4:
+  37:main_cm4.c    ****     xTaskCreate ( ezi2cTask, "EZI2C Task",400,0,2,0);
+  87              		.loc 1 37 0
+  88 0048 0194     		str	r4, [sp, #4]
+  89 004a 0095     		str	r5, [sp]
+  90 004c 2346     		mov	r3, r4
+  91 004e 4FF4C872 		mov	r2, #400
+  92 0052 1349     		ldr	r1, .L4+24
+  93 0054 1348     		ldr	r0, .L4+28
+  94 0056 FFF7FEFF 		bl	xTaskCreate
+  95              	.LVL5:
+  38:main_cm4.c    ****     xTaskCreate( capsenseTask, "Capsense Task",(2*1024),0,2,0);
+  96              		.loc 1 38 0
+  97 005a 0194     		str	r4, [sp, #4]
+  98 005c 0095     		str	r5, [sp]
+  99 005e 2346     		mov	r3, r4
+ 100 0060 4FF40062 		mov	r2, #2048
+ 101 0064 1049     		ldr	r1, .L4+32
+ 102 0066 1148     		ldr	r0, .L4+36
+ 103 0068 FFF7FEFF 		bl	xTaskCreate
+ 104              	.LVL6:
+  39:main_cm4.c    ****     xTaskCreate( bleTask, "BLE Task",(4*1024),0,3,0);
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 5
+
+
+ 105              		.loc 1 39 0
+ 106 006c 0194     		str	r4, [sp, #4]
+ 107 006e 0323     		movs	r3, #3
+ 108 0070 0093     		str	r3, [sp]
+ 109 0072 2346     		mov	r3, r4
+ 110 0074 4FF48052 		mov	r2, #4096
+ 111 0078 0D49     		ldr	r1, .L4+40
+ 112 007a 0E48     		ldr	r0, .L4+44
+ 113 007c FFF7FEFF 		bl	xTaskCreate
+ 114              	.LVL7:
+  40:main_cm4.c    ****     
+  41:main_cm4.c    ****     vTaskStartScheduler(); // This function never returns
+ 115              		.loc 1 41 0
+ 116 0080 FFF7FEFF 		bl	vTaskStartScheduler
+ 117              	.LVL8:
+ 118              	.L2:
+ 119 0084 FEE7     		b	.L2
+ 120              	.L5:
+ 121 0086 00BF     		.align	2
+ 122              	.L4:
+ 123 0088 00000000 		.word	pwmQueue
+ 124 008c 00000000 		.word	pwmEventGroup
+ 125 0090 00000000 		.word	.LC0
+ 126 0094 00000000 		.word	uartTask
+ 127 0098 0C000000 		.word	.LC1
+ 128 009c 00000000 		.word	pwmTask
+ 129 00a0 18000000 		.word	.LC2
+ 130 00a4 00000000 		.word	ezi2cTask
+ 131 00a8 24000000 		.word	.LC3
+ 132 00ac 00000000 		.word	capsenseTask
+ 133 00b0 34000000 		.word	.LC4
+ 134 00b4 00000000 		.word	bleTask
+ 135              		.cfi_endproc
+ 136              	.LFE644:
+ 137              		.size	main, .-main
+ 138              		.comm	pwmEventGroup,4,4
+ 139              		.comm	pwmQueue,4,4
+ 140              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 141              		.align	2
+ 142              	.LC0:
+ 143 0000 55415254 		.ascii	"UART Task\000"
+ 143      20546173 
+ 143      6B00
+ 144 000a 0000     		.space	2
+ 145              	.LC1:
+ 146 000c 50574D20 		.ascii	"PWM Task\000"
+ 146      5461736B 
+ 146      00
+ 147 0015 000000   		.space	3
+ 148              	.LC2:
+ 149 0018 455A4932 		.ascii	"EZI2C Task\000"
+ 149      43205461 
+ 149      736B00
+ 150 0023 00       		.space	1
+ 151              	.LC3:
+ 152 0024 43617073 		.ascii	"Capsense Task\000"
+ 152      656E7365 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 6
+
+
+ 152      20546173 
+ 152      6B00
+ 153 0032 0000     		.space	2
+ 154              	.LC4:
+ 155 0034 424C4520 		.ascii	"BLE Task\000"
+ 155      5461736B 
+ 155      00
+ 156              		.text
+ 157              	.Letext0:
+ 158              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 159              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 160              		.file 5 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/syslib/cy_syslib.h"
+ 161              		.file 6 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/tcpwm/cy_tcpwm_pwm.h"
+ 162              		.file 7 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/scb/cy_scb_ezi2c.h"
+ 163              		.file 8 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/scb/cy_scb_uart.h"
+ 164              		.file 9 "Generated_Source\\PSoC6\\pdl\\middleware/ble/cy_ble_stack.h"
+ 165              		.file 10 "Generated_Source\\PSoC6\\pdl\\middleware/ble/cy_ble_stack_host_main.h"
+ 166              		.file 11 "Generated_Source\\PSoC6\\pdl\\middleware/ble/cy_ble_gap.h"
+ 167              		.file 12 "Generated_Source\\PSoC6\\pdl\\rtos/FreeRTOS/9.0.0/Source/include/queue.h"
+ 168              		.file 13 "Generated_Source\\PSoC6\\pdl\\rtos/FreeRTOS/9.0.0/Source/include/event_groups.h"
+ 169              		.file 14 "Generated_Source\\PSoC6\\pdl\\cmsis/include/core_cm4.h"
+ 170              		.file 15 "Generated_Source\\PSoC6/UART.h"
+ 171              		.file 16 "Generated_Source\\PSoC6/PWM_1.h"
+ 172              		.file 17 "Generated_Source\\PSoC6/PWM_2.h"
+ 173              		.file 18 "Generated_Source\\PSoC6/EZI2C.h"
+ 174              		.file 19 "Generated_Source\\PSoC6/LEDBlink.h"
+ 175              		.file 20 "Generated_Source\\PSoC6\\pdl\\rtos/FreeRTOS/9.0.0/Source/include/task.h"
+ 176              		.section	.debug_info,"",%progbits
+ 177              	.Ldebug_info0:
+ 178 0000 CF0A0000 		.4byte	0xacf
+ 179 0004 0400     		.2byte	0x4
+ 180 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 181 000a 04       		.byte	0x4
+ 182 000b 01       		.uleb128 0x1
+ 183 000c D30E0000 		.4byte	.LASF246
+ 184 0010 0C       		.byte	0xc
+ 185 0011 38180000 		.4byte	.LASF247
+ 186 0015 05140000 		.4byte	.LASF248
+ 187 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 188 001d 00000000 		.4byte	0
+ 189 0021 00000000 		.4byte	.Ldebug_line0
+ 190 0025 02       		.uleb128 0x2
+ 191 0026 02       		.byte	0x2
+ 192 0027 05       		.byte	0x5
+ 193 0028 3A060000 		.4byte	.LASF0
+ 194 002c 02       		.uleb128 0x2
+ 195 002d 01       		.byte	0x1
+ 196 002e 06       		.byte	0x6
+ 197 002f 70030000 		.4byte	.LASF1
+ 198 0033 03       		.uleb128 0x3
+ 199 0034 40010000 		.4byte	.LASF4
+ 200 0038 03       		.byte	0x3
+ 201 0039 1D       		.byte	0x1d
+ 202 003a 3E000000 		.4byte	0x3e
+ 203 003e 02       		.uleb128 0x2
+ 204 003f 01       		.byte	0x1
+ 205 0040 08       		.byte	0x8
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 7
+
+
+ 206 0041 96100000 		.4byte	.LASF2
+ 207 0045 02       		.uleb128 0x2
+ 208 0046 02       		.byte	0x2
+ 209 0047 07       		.byte	0x7
+ 210 0048 170A0000 		.4byte	.LASF3
+ 211 004c 03       		.uleb128 0x3
+ 212 004d EB130000 		.4byte	.LASF5
+ 213 0051 03       		.byte	0x3
+ 214 0052 3F       		.byte	0x3f
+ 215 0053 57000000 		.4byte	0x57
+ 216 0057 02       		.uleb128 0x2
+ 217 0058 04       		.byte	0x4
+ 218 0059 05       		.byte	0x5
+ 219 005a 19050000 		.4byte	.LASF6
+ 220 005e 03       		.uleb128 0x3
+ 221 005f 39070000 		.4byte	.LASF7
+ 222 0063 03       		.byte	0x3
+ 223 0064 41       		.byte	0x41
+ 224 0065 69000000 		.4byte	0x69
+ 225 0069 02       		.uleb128 0x2
+ 226 006a 04       		.byte	0x4
+ 227 006b 07       		.byte	0x7
+ 228 006c 43090000 		.4byte	.LASF8
+ 229 0070 02       		.uleb128 0x2
+ 230 0071 08       		.byte	0x8
+ 231 0072 05       		.byte	0x5
+ 232 0073 62030000 		.4byte	.LASF9
+ 233 0077 02       		.uleb128 0x2
+ 234 0078 08       		.byte	0x8
+ 235 0079 07       		.byte	0x7
+ 236 007a 05020000 		.4byte	.LASF10
+ 237 007e 04       		.uleb128 0x4
+ 238 007f 04       		.byte	0x4
+ 239 0080 05       		.byte	0x5
+ 240 0081 696E7400 		.ascii	"int\000"
+ 241 0085 02       		.uleb128 0x2
+ 242 0086 04       		.byte	0x4
+ 243 0087 07       		.byte	0x7
+ 244 0088 4C080000 		.4byte	.LASF11
+ 245 008c 03       		.uleb128 0x3
+ 246 008d 1D170000 		.4byte	.LASF12
+ 247 0091 04       		.byte	0x4
+ 248 0092 18       		.byte	0x18
+ 249 0093 33000000 		.4byte	0x33
+ 250 0097 03       		.uleb128 0x3
+ 251 0098 8E100000 		.4byte	.LASF13
+ 252 009c 04       		.byte	0x4
+ 253 009d 2C       		.byte	0x2c
+ 254 009e 4C000000 		.4byte	0x4c
+ 255 00a2 03       		.uleb128 0x3
+ 256 00a3 47120000 		.4byte	.LASF14
+ 257 00a7 04       		.byte	0x4
+ 258 00a8 30       		.byte	0x30
+ 259 00a9 5E000000 		.4byte	0x5e
+ 260 00ad 02       		.uleb128 0x2
+ 261 00ae 04       		.byte	0x4
+ 262 00af 07       		.byte	0x7
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 8
+
+
+ 263 00b0 610C0000 		.4byte	.LASF15
+ 264 00b4 05       		.uleb128 0x5
+ 265 00b5 A2000000 		.4byte	0xa2
+ 266 00b9 02       		.uleb128 0x2
+ 267 00ba 08       		.byte	0x8
+ 268 00bb 04       		.byte	0x4
+ 269 00bc A90C0000 		.4byte	.LASF16
+ 270 00c0 02       		.uleb128 0x2
+ 271 00c1 01       		.byte	0x1
+ 272 00c2 08       		.byte	0x8
+ 273 00c3 DD120000 		.4byte	.LASF17
+ 274 00c7 02       		.uleb128 0x2
+ 275 00c8 04       		.byte	0x4
+ 276 00c9 04       		.byte	0x4
+ 277 00ca AA0F0000 		.4byte	.LASF18
+ 278 00ce 02       		.uleb128 0x2
+ 279 00cf 08       		.byte	0x8
+ 280 00d0 04       		.byte	0x4
+ 281 00d1 4D060000 		.4byte	.LASF19
+ 282 00d5 06       		.uleb128 0x6
+ 283 00d6 FB050000 		.4byte	.LASF20
+ 284 00da 05       		.byte	0x5
+ 285 00db 8503     		.2byte	0x385
+ 286 00dd 8C000000 		.4byte	0x8c
+ 287 00e1 07       		.uleb128 0x7
+ 288 00e2 04       		.byte	0x4
+ 289 00e3 02       		.uleb128 0x2
+ 290 00e4 01       		.byte	0x1
+ 291 00e5 02       		.byte	0x2
+ 292 00e6 FF010000 		.4byte	.LASF21
+ 293 00ea 08       		.uleb128 0x8
+ 294 00eb 9B040000 		.4byte	.LASF59
+ 295 00ef 64       		.byte	0x64
+ 296 00f0 06       		.byte	0x6
+ 297 00f1 2B       		.byte	0x2b
+ 298 00f2 23020000 		.4byte	0x223
+ 299 00f6 09       		.uleb128 0x9
+ 300 00f7 F4170000 		.4byte	.LASF22
+ 301 00fb 06       		.byte	0x6
+ 302 00fc 2D       		.byte	0x2d
+ 303 00fd A2000000 		.4byte	0xa2
+ 304 0101 00       		.byte	0
+ 305 0102 09       		.uleb128 0x9
+ 306 0103 1C020000 		.4byte	.LASF23
+ 307 0107 06       		.byte	0x6
+ 308 0108 2F       		.byte	0x2f
+ 309 0109 A2000000 		.4byte	0xa2
+ 310 010d 04       		.byte	0x4
+ 311 010e 09       		.uleb128 0x9
+ 312 010f 2E010000 		.4byte	.LASF24
+ 313 0113 06       		.byte	0x6
+ 314 0114 30       		.byte	0x30
+ 315 0115 A2000000 		.4byte	0xa2
+ 316 0119 08       		.byte	0x8
+ 317 011a 09       		.uleb128 0x9
+ 318 011b 880B0000 		.4byte	.LASF25
+ 319 011f 06       		.byte	0x6
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 9
+
+
+ 320 0120 31       		.byte	0x31
+ 321 0121 A2000000 		.4byte	0xa2
+ 322 0125 0C       		.byte	0xc
+ 323 0126 09       		.uleb128 0x9
+ 324 0127 39000000 		.4byte	.LASF26
+ 325 012b 06       		.byte	0x6
+ 326 012c 32       		.byte	0x32
+ 327 012d A2000000 		.4byte	0xa2
+ 328 0131 10       		.byte	0x10
+ 329 0132 09       		.uleb128 0x9
+ 330 0133 A2150000 		.4byte	.LASF27
+ 331 0137 06       		.byte	0x6
+ 332 0138 33       		.byte	0x33
+ 333 0139 A2000000 		.4byte	0xa2
+ 334 013d 14       		.byte	0x14
+ 335 013e 09       		.uleb128 0x9
+ 336 013f B0180000 		.4byte	.LASF28
+ 337 0143 06       		.byte	0x6
+ 338 0144 34       		.byte	0x34
+ 339 0145 A2000000 		.4byte	0xa2
+ 340 0149 18       		.byte	0x18
+ 341 014a 09       		.uleb128 0x9
+ 342 014b E2110000 		.4byte	.LASF29
+ 343 014f 06       		.byte	0x6
+ 344 0150 35       		.byte	0x35
+ 345 0151 E3000000 		.4byte	0xe3
+ 346 0155 1C       		.byte	0x1c
+ 347 0156 09       		.uleb128 0x9
+ 348 0157 C3120000 		.4byte	.LASF30
+ 349 015b 06       		.byte	0x6
+ 350 015c 36       		.byte	0x36
+ 351 015d A2000000 		.4byte	0xa2
+ 352 0161 20       		.byte	0x20
+ 353 0162 09       		.uleb128 0x9
+ 354 0163 CC120000 		.4byte	.LASF31
+ 355 0167 06       		.byte	0x6
+ 356 0168 37       		.byte	0x37
+ 357 0169 A2000000 		.4byte	0xa2
+ 358 016d 24       		.byte	0x24
+ 359 016e 09       		.uleb128 0x9
+ 360 016f 15110000 		.4byte	.LASF32
+ 361 0173 06       		.byte	0x6
+ 362 0174 38       		.byte	0x38
+ 363 0175 E3000000 		.4byte	0xe3
+ 364 0179 28       		.byte	0x28
+ 365 017a 09       		.uleb128 0x9
+ 366 017b F3070000 		.4byte	.LASF33
+ 367 017f 06       		.byte	0x6
+ 368 0180 3A       		.byte	0x3a
+ 369 0181 A2000000 		.4byte	0xa2
+ 370 0185 2C       		.byte	0x2c
+ 371 0186 09       		.uleb128 0x9
+ 372 0187 750B0000 		.4byte	.LASF34
+ 373 018b 06       		.byte	0x6
+ 374 018c 3B       		.byte	0x3b
+ 375 018d A2000000 		.4byte	0xa2
+ 376 0191 30       		.byte	0x30
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 10
+
+
+ 377 0192 09       		.uleb128 0x9
+ 378 0193 D9160000 		.4byte	.LASF35
+ 379 0197 06       		.byte	0x6
+ 380 0198 3C       		.byte	0x3c
+ 381 0199 A2000000 		.4byte	0xa2
+ 382 019d 34       		.byte	0x34
+ 383 019e 09       		.uleb128 0x9
+ 384 019f 46170000 		.4byte	.LASF36
+ 385 01a3 06       		.byte	0x6
+ 386 01a4 3D       		.byte	0x3d
+ 387 01a5 A2000000 		.4byte	0xa2
+ 388 01a9 38       		.byte	0x38
+ 389 01aa 09       		.uleb128 0x9
+ 390 01ab 090A0000 		.4byte	.LASF37
+ 391 01af 06       		.byte	0x6
+ 392 01b0 3E       		.byte	0x3e
+ 393 01b1 A2000000 		.4byte	0xa2
+ 394 01b5 3C       		.byte	0x3c
+ 395 01b6 09       		.uleb128 0x9
+ 396 01b7 F3110000 		.4byte	.LASF38
+ 397 01bb 06       		.byte	0x6
+ 398 01bc 40       		.byte	0x40
+ 399 01bd A2000000 		.4byte	0xa2
+ 400 01c1 40       		.byte	0x40
+ 401 01c2 09       		.uleb128 0x9
+ 402 01c3 9A170000 		.4byte	.LASF39
+ 403 01c7 06       		.byte	0x6
+ 404 01c8 41       		.byte	0x41
+ 405 01c9 A2000000 		.4byte	0xa2
+ 406 01cd 44       		.byte	0x44
+ 407 01ce 09       		.uleb128 0x9
+ 408 01cf DC140000 		.4byte	.LASF40
+ 409 01d3 06       		.byte	0x6
+ 410 01d4 43       		.byte	0x43
+ 411 01d5 A2000000 		.4byte	0xa2
+ 412 01d9 48       		.byte	0x48
+ 413 01da 09       		.uleb128 0x9
+ 414 01db 7F100000 		.4byte	.LASF41
+ 415 01df 06       		.byte	0x6
+ 416 01e0 44       		.byte	0x44
+ 417 01e1 A2000000 		.4byte	0xa2
+ 418 01e5 4C       		.byte	0x4c
+ 419 01e6 09       		.uleb128 0x9
+ 420 01e7 B40B0000 		.4byte	.LASF42
+ 421 01eb 06       		.byte	0x6
+ 422 01ec 46       		.byte	0x46
+ 423 01ed A2000000 		.4byte	0xa2
+ 424 01f1 50       		.byte	0x50
+ 425 01f2 09       		.uleb128 0x9
+ 426 01f3 750A0000 		.4byte	.LASF43
+ 427 01f7 06       		.byte	0x6
+ 428 01f8 47       		.byte	0x47
+ 429 01f9 A2000000 		.4byte	0xa2
+ 430 01fd 54       		.byte	0x54
+ 431 01fe 09       		.uleb128 0x9
+ 432 01ff 05010000 		.4byte	.LASF44
+ 433 0203 06       		.byte	0x6
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 11
+
+
+ 434 0204 49       		.byte	0x49
+ 435 0205 A2000000 		.4byte	0xa2
+ 436 0209 58       		.byte	0x58
+ 437 020a 09       		.uleb128 0x9
+ 438 020b A50B0000 		.4byte	.LASF45
+ 439 020f 06       		.byte	0x6
+ 440 0210 4A       		.byte	0x4a
+ 441 0211 A2000000 		.4byte	0xa2
+ 442 0215 5C       		.byte	0x5c
+ 443 0216 09       		.uleb128 0x9
+ 444 0217 2D180000 		.4byte	.LASF46
+ 445 021b 06       		.byte	0x6
+ 446 021c 4C       		.byte	0x4c
+ 447 021d A2000000 		.4byte	0xa2
+ 448 0221 60       		.byte	0x60
+ 449 0222 00       		.byte	0
+ 450 0223 03       		.uleb128 0x3
+ 451 0224 80170000 		.4byte	.LASF47
+ 452 0228 06       		.byte	0x6
+ 453 0229 4D       		.byte	0x4d
+ 454 022a EA000000 		.4byte	0xea
+ 455 022e 0A       		.uleb128 0xa
+ 456 022f 04       		.byte	0x4
+ 457 0230 34020000 		.4byte	0x234
+ 458 0234 0B       		.uleb128 0xb
+ 459 0235 3F020000 		.4byte	0x23f
+ 460 0239 0C       		.uleb128 0xc
+ 461 023a A2000000 		.4byte	0xa2
+ 462 023e 00       		.byte	0
+ 463 023f 0A       		.uleb128 0xa
+ 464 0240 04       		.byte	0x4
+ 465 0241 8C000000 		.4byte	0x8c
+ 466 0245 0D       		.uleb128 0xd
+ 467 0246 01       		.byte	0x1
+ 468 0247 3E000000 		.4byte	0x3e
+ 469 024b 07       		.byte	0x7
+ 470 024c 2A01     		.2byte	0x12a
+ 471 024e 5F020000 		.4byte	0x25f
+ 472 0252 0E       		.uleb128 0xe
+ 473 0253 1F160000 		.4byte	.LASF48
+ 474 0257 00       		.byte	0
+ 475 0258 0E       		.uleb128 0xe
+ 476 0259 31150000 		.4byte	.LASF49
+ 477 025d 01       		.byte	0x1
+ 478 025e 00       		.byte	0
+ 479 025f 06       		.uleb128 0x6
+ 480 0260 E5000000 		.4byte	.LASF50
+ 481 0264 07       		.byte	0x7
+ 482 0265 2D01     		.2byte	0x12d
+ 483 0267 45020000 		.4byte	0x245
+ 484 026b 0D       		.uleb128 0xd
+ 485 026c 01       		.byte	0x1
+ 486 026d 3E000000 		.4byte	0x3e
+ 487 0271 07       		.byte	0x7
+ 488 0272 3201     		.2byte	0x132
+ 489 0274 A3020000 		.4byte	0x2a3
+ 490 0278 0E       		.uleb128 0xe
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 12
+
+
+ 491 0279 700D0000 		.4byte	.LASF51
+ 492 027d 00       		.byte	0
+ 493 027e 0E       		.uleb128 0xe
+ 494 027f 4C0A0000 		.4byte	.LASF52
+ 495 0283 01       		.byte	0x1
+ 496 0284 0E       		.uleb128 0xe
+ 497 0285 CA060000 		.4byte	.LASF53
+ 498 0289 02       		.byte	0x2
+ 499 028a 0E       		.uleb128 0xe
+ 500 028b 25170000 		.4byte	.LASF54
+ 501 028f 03       		.byte	0x3
+ 502 0290 0E       		.uleb128 0xe
+ 503 0291 770E0000 		.4byte	.LASF55
+ 504 0295 04       		.byte	0x4
+ 505 0296 0E       		.uleb128 0xe
+ 506 0297 930E0000 		.4byte	.LASF56
+ 507 029b 05       		.byte	0x5
+ 508 029c 0E       		.uleb128 0xe
+ 509 029d 10130000 		.4byte	.LASF57
+ 510 02a1 06       		.byte	0x6
+ 511 02a2 00       		.byte	0
+ 512 02a3 06       		.uleb128 0x6
+ 513 02a4 2F100000 		.4byte	.LASF58
+ 514 02a8 07       		.byte	0x7
+ 515 02a9 3A01     		.2byte	0x13a
+ 516 02ab 6B020000 		.4byte	0x26b
+ 517 02af 0F       		.uleb128 0xf
+ 518 02b0 D0070000 		.4byte	.LASF60
+ 519 02b4 3C       		.byte	0x3c
+ 520 02b5 07       		.byte	0x7
+ 521 02b6 6601     		.2byte	0x166
+ 522 02b8 9A030000 		.4byte	0x39a
+ 523 02bc 10       		.uleb128 0x10
+ 524 02bd 13050000 		.4byte	.LASF61
+ 525 02c1 07       		.byte	0x7
+ 526 02c2 6901     		.2byte	0x169
+ 527 02c4 9A030000 		.4byte	0x39a
+ 528 02c8 00       		.byte	0
+ 529 02c9 10       		.uleb128 0x10
+ 530 02ca B4160000 		.4byte	.LASF62
+ 531 02ce 07       		.byte	0x7
+ 532 02cf 6A01     		.2byte	0x16a
+ 533 02d1 B4000000 		.4byte	0xb4
+ 534 02d5 04       		.byte	0x4
+ 535 02d6 10       		.uleb128 0x10
+ 536 02d7 89040000 		.4byte	.LASF63
+ 537 02db 07       		.byte	0x7
+ 538 02dc 6C01     		.2byte	0x16c
+ 539 02de 8C000000 		.4byte	0x8c
+ 540 02e2 08       		.byte	0x8
+ 541 02e3 10       		.uleb128 0x10
+ 542 02e4 92040000 		.4byte	.LASF64
+ 543 02e8 07       		.byte	0x7
+ 544 02e9 6D01     		.2byte	0x16d
+ 545 02eb 8C000000 		.4byte	0x8c
+ 546 02ef 09       		.byte	0x9
+ 547 02f0 10       		.uleb128 0x10
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 13
+
+
+ 548 02f1 D80C0000 		.4byte	.LASF65
+ 549 02f5 07       		.byte	0x7
+ 550 02f6 6E01     		.2byte	0x16e
+ 551 02f8 5F020000 		.4byte	0x25f
+ 552 02fc 0A       		.byte	0xa
+ 553 02fd 11       		.uleb128 0x11
+ 554 02fe 69647800 		.ascii	"idx\000"
+ 555 0302 07       		.byte	0x7
+ 556 0303 7001     		.2byte	0x170
+ 557 0305 A2000000 		.4byte	0xa2
+ 558 0309 0C       		.byte	0xc
+ 559 030a 10       		.uleb128 0x10
+ 560 030b FC170000 		.4byte	.LASF66
+ 561 030f 07       		.byte	0x7
+ 562 0310 7101     		.2byte	0x171
+ 563 0312 A2000000 		.4byte	0xa2
+ 564 0316 10       		.byte	0x10
+ 565 0317 10       		.uleb128 0x10
+ 566 0318 06180000 		.4byte	.LASF67
+ 567 031c 07       		.byte	0x7
+ 568 031d 7201     		.2byte	0x172
+ 569 031f A2000000 		.4byte	0xa2
+ 570 0323 14       		.byte	0x14
+ 571 0324 10       		.uleb128 0x10
+ 572 0325 50120000 		.4byte	.LASF68
+ 573 0329 07       		.byte	0x7
+ 574 032a 7401     		.2byte	0x174
+ 575 032c E3000000 		.4byte	0xe3
+ 576 0330 18       		.byte	0x18
+ 577 0331 10       		.uleb128 0x10
+ 578 0332 0C050000 		.4byte	.LASF69
+ 579 0336 07       		.byte	0x7
+ 580 0337 7501     		.2byte	0x175
+ 581 0339 3F020000 		.4byte	0x23f
+ 582 033d 1C       		.byte	0x1c
+ 583 033e 10       		.uleb128 0x10
+ 584 033f D5120000 		.4byte	.LASF70
+ 585 0343 07       		.byte	0x7
+ 586 0344 7601     		.2byte	0x176
+ 587 0346 A2000000 		.4byte	0xa2
+ 588 034a 20       		.byte	0x20
+ 589 034b 10       		.uleb128 0x10
+ 590 034c 3B010000 		.4byte	.LASF71
+ 591 0350 07       		.byte	0x7
+ 592 0351 7801     		.2byte	0x178
+ 593 0353 3F020000 		.4byte	0x23f
+ 594 0357 24       		.byte	0x24
+ 595 0358 10       		.uleb128 0x10
+ 596 0359 3D110000 		.4byte	.LASF72
+ 597 035d 07       		.byte	0x7
+ 598 035e 7901     		.2byte	0x179
+ 599 0360 A2000000 		.4byte	0xa2
+ 600 0364 28       		.byte	0x28
+ 601 0365 10       		.uleb128 0x10
+ 602 0366 B8170000 		.4byte	.LASF73
+ 603 036a 07       		.byte	0x7
+ 604 036b 7A01     		.2byte	0x17a
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 14
+
+
+ 605 036d A2000000 		.4byte	0xa2
+ 606 0371 2C       		.byte	0x2c
+ 607 0372 10       		.uleb128 0x10
+ 608 0373 CB070000 		.4byte	.LASF74
+ 609 0377 07       		.byte	0x7
+ 610 0378 7C01     		.2byte	0x17c
+ 611 037a 3F020000 		.4byte	0x23f
+ 612 037e 30       		.byte	0x30
+ 613 037f 10       		.uleb128 0x10
+ 614 0380 5C120000 		.4byte	.LASF75
+ 615 0384 07       		.byte	0x7
+ 616 0385 7D01     		.2byte	0x17d
+ 617 0387 A2000000 		.4byte	0xa2
+ 618 038b 34       		.byte	0x34
+ 619 038c 10       		.uleb128 0x10
+ 620 038d 47100000 		.4byte	.LASF76
+ 621 0391 07       		.byte	0x7
+ 622 0392 7E01     		.2byte	0x17e
+ 623 0394 A2000000 		.4byte	0xa2
+ 624 0398 38       		.byte	0x38
+ 625 0399 00       		.byte	0
+ 626 039a 05       		.uleb128 0x5
+ 627 039b A3020000 		.4byte	0x2a3
+ 628 039f 06       		.uleb128 0x6
+ 629 03a0 DF0A0000 		.4byte	.LASF77
+ 630 03a4 07       		.byte	0x7
+ 631 03a5 8001     		.2byte	0x180
+ 632 03a7 AF020000 		.4byte	0x2af
+ 633 03ab 06       		.uleb128 0x6
+ 634 03ac 12150000 		.4byte	.LASF78
+ 635 03b0 08       		.byte	0x8
+ 636 03b1 AB01     		.2byte	0x1ab
+ 637 03b3 2E020000 		.4byte	0x22e
+ 638 03b7 0F       		.uleb128 0xf
+ 639 03b8 15180000 		.4byte	.LASF79
+ 640 03bc 38       		.byte	0x38
+ 641 03bd 08       		.byte	0x8
+ 642 03be 4702     		.2byte	0x247
+ 643 03c0 7B040000 		.4byte	0x47b
+ 644 03c4 10       		.uleb128 0x10
+ 645 03c5 44060000 		.4byte	.LASF80
+ 646 03c9 08       		.byte	0x8
+ 647 03ca 4A02     		.2byte	0x24a
+ 648 03cc B4000000 		.4byte	0xb4
+ 649 03d0 00       		.byte	0
+ 650 03d1 10       		.uleb128 0x10
+ 651 03d2 200E0000 		.4byte	.LASF81
+ 652 03d6 08       		.byte	0x8
+ 653 03d7 4B02     		.2byte	0x24b
+ 654 03d9 B4000000 		.4byte	0xb4
+ 655 03dd 04       		.byte	0x4
+ 656 03de 10       		.uleb128 0x10
+ 657 03df 3B020000 		.4byte	.LASF82
+ 658 03e3 08       		.byte	0x8
+ 659 03e4 4D02     		.2byte	0x24d
+ 660 03e6 E1000000 		.4byte	0xe1
+ 661 03ea 08       		.byte	0x8
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 15
+
+
+ 662 03eb 10       		.uleb128 0x10
+ 663 03ec 4E150000 		.4byte	.LASF83
+ 664 03f0 08       		.byte	0x8
+ 665 03f1 4E02     		.2byte	0x24e
+ 666 03f3 A2000000 		.4byte	0xa2
+ 667 03f7 0C       		.byte	0xc
+ 668 03f8 10       		.uleb128 0x10
+ 669 03f9 970B0000 		.4byte	.LASF84
+ 670 03fd 08       		.byte	0x8
+ 671 03fe 4F02     		.2byte	0x24f
+ 672 0400 B4000000 		.4byte	0xb4
+ 673 0404 10       		.byte	0x10
+ 674 0405 10       		.uleb128 0x10
+ 675 0406 AA170000 		.4byte	.LASF85
+ 676 040a 08       		.byte	0x8
+ 677 040b 5002     		.2byte	0x250
+ 678 040d B4000000 		.4byte	0xb4
+ 679 0411 14       		.byte	0x14
+ 680 0412 10       		.uleb128 0x10
+ 681 0413 19160000 		.4byte	.LASF86
+ 682 0417 08       		.byte	0x8
+ 683 0418 5202     		.2byte	0x252
+ 684 041a E1000000 		.4byte	0xe1
+ 685 041e 18       		.byte	0x18
+ 686 041f 10       		.uleb128 0x10
+ 687 0420 91000000 		.4byte	.LASF87
+ 688 0424 08       		.byte	0x8
+ 689 0425 5302     		.2byte	0x253
+ 690 0427 A2000000 		.4byte	0xa2
+ 691 042b 1C       		.byte	0x1c
+ 692 042c 10       		.uleb128 0x10
+ 693 042d C2070000 		.4byte	.LASF88
+ 694 0431 08       		.byte	0x8
+ 695 0432 5402     		.2byte	0x254
+ 696 0434 B4000000 		.4byte	0xb4
+ 697 0438 20       		.byte	0x20
+ 698 0439 10       		.uleb128 0x10
+ 699 043a 9A020000 		.4byte	.LASF89
+ 700 043e 08       		.byte	0x8
+ 701 043f 5602     		.2byte	0x256
+ 702 0441 E1000000 		.4byte	0xe1
+ 703 0445 24       		.byte	0x24
+ 704 0446 10       		.uleb128 0x10
+ 705 0447 E9070000 		.4byte	.LASF90
+ 706 044b 08       		.byte	0x8
+ 707 044c 5702     		.2byte	0x257
+ 708 044e A2000000 		.4byte	0xa2
+ 709 0452 28       		.byte	0x28
+ 710 0453 10       		.uleb128 0x10
+ 711 0454 1E100000 		.4byte	.LASF91
+ 712 0458 08       		.byte	0x8
+ 713 0459 5802     		.2byte	0x258
+ 714 045b B4000000 		.4byte	0xb4
+ 715 045f 2C       		.byte	0x2c
+ 716 0460 10       		.uleb128 0x10
+ 717 0461 8C0A0000 		.4byte	.LASF92
+ 718 0465 08       		.byte	0x8
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 16
+
+
+ 719 0466 5D02     		.2byte	0x25d
+ 720 0468 AB030000 		.4byte	0x3ab
+ 721 046c 30       		.byte	0x30
+ 722 046d 10       		.uleb128 0x10
+ 723 046e 11160000 		.4byte	.LASF93
+ 724 0472 08       		.byte	0x8
+ 725 0473 6002     		.2byte	0x260
+ 726 0475 A2000000 		.4byte	0xa2
+ 727 0479 34       		.byte	0x34
+ 728 047a 00       		.byte	0
+ 729 047b 06       		.uleb128 0x6
+ 730 047c A3030000 		.4byte	.LASF94
+ 731 0480 08       		.byte	0x8
+ 732 0481 6302     		.2byte	0x263
+ 733 0483 B7030000 		.4byte	0x3b7
+ 734 0487 0D       		.uleb128 0xd
+ 735 0488 02       		.byte	0x2
+ 736 0489 45000000 		.4byte	0x45
+ 737 048d 09       		.byte	0x9
+ 738 048e 3F01     		.2byte	0x13f
+ 739 0490 B9070000 		.4byte	0x7b9
+ 740 0494 0E       		.uleb128 0xe
+ 741 0495 FA0A0000 		.4byte	.LASF95
+ 742 0499 00       		.byte	0
+ 743 049a 12       		.uleb128 0x12
+ 744 049b 5C150000 		.4byte	.LASF96
+ 745 049f 0010     		.2byte	0x1000
+ 746 04a1 12       		.uleb128 0x12
+ 747 04a2 0E040000 		.4byte	.LASF97
+ 748 04a6 0110     		.2byte	0x1001
+ 749 04a8 12       		.uleb128 0x12
+ 750 04a9 8A120000 		.4byte	.LASF98
+ 751 04ad 0210     		.2byte	0x1002
+ 752 04af 12       		.uleb128 0x12
+ 753 04b0 6A0C0000 		.4byte	.LASF99
+ 754 04b4 0310     		.2byte	0x1003
+ 755 04b6 12       		.uleb128 0x12
+ 756 04b7 2C0B0000 		.4byte	.LASF100
+ 757 04bb 0410     		.2byte	0x1004
+ 758 04bd 12       		.uleb128 0x12
+ 759 04be 44070000 		.4byte	.LASF101
+ 760 04c2 0510     		.2byte	0x1005
+ 761 04c4 12       		.uleb128 0x12
+ 762 04c5 88150000 		.4byte	.LASF102
+ 763 04c9 0020     		.2byte	0x2000
+ 764 04cb 12       		.uleb128 0x12
+ 765 04cc 950A0000 		.4byte	.LASF103
+ 766 04d0 0120     		.2byte	0x2001
+ 767 04d2 12       		.uleb128 0x12
+ 768 04d3 EB060000 		.4byte	.LASF104
+ 769 04d7 0220     		.2byte	0x2002
+ 770 04d9 12       		.uleb128 0x12
+ 771 04da CD010000 		.4byte	.LASF105
+ 772 04de 0320     		.2byte	0x2003
+ 773 04e0 12       		.uleb128 0x12
+ 774 04e1 26080000 		.4byte	.LASF106
+ 775 04e5 0420     		.2byte	0x2004
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 17
+
+
+ 776 04e7 12       		.uleb128 0x12
+ 777 04e8 B8180000 		.4byte	.LASF107
+ 778 04ec 0520     		.2byte	0x2005
+ 779 04ee 12       		.uleb128 0x12
+ 780 04ef AF0E0000 		.4byte	.LASF108
+ 781 04f3 0620     		.2byte	0x2006
+ 782 04f5 12       		.uleb128 0x12
+ 783 04f6 B3040000 		.4byte	.LASF109
+ 784 04fa 0720     		.2byte	0x2007
+ 785 04fc 12       		.uleb128 0x12
+ 786 04fd C7130000 		.4byte	.LASF110
+ 787 0501 0820     		.2byte	0x2008
+ 788 0503 12       		.uleb128 0x12
+ 789 0504 82060000 		.4byte	.LASF111
+ 790 0508 0920     		.2byte	0x2009
+ 791 050a 12       		.uleb128 0x12
+ 792 050b B00F0000 		.4byte	.LASF112
+ 793 050f 0A20     		.2byte	0x200a
+ 794 0511 12       		.uleb128 0x12
+ 795 0512 A0020000 		.4byte	.LASF113
+ 796 0516 0B20     		.2byte	0x200b
+ 797 0518 12       		.uleb128 0x12
+ 798 0519 F2150000 		.4byte	.LASF114
+ 799 051d 0C20     		.2byte	0x200c
+ 800 051f 12       		.uleb128 0x12
+ 801 0520 F00C0000 		.4byte	.LASF115
+ 802 0524 0D20     		.2byte	0x200d
+ 803 0526 12       		.uleb128 0x12
+ 804 0527 8D140000 		.4byte	.LASF116
+ 805 052b 0E20     		.2byte	0x200e
+ 806 052d 12       		.uleb128 0x12
+ 807 052e 97070000 		.4byte	.LASF117
+ 808 0532 0F20     		.2byte	0x200f
+ 809 0534 12       		.uleb128 0x12
+ 810 0535 D8080000 		.4byte	.LASF118
+ 811 0539 1020     		.2byte	0x2010
+ 812 053b 12       		.uleb128 0x12
+ 813 053c 83180000 		.4byte	.LASF119
+ 814 0540 1120     		.2byte	0x2011
+ 815 0542 12       		.uleb128 0x12
+ 816 0543 A6080000 		.4byte	.LASF120
+ 817 0547 1220     		.2byte	0x2012
+ 818 0549 12       		.uleb128 0x12
+ 819 054a A7120000 		.4byte	.LASF121
+ 820 054e 1320     		.2byte	0x2013
+ 821 0550 12       		.uleb128 0x12
+ 822 0551 46110000 		.4byte	.LASF122
+ 823 0555 1420     		.2byte	0x2014
+ 824 0557 12       		.uleb128 0x12
+ 825 0558 1E060000 		.4byte	.LASF123
+ 826 055c 1520     		.2byte	0x2015
+ 827 055e 12       		.uleb128 0x12
+ 828 055f EA090000 		.4byte	.LASF124
+ 829 0563 1620     		.2byte	0x2016
+ 830 0565 12       		.uleb128 0x12
+ 831 0566 14070000 		.4byte	.LASF125
+ 832 056a 1720     		.2byte	0x2017
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 18
+
+
+ 833 056c 12       		.uleb128 0x12
+ 834 056d 82050000 		.4byte	.LASF126
+ 835 0571 0030     		.2byte	0x3000
+ 836 0573 12       		.uleb128 0x12
+ 837 0574 BD030000 		.4byte	.LASF127
+ 838 0578 0130     		.2byte	0x3001
+ 839 057a 12       		.uleb128 0x12
+ 840 057b A3090000 		.4byte	.LASF128
+ 841 057f 0230     		.2byte	0x3002
+ 842 0581 12       		.uleb128 0x12
+ 843 0582 8A130000 		.4byte	.LASF129
+ 844 0586 0330     		.2byte	0x3003
+ 845 0588 12       		.uleb128 0x12
+ 846 0589 01060000 		.4byte	.LASF130
+ 847 058d 0430     		.2byte	0x3004
+ 848 058f 12       		.uleb128 0x12
+ 849 0590 0D0B0000 		.4byte	.LASF131
+ 850 0594 0530     		.2byte	0x3005
+ 851 0596 12       		.uleb128 0x12
+ 852 0597 DC030000 		.4byte	.LASF132
+ 853 059b 0630     		.2byte	0x3006
+ 854 059d 12       		.uleb128 0x12
+ 855 059e B50C0000 		.4byte	.LASF133
+ 856 05a2 0730     		.2byte	0x3007
+ 857 05a4 12       		.uleb128 0x12
+ 858 05a5 69020000 		.4byte	.LASF134
+ 859 05a9 0830     		.2byte	0x3008
+ 860 05ab 12       		.uleb128 0x12
+ 861 05ac 9B000000 		.4byte	.LASF135
+ 862 05b0 0930     		.2byte	0x3009
+ 863 05b2 12       		.uleb128 0x12
+ 864 05b3 D2150000 		.4byte	.LASF136
+ 865 05b7 0A30     		.2byte	0x300a
+ 866 05b9 12       		.uleb128 0x12
+ 867 05ba BE110000 		.4byte	.LASF137
+ 868 05be 0B30     		.2byte	0x300b
+ 869 05c0 12       		.uleb128 0x12
+ 870 05c1 DA0D0000 		.4byte	.LASF138
+ 871 05c5 0C30     		.2byte	0x300c
+ 872 05c7 12       		.uleb128 0x12
+ 873 05c8 3D130000 		.4byte	.LASF139
+ 874 05cc 1130     		.2byte	0x3011
+ 875 05ce 12       		.uleb128 0x12
+ 876 05cf BF0B0000 		.4byte	.LASF140
+ 877 05d3 1230     		.2byte	0x3012
+ 878 05d5 12       		.uleb128 0x12
+ 879 05d6 CC100000 		.4byte	.LASF141
+ 880 05da 1330     		.2byte	0x3013
+ 881 05dc 12       		.uleb128 0x12
+ 882 05dd AD0D0000 		.4byte	.LASF142
+ 883 05e1 1430     		.2byte	0x3014
+ 884 05e3 12       		.uleb128 0x12
+ 885 05e4 26030000 		.4byte	.LASF143
+ 886 05e8 1530     		.2byte	0x3015
+ 887 05ea 12       		.uleb128 0x12
+ 888 05eb D10F0000 		.4byte	.LASF144
+ 889 05ef 1630     		.2byte	0x3016
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 19
+
+
+ 890 05f1 12       		.uleb128 0x12
+ 891 05f2 62090000 		.4byte	.LASF145
+ 892 05f6 1730     		.2byte	0x3017
+ 893 05f8 12       		.uleb128 0x12
+ 894 05f9 71070000 		.4byte	.LASF146
+ 895 05fd 1830     		.2byte	0x3018
+ 896 05ff 12       		.uleb128 0x12
+ 897 0600 65120000 		.4byte	.LASF147
+ 898 0604 0040     		.2byte	0x4000
+ 899 0606 12       		.uleb128 0x12
+ 900 0607 70150000 		.4byte	.LASF148
+ 901 060b 0140     		.2byte	0x4001
+ 902 060d 12       		.uleb128 0x12
+ 903 060e 5E180000 		.4byte	.LASF149
+ 904 0612 0240     		.2byte	0x4002
+ 905 0614 12       		.uleb128 0x12
+ 906 0615 5B050000 		.4byte	.LASF150
+ 907 0619 0340     		.2byte	0x4003
+ 908 061b 12       		.uleb128 0x12
+ 909 061c 1C000000 		.4byte	.LASF151
+ 910 0620 0440     		.2byte	0x4004
+ 911 0622 12       		.uleb128 0x12
+ 912 0623 0B030000 		.4byte	.LASF152
+ 913 0627 0540     		.2byte	0x4005
+ 914 0629 12       		.uleb128 0x12
+ 915 062a E2020000 		.4byte	.LASF153
+ 916 062e 0640     		.2byte	0x4006
+ 917 0630 12       		.uleb128 0x12
+ 918 0631 8A010000 		.4byte	.LASF154
+ 919 0635 0740     		.2byte	0x4007
+ 920 0637 12       		.uleb128 0x12
+ 921 0638 C7090000 		.4byte	.LASF155
+ 922 063c 0840     		.2byte	0x4008
+ 923 063e 12       		.uleb128 0x12
+ 924 063f BB160000 		.4byte	.LASF156
+ 925 0643 0940     		.2byte	0x4009
+ 926 0645 12       		.uleb128 0x12
+ 927 0646 63140000 		.4byte	.LASF157
+ 928 064a 0A40     		.2byte	0x400a
+ 929 064c 12       		.uleb128 0x12
+ 930 064d BF0A0000 		.4byte	.LASF158
+ 931 0651 0B40     		.2byte	0x400b
+ 932 0653 12       		.uleb128 0x12
+ 933 0654 840C0000 		.4byte	.LASF159
+ 934 0658 0C40     		.2byte	0x400c
+ 935 065a 12       		.uleb128 0x12
+ 936 065b F40F0000 		.4byte	.LASF160
+ 937 065f 0D40     		.2byte	0x400d
+ 938 0661 12       		.uleb128 0x12
+ 939 0662 D6050000 		.4byte	.LASF161
+ 940 0666 0E40     		.2byte	0x400e
+ 941 0668 12       		.uleb128 0x12
+ 942 0669 B2140000 		.4byte	.LASF162
+ 943 066d 0F40     		.2byte	0x400f
+ 944 066f 12       		.uleb128 0x12
+ 945 0670 880D0000 		.4byte	.LASF163
+ 946 0674 1040     		.2byte	0x4010
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 20
+
+
+ 947 0676 12       		.uleb128 0x12
+ 948 0677 1D0C0000 		.4byte	.LASF164
+ 949 067b 1140     		.2byte	0x4011
+ 950 067d 12       		.uleb128 0x12
+ 951 067e A4100000 		.4byte	.LASF165
+ 952 0682 1240     		.2byte	0x4012
+ 953 0684 12       		.uleb128 0x12
+ 954 0685 AA150000 		.4byte	.LASF166
+ 955 0689 1340     		.2byte	0x4013
+ 956 068b 12       		.uleb128 0x12
+ 957 068c 9D110000 		.4byte	.LASF167
+ 958 0690 1440     		.2byte	0x4014
+ 959 0692 12       		.uleb128 0x12
+ 960 0693 7C030000 		.4byte	.LASF168
+ 961 0697 1540     		.2byte	0x4015
+ 962 0699 12       		.uleb128 0x12
+ 963 069a 41000000 		.4byte	.LASF169
+ 964 069e 1640     		.2byte	0x4016
+ 965 06a0 12       		.uleb128 0x12
+ 966 06a1 E1040000 		.4byte	.LASF170
+ 967 06a5 1740     		.2byte	0x4017
+ 968 06a7 12       		.uleb128 0x12
+ 969 06a8 290E0000 		.4byte	.LASF171
+ 970 06ac 1840     		.2byte	0x4018
+ 971 06ae 12       		.uleb128 0x12
+ 972 06af E2120000 		.4byte	.LASF172
+ 973 06b3 1940     		.2byte	0x4019
+ 974 06b5 12       		.uleb128 0x12
+ 975 06b6 28090000 		.4byte	.LASF173
+ 976 06ba 0050     		.2byte	0x5000
+ 977 06bc 12       		.uleb128 0x12
+ 978 06bd 00000000 		.4byte	.LASF174
+ 979 06c1 0150     		.2byte	0x5001
+ 980 06c3 12       		.uleb128 0x12
+ 981 06c4 0F010000 		.4byte	.LASF175
+ 982 06c8 0250     		.2byte	0x5002
+ 983 06ca 12       		.uleb128 0x12
+ 984 06cb 3C050000 		.4byte	.LASF176
+ 985 06cf 0350     		.2byte	0x5003
+ 986 06d1 12       		.uleb128 0x12
+ 987 06d2 7E110000 		.4byte	.LASF177
+ 988 06d6 0450     		.2byte	0x5004
+ 989 06d8 12       		.uleb128 0x12
+ 990 06d9 420E0000 		.4byte	.LASF178
+ 991 06dd 0550     		.2byte	0x5005
+ 992 06df 12       		.uleb128 0x12
+ 993 06e0 04080000 		.4byte	.LASF179
+ 994 06e4 0650     		.2byte	0x5006
+ 995 06e6 12       		.uleb128 0x12
+ 996 06e7 28120000 		.4byte	.LASF180
+ 997 06eb 0750     		.2byte	0x5007
+ 998 06ed 12       		.uleb128 0x12
+ 999 06ee 21040000 		.4byte	.LASF181
+ 1000 06f2 0850     		.2byte	0x5008
+ 1001 06f4 12       		.uleb128 0x12
+ 1002 06f5 22050000 		.4byte	.LASF182
+ 1003 06f9 0950     		.2byte	0x5009
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 21
+
+
+ 1004 06fb 12       		.uleb128 0x12
+ 1005 06fc 84090000 		.4byte	.LASF183
+ 1006 0700 0A50     		.2byte	0x500a
+ 1007 0702 12       		.uleb128 0x12
+ 1008 0703 94160000 		.4byte	.LASF184
+ 1009 0707 0B50     		.2byte	0x500b
+ 1010 0709 12       		.uleb128 0x12
+ 1011 070a 43180000 		.4byte	.LASF185
+ 1012 070e 0C50     		.2byte	0x500c
+ 1013 0710 12       		.uleb128 0x12
+ 1014 0711 47030000 		.4byte	.LASF186
+ 1015 0715 0D50     		.2byte	0x500d
+ 1016 0717 12       		.uleb128 0x12
+ 1017 0718 510D0000 		.4byte	.LASF187
+ 1018 071c 0E50     		.2byte	0x500e
+ 1019 071e 12       		.uleb128 0x12
+ 1020 071f 71000000 		.4byte	.LASF188
+ 1021 0723 0F50     		.2byte	0x500f
+ 1022 0725 12       		.uleb128 0x12
+ 1023 0726 49040000 		.4byte	.LASF189
+ 1024 072a 1050     		.2byte	0x5010
+ 1025 072c 12       		.uleb128 0x12
+ 1026 072d 08090000 		.4byte	.LASF190
+ 1027 0731 1150     		.2byte	0x5011
+ 1028 0733 12       		.uleb128 0x12
+ 1029 0734 2A0A0000 		.4byte	.LASF191
+ 1030 0738 1250     		.2byte	0x5012
+ 1031 073a 12       		.uleb128 0x12
+ 1032 073b 3F0C0000 		.4byte	.LASF192
+ 1033 073f 1350     		.2byte	0x5013
+ 1034 0741 12       		.uleb128 0x12
+ 1035 0742 FE0D0000 		.4byte	.LASF193
+ 1036 0746 1450     		.2byte	0x5014
+ 1037 0748 12       		.uleb128 0x12
+ 1038 0749 C6170000 		.4byte	.LASF194
+ 1039 074d 1550     		.2byte	0x5015
+ 1040 074f 12       		.uleb128 0x12
+ 1041 0750 AA010000 		.4byte	.LASF195
+ 1042 0754 1650     		.2byte	0x5016
+ 1043 0756 12       		.uleb128 0x12
+ 1044 0757 4B0B0000 		.4byte	.LASF196
+ 1045 075b 1750     		.2byte	0x5017
+ 1046 075d 12       		.uleb128 0x12
+ 1047 075e E20B0000 		.4byte	.LASF197
+ 1048 0762 1850     		.2byte	0x5018
+ 1049 0764 12       		.uleb128 0x12
+ 1050 0765 63010000 		.4byte	.LASF198
+ 1051 0769 0060     		.2byte	0x6000
+ 1052 076b 12       		.uleb128 0x12
+ 1053 076c BE000000 		.4byte	.LASF199
+ 1054 0770 0160     		.2byte	0x6001
+ 1055 0772 12       		.uleb128 0x12
+ 1056 0773 AC050000 		.4byte	.LASF200
+ 1057 0777 0260     		.2byte	0x6002
+ 1058 0779 12       		.uleb128 0x12
+ 1059 077a 320D0000 		.4byte	.LASF201
+ 1060 077e 0360     		.2byte	0x6003
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 22
+
+
+ 1061 0780 12       		.uleb128 0x12
+ 1062 0781 F6100000 		.4byte	.LASF202
+ 1063 0785 0460     		.2byte	0x6004
+ 1064 0787 12       		.uleb128 0x12
+ 1065 0788 68130000 		.4byte	.LASF203
+ 1066 078c 0560     		.2byte	0x6005
+ 1067 078e 12       		.uleb128 0x12
+ 1068 078f 60160000 		.4byte	.LASF204
+ 1069 0793 0660     		.2byte	0x6006
+ 1070 0795 12       		.uleb128 0x12
+ 1071 0796 C2020000 		.4byte	.LASF205
+ 1072 079a 0760     		.2byte	0x6007
+ 1073 079c 12       		.uleb128 0x12
+ 1074 079d 45020000 		.4byte	.LASF206
+ 1075 07a1 0860     		.2byte	0x6008
+ 1076 07a3 12       		.uleb128 0x12
+ 1077 07a4 4F170000 		.4byte	.LASF207
+ 1078 07a8 0960     		.2byte	0x6009
+ 1079 07aa 12       		.uleb128 0x12
+ 1080 07ab 3B160000 		.4byte	.LASF208
+ 1081 07af 0A60     		.2byte	0x600a
+ 1082 07b1 12       		.uleb128 0x12
+ 1083 07b2 54140000 		.4byte	.LASF209
+ 1084 07b6 FFFF     		.2byte	0xffff
+ 1085 07b8 00       		.byte	0
+ 1086 07b9 13       		.uleb128 0x13
+ 1087 07ba 02       		.byte	0x2
+ 1088 07bb 0A       		.byte	0xa
+ 1089 07bc 5B01     		.2byte	0x15b
+ 1090 07be DD070000 		.4byte	0x7dd
+ 1091 07c2 10       		.uleb128 0x10
+ 1092 07c3 EB170000 		.4byte	.LASF210
+ 1093 07c7 0A       		.byte	0xa
+ 1094 07c8 6501     		.2byte	0x165
+ 1095 07ca 8C000000 		.4byte	0x8c
+ 1096 07ce 00       		.byte	0
+ 1097 07cf 10       		.uleb128 0x10
+ 1098 07d0 820B0000 		.4byte	.LASF211
+ 1099 07d4 0A       		.byte	0xa
+ 1100 07d5 6901     		.2byte	0x169
+ 1101 07d7 8C000000 		.4byte	0x8c
+ 1102 07db 01       		.byte	0x1
+ 1103 07dc 00       		.byte	0
+ 1104 07dd 06       		.uleb128 0x6
+ 1105 07de 4A010000 		.4byte	.LASF212
+ 1106 07e2 0A       		.byte	0xa
+ 1107 07e3 6B01     		.2byte	0x16b
+ 1108 07e5 B9070000 		.4byte	0x7b9
+ 1109 07e9 14       		.uleb128 0x14
+ 1110 07ea 01       		.byte	0x1
+ 1111 07eb 3E000000 		.4byte	0x3e
+ 1112 07ef 0B       		.byte	0xb
+ 1113 07f0 7E       		.byte	0x7e
+ 1114 07f1 0E080000 		.4byte	0x80e
+ 1115 07f5 0E       		.uleb128 0xe
+ 1116 07f6 04170000 		.4byte	.LASF213
+ 1117 07fa 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 23
+
+
+ 1118 07fb 0E       		.uleb128 0xe
+ 1119 07fc 130D0000 		.4byte	.LASF214
+ 1120 0800 01       		.byte	0x1
+ 1121 0801 0E       		.uleb128 0xe
+ 1122 0802 E7160000 		.4byte	.LASF215
+ 1123 0806 02       		.byte	0x2
+ 1124 0807 0E       		.uleb128 0xe
+ 1125 0808 69040000 		.4byte	.LASF216
+ 1126 080c 03       		.byte	0x3
+ 1127 080d 00       		.byte	0
+ 1128 080e 03       		.uleb128 0x3
+ 1129 080f 27110000 		.4byte	.LASF217
+ 1130 0813 0B       		.byte	0xb
+ 1131 0814 83       		.byte	0x83
+ 1132 0815 E9070000 		.4byte	0x7e9
+ 1133 0819 14       		.uleb128 0x14
+ 1134 081a 01       		.byte	0x1
+ 1135 081b 3E000000 		.4byte	0x3e
+ 1136 081f 0B       		.byte	0xb
+ 1137 0820 87       		.byte	0x87
+ 1138 0821 56080000 		.4byte	0x856
+ 1139 0825 0E       		.uleb128 0xe
+ 1140 0826 63060000 		.4byte	.LASF218
+ 1141 082a 00       		.byte	0
+ 1142 082b 0E       		.uleb128 0xe
+ 1143 082c 75080000 		.4byte	.LASF219
+ 1144 0830 01       		.byte	0x1
+ 1145 0831 0E       		.uleb128 0xe
+ 1146 0832 59080000 		.4byte	.LASF220
+ 1147 0836 02       		.byte	0x2
+ 1148 0837 0E       		.uleb128 0xe
+ 1149 0838 E8140000 		.4byte	.LASF221
+ 1150 083c 03       		.byte	0x3
+ 1151 083d 0E       		.uleb128 0xe
+ 1152 083e A0060000 		.4byte	.LASF222
+ 1153 0842 04       		.byte	0x4
+ 1154 0843 0E       		.uleb128 0xe
+ 1155 0844 55100000 		.4byte	.LASF223
+ 1156 0848 05       		.byte	0x5
+ 1157 0849 0E       		.uleb128 0xe
+ 1158 084a FD110000 		.4byte	.LASF224
+ 1159 084e 06       		.byte	0x6
+ 1160 084f 0E       		.uleb128 0xe
+ 1161 0850 860F0000 		.4byte	.LASF225
+ 1162 0854 07       		.byte	0x7
+ 1163 0855 00       		.byte	0
+ 1164 0856 03       		.uleb128 0x3
+ 1165 0857 060C0000 		.4byte	.LASF226
+ 1166 085b 0B       		.byte	0xb
+ 1167 085c 90       		.byte	0x90
+ 1168 085d 19080000 		.4byte	0x819
+ 1169 0861 03       		.uleb128 0x3
+ 1170 0862 8C020000 		.4byte	.LASF227
+ 1171 0866 0C       		.byte	0xc
+ 1172 0867 58       		.byte	0x58
+ 1173 0868 E1000000 		.4byte	0xe1
+ 1174 086c 03       		.uleb128 0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 24
+
+
+ 1175 086d FB030000 		.4byte	.LASF228
+ 1176 0871 0D       		.byte	0xd
+ 1177 0872 7B       		.byte	0x7b
+ 1178 0873 E1000000 		.4byte	0xe1
+ 1179 0877 15       		.uleb128 0x15
+ 1180 0878 6A0E0000 		.4byte	.LASF249
+ 1181 087c 02       		.byte	0x2
+ 1182 087d 53       		.byte	0x53
+ 1183 087e 03       		.byte	0x3
+ 1184 087f 16       		.uleb128 0x16
+ 1185 0880 10180000 		.4byte	.LASF250
+ 1186 0884 01       		.byte	0x1
+ 1187 0885 19       		.byte	0x19
+ 1188 0886 7E000000 		.4byte	0x7e
+ 1189 088a 00000000 		.4byte	.LFB644
+ 1190 088e B8000000 		.4byte	.LFE644-.LFB644
+ 1191 0892 01       		.uleb128 0x1
+ 1192 0893 9C       		.byte	0x9c
+ 1193 0894 D9090000 		.4byte	0x9d9
+ 1194 0898 17       		.uleb128 0x17
+ 1195 0899 77080000 		.4byte	0x877
+ 1196 089d 04000000 		.4byte	.LBB4
+ 1197 08a1 02000000 		.4byte	.LBE4-.LBB4
+ 1198 08a5 01       		.byte	0x1
+ 1199 08a6 1B       		.byte	0x1b
+ 1200 08a7 18       		.uleb128 0x18
+ 1201 08a8 0A000000 		.4byte	.LVL0
+ 1202 08ac 980A0000 		.4byte	0xa98
+ 1203 08b0 19       		.uleb128 0x19
+ 1204 08b1 14000000 		.4byte	.LVL1
+ 1205 08b5 A30A0000 		.4byte	0xaa3
+ 1206 08b9 CD080000 		.4byte	0x8cd
+ 1207 08bd 1A       		.uleb128 0x1a
+ 1208 08be 01       		.uleb128 0x1
+ 1209 08bf 50       		.byte	0x50
+ 1210 08c0 01       		.uleb128 0x1
+ 1211 08c1 34       		.byte	0x34
+ 1212 08c2 1A       		.uleb128 0x1a
+ 1213 08c3 01       		.uleb128 0x1
+ 1214 08c4 51       		.byte	0x51
+ 1215 08c5 01       		.uleb128 0x1
+ 1216 08c6 38       		.byte	0x38
+ 1217 08c7 1A       		.uleb128 0x1a
+ 1218 08c8 01       		.uleb128 0x1
+ 1219 08c9 52       		.byte	0x52
+ 1220 08ca 01       		.uleb128 0x1
+ 1221 08cb 30       		.byte	0x30
+ 1222 08cc 00       		.byte	0
+ 1223 08cd 18       		.uleb128 0x18
+ 1224 08ce 1C000000 		.4byte	.LVL2
+ 1225 08d2 AF0A0000 		.4byte	0xaaf
+ 1226 08d6 19       		.uleb128 0x19
+ 1227 08d7 36000000 		.4byte	.LVL3
+ 1228 08db BA0A0000 		.4byte	0xaba
+ 1229 08df 08090000 		.4byte	0x908
+ 1230 08e3 1A       		.uleb128 0x1a
+ 1231 08e4 01       		.uleb128 0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 25
+
+
+ 1232 08e5 51       		.byte	0x51
+ 1233 08e6 05       		.uleb128 0x5
+ 1234 08e7 03       		.byte	0x3
+ 1235 08e8 00000000 		.4byte	.LC0
+ 1236 08ec 1A       		.uleb128 0x1a
+ 1237 08ed 01       		.uleb128 0x1
+ 1238 08ee 52       		.byte	0x52
+ 1239 08ef 03       		.uleb128 0x3
+ 1240 08f0 0A       		.byte	0xa
+ 1241 08f1 9001     		.2byte	0x190
+ 1242 08f3 1A       		.uleb128 0x1a
+ 1243 08f4 01       		.uleb128 0x1
+ 1244 08f5 53       		.byte	0x53
+ 1245 08f6 02       		.uleb128 0x2
+ 1246 08f7 74       		.byte	0x74
+ 1247 08f8 00       		.sleb128 0
+ 1248 08f9 1A       		.uleb128 0x1a
+ 1249 08fa 02       		.uleb128 0x2
+ 1250 08fb 7D       		.byte	0x7d
+ 1251 08fc 00       		.sleb128 0
+ 1252 08fd 02       		.uleb128 0x2
+ 1253 08fe 75       		.byte	0x75
+ 1254 08ff 00       		.sleb128 0
+ 1255 0900 1A       		.uleb128 0x1a
+ 1256 0901 02       		.uleb128 0x2
+ 1257 0902 7D       		.byte	0x7d
+ 1258 0903 04       		.sleb128 4
+ 1259 0904 02       		.uleb128 0x2
+ 1260 0905 74       		.byte	0x74
+ 1261 0906 00       		.sleb128 0
+ 1262 0907 00       		.byte	0
+ 1263 0908 19       		.uleb128 0x19
+ 1264 0909 48000000 		.4byte	.LVL4
+ 1265 090d BA0A0000 		.4byte	0xaba
+ 1266 0911 3A090000 		.4byte	0x93a
+ 1267 0915 1A       		.uleb128 0x1a
+ 1268 0916 01       		.uleb128 0x1
+ 1269 0917 51       		.byte	0x51
+ 1270 0918 05       		.uleb128 0x5
+ 1271 0919 03       		.byte	0x3
+ 1272 091a 0C000000 		.4byte	.LC1
+ 1273 091e 1A       		.uleb128 0x1a
+ 1274 091f 01       		.uleb128 0x1
+ 1275 0920 52       		.byte	0x52
+ 1276 0921 03       		.uleb128 0x3
+ 1277 0922 0A       		.byte	0xa
+ 1278 0923 9001     		.2byte	0x190
+ 1279 0925 1A       		.uleb128 0x1a
+ 1280 0926 01       		.uleb128 0x1
+ 1281 0927 53       		.byte	0x53
+ 1282 0928 02       		.uleb128 0x2
+ 1283 0929 74       		.byte	0x74
+ 1284 092a 00       		.sleb128 0
+ 1285 092b 1A       		.uleb128 0x1a
+ 1286 092c 02       		.uleb128 0x2
+ 1287 092d 7D       		.byte	0x7d
+ 1288 092e 00       		.sleb128 0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 26
+
+
+ 1289 092f 02       		.uleb128 0x2
+ 1290 0930 75       		.byte	0x75
+ 1291 0931 00       		.sleb128 0
+ 1292 0932 1A       		.uleb128 0x1a
+ 1293 0933 02       		.uleb128 0x2
+ 1294 0934 7D       		.byte	0x7d
+ 1295 0935 04       		.sleb128 4
+ 1296 0936 02       		.uleb128 0x2
+ 1297 0937 74       		.byte	0x74
+ 1298 0938 00       		.sleb128 0
+ 1299 0939 00       		.byte	0
+ 1300 093a 19       		.uleb128 0x19
+ 1301 093b 5A000000 		.4byte	.LVL5
+ 1302 093f BA0A0000 		.4byte	0xaba
+ 1303 0943 6C090000 		.4byte	0x96c
+ 1304 0947 1A       		.uleb128 0x1a
+ 1305 0948 01       		.uleb128 0x1
+ 1306 0949 51       		.byte	0x51
+ 1307 094a 05       		.uleb128 0x5
+ 1308 094b 03       		.byte	0x3
+ 1309 094c 18000000 		.4byte	.LC2
+ 1310 0950 1A       		.uleb128 0x1a
+ 1311 0951 01       		.uleb128 0x1
+ 1312 0952 52       		.byte	0x52
+ 1313 0953 03       		.uleb128 0x3
+ 1314 0954 0A       		.byte	0xa
+ 1315 0955 9001     		.2byte	0x190
+ 1316 0957 1A       		.uleb128 0x1a
+ 1317 0958 01       		.uleb128 0x1
+ 1318 0959 53       		.byte	0x53
+ 1319 095a 02       		.uleb128 0x2
+ 1320 095b 74       		.byte	0x74
+ 1321 095c 00       		.sleb128 0
+ 1322 095d 1A       		.uleb128 0x1a
+ 1323 095e 02       		.uleb128 0x2
+ 1324 095f 7D       		.byte	0x7d
+ 1325 0960 00       		.sleb128 0
+ 1326 0961 02       		.uleb128 0x2
+ 1327 0962 75       		.byte	0x75
+ 1328 0963 00       		.sleb128 0
+ 1329 0964 1A       		.uleb128 0x1a
+ 1330 0965 02       		.uleb128 0x2
+ 1331 0966 7D       		.byte	0x7d
+ 1332 0967 04       		.sleb128 4
+ 1333 0968 02       		.uleb128 0x2
+ 1334 0969 74       		.byte	0x74
+ 1335 096a 00       		.sleb128 0
+ 1336 096b 00       		.byte	0
+ 1337 096c 19       		.uleb128 0x19
+ 1338 096d 6C000000 		.4byte	.LVL6
+ 1339 0971 BA0A0000 		.4byte	0xaba
+ 1340 0975 9E090000 		.4byte	0x99e
+ 1341 0979 1A       		.uleb128 0x1a
+ 1342 097a 01       		.uleb128 0x1
+ 1343 097b 51       		.byte	0x51
+ 1344 097c 05       		.uleb128 0x5
+ 1345 097d 03       		.byte	0x3
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 27
+
+
+ 1346 097e 24000000 		.4byte	.LC3
+ 1347 0982 1A       		.uleb128 0x1a
+ 1348 0983 01       		.uleb128 0x1
+ 1349 0984 52       		.byte	0x52
+ 1350 0985 03       		.uleb128 0x3
+ 1351 0986 0A       		.byte	0xa
+ 1352 0987 0008     		.2byte	0x800
+ 1353 0989 1A       		.uleb128 0x1a
+ 1354 098a 01       		.uleb128 0x1
+ 1355 098b 53       		.byte	0x53
+ 1356 098c 02       		.uleb128 0x2
+ 1357 098d 74       		.byte	0x74
+ 1358 098e 00       		.sleb128 0
+ 1359 098f 1A       		.uleb128 0x1a
+ 1360 0990 02       		.uleb128 0x2
+ 1361 0991 7D       		.byte	0x7d
+ 1362 0992 00       		.sleb128 0
+ 1363 0993 02       		.uleb128 0x2
+ 1364 0994 75       		.byte	0x75
+ 1365 0995 00       		.sleb128 0
+ 1366 0996 1A       		.uleb128 0x1a
+ 1367 0997 02       		.uleb128 0x2
+ 1368 0998 7D       		.byte	0x7d
+ 1369 0999 04       		.sleb128 4
+ 1370 099a 02       		.uleb128 0x2
+ 1371 099b 74       		.byte	0x74
+ 1372 099c 00       		.sleb128 0
+ 1373 099d 00       		.byte	0
+ 1374 099e 19       		.uleb128 0x19
+ 1375 099f 80000000 		.4byte	.LVL7
+ 1376 09a3 BA0A0000 		.4byte	0xaba
+ 1377 09a7 CF090000 		.4byte	0x9cf
+ 1378 09ab 1A       		.uleb128 0x1a
+ 1379 09ac 01       		.uleb128 0x1
+ 1380 09ad 51       		.byte	0x51
+ 1381 09ae 05       		.uleb128 0x5
+ 1382 09af 03       		.byte	0x3
+ 1383 09b0 34000000 		.4byte	.LC4
+ 1384 09b4 1A       		.uleb128 0x1a
+ 1385 09b5 01       		.uleb128 0x1
+ 1386 09b6 52       		.byte	0x52
+ 1387 09b7 03       		.uleb128 0x3
+ 1388 09b8 0A       		.byte	0xa
+ 1389 09b9 0010     		.2byte	0x1000
+ 1390 09bb 1A       		.uleb128 0x1a
+ 1391 09bc 01       		.uleb128 0x1
+ 1392 09bd 53       		.byte	0x53
+ 1393 09be 02       		.uleb128 0x2
+ 1394 09bf 74       		.byte	0x74
+ 1395 09c0 00       		.sleb128 0
+ 1396 09c1 1A       		.uleb128 0x1a
+ 1397 09c2 02       		.uleb128 0x2
+ 1398 09c3 7D       		.byte	0x7d
+ 1399 09c4 00       		.sleb128 0
+ 1400 09c5 01       		.uleb128 0x1
+ 1401 09c6 33       		.byte	0x33
+ 1402 09c7 1A       		.uleb128 0x1a
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 28
+
+
+ 1403 09c8 02       		.uleb128 0x2
+ 1404 09c9 7D       		.byte	0x7d
+ 1405 09ca 04       		.sleb128 4
+ 1406 09cb 02       		.uleb128 0x2
+ 1407 09cc 74       		.byte	0x74
+ 1408 09cd 00       		.sleb128 0
+ 1409 09ce 00       		.byte	0
+ 1410 09cf 18       		.uleb128 0x18
+ 1411 09d0 84000000 		.4byte	.LVL8
+ 1412 09d4 C60A0000 		.4byte	0xac6
+ 1413 09d8 00       		.byte	0
+ 1414 09d9 1B       		.uleb128 0x1b
+ 1415 09da E9100000 		.4byte	.LASF229
+ 1416 09de 0E       		.byte	0xe
+ 1417 09df EA07     		.2byte	0x7ea
+ 1418 09e1 E5090000 		.4byte	0x9e5
+ 1419 09e5 05       		.uleb128 0x5
+ 1420 09e6 97000000 		.4byte	0x97
+ 1421 09ea 1B       		.uleb128 0x1b
+ 1422 09eb F5130000 		.4byte	.LASF230
+ 1423 09ef 0B       		.byte	0xb
+ 1424 09f0 2202     		.2byte	0x222
+ 1425 09f2 0E080000 		.4byte	0x80e
+ 1426 09f6 1C       		.uleb128 0x1c
+ 1427 09f7 DD070000 		.4byte	0x7dd
+ 1428 09fb 060A0000 		.4byte	0xa06
+ 1429 09ff 1D       		.uleb128 0x1d
+ 1430 0a00 AD000000 		.4byte	0xad
+ 1431 0a04 00       		.byte	0
+ 1432 0a05 00       		.byte	0
+ 1433 0a06 1B       		.uleb128 0x1b
+ 1434 0a07 82160000 		.4byte	.LASF231
+ 1435 0a0b 0B       		.byte	0xb
+ 1436 0a0c 2C02     		.2byte	0x22c
+ 1437 0a0e F6090000 		.4byte	0x9f6
+ 1438 0a12 1C       		.uleb128 0x1c
+ 1439 0a13 56080000 		.4byte	0x856
+ 1440 0a17 220A0000 		.4byte	0xa22
+ 1441 0a1b 1D       		.uleb128 0x1d
+ 1442 0a1c AD000000 		.4byte	0xad
+ 1443 0a20 00       		.byte	0
+ 1444 0a21 00       		.byte	0
+ 1445 0a22 1B       		.uleb128 0x1b
+ 1446 0a23 640A0000 		.4byte	.LASF232
+ 1447 0a27 0B       		.byte	0xb
+ 1448 0a28 2D02     		.2byte	0x22d
+ 1449 0a2a 120A0000 		.4byte	0xa12
+ 1450 0a2e 1B       		.uleb128 0x1b
+ 1451 0a2f AE130000 		.4byte	.LASF233
+ 1452 0a33 0B       		.byte	0xb
+ 1453 0a34 5202     		.2byte	0x252
+ 1454 0a36 8C000000 		.4byte	0x8c
+ 1455 0a3a 1E       		.uleb128 0x1e
+ 1456 0a3b 55090000 		.4byte	.LASF234
+ 1457 0a3f 0F       		.byte	0xf
+ 1458 0a40 87       		.byte	0x87
+ 1459 0a41 7B040000 		.4byte	0x47b
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 29
+
+
+ 1460 0a45 1E       		.uleb128 0x1e
+ 1461 0a46 C9050000 		.4byte	.LASF235
+ 1462 0a4a 10       		.byte	0x10
+ 1463 0a4b 1F       		.byte	0x1f
+ 1464 0a4c 500A0000 		.4byte	0xa50
+ 1465 0a50 1F       		.uleb128 0x1f
+ 1466 0a51 23020000 		.4byte	0x223
+ 1467 0a55 1E       		.uleb128 0x1e
+ 1468 0a56 73170000 		.4byte	.LASF236
+ 1469 0a5a 11       		.byte	0x11
+ 1470 0a5b 1F       		.byte	0x1f
+ 1471 0a5c 500A0000 		.4byte	0xa50
+ 1472 0a60 1E       		.uleb128 0x1e
+ 1473 0a61 F1010000 		.4byte	.LASF237
+ 1474 0a65 12       		.byte	0x12
+ 1475 0a66 4B       		.byte	0x4b
+ 1476 0a67 9F030000 		.4byte	0x39f
+ 1477 0a6b 1E       		.uleb128 0x1e
+ 1478 0a6c 2B020000 		.4byte	.LASF238
+ 1479 0a70 13       		.byte	0x13
+ 1480 0a71 1F       		.byte	0x1f
+ 1481 0a72 500A0000 		.4byte	0xa50
+ 1482 0a76 20       		.uleb128 0x20
+ 1483 0a77 830A0000 		.4byte	.LASF239
+ 1484 0a7b 01       		.byte	0x1
+ 1485 0a7c 16       		.byte	0x16
+ 1486 0a7d 61080000 		.4byte	0x861
+ 1487 0a81 05       		.uleb128 0x5
+ 1488 0a82 03       		.byte	0x3
+ 1489 0a83 00000000 		.4byte	pwmQueue
+ 1490 0a87 20       		.uleb128 0x20
+ 1491 0a88 CC0D0000 		.4byte	.LASF240
+ 1492 0a8c 01       		.byte	0x1
+ 1493 0a8d 17       		.byte	0x17
+ 1494 0a8e 6C080000 		.4byte	0x86c
+ 1495 0a92 05       		.uleb128 0x5
+ 1496 0a93 03       		.byte	0x3
+ 1497 0a94 00000000 		.4byte	pwmEventGroup
+ 1498 0a98 21       		.uleb128 0x21
+ 1499 0a99 54060000 		.4byte	.LASF241
+ 1500 0a9d 54060000 		.4byte	.LASF241
+ 1501 0aa1 13       		.byte	0x13
+ 1502 0aa2 2A       		.byte	0x2a
+ 1503 0aa3 22       		.uleb128 0x22
+ 1504 0aa4 6A110000 		.4byte	.LASF242
+ 1505 0aa8 6A110000 		.4byte	.LASF242
+ 1506 0aac 0C       		.byte	0xc
+ 1507 0aad 6706     		.2byte	0x667
+ 1508 0aaf 21       		.uleb128 0x21
+ 1509 0ab0 2B130000 		.4byte	.LASF243
+ 1510 0ab4 2B130000 		.4byte	.LASF243
+ 1511 0ab8 0D       		.byte	0xd
+ 1512 0ab9 BC       		.byte	0xbc
+ 1513 0aba 22       		.uleb128 0x22
+ 1514 0abb E40C0000 		.4byte	.LASF244
+ 1515 0abf E40C0000 		.4byte	.LASF244
+ 1516 0ac3 14       		.byte	0x14
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 30
+
+
+ 1517 0ac4 6801     		.2byte	0x168
+ 1518 0ac6 22       		.uleb128 0x22
+ 1519 0ac7 5D070000 		.4byte	.LASF245
+ 1520 0acb 5D070000 		.4byte	.LASF245
+ 1521 0acf 14       		.byte	0x14
+ 1522 0ad0 5804     		.2byte	0x458
+ 1523 0ad2 00       		.byte	0
+ 1524              		.section	.debug_abbrev,"",%progbits
+ 1525              	.Ldebug_abbrev0:
+ 1526 0000 01       		.uleb128 0x1
+ 1527 0001 11       		.uleb128 0x11
+ 1528 0002 01       		.byte	0x1
+ 1529 0003 25       		.uleb128 0x25
+ 1530 0004 0E       		.uleb128 0xe
+ 1531 0005 13       		.uleb128 0x13
+ 1532 0006 0B       		.uleb128 0xb
+ 1533 0007 03       		.uleb128 0x3
+ 1534 0008 0E       		.uleb128 0xe
+ 1535 0009 1B       		.uleb128 0x1b
+ 1536 000a 0E       		.uleb128 0xe
+ 1537 000b 55       		.uleb128 0x55
+ 1538 000c 17       		.uleb128 0x17
+ 1539 000d 11       		.uleb128 0x11
+ 1540 000e 01       		.uleb128 0x1
+ 1541 000f 10       		.uleb128 0x10
+ 1542 0010 17       		.uleb128 0x17
+ 1543 0011 00       		.byte	0
+ 1544 0012 00       		.byte	0
+ 1545 0013 02       		.uleb128 0x2
+ 1546 0014 24       		.uleb128 0x24
+ 1547 0015 00       		.byte	0
+ 1548 0016 0B       		.uleb128 0xb
+ 1549 0017 0B       		.uleb128 0xb
+ 1550 0018 3E       		.uleb128 0x3e
+ 1551 0019 0B       		.uleb128 0xb
+ 1552 001a 03       		.uleb128 0x3
+ 1553 001b 0E       		.uleb128 0xe
+ 1554 001c 00       		.byte	0
+ 1555 001d 00       		.byte	0
+ 1556 001e 03       		.uleb128 0x3
+ 1557 001f 16       		.uleb128 0x16
+ 1558 0020 00       		.byte	0
+ 1559 0021 03       		.uleb128 0x3
+ 1560 0022 0E       		.uleb128 0xe
+ 1561 0023 3A       		.uleb128 0x3a
+ 1562 0024 0B       		.uleb128 0xb
+ 1563 0025 3B       		.uleb128 0x3b
+ 1564 0026 0B       		.uleb128 0xb
+ 1565 0027 49       		.uleb128 0x49
+ 1566 0028 13       		.uleb128 0x13
+ 1567 0029 00       		.byte	0
+ 1568 002a 00       		.byte	0
+ 1569 002b 04       		.uleb128 0x4
+ 1570 002c 24       		.uleb128 0x24
+ 1571 002d 00       		.byte	0
+ 1572 002e 0B       		.uleb128 0xb
+ 1573 002f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 31
+
+
+ 1574 0030 3E       		.uleb128 0x3e
+ 1575 0031 0B       		.uleb128 0xb
+ 1576 0032 03       		.uleb128 0x3
+ 1577 0033 08       		.uleb128 0x8
+ 1578 0034 00       		.byte	0
+ 1579 0035 00       		.byte	0
+ 1580 0036 05       		.uleb128 0x5
+ 1581 0037 35       		.uleb128 0x35
+ 1582 0038 00       		.byte	0
+ 1583 0039 49       		.uleb128 0x49
+ 1584 003a 13       		.uleb128 0x13
+ 1585 003b 00       		.byte	0
+ 1586 003c 00       		.byte	0
+ 1587 003d 06       		.uleb128 0x6
+ 1588 003e 16       		.uleb128 0x16
+ 1589 003f 00       		.byte	0
+ 1590 0040 03       		.uleb128 0x3
+ 1591 0041 0E       		.uleb128 0xe
+ 1592 0042 3A       		.uleb128 0x3a
+ 1593 0043 0B       		.uleb128 0xb
+ 1594 0044 3B       		.uleb128 0x3b
+ 1595 0045 05       		.uleb128 0x5
+ 1596 0046 49       		.uleb128 0x49
+ 1597 0047 13       		.uleb128 0x13
+ 1598 0048 00       		.byte	0
+ 1599 0049 00       		.byte	0
+ 1600 004a 07       		.uleb128 0x7
+ 1601 004b 0F       		.uleb128 0xf
+ 1602 004c 00       		.byte	0
+ 1603 004d 0B       		.uleb128 0xb
+ 1604 004e 0B       		.uleb128 0xb
+ 1605 004f 00       		.byte	0
+ 1606 0050 00       		.byte	0
+ 1607 0051 08       		.uleb128 0x8
+ 1608 0052 13       		.uleb128 0x13
+ 1609 0053 01       		.byte	0x1
+ 1610 0054 03       		.uleb128 0x3
+ 1611 0055 0E       		.uleb128 0xe
+ 1612 0056 0B       		.uleb128 0xb
+ 1613 0057 0B       		.uleb128 0xb
+ 1614 0058 3A       		.uleb128 0x3a
+ 1615 0059 0B       		.uleb128 0xb
+ 1616 005a 3B       		.uleb128 0x3b
+ 1617 005b 0B       		.uleb128 0xb
+ 1618 005c 01       		.uleb128 0x1
+ 1619 005d 13       		.uleb128 0x13
+ 1620 005e 00       		.byte	0
+ 1621 005f 00       		.byte	0
+ 1622 0060 09       		.uleb128 0x9
+ 1623 0061 0D       		.uleb128 0xd
+ 1624 0062 00       		.byte	0
+ 1625 0063 03       		.uleb128 0x3
+ 1626 0064 0E       		.uleb128 0xe
+ 1627 0065 3A       		.uleb128 0x3a
+ 1628 0066 0B       		.uleb128 0xb
+ 1629 0067 3B       		.uleb128 0x3b
+ 1630 0068 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 32
+
+
+ 1631 0069 49       		.uleb128 0x49
+ 1632 006a 13       		.uleb128 0x13
+ 1633 006b 38       		.uleb128 0x38
+ 1634 006c 0B       		.uleb128 0xb
+ 1635 006d 00       		.byte	0
+ 1636 006e 00       		.byte	0
+ 1637 006f 0A       		.uleb128 0xa
+ 1638 0070 0F       		.uleb128 0xf
+ 1639 0071 00       		.byte	0
+ 1640 0072 0B       		.uleb128 0xb
+ 1641 0073 0B       		.uleb128 0xb
+ 1642 0074 49       		.uleb128 0x49
+ 1643 0075 13       		.uleb128 0x13
+ 1644 0076 00       		.byte	0
+ 1645 0077 00       		.byte	0
+ 1646 0078 0B       		.uleb128 0xb
+ 1647 0079 15       		.uleb128 0x15
+ 1648 007a 01       		.byte	0x1
+ 1649 007b 27       		.uleb128 0x27
+ 1650 007c 19       		.uleb128 0x19
+ 1651 007d 01       		.uleb128 0x1
+ 1652 007e 13       		.uleb128 0x13
+ 1653 007f 00       		.byte	0
+ 1654 0080 00       		.byte	0
+ 1655 0081 0C       		.uleb128 0xc
+ 1656 0082 05       		.uleb128 0x5
+ 1657 0083 00       		.byte	0
+ 1658 0084 49       		.uleb128 0x49
+ 1659 0085 13       		.uleb128 0x13
+ 1660 0086 00       		.byte	0
+ 1661 0087 00       		.byte	0
+ 1662 0088 0D       		.uleb128 0xd
+ 1663 0089 04       		.uleb128 0x4
+ 1664 008a 01       		.byte	0x1
+ 1665 008b 0B       		.uleb128 0xb
+ 1666 008c 0B       		.uleb128 0xb
+ 1667 008d 49       		.uleb128 0x49
+ 1668 008e 13       		.uleb128 0x13
+ 1669 008f 3A       		.uleb128 0x3a
+ 1670 0090 0B       		.uleb128 0xb
+ 1671 0091 3B       		.uleb128 0x3b
+ 1672 0092 05       		.uleb128 0x5
+ 1673 0093 01       		.uleb128 0x1
+ 1674 0094 13       		.uleb128 0x13
+ 1675 0095 00       		.byte	0
+ 1676 0096 00       		.byte	0
+ 1677 0097 0E       		.uleb128 0xe
+ 1678 0098 28       		.uleb128 0x28
+ 1679 0099 00       		.byte	0
+ 1680 009a 03       		.uleb128 0x3
+ 1681 009b 0E       		.uleb128 0xe
+ 1682 009c 1C       		.uleb128 0x1c
+ 1683 009d 0B       		.uleb128 0xb
+ 1684 009e 00       		.byte	0
+ 1685 009f 00       		.byte	0
+ 1686 00a0 0F       		.uleb128 0xf
+ 1687 00a1 13       		.uleb128 0x13
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 33
+
+
+ 1688 00a2 01       		.byte	0x1
+ 1689 00a3 03       		.uleb128 0x3
+ 1690 00a4 0E       		.uleb128 0xe
+ 1691 00a5 0B       		.uleb128 0xb
+ 1692 00a6 0B       		.uleb128 0xb
+ 1693 00a7 3A       		.uleb128 0x3a
+ 1694 00a8 0B       		.uleb128 0xb
+ 1695 00a9 3B       		.uleb128 0x3b
+ 1696 00aa 05       		.uleb128 0x5
+ 1697 00ab 01       		.uleb128 0x1
+ 1698 00ac 13       		.uleb128 0x13
+ 1699 00ad 00       		.byte	0
+ 1700 00ae 00       		.byte	0
+ 1701 00af 10       		.uleb128 0x10
+ 1702 00b0 0D       		.uleb128 0xd
+ 1703 00b1 00       		.byte	0
+ 1704 00b2 03       		.uleb128 0x3
+ 1705 00b3 0E       		.uleb128 0xe
+ 1706 00b4 3A       		.uleb128 0x3a
+ 1707 00b5 0B       		.uleb128 0xb
+ 1708 00b6 3B       		.uleb128 0x3b
+ 1709 00b7 05       		.uleb128 0x5
+ 1710 00b8 49       		.uleb128 0x49
+ 1711 00b9 13       		.uleb128 0x13
+ 1712 00ba 38       		.uleb128 0x38
+ 1713 00bb 0B       		.uleb128 0xb
+ 1714 00bc 00       		.byte	0
+ 1715 00bd 00       		.byte	0
+ 1716 00be 11       		.uleb128 0x11
+ 1717 00bf 0D       		.uleb128 0xd
+ 1718 00c0 00       		.byte	0
+ 1719 00c1 03       		.uleb128 0x3
+ 1720 00c2 08       		.uleb128 0x8
+ 1721 00c3 3A       		.uleb128 0x3a
+ 1722 00c4 0B       		.uleb128 0xb
+ 1723 00c5 3B       		.uleb128 0x3b
+ 1724 00c6 05       		.uleb128 0x5
+ 1725 00c7 49       		.uleb128 0x49
+ 1726 00c8 13       		.uleb128 0x13
+ 1727 00c9 38       		.uleb128 0x38
+ 1728 00ca 0B       		.uleb128 0xb
+ 1729 00cb 00       		.byte	0
+ 1730 00cc 00       		.byte	0
+ 1731 00cd 12       		.uleb128 0x12
+ 1732 00ce 28       		.uleb128 0x28
+ 1733 00cf 00       		.byte	0
+ 1734 00d0 03       		.uleb128 0x3
+ 1735 00d1 0E       		.uleb128 0xe
+ 1736 00d2 1C       		.uleb128 0x1c
+ 1737 00d3 05       		.uleb128 0x5
+ 1738 00d4 00       		.byte	0
+ 1739 00d5 00       		.byte	0
+ 1740 00d6 13       		.uleb128 0x13
+ 1741 00d7 13       		.uleb128 0x13
+ 1742 00d8 01       		.byte	0x1
+ 1743 00d9 0B       		.uleb128 0xb
+ 1744 00da 0B       		.uleb128 0xb
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 34
+
+
+ 1745 00db 3A       		.uleb128 0x3a
+ 1746 00dc 0B       		.uleb128 0xb
+ 1747 00dd 3B       		.uleb128 0x3b
+ 1748 00de 05       		.uleb128 0x5
+ 1749 00df 01       		.uleb128 0x1
+ 1750 00e0 13       		.uleb128 0x13
+ 1751 00e1 00       		.byte	0
+ 1752 00e2 00       		.byte	0
+ 1753 00e3 14       		.uleb128 0x14
+ 1754 00e4 04       		.uleb128 0x4
+ 1755 00e5 01       		.byte	0x1
+ 1756 00e6 0B       		.uleb128 0xb
+ 1757 00e7 0B       		.uleb128 0xb
+ 1758 00e8 49       		.uleb128 0x49
+ 1759 00e9 13       		.uleb128 0x13
+ 1760 00ea 3A       		.uleb128 0x3a
+ 1761 00eb 0B       		.uleb128 0xb
+ 1762 00ec 3B       		.uleb128 0x3b
+ 1763 00ed 0B       		.uleb128 0xb
+ 1764 00ee 01       		.uleb128 0x1
+ 1765 00ef 13       		.uleb128 0x13
+ 1766 00f0 00       		.byte	0
+ 1767 00f1 00       		.byte	0
+ 1768 00f2 15       		.uleb128 0x15
+ 1769 00f3 2E       		.uleb128 0x2e
+ 1770 00f4 00       		.byte	0
+ 1771 00f5 03       		.uleb128 0x3
+ 1772 00f6 0E       		.uleb128 0xe
+ 1773 00f7 3A       		.uleb128 0x3a
+ 1774 00f8 0B       		.uleb128 0xb
+ 1775 00f9 3B       		.uleb128 0x3b
+ 1776 00fa 0B       		.uleb128 0xb
+ 1777 00fb 27       		.uleb128 0x27
+ 1778 00fc 19       		.uleb128 0x19
+ 1779 00fd 20       		.uleb128 0x20
+ 1780 00fe 0B       		.uleb128 0xb
+ 1781 00ff 00       		.byte	0
+ 1782 0100 00       		.byte	0
+ 1783 0101 16       		.uleb128 0x16
+ 1784 0102 2E       		.uleb128 0x2e
+ 1785 0103 01       		.byte	0x1
+ 1786 0104 3F       		.uleb128 0x3f
+ 1787 0105 19       		.uleb128 0x19
+ 1788 0106 03       		.uleb128 0x3
+ 1789 0107 0E       		.uleb128 0xe
+ 1790 0108 3A       		.uleb128 0x3a
+ 1791 0109 0B       		.uleb128 0xb
+ 1792 010a 3B       		.uleb128 0x3b
+ 1793 010b 0B       		.uleb128 0xb
+ 1794 010c 27       		.uleb128 0x27
+ 1795 010d 19       		.uleb128 0x19
+ 1796 010e 49       		.uleb128 0x49
+ 1797 010f 13       		.uleb128 0x13
+ 1798 0110 8701     		.uleb128 0x87
+ 1799 0112 19       		.uleb128 0x19
+ 1800 0113 11       		.uleb128 0x11
+ 1801 0114 01       		.uleb128 0x1
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 35
+
+
+ 1802 0115 12       		.uleb128 0x12
+ 1803 0116 06       		.uleb128 0x6
+ 1804 0117 40       		.uleb128 0x40
+ 1805 0118 18       		.uleb128 0x18
+ 1806 0119 9742     		.uleb128 0x2117
+ 1807 011b 19       		.uleb128 0x19
+ 1808 011c 01       		.uleb128 0x1
+ 1809 011d 13       		.uleb128 0x13
+ 1810 011e 00       		.byte	0
+ 1811 011f 00       		.byte	0
+ 1812 0120 17       		.uleb128 0x17
+ 1813 0121 1D       		.uleb128 0x1d
+ 1814 0122 00       		.byte	0
+ 1815 0123 31       		.uleb128 0x31
+ 1816 0124 13       		.uleb128 0x13
+ 1817 0125 11       		.uleb128 0x11
+ 1818 0126 01       		.uleb128 0x1
+ 1819 0127 12       		.uleb128 0x12
+ 1820 0128 06       		.uleb128 0x6
+ 1821 0129 58       		.uleb128 0x58
+ 1822 012a 0B       		.uleb128 0xb
+ 1823 012b 59       		.uleb128 0x59
+ 1824 012c 0B       		.uleb128 0xb
+ 1825 012d 00       		.byte	0
+ 1826 012e 00       		.byte	0
+ 1827 012f 18       		.uleb128 0x18
+ 1828 0130 898201   		.uleb128 0x4109
+ 1829 0133 00       		.byte	0
+ 1830 0134 11       		.uleb128 0x11
+ 1831 0135 01       		.uleb128 0x1
+ 1832 0136 31       		.uleb128 0x31
+ 1833 0137 13       		.uleb128 0x13
+ 1834 0138 00       		.byte	0
+ 1835 0139 00       		.byte	0
+ 1836 013a 19       		.uleb128 0x19
+ 1837 013b 898201   		.uleb128 0x4109
+ 1838 013e 01       		.byte	0x1
+ 1839 013f 11       		.uleb128 0x11
+ 1840 0140 01       		.uleb128 0x1
+ 1841 0141 31       		.uleb128 0x31
+ 1842 0142 13       		.uleb128 0x13
+ 1843 0143 01       		.uleb128 0x1
+ 1844 0144 13       		.uleb128 0x13
+ 1845 0145 00       		.byte	0
+ 1846 0146 00       		.byte	0
+ 1847 0147 1A       		.uleb128 0x1a
+ 1848 0148 8A8201   		.uleb128 0x410a
+ 1849 014b 00       		.byte	0
+ 1850 014c 02       		.uleb128 0x2
+ 1851 014d 18       		.uleb128 0x18
+ 1852 014e 9142     		.uleb128 0x2111
+ 1853 0150 18       		.uleb128 0x18
+ 1854 0151 00       		.byte	0
+ 1855 0152 00       		.byte	0
+ 1856 0153 1B       		.uleb128 0x1b
+ 1857 0154 34       		.uleb128 0x34
+ 1858 0155 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 36
+
+
+ 1859 0156 03       		.uleb128 0x3
+ 1860 0157 0E       		.uleb128 0xe
+ 1861 0158 3A       		.uleb128 0x3a
+ 1862 0159 0B       		.uleb128 0xb
+ 1863 015a 3B       		.uleb128 0x3b
+ 1864 015b 05       		.uleb128 0x5
+ 1865 015c 49       		.uleb128 0x49
+ 1866 015d 13       		.uleb128 0x13
+ 1867 015e 3F       		.uleb128 0x3f
+ 1868 015f 19       		.uleb128 0x19
+ 1869 0160 3C       		.uleb128 0x3c
+ 1870 0161 19       		.uleb128 0x19
+ 1871 0162 00       		.byte	0
+ 1872 0163 00       		.byte	0
+ 1873 0164 1C       		.uleb128 0x1c
+ 1874 0165 01       		.uleb128 0x1
+ 1875 0166 01       		.byte	0x1
+ 1876 0167 49       		.uleb128 0x49
+ 1877 0168 13       		.uleb128 0x13
+ 1878 0169 01       		.uleb128 0x1
+ 1879 016a 13       		.uleb128 0x13
+ 1880 016b 00       		.byte	0
+ 1881 016c 00       		.byte	0
+ 1882 016d 1D       		.uleb128 0x1d
+ 1883 016e 21       		.uleb128 0x21
+ 1884 016f 00       		.byte	0
+ 1885 0170 49       		.uleb128 0x49
+ 1886 0171 13       		.uleb128 0x13
+ 1887 0172 2F       		.uleb128 0x2f
+ 1888 0173 0B       		.uleb128 0xb
+ 1889 0174 00       		.byte	0
+ 1890 0175 00       		.byte	0
+ 1891 0176 1E       		.uleb128 0x1e
+ 1892 0177 34       		.uleb128 0x34
+ 1893 0178 00       		.byte	0
+ 1894 0179 03       		.uleb128 0x3
+ 1895 017a 0E       		.uleb128 0xe
+ 1896 017b 3A       		.uleb128 0x3a
+ 1897 017c 0B       		.uleb128 0xb
+ 1898 017d 3B       		.uleb128 0x3b
+ 1899 017e 0B       		.uleb128 0xb
+ 1900 017f 49       		.uleb128 0x49
+ 1901 0180 13       		.uleb128 0x13
+ 1902 0181 3F       		.uleb128 0x3f
+ 1903 0182 19       		.uleb128 0x19
+ 1904 0183 3C       		.uleb128 0x3c
+ 1905 0184 19       		.uleb128 0x19
+ 1906 0185 00       		.byte	0
+ 1907 0186 00       		.byte	0
+ 1908 0187 1F       		.uleb128 0x1f
+ 1909 0188 26       		.uleb128 0x26
+ 1910 0189 00       		.byte	0
+ 1911 018a 49       		.uleb128 0x49
+ 1912 018b 13       		.uleb128 0x13
+ 1913 018c 00       		.byte	0
+ 1914 018d 00       		.byte	0
+ 1915 018e 20       		.uleb128 0x20
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 37
+
+
+ 1916 018f 34       		.uleb128 0x34
+ 1917 0190 00       		.byte	0
+ 1918 0191 03       		.uleb128 0x3
+ 1919 0192 0E       		.uleb128 0xe
+ 1920 0193 3A       		.uleb128 0x3a
+ 1921 0194 0B       		.uleb128 0xb
+ 1922 0195 3B       		.uleb128 0x3b
+ 1923 0196 0B       		.uleb128 0xb
+ 1924 0197 49       		.uleb128 0x49
+ 1925 0198 13       		.uleb128 0x13
+ 1926 0199 3F       		.uleb128 0x3f
+ 1927 019a 19       		.uleb128 0x19
+ 1928 019b 02       		.uleb128 0x2
+ 1929 019c 18       		.uleb128 0x18
+ 1930 019d 00       		.byte	0
+ 1931 019e 00       		.byte	0
+ 1932 019f 21       		.uleb128 0x21
+ 1933 01a0 2E       		.uleb128 0x2e
+ 1934 01a1 00       		.byte	0
+ 1935 01a2 3F       		.uleb128 0x3f
+ 1936 01a3 19       		.uleb128 0x19
+ 1937 01a4 3C       		.uleb128 0x3c
+ 1938 01a5 19       		.uleb128 0x19
+ 1939 01a6 6E       		.uleb128 0x6e
+ 1940 01a7 0E       		.uleb128 0xe
+ 1941 01a8 03       		.uleb128 0x3
+ 1942 01a9 0E       		.uleb128 0xe
+ 1943 01aa 3A       		.uleb128 0x3a
+ 1944 01ab 0B       		.uleb128 0xb
+ 1945 01ac 3B       		.uleb128 0x3b
+ 1946 01ad 0B       		.uleb128 0xb
+ 1947 01ae 00       		.byte	0
+ 1948 01af 00       		.byte	0
+ 1949 01b0 22       		.uleb128 0x22
+ 1950 01b1 2E       		.uleb128 0x2e
+ 1951 01b2 00       		.byte	0
+ 1952 01b3 3F       		.uleb128 0x3f
+ 1953 01b4 19       		.uleb128 0x19
+ 1954 01b5 3C       		.uleb128 0x3c
+ 1955 01b6 19       		.uleb128 0x19
+ 1956 01b7 6E       		.uleb128 0x6e
+ 1957 01b8 0E       		.uleb128 0xe
+ 1958 01b9 03       		.uleb128 0x3
+ 1959 01ba 0E       		.uleb128 0xe
+ 1960 01bb 3A       		.uleb128 0x3a
+ 1961 01bc 0B       		.uleb128 0xb
+ 1962 01bd 3B       		.uleb128 0x3b
+ 1963 01be 05       		.uleb128 0x5
+ 1964 01bf 00       		.byte	0
+ 1965 01c0 00       		.byte	0
+ 1966 01c1 00       		.byte	0
+ 1967              		.section	.debug_aranges,"",%progbits
+ 1968 0000 1C000000 		.4byte	0x1c
+ 1969 0004 0200     		.2byte	0x2
+ 1970 0006 00000000 		.4byte	.Ldebug_info0
+ 1971 000a 04       		.byte	0x4
+ 1972 000b 00       		.byte	0
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 38
+
+
+ 1973 000c 0000     		.2byte	0
+ 1974 000e 0000     		.2byte	0
+ 1975 0010 00000000 		.4byte	.LFB644
+ 1976 0014 B8000000 		.4byte	.LFE644-.LFB644
+ 1977 0018 00000000 		.4byte	0
+ 1978 001c 00000000 		.4byte	0
+ 1979              		.section	.debug_ranges,"",%progbits
+ 1980              	.Ldebug_ranges0:
+ 1981 0000 00000000 		.4byte	.LFB644
+ 1982 0004 B8000000 		.4byte	.LFE644
+ 1983 0008 00000000 		.4byte	0
+ 1984 000c 00000000 		.4byte	0
+ 1985              		.section	.debug_line,"",%progbits
+ 1986              	.Ldebug_line0:
+ 1987 0000 87030000 		.section	.debug_str,"MS",%progbits,1
+ 1987      02006003 
+ 1987      00000201 
+ 1987      FB0E0D00 
+ 1987      01010101 
+ 1988              	.LASF174:
+ 1989 0000 43595F42 		.ascii	"CY_BLE_EVT_GATT_CONNECT_IND\000"
+ 1989      4C455F45 
+ 1989      56545F47 
+ 1989      4154545F 
+ 1989      434F4E4E 
+ 1990              	.LASF151:
+ 1991 001c 43595F42 		.ascii	"CY_BLE_EVT_GAP_AUTH_COMPLETE\000"
+ 1991      4C455F45 
+ 1991      56545F47 
+ 1991      41505F41 
+ 1991      5554485F 
+ 1992              	.LASF26:
+ 1993 0039 72756E4D 		.ascii	"runMode\000"
+ 1993      6F646500 
+ 1994              	.LASF169:
+ 1995 0041 43595F42 		.ascii	"CY_BLE_EVT_GAP_GEN_SET_LOCAL_P256_KEYS_COMPLETE\000"
+ 1995      4C455F45 
+ 1995      56545F47 
+ 1995      41505F47 
+ 1995      454E5F53 
+ 1996              	.LASF188:
+ 1997 0071 43595F42 		.ascii	"CY_BLE_EVT_GATTS_PREP_WRITE_REQ\000"
+ 1997      4C455F45 
+ 1997      56545F47 
+ 1997      41545453 
+ 1997      5F505245 
+ 1998              	.LASF87:
+ 1999 0091 72784275 		.ascii	"rxBufSize\000"
+ 1999      6653697A 
+ 1999      6500
+ 2000              	.LASF135:
+ 2001 009b 43595F42 		.ascii	"CY_BLE_EVT_RANDOM_NUM_GEN_COMPLETE\000"
+ 2001      4C455F45 
+ 2001      56545F52 
+ 2001      414E444F 
+ 2001      4D5F4E55 
+ 2002              	.LASF199:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 39
+
+
+ 2003 00be 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CONN_PARAM_UPDATE_RSP\000"
+ 2003      4C455F45 
+ 2003      56545F4C 
+ 2003      32434150 
+ 2003      5F434F4E 
+ 2004              	.LASF50:
+ 2005 00e5 63795F65 		.ascii	"cy_en_scb_ezi2c_sub_addr_size_t\000"
+ 2005      6E5F7363 
+ 2005      625F657A 
+ 2005      6932635F 
+ 2005      7375625F 
+ 2006              	.LASF44:
+ 2007 0105 6B696C6C 		.ascii	"killInput\000"
+ 2007      496E7075 
+ 2007      7400
+ 2008              	.LASF175:
+ 2009 010f 43595F42 		.ascii	"CY_BLE_EVT_GATT_DISCONNECT_IND\000"
+ 2009      4C455F45 
+ 2009      56545F47 
+ 2009      4154545F 
+ 2009      44495343 
+ 2010              	.LASF24:
+ 2011 012e 70776D41 		.ascii	"pwmAlignment\000"
+ 2011      6C69676E 
+ 2011      6D656E74 
+ 2011      00
+ 2012              	.LASF71:
+ 2013 013b 62756631 		.ascii	"buf1\000"
+ 2013      00
+ 2014              	.LASF4:
+ 2015 0140 5F5F7569 		.ascii	"__uint8_t\000"
+ 2015      6E74385F 
+ 2015      7400
+ 2016              	.LASF212:
+ 2017 014a 63795F73 		.ascii	"cy_stc_ble_conn_handle_t\000"
+ 2017      74635F62 
+ 2017      6C655F63 
+ 2017      6F6E6E5F 
+ 2017      68616E64 
+ 2018              	.LASF198:
+ 2019 0163 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CONN_PARAM_UPDATE_REQ\000"
+ 2019      4C455F45 
+ 2019      56545F4C 
+ 2019      32434150 
+ 2019      5F434F4E 
+ 2020              	.LASF154:
+ 2021 018a 43595F42 		.ascii	"CY_BLE_EVT_GAP_DEVICE_CONNECTED\000"
+ 2021      4C455F45 
+ 2021      56545F47 
+ 2021      41505F44 
+ 2021      45564943 
+ 2022              	.LASF195:
+ 2023 01aa 43595F42 		.ascii	"CY_BLE_EVT_GATTC_STOP_CMD_COMPLETE\000"
+ 2023      4C455F45 
+ 2023      56545F47 
+ 2023      41545443 
+ 2023      5F53544F 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 40
+
+
+ 2024              	.LASF105:
+ 2025 01cd 43595F42 		.ascii	"CY_BLE_EVT_GET_CHANNEL_MAP_COMPLETE\000"
+ 2025      4C455F45 
+ 2025      56545F47 
+ 2025      45545F43 
+ 2025      48414E4E 
+ 2026              	.LASF237:
+ 2027 01f1 455A4932 		.ascii	"EZI2C_context\000"
+ 2027      435F636F 
+ 2027      6E746578 
+ 2027      7400
+ 2028              	.LASF21:
+ 2029 01ff 5F426F6F 		.ascii	"_Bool\000"
+ 2029      6C00
+ 2030              	.LASF10:
+ 2031 0205 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2031      206C6F6E 
+ 2031      6720756E 
+ 2031      7369676E 
+ 2031      65642069 
+ 2032              	.LASF23:
+ 2033 021c 636C6F63 		.ascii	"clockPrescaler\000"
+ 2033      6B507265 
+ 2033      7363616C 
+ 2033      657200
+ 2034              	.LASF238:
+ 2035 022b 4C454442 		.ascii	"LEDBlink_config\000"
+ 2035      6C696E6B 
+ 2035      5F636F6E 
+ 2035      66696700 
+ 2036              	.LASF82:
+ 2037 023b 72785269 		.ascii	"rxRingBuf\000"
+ 2037      6E674275 
+ 2037      6600
+ 2038              	.LASF206:
+ 2039 0245 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CBFC_RX_CREDIT_IND\000"
+ 2039      4C455F45 
+ 2039      56545F4C 
+ 2039      32434150 
+ 2039      5F434246 
+ 2040              	.LASF134:
+ 2041 0269 43595F42 		.ascii	"CY_BLE_EVT_SET_CLK_CONFIG_COMPLETE\000"
+ 2041      4C455F45 
+ 2041      56545F53 
+ 2041      45545F43 
+ 2041      4C4B5F43 
+ 2042              	.LASF227:
+ 2043 028c 51756575 		.ascii	"QueueHandle_t\000"
+ 2043      6548616E 
+ 2043      646C655F 
+ 2043      7400
+ 2044              	.LASF89:
+ 2045 029a 74784275 		.ascii	"txBuf\000"
+ 2045      6600
+ 2046              	.LASF113:
+ 2047 02a0 43595F42 		.ascii	"CY_BLE_EVT_GET_LOCAL_RPA_COMPLETE\000"
+ 2047      4C455F45 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 41
+
+
+ 2047      56545F47 
+ 2047      45545F4C 
+ 2047      4F43414C 
+ 2048              	.LASF205:
+ 2049 02c2 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CBFC_DATA_READ\000"
+ 2049      4C455F45 
+ 2049      56545F4C 
+ 2049      32434150 
+ 2049      5F434246 
+ 2050              	.LASF153:
+ 2051 02e2 43595F42 		.ascii	"CY_BLE_EVT_GAPP_ADVERTISEMENT_START_STOP\000"
+ 2051      4C455F45 
+ 2051      56545F47 
+ 2051      4150505F 
+ 2051      41445645 
+ 2052              	.LASF152:
+ 2053 030b 43595F42 		.ascii	"CY_BLE_EVT_GAP_AUTH_FAILED\000"
+ 2053      4C455F45 
+ 2053      56545F47 
+ 2053      41505F41 
+ 2053      5554485F 
+ 2054              	.LASF143:
+ 2055 0326 43595F42 		.ascii	"CY_BLE_EVT_AES_CMAC_GEN_COMPLETE\000"
+ 2055      4C455F45 
+ 2055      56545F41 
+ 2055      45535F43 
+ 2055      4D41435F 
+ 2056              	.LASF186:
+ 2057 0347 43595F42 		.ascii	"CY_BLE_EVT_GATTC_WRITE_RSP\000"
+ 2057      4C455F45 
+ 2057      56545F47 
+ 2057      41545443 
+ 2057      5F575249 
+ 2058              	.LASF9:
+ 2059 0362 6C6F6E67 		.ascii	"long long int\000"
+ 2059      206C6F6E 
+ 2059      6720696E 
+ 2059      7400
+ 2060              	.LASF1:
+ 2061 0370 7369676E 		.ascii	"signed char\000"
+ 2061      65642063 
+ 2061      68617200 
+ 2062              	.LASF168:
+ 2063 037c 43595F42 		.ascii	"CY_BLE_EVT_GAP_RESOLVE_DEVICE_COMPLETE\000"
+ 2063      4C455F45 
+ 2063      56545F47 
+ 2063      41505F52 
+ 2063      45534F4C 
+ 2064              	.LASF94:
+ 2065 03a3 63795F73 		.ascii	"cy_stc_scb_uart_context_t\000"
+ 2065      74635F73 
+ 2065      63625F75 
+ 2065      6172745F 
+ 2065      636F6E74 
+ 2066              	.LASF127:
+ 2067 03bd 43595F42 		.ascii	"CY_BLE_EVT_SOFT_RESET_COMPLETE\000"
+ 2067      4C455F45 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 42
+
+
+ 2067      56545F53 
+ 2067      4F46545F 
+ 2067      52455345 
+ 2068              	.LASF132:
+ 2069 03dc 43595F42 		.ascii	"CY_BLE_EVT_SET_TX_PWR_COMPLETE\000"
+ 2069      4C455F45 
+ 2069      56545F53 
+ 2069      45545F54 
+ 2069      585F5057 
+ 2070              	.LASF228:
+ 2071 03fb 4576656E 		.ascii	"EventGroupHandle_t\000"
+ 2071      7447726F 
+ 2071      75704861 
+ 2071      6E646C65 
+ 2071      5F7400
+ 2072              	.LASF97:
+ 2073 040e 43595F42 		.ascii	"CY_BLE_EVT_TIMEOUT\000"
+ 2073      4C455F45 
+ 2073      56545F54 
+ 2073      494D454F 
+ 2073      555400
+ 2074              	.LASF181:
+ 2075 0421 43595F42 		.ascii	"CY_BLE_EVT_GATTC_FIND_BY_TYPE_VALUE_RSP\000"
+ 2075      4C455F45 
+ 2075      56545F47 
+ 2075      41545443 
+ 2075      5F46494E 
+ 2076              	.LASF189:
+ 2077 0449 43595F42 		.ascii	"CY_BLE_EVT_GATTS_EXEC_WRITE_REQ\000"
+ 2077      4C455F45 
+ 2077      56545F47 
+ 2077      41545453 
+ 2077      5F455845 
+ 2078              	.LASF216:
+ 2079 0469 43595F42 		.ascii	"CY_BLE_ADV_STATE_STOP_INITIATED\000"
+ 2079      4C455F41 
+ 2079      44565F53 
+ 2079      54415445 
+ 2079      5F53544F 
+ 2080              	.LASF63:
+ 2081 0489 61646472 		.ascii	"address1\000"
+ 2081      65737331 
+ 2081      00
+ 2082              	.LASF64:
+ 2083 0492 61646472 		.ascii	"address2\000"
+ 2083      65737332 
+ 2083      00
+ 2084              	.LASF59:
+ 2085 049b 63795F73 		.ascii	"cy_stc_tcpwm_pwm_config\000"
+ 2085      74635F74 
+ 2085      6370776D 
+ 2085      5F70776D 
+ 2085      5F636F6E 
+ 2086              	.LASF109:
+ 2087 04b3 43595F42 		.ascii	"CY_BLE_EVT_SET_SUGGESTED_DATA_LENGTH_COMPLETE\000"
+ 2087      4C455F45 
+ 2087      56545F53 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 43
+
+
+ 2087      45545F53 
+ 2087      55474745 
+ 2088              	.LASF170:
+ 2089 04e1 43595F42 		.ascii	"CY_BLE_EVT_GAP_CREATE_CONN_CANCEL_COMPLETE\000"
+ 2089      4C455F45 
+ 2089      56545F47 
+ 2089      41505F43 
+ 2089      52454154 
+ 2090              	.LASF69:
+ 2091 050c 63757242 		.ascii	"curBuf\000"
+ 2091      756600
+ 2092              	.LASF61:
+ 2093 0513 73746174 		.ascii	"state\000"
+ 2093      6500
+ 2094              	.LASF6:
+ 2095 0519 6C6F6E67 		.ascii	"long int\000"
+ 2095      20696E74 
+ 2095      00
+ 2096              	.LASF182:
+ 2097 0522 43595F42 		.ascii	"CY_BLE_EVT_GATTC_READ_RSP\000"
+ 2097      4C455F45 
+ 2097      56545F47 
+ 2097      41545443 
+ 2097      5F524541 
+ 2098              	.LASF176:
+ 2099 053c 43595F42 		.ascii	"CY_BLE_EVT_GATTS_XCNHG_MTU_REQ\000"
+ 2099      4C455F45 
+ 2099      56545F47 
+ 2099      41545453 
+ 2099      5F58434E 
+ 2100              	.LASF150:
+ 2101 055b 43595F42 		.ascii	"CY_BLE_EVT_GAP_PASSKEY_DISPLAY_REQUEST\000"
+ 2101      4C455F45 
+ 2101      56545F47 
+ 2101      41505F50 
+ 2101      4153534B 
+ 2102              	.LASF126:
+ 2103 0582 43595F42 		.ascii	"CY_BLE_EVT_LL_CNTRL_PROC_PENDING_COMPLETE\000"
+ 2103      4C455F45 
+ 2103      56545F4C 
+ 2103      4C5F434E 
+ 2103      54524C5F 
+ 2104              	.LASF200:
+ 2105 05ac 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_COMMAND_REJ\000"
+ 2105      4C455F45 
+ 2105      56545F4C 
+ 2105      32434150 
+ 2105      5F434F4D 
+ 2106              	.LASF235:
+ 2107 05c9 50574D5F 		.ascii	"PWM_1_config\000"
+ 2107      315F636F 
+ 2107      6E666967 
+ 2107      00
+ 2108              	.LASF161:
+ 2109 05d6 43595F42 		.ascii	"CY_BLE_EVT_GAP_KEYPRESS_NOTIFICATION\000"
+ 2109      4C455F45 
+ 2109      56545F47 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 44
+
+
+ 2109      41505F4B 
+ 2109      45595052 
+ 2110              	.LASF20:
+ 2111 05fb 75696E74 		.ascii	"uint8\000"
+ 2111      3800
+ 2112              	.LASF130:
+ 2113 0601 43595F42 		.ascii	"CY_BLE_EVT_GET_RSSI_COMPLETE\000"
+ 2113      4C455F45 
+ 2113      56545F47 
+ 2113      45545F52 
+ 2113      5353495F 
+ 2114              	.LASF123:
+ 2115 061e 43595F42 		.ascii	"CY_BLE_EVT_SET_PHY_COMPLETE\000"
+ 2115      4C455F45 
+ 2115      56545F53 
+ 2115      45545F50 
+ 2115      48595F43 
+ 2116              	.LASF0:
+ 2117 063a 73686F72 		.ascii	"short int\000"
+ 2117      7420696E 
+ 2117      7400
+ 2118              	.LASF80:
+ 2119 0644 74785374 		.ascii	"txStatus\000"
+ 2119      61747573 
+ 2119      00
+ 2120              	.LASF19:
+ 2121 064d 646F7562 		.ascii	"double\000"
+ 2121      6C6500
+ 2122              	.LASF241:
+ 2123 0654 4C454442 		.ascii	"LEDBlink_Start\000"
+ 2123      6C696E6B 
+ 2123      5F537461 
+ 2123      727400
+ 2124              	.LASF218:
+ 2125 0663 43595F42 		.ascii	"CY_BLE_CONN_STATE_DISCONNECTED\000"
+ 2125      4C455F43 
+ 2125      4F4E4E5F 
+ 2125      53544154 
+ 2125      455F4449 
+ 2126              	.LASF111:
+ 2127 0682 43595F42 		.ascii	"CY_BLE_EVT_DATA_LENGTH_CHANGE\000"
+ 2127      4C455F45 
+ 2127      56545F44 
+ 2127      4154415F 
+ 2127      4C454E47 
+ 2128              	.LASF222:
+ 2129 06a0 43595F42 		.ascii	"CY_BLE_CONN_STATE_CLIENT_INCL_DISCOVERING\000"
+ 2129      4C455F43 
+ 2129      4F4E4E5F 
+ 2129      53544154 
+ 2129      455F434C 
+ 2130              	.LASF53:
+ 2131 06ca 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_RX_OFFSET_MSB\000"
+ 2131      43425F45 
+ 2131      5A493243 
+ 2131      5F535441 
+ 2131      54455F52 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 45
+
+
+ 2132              	.LASF104:
+ 2133 06eb 43595F42 		.ascii	"CY_BLE_EVT_READ_AUTH_PAYLOAD_TO_COMPLETE\000"
+ 2133      4C455F45 
+ 2133      56545F52 
+ 2133      4541445F 
+ 2133      41555448 
+ 2134              	.LASF125:
+ 2135 0714 43595F42 		.ascii	"CY_BLE_EVT_SET_PRIVACY_MODE_COMPLETE\000"
+ 2135      4C455F45 
+ 2135      56545F53 
+ 2135      45545F50 
+ 2135      52495641 
+ 2136              	.LASF7:
+ 2137 0739 5F5F7569 		.ascii	"__uint32_t\000"
+ 2137      6E743332 
+ 2137      5F7400
+ 2138              	.LASF101:
+ 2139 0744 43595F42 		.ascii	"CY_BLE_EVT_FLASH_CORRUPT\000"
+ 2139      4C455F45 
+ 2139      56545F46 
+ 2139      4C415348 
+ 2139      5F434F52 
+ 2140              	.LASF245:
+ 2141 075d 76546173 		.ascii	"vTaskStartScheduler\000"
+ 2141      6B537461 
+ 2141      72745363 
+ 2141      68656475 
+ 2141      6C657200 
+ 2142              	.LASF146:
+ 2143 0771 43595F42 		.ascii	"CY_BLE_EVT_SET_CONN_PRIORITY_COMPLETE\000"
+ 2143      4C455F45 
+ 2143      56545F53 
+ 2143      45545F43 
+ 2143      4F4E4E5F 
+ 2144              	.LASF117:
+ 2145 0797 43595F42 		.ascii	"CY_BLE_EVT_ADD_DEVICE_TO_RPA_LIST_COMPLETE\000"
+ 2145      4C455F45 
+ 2145      56545F41 
+ 2145      44445F44 
+ 2145      45564943 
+ 2146              	.LASF88:
+ 2147 07c2 72784275 		.ascii	"rxBufIdx\000"
+ 2147      66496478 
+ 2147      00
+ 2148              	.LASF74:
+ 2149 07cb 62756632 		.ascii	"buf2\000"
+ 2149      00
+ 2150              	.LASF60:
+ 2151 07d0 63795F73 		.ascii	"cy_stc_scb_ezi2c_context\000"
+ 2151      74635F73 
+ 2151      63625F65 
+ 2151      7A693263 
+ 2151      5F636F6E 
+ 2152              	.LASF90:
+ 2153 07e9 74784275 		.ascii	"txBufSize\000"
+ 2153      6653697A 
+ 2153      6500
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 46
+
+
+ 2154              	.LASF33:
+ 2155 07f3 696E7465 		.ascii	"interruptSources\000"
+ 2155      72727570 
+ 2155      74536F75 
+ 2155      72636573 
+ 2155      00
+ 2156              	.LASF179:
+ 2157 0804 43595F42 		.ascii	"CY_BLE_EVT_GATTC_READ_BY_TYPE_RSP\000"
+ 2157      4C455F45 
+ 2157      56545F47 
+ 2157      41545443 
+ 2157      5F524541 
+ 2158              	.LASF106:
+ 2159 0826 43595F42 		.ascii	"CY_BLE_EVT_LE_SET_EVENT_MASK_COMPLETE\000"
+ 2159      4C455F45 
+ 2159      56545F4C 
+ 2159      455F5345 
+ 2159      545F4556 
+ 2160              	.LASF11:
+ 2161 084c 756E7369 		.ascii	"unsigned int\000"
+ 2161      676E6564 
+ 2161      20696E74 
+ 2161      00
+ 2162              	.LASF220:
+ 2163 0859 43595F42 		.ascii	"CY_BLE_CONN_STATE_CONNECTED\000"
+ 2163      4C455F43 
+ 2163      4F4E4E5F 
+ 2163      53544154 
+ 2163      455F434F 
+ 2164              	.LASF219:
+ 2165 0875 43595F42 		.ascii	"CY_BLE_CONN_STATE_CLIENT_DISCONNECTED_DISCOVERED\000"
+ 2165      4C455F43 
+ 2165      4F4E4E5F 
+ 2165      53544154 
+ 2165      455F434C 
+ 2166              	.LASF120:
+ 2167 08a6 43595F42 		.ascii	"CY_BLE_EVT_REMOVE_DEVICE_FROM_WHITE_LIST_COMPLETE\000"
+ 2167      4C455F45 
+ 2167      56545F52 
+ 2167      454D4F56 
+ 2167      455F4445 
+ 2168              	.LASF118:
+ 2169 08d8 43595F42 		.ascii	"CY_BLE_EVT_REMOVE_DEVICE_FROM_RPA_LIST_COMPLETE\000"
+ 2169      4C455F45 
+ 2169      56545F52 
+ 2169      454D4F56 
+ 2169      455F4445 
+ 2170              	.LASF190:
+ 2171 0908 43595F42 		.ascii	"CY_BLE_EVT_GATTC_EXEC_WRITE_RSP\000"
+ 2171      4C455F45 
+ 2171      56545F47 
+ 2171      41545443 
+ 2171      5F455845 
+ 2172              	.LASF173:
+ 2173 0928 43595F42 		.ascii	"CY_BLE_EVT_GATTC_ERROR_RSP\000"
+ 2173      4C455F45 
+ 2173      56545F47 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 47
+
+
+ 2173      41545443 
+ 2173      5F455252 
+ 2174              	.LASF8:
+ 2175 0943 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2175      20756E73 
+ 2175      69676E65 
+ 2175      6420696E 
+ 2175      7400
+ 2176              	.LASF234:
+ 2177 0955 55415254 		.ascii	"UART_context\000"
+ 2177      5F636F6E 
+ 2177      74657874 
+ 2177      00
+ 2178              	.LASF145:
+ 2179 0962 43595F42 		.ascii	"CY_BLE_EVT_SET_CE_LENGTH_COMPLETE\000"
+ 2179      4C455F45 
+ 2179      56545F53 
+ 2179      45545F43 
+ 2179      455F4C45 
+ 2180              	.LASF183:
+ 2181 0984 43595F42 		.ascii	"CY_BLE_EVT_GATTC_READ_BLOB_RSP\000"
+ 2181      4C455F45 
+ 2181      56545F47 
+ 2181      41545443 
+ 2181      5F524541 
+ 2182              	.LASF128:
+ 2183 09a3 43595F42 		.ascii	"CY_BLE_EVT_SET_DEVICE_ADDR_COMPLETE\000"
+ 2183      4C455F45 
+ 2183      56545F53 
+ 2183      45545F44 
+ 2183      45564943 
+ 2184              	.LASF155:
+ 2185 09c7 43595F42 		.ascii	"CY_BLE_EVT_GAP_DEVICE_DISCONNECTED\000"
+ 2185      4C455F45 
+ 2185      56545F47 
+ 2185      41505F44 
+ 2185      45564943 
+ 2186              	.LASF124:
+ 2187 09ea 43595F42 		.ascii	"CY_BLE_EVT_PHY_UPDATE_COMPLETE\000"
+ 2187      4C455F45 
+ 2187      56545F50 
+ 2187      48595F55 
+ 2187      50444154 
+ 2188              	.LASF37:
+ 2189 0a09 73776170 		.ascii	"swapInputMode\000"
+ 2189      496E7075 
+ 2189      744D6F64 
+ 2189      6500
+ 2190              	.LASF3:
+ 2191 0a17 73686F72 		.ascii	"short unsigned int\000"
+ 2191      7420756E 
+ 2191      7369676E 
+ 2191      65642069 
+ 2191      6E7400
+ 2192              	.LASF191:
+ 2193 0a2a 43595F42 		.ascii	"CY_BLE_EVT_GATTC_HANDLE_VALUE_NTF\000"
+ 2193      4C455F45 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 48
+
+
+ 2193      56545F47 
+ 2193      41545443 
+ 2193      5F48414E 
+ 2194              	.LASF52:
+ 2195 0a4c 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_ADDR\000"
+ 2195      43425F45 
+ 2195      5A493243 
+ 2195      5F535441 
+ 2195      54455F41 
+ 2196              	.LASF232:
+ 2197 0a64 63795F62 		.ascii	"cy_ble_connState\000"
+ 2197      6C655F63 
+ 2197      6F6E6E53 
+ 2197      74617465 
+ 2197      00
+ 2198              	.LASF43:
+ 2199 0a75 6B696C6C 		.ascii	"killInputMode\000"
+ 2199      496E7075 
+ 2199      744D6F64 
+ 2199      6500
+ 2200              	.LASF239:
+ 2201 0a83 70776D51 		.ascii	"pwmQueue\000"
+ 2201      75657565 
+ 2201      00
+ 2202              	.LASF92:
+ 2203 0a8c 63624576 		.ascii	"cbEvents\000"
+ 2203      656E7473 
+ 2203      00
+ 2204              	.LASF103:
+ 2205 0a95 43595F42 		.ascii	"CY_BLE_EVT_WRITE_AUTH_PAYLOAD_TO_COMPLETE\000"
+ 2205      4C455F45 
+ 2205      56545F57 
+ 2205      52495445 
+ 2205      5F415554 
+ 2206              	.LASF158:
+ 2207 0abf 43595F42 		.ascii	"CY_BLE_EVT_GAPC_SCAN_START_STOP\000"
+ 2207      4C455F45 
+ 2207      56545F47 
+ 2207      4150435F 
+ 2207      5343414E 
+ 2208              	.LASF77:
+ 2209 0adf 63795F73 		.ascii	"cy_stc_scb_ezi2c_context_t\000"
+ 2209      74635F73 
+ 2209      63625F65 
+ 2209      7A693263 
+ 2209      5F636F6E 
+ 2210              	.LASF95:
+ 2211 0afa 43595F42 		.ascii	"CY_BLE_EVT_INVALID\000"
+ 2211      4C455F45 
+ 2211      56545F49 
+ 2211      4E56414C 
+ 2211      494400
+ 2212              	.LASF131:
+ 2213 0b0d 43595F42 		.ascii	"CY_BLE_EVT_GET_TX_PWR_COMPLETE\000"
+ 2213      4C455F45 
+ 2213      56545F47 
+ 2213      45545F54 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 49
+
+
+ 2213      585F5057 
+ 2214              	.LASF100:
+ 2215 0b2c 43595F42 		.ascii	"CY_BLE_EVT_PENDING_FLASH_WRITE\000"
+ 2215      4C455F45 
+ 2215      56545F50 
+ 2215      454E4449 
+ 2215      4E475F46 
+ 2216              	.LASF196:
+ 2217 0b4b 43595F42 		.ascii	"CY_BLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ\000"
+ 2217      4C455F45 
+ 2217      56545F47 
+ 2217      41545453 
+ 2217      5F524541 
+ 2218              	.LASF34:
+ 2219 0b75 696E7665 		.ascii	"invertPWMOut\000"
+ 2219      72745057 
+ 2219      4D4F7574 
+ 2219      00
+ 2220              	.LASF211:
+ 2221 0b82 61747449 		.ascii	"attId\000"
+ 2221      6400
+ 2222              	.LASF25:
+ 2223 0b88 64656164 		.ascii	"deadTimeClocks\000"
+ 2223      54696D65 
+ 2223      436C6F63 
+ 2223      6B7300
+ 2224              	.LASF84:
+ 2225 0b97 72785269 		.ascii	"rxRingBufHead\000"
+ 2225      6E674275 
+ 2225      66486561 
+ 2225      6400
+ 2226              	.LASF45:
+ 2227 0ba5 636F756E 		.ascii	"countInputMode\000"
+ 2227      74496E70 
+ 2227      75744D6F 
+ 2227      646500
+ 2228              	.LASF42:
+ 2229 0bb4 73746172 		.ascii	"startInput\000"
+ 2229      74496E70 
+ 2229      757400
+ 2230              	.LASF140:
+ 2231 0bbf 43595F42 		.ascii	"CY_BLE_EVT_STACK_SHUTDOWN_COMPLETE\000"
+ 2231      4C455F45 
+ 2231      56545F53 
+ 2231      5441434B 
+ 2231      5F534855 
+ 2232              	.LASF197:
+ 2233 0be2 43595F42 		.ascii	"CY_BLE_EVT_GATTC_LONG_PROCEDURE_END\000"
+ 2233      4C455F45 
+ 2233      56545F47 
+ 2233      41545443 
+ 2233      5F4C4F4E 
+ 2234              	.LASF226:
+ 2235 0c06 63795F65 		.ascii	"cy_en_ble_conn_state_t\000"
+ 2235      6E5F626C 
+ 2235      655F636F 
+ 2235      6E6E5F73 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 50
+
+
+ 2235      74617465 
+ 2236              	.LASF164:
+ 2237 0c1d 43595F42 		.ascii	"CY_BLE_EVT_GAPC_DIRECT_ADV_REPORT\000"
+ 2237      4C455F45 
+ 2237      56545F47 
+ 2237      4150435F 
+ 2237      44495245 
+ 2238              	.LASF192:
+ 2239 0c3f 43595F42 		.ascii	"CY_BLE_EVT_GATTC_HANDLE_VALUE_IND\000"
+ 2239      4C455F45 
+ 2239      56545F47 
+ 2239      41545443 
+ 2239      5F48414E 
+ 2240              	.LASF15:
+ 2241 0c61 73697A65 		.ascii	"sizetype\000"
+ 2241      74797065 
+ 2241      00
+ 2242              	.LASF99:
+ 2243 0c6a 43595F42 		.ascii	"CY_BLE_EVT_MEMORY_REQUEST\000"
+ 2243      4C455F45 
+ 2243      56545F4D 
+ 2243      454D4F52 
+ 2243      595F5245 
+ 2244              	.LASF159:
+ 2245 0c84 43595F42 		.ascii	"CY_BLE_EVT_GAP_KEYINFO_EXCHNGE_CMPLT\000"
+ 2245      4C455F45 
+ 2245      56545F47 
+ 2245      41505F4B 
+ 2245      4559494E 
+ 2246              	.LASF16:
+ 2247 0ca9 6C6F6E67 		.ascii	"long double\000"
+ 2247      20646F75 
+ 2247      626C6500 
+ 2248              	.LASF133:
+ 2249 0cb5 43595F42 		.ascii	"CY_BLE_EVT_GET_CLK_CONFIG_COMPLETE\000"
+ 2249      4C455F45 
+ 2249      56545F47 
+ 2249      45545F43 
+ 2249      4C4B5F43 
+ 2250              	.LASF65:
+ 2251 0cd8 73756241 		.ascii	"subAddrSize\000"
+ 2251      64647253 
+ 2251      697A6500 
+ 2252              	.LASF244:
+ 2253 0ce4 78546173 		.ascii	"xTaskCreate\000"
+ 2253      6B437265 
+ 2253      61746500 
+ 2254              	.LASF115:
+ 2255 0cf0 43595F42 		.ascii	"CY_BLE_EVT_SET_RPA_ENABLE_COMPLETE\000"
+ 2255      4C455F45 
+ 2255      56545F53 
+ 2255      45545F52 
+ 2255      50415F45 
+ 2256              	.LASF214:
+ 2257 0d13 43595F42 		.ascii	"CY_BLE_ADV_STATE_ADV_INITIATED\000"
+ 2257      4C455F41 
+ 2257      44565F53 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 51
+
+
+ 2257      54415445 
+ 2257      5F414456 
+ 2258              	.LASF201:
+ 2259 0d32 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CBFC_CONN_IND\000"
+ 2259      4C455F45 
+ 2259      56545F4C 
+ 2259      32434150 
+ 2259      5F434246 
+ 2260              	.LASF187:
+ 2261 0d51 43595F42 		.ascii	"CY_BLE_EVT_GATTS_WRITE_CMD_REQ\000"
+ 2261      4C455F45 
+ 2261      56545F47 
+ 2261      41545453 
+ 2261      5F575249 
+ 2262              	.LASF51:
+ 2263 0d70 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_IDLE\000"
+ 2263      43425F45 
+ 2263      5A493243 
+ 2263      5F535441 
+ 2263      54455F49 
+ 2264              	.LASF163:
+ 2265 0d88 43595F42 		.ascii	"CY_BLE_EVT_GAP_ENHANCE_CONN_COMPLETE\000"
+ 2265      4C455F45 
+ 2265      56545F47 
+ 2265      41505F45 
+ 2265      4E48414E 
+ 2266              	.LASF142:
+ 2267 0dad 43595F42 		.ascii	"CY_BLE_EVT_RADIO_VOLTAGE_LEVEL\000"
+ 2267      4C455F45 
+ 2267      56545F52 
+ 2267      4144494F 
+ 2267      5F564F4C 
+ 2268              	.LASF240:
+ 2269 0dcc 70776D45 		.ascii	"pwmEventGroup\000"
+ 2269      76656E74 
+ 2269      47726F75 
+ 2269      7000
+ 2270              	.LASF138:
+ 2271 0dda 43595F42 		.ascii	"CY_BLE_EVT_AES_CCM_DECRYPT_COMPLETE\000"
+ 2271      4C455F45 
+ 2271      56545F41 
+ 2271      45535F43 
+ 2271      434D5F44 
+ 2272              	.LASF193:
+ 2273 0dfe 43595F42 		.ascii	"CY_BLE_EVT_GATTS_HANDLE_VALUE_CNF\000"
+ 2273      4C455F45 
+ 2273      56545F47 
+ 2273      41545453 
+ 2273      5F48414E 
+ 2274              	.LASF81:
+ 2275 0e20 72785374 		.ascii	"rxStatus\000"
+ 2275      61747573 
+ 2275      00
+ 2276              	.LASF171:
+ 2277 0e29 43595F42 		.ascii	"CY_BLE_EVT_GAP_CONN_ESTB\000"
+ 2277      4C455F45 
+ 2277      56545F47 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 52
+
+
+ 2277      41505F43 
+ 2277      4F4E4E5F 
+ 2278              	.LASF178:
+ 2279 0e42 43595F42 		.ascii	"CY_BLE_EVT_GATTC_READ_BY_GROUP_TYPE_RSP\000"
+ 2279      4C455F45 
+ 2279      56545F47 
+ 2279      41545443 
+ 2279      5F524541 
+ 2280              	.LASF249:
+ 2281 0e6a 5F5F656E 		.ascii	"__enable_irq\000"
+ 2281      61626C65 
+ 2281      5F697271 
+ 2281      00
+ 2282              	.LASF55:
+ 2283 0e77 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_RX_DATA0\000"
+ 2283      43425F45 
+ 2283      5A493243 
+ 2283      5F535441 
+ 2283      54455F52 
+ 2284              	.LASF56:
+ 2285 0e93 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_RX_DATA1\000"
+ 2285      43425F45 
+ 2285      5A493243 
+ 2285      5F535441 
+ 2285      54455F52 
+ 2286              	.LASF108:
+ 2287 0eaf 43595F42 		.ascii	"CY_BLE_EVT_SET_DATA_LENGTH_COMPLETE\000"
+ 2287      4C455F45 
+ 2287      56545F53 
+ 2287      45545F44 
+ 2287      4154415F 
+ 2288              	.LASF246:
+ 2289 0ed3 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2289      43313120 
+ 2289      352E342E 
+ 2289      31203230 
+ 2289      31363036 
+ 2290 0f06 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m4 -mfloat-abi=s"
+ 2290      20726576 
+ 2290      6973696F 
+ 2290      6E203233 
+ 2290      37373135 
+ 2291 0f39 6F667466 		.ascii	"oftfp -mfpu=fpv4-sp-d16 -mthumb -g -Og -ffunction-s"
+ 2291      70202D6D 
+ 2291      6670753D 
+ 2291      66707634 
+ 2291      2D73702D 
+ 2292 0f6c 65637469 		.ascii	"ections -ffat-lto-objects\000"
+ 2292      6F6E7320 
+ 2292      2D666661 
+ 2292      742D6C74 
+ 2292      6F2D6F62 
+ 2293              	.LASF225:
+ 2294 0f86 43595F42 		.ascii	"CY_BLE_CONN_STATE_CLIENT_DISCOVERED\000"
+ 2294      4C455F43 
+ 2294      4F4E4E5F 
+ 2294      53544154 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 53
+
+
+ 2294      455F434C 
+ 2295              	.LASF18:
+ 2296 0faa 666C6F61 		.ascii	"float\000"
+ 2296      7400
+ 2297              	.LASF112:
+ 2298 0fb0 43595F42 		.ascii	"CY_BLE_EVT_GET_PEER_RPA_COMPLETE\000"
+ 2298      4C455F45 
+ 2298      56545F47 
+ 2298      45545F50 
+ 2298      4545525F 
+ 2299              	.LASF144:
+ 2300 0fd1 43595F42 		.ascii	"CY_BLE_EVT_SET_EVENT_MASK_COMPLETE\000"
+ 2300      4C455F45 
+ 2300      56545F53 
+ 2300      45545F45 
+ 2300      56454E54 
+ 2301              	.LASF160:
+ 2302 0ff4 43595F42 		.ascii	"CY_BLE_EVT_GAP_NUMERIC_COMPARISON_REQUEST\000"
+ 2302      4C455F45 
+ 2302      56545F47 
+ 2302      41505F4E 
+ 2302      554D4552 
+ 2303              	.LASF91:
+ 2304 101e 74784C65 		.ascii	"txLeftToTransmit\000"
+ 2304      6674546F 
+ 2304      5472616E 
+ 2304      736D6974 
+ 2304      00
+ 2305              	.LASF58:
+ 2306 102f 63795F65 		.ascii	"cy_en_scb_ezi2c_state_t\000"
+ 2306      6E5F7363 
+ 2306      625F657A 
+ 2306      6932635F 
+ 2306      73746174 
+ 2307              	.LASF76:
+ 2308 1047 62756632 		.ascii	"buf2rwBondary\000"
+ 2308      7277426F 
+ 2308      6E646172 
+ 2308      7900
+ 2309              	.LASF223:
+ 2310 1055 43595F42 		.ascii	"CY_BLE_CONN_STATE_CLIENT_CHAR_DISCOVERING\000"
+ 2310      4C455F43 
+ 2310      4F4E4E5F 
+ 2310      53544154 
+ 2310      455F434C 
+ 2311              	.LASF41:
+ 2312 107f 73746172 		.ascii	"startInputMode\000"
+ 2312      74496E70 
+ 2312      75744D6F 
+ 2312      646500
+ 2313              	.LASF13:
+ 2314 108e 696E7433 		.ascii	"int32_t\000"
+ 2314      325F7400 
+ 2315              	.LASF2:
+ 2316 1096 756E7369 		.ascii	"unsigned char\000"
+ 2316      676E6564 
+ 2316      20636861 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 54
+
+
+ 2316      7200
+ 2317              	.LASF165:
+ 2318 10a4 43595F42 		.ascii	"CY_BLE_EVT_GAP_SMP_NEGOTIATED_AUTH_INFO\000"
+ 2318      4C455F45 
+ 2318      56545F47 
+ 2318      41505F53 
+ 2318      4D505F4E 
+ 2319              	.LASF141:
+ 2320 10cc 43595F42 		.ascii	"CY_BLE_EVT_RADIO_TEMPERATURE\000"
+ 2320      4C455F45 
+ 2320      56545F52 
+ 2320      4144494F 
+ 2320      5F54454D 
+ 2321              	.LASF229:
+ 2322 10e9 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2322      52784275 
+ 2322      66666572 
+ 2322      00
+ 2323              	.LASF202:
+ 2324 10f6 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CBFC_CONN_CNF\000"
+ 2324      4C455F45 
+ 2324      56545F4C 
+ 2324      32434150 
+ 2324      5F434246 
+ 2325              	.LASF32:
+ 2326 1115 656E6162 		.ascii	"enableCompareSwap\000"
+ 2326      6C65436F 
+ 2326      6D706172 
+ 2326      65537761 
+ 2326      7000
+ 2327              	.LASF217:
+ 2328 1127 63795F65 		.ascii	"cy_en_ble_adv_state_t\000"
+ 2328      6E5F626C 
+ 2328      655F6164 
+ 2328      765F7374 
+ 2328      6174655F 
+ 2329              	.LASF72:
+ 2330 113d 62756631 		.ascii	"buf1Size\000"
+ 2330      53697A65 
+ 2330      00
+ 2331              	.LASF122:
+ 2332 1146 43595F42 		.ascii	"CY_BLE_EVT_SET_DEFAULT_PHY_COMPLETE\000"
+ 2332      4C455F45 
+ 2332      56545F53 
+ 2332      45545F44 
+ 2332      45464155 
+ 2333              	.LASF242:
+ 2334 116a 78517565 		.ascii	"xQueueGenericCreate\000"
+ 2334      75654765 
+ 2334      6E657269 
+ 2334      63437265 
+ 2334      61746500 
+ 2335              	.LASF177:
+ 2336 117e 43595F42 		.ascii	"CY_BLE_EVT_GATTC_XCHNG_MTU_RSP\000"
+ 2336      4C455F45 
+ 2336      56545F47 
+ 2336      41545443 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 55
+
+
+ 2336      5F584348 
+ 2337              	.LASF167:
+ 2338 119d 43595F42 		.ascii	"CY_BLE_EVT_GAP_KEYS_GEN_COMPLETE\000"
+ 2338      4C455F45 
+ 2338      56545F47 
+ 2338      41505F4B 
+ 2338      4559535F 
+ 2339              	.LASF137:
+ 2340 11be 43595F42 		.ascii	"CY_BLE_EVT_AES_CCM_ENCRYPT_COMPLETE\000"
+ 2340      4C455F45 
+ 2340      56545F41 
+ 2340      45535F43 
+ 2340      434D5F45 
+ 2341              	.LASF29:
+ 2342 11e2 656E6162 		.ascii	"enablePeriodSwap\000"
+ 2342      6C655065 
+ 2342      72696F64 
+ 2342      53776170 
+ 2342      00
+ 2343              	.LASF38:
+ 2344 11f3 73776170 		.ascii	"swapInput\000"
+ 2344      496E7075 
+ 2344      7400
+ 2345              	.LASF224:
+ 2346 11fd 43595F42 		.ascii	"CY_BLE_CONN_STATE_CLIENT_DESCR_DISCOVERING\000"
+ 2346      4C455F43 
+ 2346      4F4E4E5F 
+ 2346      53544154 
+ 2346      455F434C 
+ 2347              	.LASF180:
+ 2348 1228 43595F42 		.ascii	"CY_BLE_EVT_GATTC_FIND_INFO_RSP\000"
+ 2348      4C455F45 
+ 2348      56545F47 
+ 2348      41545443 
+ 2348      5F46494E 
+ 2349              	.LASF14:
+ 2350 1247 75696E74 		.ascii	"uint32_t\000"
+ 2350      33325F74 
+ 2350      00
+ 2351              	.LASF68:
+ 2352 1250 61646472 		.ascii	"addr1Active\000"
+ 2352      31416374 
+ 2352      69766500 
+ 2353              	.LASF75:
+ 2354 125c 62756632 		.ascii	"buf2Size\000"
+ 2354      53697A65 
+ 2354      00
+ 2355              	.LASF147:
+ 2356 1265 43595F42 		.ascii	"CY_BLE_EVT_GAPC_SCAN_PROGRESS_RESULT\000"
+ 2356      4C455F45 
+ 2356      56545F47 
+ 2356      4150435F 
+ 2356      5343414E 
+ 2357              	.LASF98:
+ 2358 128a 43595F42 		.ascii	"CY_BLE_EVT_STACK_BUSY_STATUS\000"
+ 2358      4C455F45 
+ 2358      56545F53 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 56
+
+
+ 2358      5441434B 
+ 2358      5F425553 
+ 2359              	.LASF121:
+ 2360 12a7 43595F42 		.ascii	"CY_BLE_EVT_GET_PHY_COMPLETE\000"
+ 2360      4C455F45 
+ 2360      56545F47 
+ 2360      45545F50 
+ 2360      48595F43 
+ 2361              	.LASF30:
+ 2362 12c3 636F6D70 		.ascii	"compare0\000"
+ 2362      61726530 
+ 2362      00
+ 2363              	.LASF31:
+ 2364 12cc 636F6D70 		.ascii	"compare1\000"
+ 2364      61726531 
+ 2364      00
+ 2365              	.LASF70:
+ 2366 12d5 62756653 		.ascii	"bufSize\000"
+ 2366      697A6500 
+ 2367              	.LASF17:
+ 2368 12dd 63686172 		.ascii	"char\000"
+ 2368      00
+ 2369              	.LASF172:
+ 2370 12e2 43595F42 		.ascii	"CY_BLE_EVT_GAPP_UPDATE_ADV_SCAN_DATA_COMPLETE\000"
+ 2370      4C455F45 
+ 2370      56545F47 
+ 2370      4150505F 
+ 2370      55504441 
+ 2371              	.LASF57:
+ 2372 1310 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_TX_DATA\000"
+ 2372      43425F45 
+ 2372      5A493243 
+ 2372      5F535441 
+ 2372      54455F54 
+ 2373              	.LASF243:
+ 2374 132b 78457665 		.ascii	"xEventGroupCreate\000"
+ 2374      6E744772 
+ 2374      6F757043 
+ 2374      72656174 
+ 2374      6500
+ 2375              	.LASF139:
+ 2376 133d 43595F42 		.ascii	"CY_BLE_EVT_SET_SLAVE_LATENCY_MODE_COMPLETE\000"
+ 2376      4C455F45 
+ 2376      56545F53 
+ 2376      45545F53 
+ 2376      4C415645 
+ 2377              	.LASF203:
+ 2378 1368 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CBFC_DISCONN_IND\000"
+ 2378      4C455F45 
+ 2378      56545F4C 
+ 2378      32434150 
+ 2378      5F434246 
+ 2379              	.LASF129:
+ 2380 138a 43595F42 		.ascii	"CY_BLE_EVT_GET_DEVICE_ADDR_COMPLETE\000"
+ 2380      4C455F45 
+ 2380      56545F47 
+ 2380      45545F44 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 57
+
+
+ 2380      45564943 
+ 2381              	.LASF233:
+ 2382 13ae 63795F62 		.ascii	"cy_ble_pendingFlashWrite\000"
+ 2382      6C655F70 
+ 2382      656E6469 
+ 2382      6E67466C 
+ 2382      61736857 
+ 2383              	.LASF110:
+ 2384 13c7 43595F42 		.ascii	"CY_BLE_EVT_GET_DATA_LENGTH_COMPLETE\000"
+ 2384      4C455F45 
+ 2384      56545F47 
+ 2384      45545F44 
+ 2384      4154415F 
+ 2385              	.LASF5:
+ 2386 13eb 5F5F696E 		.ascii	"__int32_t\000"
+ 2386      7433325F 
+ 2386      7400
+ 2387              	.LASF230:
+ 2388 13f5 63795F62 		.ascii	"cy_ble_advState\000"
+ 2388      6C655F61 
+ 2388      64765374 
+ 2388      61746500 
+ 2389              	.LASF248:
+ 2390 1405 433A5C47 		.ascii	"C:\\Git\\PSoC6-101-Videos\\Projects_ScreenCapture\\"
+ 2390      69745C50 
+ 2390      536F4336 
+ 2390      2D313031 
+ 2390      2D566964 
+ 2391 1434 50536F43 		.ascii	"PSoC 6_101\\MainController.cydsn\000"
+ 2391      20365F31 
+ 2391      30315C4D 
+ 2391      61696E43 
+ 2391      6F6E7472 
+ 2392              	.LASF209:
+ 2393 1454 43595F42 		.ascii	"CY_BLE_EVT_MAX\000"
+ 2393      4C455F45 
+ 2393      56545F4D 
+ 2393      415800
+ 2394              	.LASF157:
+ 2395 1463 43595F42 		.ascii	"CY_BLE_EVT_GAP_CONNECTION_UPDATE_COMPLETE\000"
+ 2395      4C455F45 
+ 2395      56545F47 
+ 2395      41505F43 
+ 2395      4F4E4E45 
+ 2396              	.LASF116:
+ 2397 148d 43595F42 		.ascii	"CY_BLE_EVT_SET_HOST_CHANNEL_COMPLETE\000"
+ 2397      4C455F45 
+ 2397      56545F53 
+ 2397      45545F48 
+ 2397      4F53545F 
+ 2398              	.LASF162:
+ 2399 14b2 43595F42 		.ascii	"CY_BLE_EVT_GAP_OOB_GENERATED_NOTIFICATION\000"
+ 2399      4C455F45 
+ 2399      56545F47 
+ 2399      41505F4F 
+ 2399      4F425F47 
+ 2400              	.LASF40:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 58
+
+
+ 2401 14dc 72656C6F 		.ascii	"reloadInput\000"
+ 2401      6164496E 
+ 2401      70757400 
+ 2402              	.LASF221:
+ 2403 14e8 43595F42 		.ascii	"CY_BLE_CONN_STATE_CLIENT_SRVC_DISCOVERING\000"
+ 2403      4C455F43 
+ 2403      4F4E4E5F 
+ 2403      53544154 
+ 2403      455F434C 
+ 2404              	.LASF78:
+ 2405 1512 63795F63 		.ascii	"cy_cb_scb_uart_handle_events_t\000"
+ 2405      625F7363 
+ 2405      625F7561 
+ 2405      72745F68 
+ 2405      616E646C 
+ 2406              	.LASF49:
+ 2407 1531 43595F53 		.ascii	"CY_SCB_EZI2C_SUB_ADDR16_BITS\000"
+ 2407      43425F45 
+ 2407      5A493243 
+ 2407      5F535542 
+ 2407      5F414444 
+ 2408              	.LASF83:
+ 2409 154e 72785269 		.ascii	"rxRingBufSize\000"
+ 2409      6E674275 
+ 2409      6653697A 
+ 2409      6500
+ 2410              	.LASF96:
+ 2411 155c 43595F42 		.ascii	"CY_BLE_EVT_STACK_ON\000"
+ 2411      4C455F45 
+ 2411      56545F53 
+ 2411      5441434B 
+ 2411      5F4F4E00 
+ 2412              	.LASF148:
+ 2413 1570 43595F42 		.ascii	"CY_BLE_EVT_GAP_AUTH_REQ\000"
+ 2413      4C455F45 
+ 2413      56545F47 
+ 2413      41505F41 
+ 2413      5554485F 
+ 2414              	.LASF102:
+ 2415 1588 43595F42 		.ascii	"CY_BLE_EVT_HARDWARE_ERROR\000"
+ 2415      4C455F45 
+ 2415      56545F48 
+ 2415      41524457 
+ 2415      4152455F 
+ 2416              	.LASF27:
+ 2417 15a2 70657269 		.ascii	"period0\000"
+ 2417      6F643000 
+ 2418              	.LASF166:
+ 2419 15aa 43595F42 		.ascii	"CY_BLE_EVT_GAP_DEVICE_ADDR_GEN_COMPLETE\000"
+ 2419      4C455F45 
+ 2419      56545F47 
+ 2419      41505F44 
+ 2419      45564943 
+ 2420              	.LASF136:
+ 2421 15d2 43595F42 		.ascii	"CY_BLE_EVT_AES_ENCRYPT_COMPLETE\000"
+ 2421      4C455F45 
+ 2421      56545F41 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 59
+
+
+ 2421      45535F45 
+ 2421      4E435259 
+ 2422              	.LASF114:
+ 2423 15f2 43595F42 		.ascii	"CY_BLE_EVT_SET_RPA_TO_COMPLETE\000"
+ 2423      4C455F45 
+ 2423      56545F53 
+ 2423      45545F52 
+ 2423      50415F54 
+ 2424              	.LASF93:
+ 2425 1611 696E6974 		.ascii	"initKey\000"
+ 2425      4B657900 
+ 2426              	.LASF86:
+ 2427 1619 72784275 		.ascii	"rxBuf\000"
+ 2427      6600
+ 2428              	.LASF48:
+ 2429 161f 43595F53 		.ascii	"CY_SCB_EZI2C_SUB_ADDR8_BITS\000"
+ 2429      43425F45 
+ 2429      5A493243 
+ 2429      5F535542 
+ 2429      5F414444 
+ 2430              	.LASF208:
+ 2431 163b 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CBFC_DATA_WRITE_IND\000"
+ 2431      4C455F45 
+ 2431      56545F4C 
+ 2431      32434150 
+ 2431      5F434246 
+ 2432              	.LASF204:
+ 2433 1660 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CBFC_DISCONN_CNF\000"
+ 2433      4C455F45 
+ 2433      56545F4C 
+ 2433      32434150 
+ 2433      5F434246 
+ 2434              	.LASF231:
+ 2435 1682 63795F62 		.ascii	"cy_ble_connHandle\000"
+ 2435      6C655F63 
+ 2435      6F6E6E48 
+ 2435      616E646C 
+ 2435      6500
+ 2436              	.LASF184:
+ 2437 1694 43595F42 		.ascii	"CY_BLE_EVT_GATTC_READ_MULTI_RSP\000"
+ 2437      4C455F45 
+ 2437      56545F47 
+ 2437      41545443 
+ 2437      5F524541 
+ 2438              	.LASF62:
+ 2439 16b4 73746174 		.ascii	"status\000"
+ 2439      757300
+ 2440              	.LASF156:
+ 2441 16bb 43595F42 		.ascii	"CY_BLE_EVT_GAP_ENCRYPT_CHANGE\000"
+ 2441      4C455F45 
+ 2441      56545F47 
+ 2441      41505F45 
+ 2441      4E435259 
+ 2442              	.LASF35:
+ 2443 16d9 696E7665 		.ascii	"invertPWMOutN\000"
+ 2443      72745057 
+ 2443      4D4F7574 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 60
+
+
+ 2443      4E00
+ 2444              	.LASF215:
+ 2445 16e7 43595F42 		.ascii	"CY_BLE_ADV_STATE_ADVERTISING\000"
+ 2445      4C455F41 
+ 2445      44565F53 
+ 2445      54415445 
+ 2445      5F414456 
+ 2446              	.LASF213:
+ 2447 1704 43595F42 		.ascii	"CY_BLE_ADV_STATE_STOPPED\000"
+ 2447      4C455F41 
+ 2447      44565F53 
+ 2447      54415445 
+ 2447      5F53544F 
+ 2448              	.LASF12:
+ 2449 171d 75696E74 		.ascii	"uint8_t\000"
+ 2449      385F7400 
+ 2450              	.LASF54:
+ 2451 1725 43595F53 		.ascii	"CY_SCB_EZI2C_STATE_RX_OFFSET_LSB\000"
+ 2451      43425F45 
+ 2451      5A493243 
+ 2451      5F535441 
+ 2451      54455F52 
+ 2452              	.LASF36:
+ 2453 1746 6B696C6C 		.ascii	"killMode\000"
+ 2453      4D6F6465 
+ 2453      00
+ 2454              	.LASF207:
+ 2455 174f 43595F42 		.ascii	"CY_BLE_EVT_L2CAP_CBFC_TX_CREDIT_IND\000"
+ 2455      4C455F45 
+ 2455      56545F4C 
+ 2455      32434150 
+ 2455      5F434246 
+ 2456              	.LASF236:
+ 2457 1773 50574D5F 		.ascii	"PWM_2_config\000"
+ 2457      325F636F 
+ 2457      6E666967 
+ 2457      00
+ 2458              	.LASF47:
+ 2459 1780 63795F73 		.ascii	"cy_stc_tcpwm_pwm_config_t\000"
+ 2459      74635F74 
+ 2459      6370776D 
+ 2459      5F70776D 
+ 2459      5F636F6E 
+ 2460              	.LASF39:
+ 2461 179a 72656C6F 		.ascii	"reloadInputMode\000"
+ 2461      6164496E 
+ 2461      7075744D 
+ 2461      6F646500 
+ 2462              	.LASF85:
+ 2463 17aa 72785269 		.ascii	"rxRingBufTail\000"
+ 2463      6E674275 
+ 2463      66546169 
+ 2463      6C00
+ 2464              	.LASF73:
+ 2465 17b8 62756631 		.ascii	"buf1rwBondary\000"
+ 2465      7277426F 
+ 2465      6E646172 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 61
+
+
+ 2465      7900
+ 2466              	.LASF194:
+ 2467 17c6 43595F42 		.ascii	"CY_BLE_EVT_GATTS_DATA_SIGNED_CMD_REQ\000"
+ 2467      4C455F45 
+ 2467      56545F47 
+ 2467      41545453 
+ 2467      5F444154 
+ 2468              	.LASF210:
+ 2469 17eb 62644861 		.ascii	"bdHandle\000"
+ 2469      6E646C65 
+ 2469      00
+ 2470              	.LASF22:
+ 2471 17f4 70776D4D 		.ascii	"pwmMode\000"
+ 2471      6F646500 
+ 2472              	.LASF66:
+ 2473 17fc 62617365 		.ascii	"baseAddr1\000"
+ 2473      41646472 
+ 2473      3100
+ 2474              	.LASF67:
+ 2475 1806 62617365 		.ascii	"baseAddr2\000"
+ 2475      41646472 
+ 2475      3200
+ 2476              	.LASF250:
+ 2477 1810 6D61696E 		.ascii	"main\000"
+ 2477      00
+ 2478              	.LASF79:
+ 2479 1815 63795F73 		.ascii	"cy_stc_scb_uart_context\000"
+ 2479      74635F73 
+ 2479      63625F75 
+ 2479      6172745F 
+ 2479      636F6E74 
+ 2480              	.LASF46:
+ 2481 182d 636F756E 		.ascii	"countInput\000"
+ 2481      74496E70 
+ 2481      757400
+ 2482              	.LASF247:
+ 2483 1838 6D61696E 		.ascii	"main_cm4.c\000"
+ 2483      5F636D34 
+ 2483      2E6300
+ 2484              	.LASF185:
+ 2485 1843 43595F42 		.ascii	"CY_BLE_EVT_GATTS_WRITE_REQ\000"
+ 2485      4C455F45 
+ 2485      56545F47 
+ 2485      41545453 
+ 2485      5F575249 
+ 2486              	.LASF149:
+ 2487 185e 43595F42 		.ascii	"CY_BLE_EVT_GAP_PASSKEY_ENTRY_REQUEST\000"
+ 2487      4C455F45 
+ 2487      56545F47 
+ 2487      41505F50 
+ 2487      4153534B 
+ 2488              	.LASF119:
+ 2489 1883 43595F42 		.ascii	"CY_BLE_EVT_ADD_DEVICE_TO_WHITE_LIST_COMPLETE\000"
+ 2489      4C455F45 
+ 2489      56545F41 
+ 2489      44445F44 
+ 2489      45564943 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccPRHDaw.s 			page 62
+
+
+ 2490              	.LASF28:
+ 2491 18b0 70657269 		.ascii	"period1\000"
+ 2491      6F643100 
+ 2492              	.LASF107:
+ 2493 18b8 43595F42 		.ascii	"CY_BLE_EVT_LE_PING_AUTH_TIMEOUT\000"
+ 2493      4C455F45 
+ 2493      56545F4C 
+ 2493      455F5049 
+ 2493      4E475F41 
+ 2494              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,461 @@
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccWznmAd.s 			page 1
+
+
+   1              	# 1 "armgcc\\startup\\startup_psoc63_cm0plus.S"
+   1              	/**************************************************************************//**
+   0              	
+   0              	
+   0              	
+   2              	 * @file     startup_psoc63_cm0plus.s
+   3              	 * @brief    CMSIS Core Device Startup File for
+   4              	 *           ARMCM0plus Device Series
+   5              	 * @version  V5.00
+   6              	 * @date     02. March 2016
+   7              	 ******************************************************************************/
+   8              	/*
+   9              	 * Copyright (c) 2009-2016 ARM Limited. All rights reserved.
+  10              	 *
+  11              	 * SPDX-License-Identifier: Apache-2.0
+  12              	 *
+  13              	 * Licensed under the Apache License, Version 2.0 (the License); you may
+  14              	 * not use this file except in compliance with the License.
+  15              	 * You may obtain a copy of the License at
+  16              	 *
+  17              	 * www.apache.org/licenses/LICENSE-2.0
+  18              	 *
+  19              	 * Unless required by applicable law or agreed to in writing, software
+  20              	 * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  21              	 * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  22              	 * See the License for the specific language governing permissions and
+  23              	 * limitations under the License.
+  24              	 */
+  25              	
+  26              	    /* Address of the NMI handler */
+  27              	    #define CY_NMI_HANLDER_ADDR         0x0000000D
+  28              	
+  29              	    /* The CPU VTOR register */
+  30              	    #define CY_CPU_VTOR_ADDR                 0xE000ED08
+  31              	
+  32              	    /* Copy flash vectors and data section to RAM */
+  33              	    #define __STARTUP_COPY_MULTIPLE
+  34              	
+  35              	    /* Clear single BSS section */
+  36              	    #define __STARTUP_CLEAR_BSS
+  37              	
+  38              	    .syntax    unified
+  39              	    .arch    armv6-m
+  40              	
+  41              	    .section .stack
+  42              	    .align    3
+  43              	#ifdef __STACK_SIZE
+  44              	    .equ    Stack_Size, __STACK_SIZE
+  45              	#else
+  46              	    .equ    Stack_Size, 0x00001000
+  47              	#endif
+  48              	    .globl    __StackTop
+  49              	    .globl    __StackLimit
+  50              	__StackLimit:
+  51 0000 00000000 	    .space    Stack_Size
+  51      00000000 
+  51      00000000 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccWznmAd.s 			page 2
+
+
+  51      00000000 
+  51      00000000 
+  52              	    .size    __StackLimit, . - __StackLimit
+  53              	__StackTop:
+  54              	    .size    __StackTop, . - __StackTop
+  55              	
+  56              	    .section .heap
+  57              	    .align    3
+  58              	#ifdef __HEAP_SIZE
+  59              	    .equ    Heap_Size, __HEAP_SIZE
+  60              	#else
+  61              	    .equ    Heap_Size, 0x00000400
+  62              	#endif
+  63              	    .globl    __HeapBase
+  64              	    .globl    __HeapLimit
+  65              	__HeapBase:
+  66              	    .if    Heap_Size
+  67 0000 00000000 	    .space    Heap_Size
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  68              	    .endif
+  69              	    .size    __HeapBase, . - __HeapBase
+  70              	__HeapLimit:
+  71              	    .size    __HeapLimit, . - __HeapLimit
+  72              	
+  73              	    .section .vectors
+  74              	    .align 2
+  75              	    .globl    __Vectors
+  76              	__Vectors:
+  77 0000 00000000 	    .long    __StackTop            /* Top of Stack */
+  78 0004 00000000 	    .long    Reset_Handler         /* Reset Handler */
+  79 0008 0D000000 	    .long    CY_NMI_HANLDER_ADDR   /* NMI Handler */
+  80 000c 00000000 	    .long    HardFault_Handler     /* Hard Fault Handler */
+  81 0010 00000000 	    .long    0                     /* Reserved */
+  82 0014 00000000 	    .long    0                     /* Reserved */
+  83 0018 00000000 	    .long    0                     /* Reserved */
+  84 001c 00000000 	    .long    0                     /* Reserved */
+  85 0020 00000000 	    .long    0                     /* Reserved */
+  86 0024 00000000 	    .long    0                     /* Reserved */
+  87 0028 00000000 	    .long    0                     /* Reserved */
+  88 002c 00000000 	    .long    SVC_Handler           /* SVCall Handler */
+  89 0030 00000000 	    .long    0                     /* Reserved */
+  90 0034 00000000 	    .long    0                     /* Reserved */
+  91 0038 00000000 	    .long    PendSV_Handler        /* PendSV Handler */
+  92 003c 00000000 	    .long    SysTick_Handler       /* SysTick Handler */
+  93              	
+  94              	     /* External interrupts                             Description */
+  95 0040 00000000 	    .long    NvicMux0_IRQHandler                     /* CM0 + NVIC Mux input 0 */
+  96 0044 00000000 	    .long    NvicMux1_IRQHandler                     /* CM0 + NVIC Mux input 1 */
+  97 0048 00000000 	    .long    NvicMux2_IRQHandler                     /* CM0 + NVIC Mux input 2 */
+  98 004c 00000000 	    .long    NvicMux3_IRQHandler                     /* CM0 + NVIC Mux input 3 */
+  99 0050 00000000 	    .long    NvicMux4_IRQHandler                     /* CM0 + NVIC Mux input 4 */
+ 100 0054 00000000 	    .long    NvicMux5_IRQHandler                     /* CM0 + NVIC Mux input 5 */
+ 101 0058 00000000 	    .long    NvicMux6_IRQHandler                     /* CM0 + NVIC Mux input 6 */
+ 102 005c 00000000 	    .long    NvicMux7_IRQHandler                     /* CM0 + NVIC Mux input 7 */
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccWznmAd.s 			page 3
+
+
+ 103 0060 00000000 	    .long    NvicMux8_IRQHandler                     /* CM0 + NVIC Mux input 8 */
+ 104 0064 00000000 	    .long    NvicMux9_IRQHandler                     /* CM0 + NVIC Mux input 9 */
+ 105 0068 00000000 	    .long    NvicMux10_IRQHandler                    /* CM0 + NVIC Mux input 10 */
+ 106 006c 00000000 	    .long    NvicMux11_IRQHandler                    /* CM0 + NVIC Mux input 11 */
+ 107 0070 00000000 	    .long    NvicMux12_IRQHandler                    /* CM0 + NVIC Mux input 12 */
+ 108 0074 00000000 	    .long    NvicMux13_IRQHandler                    /* CM0 + NVIC Mux input 13 */
+ 109 0078 00000000 	    .long    NvicMux14_IRQHandler                    /* CM0 + NVIC Mux input 14 */
+ 110 007c 00000000 	    .long    NvicMux15_IRQHandler                    /* CM0 + NVIC Mux input 15 */
+ 111 0080 00000000 	    .long    NvicMux16_IRQHandler                    /* CM0 + NVIC Mux input 16 */
+ 112 0084 00000000 	    .long    NvicMux17_IRQHandler                    /* CM0 + NVIC Mux input 17 */
+ 113 0088 00000000 	    .long    NvicMux18_IRQHandler                    /* CM0 + NVIC Mux input 18 */
+ 114 008c 00000000 	    .long    NvicMux19_IRQHandler                    /* CM0 + NVIC Mux input 19 */
+ 115 0090 00000000 	    .long    NvicMux20_IRQHandler                    /* CM0 + NVIC Mux input 20 */
+ 116 0094 00000000 	    .long    NvicMux21_IRQHandler                    /* CM0 + NVIC Mux input 21 */
+ 117 0098 00000000 	    .long    NvicMux22_IRQHandler                    /* CM0 + NVIC Mux input 22 */
+ 118 009c 00000000 	    .long    NvicMux23_IRQHandler                    /* CM0 + NVIC Mux input 23 */
+ 119 00a0 00000000 	    .long    NvicMux24_IRQHandler                    /* CM0 + NVIC Mux input 24 */
+ 120 00a4 00000000 	    .long    NvicMux25_IRQHandler                    /* CM0 + NVIC Mux input 25 */
+ 121 00a8 00000000 	    .long    NvicMux26_IRQHandler                    /* CM0 + NVIC Mux input 26 */
+ 122 00ac 00000000 	    .long    NvicMux27_IRQHandler                    /* CM0 + NVIC Mux input 27 */
+ 123 00b0 00000000 	    .long    NvicMux28_IRQHandler                    /* CM0 + NVIC Mux input 28 */
+ 124 00b4 00000000 	    .long    NvicMux29_IRQHandler                    /* CM0 + NVIC Mux input 29 */
+ 125 00b8 00000000 	    .long    NvicMux30_IRQHandler                    /* CM0 + NVIC Mux input 30 */
+ 126 00bc 00000000 	    .long    NvicMux31_IRQHandler                    /* CM0 + NVIC Mux input 31 */
+ 127              	
+ 128              	    .size    __Vectors, . - __Vectors
+ 129              	    .equ    __VectorsSize, . - __Vectors
+ 130              	
+ 131              	    .section .ram_vectors
+ 132              	    .align 2
+ 133              	    .globl __ramVectors
+ 134              	__ramVectors:
+ 135 0000 00000000 	    .space  __VectorsSize
+ 135      00000000 
+ 135      00000000 
+ 135      00000000 
+ 135      00000000 
+ 136              	    .size   __ramVectors, . - __ramVectors
+ 137              	
+ 138              	
+ 139              	    .text
+ 140              	    .thumb
+ 141              	    .thumb_func
+ 142              	    .align  2
+ 143              	
+ 144              	    /* Device startup customization */
+ 145              	    .weak   Cy_OnResetUser
+ 146              	    .func Cy_OnResetUser, Cy_OnResetUser
+ 147              	    .type   Cy_OnResetUser, %function
+ 148              	Cy_OnResetUser:
+ 149              	
+ 150 0000 7047     	    bx lr
+ 151              	    .size   Cy_OnResetUser, . - Cy_OnResetUser
+ 152              	    .endfunc
+ 153              	
+ 154              	    /* Saves and disables the interrupts */
+ 155              	    .global Cy_SaveIRQ
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccWznmAd.s 			page 4
+
+
+ 156              	    .func   Cy_SaveIRQ, Cy_SaveIRQ
+ 157              	    .type   Cy_SaveIRQ, %function
+ 158              	Cy_SaveIRQ:
+ 159 0002 EFF31080 	    mrs r0, PRIMASK
+ 160 0006 72B6     	    cpsid i
+ 161 0008 7047     	    bx lr
+ 162              	    .size   Cy_SaveIRQ, . - Cy_SaveIRQ
+ 163              	    .endfunc
+ 164              	
+ 165              	    /* Restores the interrupts */
+ 166              	    .global Cy_RestoreIRQ
+ 167              	    .func   Cy_RestoreIRQ, Cy_RestoreIRQ
+ 168              	    .type   Cy_RestoreIRQ, %function
+ 169              	Cy_RestoreIRQ:
+ 170 000a 80F31088 	    msr PRIMASK, r0
+ 171 000e 7047     	    bx lr
+ 172              	    .size   Cy_RestoreIRQ, . - Cy_RestoreIRQ
+ 173              	    .endfunc
+ 174              	
+ 175              	    /* Reset handler */
+ 176              	    .weak    Reset_Handler
+ 177              	    .type    Reset_Handler, %function
+ 178              	Reset_Handler:
+ 179              	
+ 180 0010 FFF7FEFF 	    bl Cy_OnResetUser
+ 181 0014 72B6     	    cpsid i
+ 182              	
+ 183              	/*  Firstly it copies data from read only memory to RAM. There are two schemes
+ 184              	 *  to copy. One can copy more than one sections. Another can only copy
+ 185              	 *  one section.  The former scheme needs more instructions and read-only
+ 186              	 *  data to implement than the latter.
+ 187              	 *  Macro __STARTUP_COPY_MULTIPLE is used to choose between two schemes.  */
+ 188              	
+ 189              	#ifdef __STARTUP_COPY_MULTIPLE
+ 190              	/*  Multiple sections scheme.
+ 191              	 *
+ 192              	 *  Between symbol address __copy_table_start__ and __copy_table_end__,
+ 193              	 *  there are array of triplets, each of which specify:
+ 194              	 *    offset 0: LMA of start of a section to copy from
+ 195              	 *    offset 4: VMA of start of a section to copy to
+ 196              	 *    offset 8: size of the section to copy. Must be multiply of 4
+ 197              	 *
+ 198              	 *  All addresses must be aligned to 4 bytes boundary.
+ 199              	 */
+ 200 0016 104C     	    ldr    r4, =__copy_table_start__
+ 201 0018 104D     	    ldr    r5, =__copy_table_end__
+ 202              	
+ 203              	.L_loop0:
+ 204 001a AC42     	    cmp    r4, r5
+ 205 001c 09DA     	    bge    .L_loop0_done
+ 206 001e 2168     	    ldr    r1, [r4]
+ 207 0020 6268     	    ldr    r2, [r4, #4]
+ 208 0022 A368     	    ldr    r3, [r4, #8]
+ 209              	
+ 210              	.L_loop0_0:
+ 211 0024 043B     	    subs    r3, #4
+ 212 0026 02DB     	    blt    .L_loop0_0_done
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccWznmAd.s 			page 5
+
+
+ 213 0028 C858     	    ldr    r0, [r1, r3]
+ 214 002a D050     	    str    r0, [r2, r3]
+ 215 002c FAE7     	    b    .L_loop0_0
+ 216              	
+ 217              	.L_loop0_0_done:
+ 218 002e 0C34     	    adds    r4, #12
+ 219 0030 F3E7     	    b    .L_loop0
+ 220              	
+ 221              	.L_loop0_done:
+ 222              	#else
+ 223              	/*  Single section scheme.
+ 224              	 *
+ 225              	 *  The ranges of copy from/to are specified by following symbols
+ 226              	 *    __etext: LMA of start of the section to copy from. Usually end of text
+ 227              	 *    __data_start__: VMA of start of the section to copy to
+ 228              	 *    __data_end__: VMA of end of the section to copy to
+ 229              	 *
+ 230              	 *  All addresses must be aligned to 4 bytes boundary.
+ 231              	 */
+ 232              	    ldr    r1, =__etext
+ 233              	    ldr    r2, =__data_start__
+ 234              	    ldr    r3, =__data_end__
+ 235              	
+ 236              	    subs    r3, r2
+ 237              	    ble    .L_loop1_done
+ 238              	
+ 239              	.L_loop1:
+ 240              	    subs    r3, #4
+ 241              	    ldr    r0, [r1,r3]
+ 242              	    str    r0, [r2,r3]
+ 243              	    bgt    .L_loop1
+ 244              	
+ 245              	.L_loop1_done:
+ 246              	#endif /*__STARTUP_COPY_MULTIPLE */
+ 247              	
+ 248              	/*  This part of work usually is done in C library startup code. Otherwise,
+ 249              	 *  define this macro to enable it in this startup.
+ 250              	 *
+ 251              	 *  There are two schemes too. One can clear multiple BSS sections. Another
+ 252              	 *  can only clear one section. The former is more size expensive than the
+ 253              	 *  latter.
+ 254              	 *
+ 255              	 *  Define macro __STARTUP_CLEAR_BSS_MULTIPLE to choose the former.
+ 256              	 *  Otherwise efine macro __STARTUP_CLEAR_BSS to choose the later.
+ 257              	 */
+ 258              	#ifdef __STARTUP_CLEAR_BSS_MULTIPLE
+ 259              	/*  Multiple sections scheme.
+ 260              	 *
+ 261              	 *  Between symbol address __copy_table_start__ and __copy_table_end__,
+ 262              	 *  there are array of tuples specifying:
+ 263              	 *    offset 0: Start of a BSS section
+ 264              	 *    offset 4: Size of this BSS section. Must be multiply of 4
+ 265              	 */
+ 266              	    ldr    r3, =__zero_table_start__
+ 267              	    ldr    r4, =__zero_table_end__
+ 268              	
+ 269              	.L_loop2:
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccWznmAd.s 			page 6
+
+
+ 270              	    cmp    r3, r4
+ 271              	    bge    .L_loop2_done
+ 272              	    ldr    r1, [r3]
+ 273              	    ldr    r2, [r3, #4]
+ 274              	    movs    r0, 0
+ 275              	
+ 276              	.L_loop2_0:
+ 277              	    subs    r2, #4
+ 278              	    blt    .L_loop2_0_done
+ 279              	    str    r0, [r1, r2]
+ 280              	    b    .L_loop2_0
+ 281              	.L_loop2_0_done:
+ 282              	
+ 283              	    adds    r3, #8
+ 284              	    b    .L_loop2
+ 285              	.L_loop2_done:
+ 286              	#elif defined (__STARTUP_CLEAR_BSS)
+ 287              	/*  Single BSS section scheme.
+ 288              	 *
+ 289              	 *  The BSS section is specified by following symbols
+ 290              	 *    __bss_start__: start of the BSS section.
+ 291              	 *    __bss_end__: end of the BSS section.
+ 292              	 *
+ 293              	 *  Both addresses must be aligned to 4 bytes boundary.
+ 294              	 */
+ 295 0032 0B49     	    ldr    r1, =__bss_start__
+ 296 0034 0B4A     	    ldr    r2, =__bss_end__
+ 297              	
+ 298 0036 0020     	    movs    r0, 0
+ 299              	
+ 300 0038 521A     	    subs    r2, r1
+ 301 003a 02DD     	    ble    .L_loop3_done
+ 302              	
+ 303              	.L_loop3:
+ 304 003c 043A     	    subs    r2, #4
+ 305 003e 8850     	    str    r0, [r1, r2]
+ 306 0040 FCDC     	    bgt    .L_loop3
+ 307              	.L_loop3_done:
+ 308              	#endif /* __STARTUP_CLEAR_BSS_MULTIPLE || __STARTUP_CLEAR_BSS */
+ 309              	
+ 310              	    /* Update Vector Table Offset Register. */
+ 311 0042 0948     	    ldr r0, =__ramVectors
+ 312 0044 0949     	     ldr r1, =CY_CPU_VTOR_ADDR
+ 313 0046 0860     	    str r0, [r1]
+ 314 0048 BFF34F8F 	    dsb 0xF
+ 315              	
+ 316              	#ifndef __NO_SYSTEM_INIT
+ 317 004c FFF7FEFF 	    bl    SystemInit
+ 318              	#endif
+ 319              	
+ 320 0050 FFF7FEFF 	    bl    main
+ 321              	
+ 322              	    /* Should never get here */
+ 323 0054 FEE7     	    b   .
+ 324              	
+ 325 0056 00000000 	    .pool
+ 325      00000000 
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccWznmAd.s 			page 7
+
+
+ 325      00000000 
+ 325      00000000 
+ 325      00000000 
+ 326              	    .size    Reset_Handler, . - Reset_Handler
+ 327              	
+ 328              	    .align    1
+ 329              	    .thumb_func
+ 330              	    .weak    Default_Handler
+ 331              	    .type    Default_Handler, %function
+ 332              	Default_Handler:
+ 333 0070 FEE7     	    b    .
+ 334              	    .size    Default_Handler, . - Default_Handler
+ 335              	
+ 336              	
+ 337              	    .weak    Cy_SysLib_FaultHandler
+ 338              	    .type    Cy_SysLib_FaultHandler, %function
+ 339              	Cy_SysLib_FaultHandler:
+ 340 0072 FEE7     	    b    .
+ 341              	    .size    Cy_SysLib_FaultHandler, . - Cy_SysLib_FaultHandler
+ 342              	
+ 343              	
+ 344              	    .type Fault_Handler, %function
+ 345              	Fault_Handler:
+ 346              	    /* Storing LR content for Creator call stack trace */
+ 347 0074 00B5     	    push {LR}
+ 348 0076 0420     	    movs r0, #4
+ 349 0078 7146     	    mov r1, LR
+ 350 007a 0842     	    tst r0, r1
+ 351 007c 02D0     	    beq .L_MSP
+ 352 007e EFF30980 	    mrs r0, PSP
+ 353 0082 01E0     	    b .L_API_call
+ 354              	.L_MSP:
+ 355 0084 EFF30880 	    mrs r0, MSP
+ 356              	.L_API_call:
+ 357              	    /* Compensation of stack pointer address due to pushing 4 bytes of LR */
+ 358 0088 0430     	    adds r0, r0, #4
+ 359 008a FFF7FEFF 	    bl Cy_SysLib_FaultHandler
+ 360 008e FEE7     	    b   .
+ 361              	    .size    Fault_Handler, . - Fault_Handler
+ 362              	
+ 363              	.macro    def_fault_Handler    fault_handler_name
+ 364              	    .weak    \fault_handler_name
+ 365              	    .set    \fault_handler_name, Fault_Handler
+ 366              	    .endm
+ 367              	
+ 368              	/*    Macro to define default handlers. Default handler
+ 369              	 *    will be weak symbol and just dead loops. They can be
+ 370              	 *    overwritten by other handlers */
+ 371              	    .macro    def_irq_handler    handler_name
+ 372              	    .weak    \handler_name
+ 373              	    .set    \handler_name, Default_Handler
+ 374              	    .endm
+ 375              	
+ 376              	    def_irq_handler    NMI_Handler
+ 377              	
+ 378              	    def_fault_Handler  HardFault_Handler
+ 379              	
+ARM GAS  C:\Users\gjl\AppData\Local\Temp\ccWznmAd.s 			page 8
+
+
+ 380              	    def_irq_handler    SVC_Handler
+ 381              	    def_irq_handler    PendSV_Handler
+ 382              	    def_irq_handler    SysTick_Handler
+ 383              	
+ 384              	    def_irq_handler  NvicMux0_IRQHandler                     /* CM0 + NVIC Mux input 0 */
+ 385              	    def_irq_handler  NvicMux1_IRQHandler                     /* CM0 + NVIC Mux input 1 */
+ 386              	    def_irq_handler  NvicMux2_IRQHandler                     /* CM0 + NVIC Mux input 2 */
+ 387              	    def_irq_handler  NvicMux3_IRQHandler                     /* CM0 + NVIC Mux input 3 */
+ 388              	    def_irq_handler  NvicMux4_IRQHandler                     /* CM0 + NVIC Mux input 4 */
+ 389              	    def_irq_handler  NvicMux5_IRQHandler                     /* CM0 + NVIC Mux input 5 */
+ 390              	    def_irq_handler  NvicMux6_IRQHandler                     /* CM0 + NVIC Mux input 6 */
+ 391              	    def_irq_handler  NvicMux7_IRQHandler                     /* CM0 + NVIC Mux input 7 */
+ 392              	    def_irq_handler  NvicMux8_IRQHandler                     /* CM0 + NVIC Mux input 8 */
+ 393              	    def_irq_handler  NvicMux9_IRQHandler                     /* CM0 + NVIC Mux input 9 */
+ 394              	    def_irq_handler  NvicMux10_IRQHandler                    /* CM0 + NVIC Mux input 10 */
+ 395              	    def_irq_handler  NvicMux11_IRQHandler                    /* CM0 + NVIC Mux input 11 */
+ 396              	    def_irq_handler  NvicMux12_IRQHandler                    /* CM0 + NVIC Mux input 12 */
+ 397              	    def_irq_handler  NvicMux13_IRQHandler                    /* CM0 + NVIC Mux input 13 */
+ 398              	    def_irq_handler  NvicMux14_IRQHandler                    /* CM0 + NVIC Mux input 14 */
+ 399              	    def_irq_handler  NvicMux15_IRQHandler                    /* CM0 + NVIC Mux input 15 */
+ 400              	    def_irq_handler  NvicMux16_IRQHandler                    /* CM0 + NVIC Mux input 16 */
+ 401              	    def_irq_handler  NvicMux17_IRQHandler                    /* CM0 + NVIC Mux input 17 */
+ 402              	    def_irq_handler  NvicMux18_IRQHandler                    /* CM0 + NVIC Mux input 18 */
+ 403              	    def_irq_handler  NvicMux19_IRQHandler                    /* CM0 + NVIC Mux input 19 */
+ 404              	    def_irq_handler  NvicMux20_IRQHandler                    /* CM0 + NVIC Mux input 20 */
+ 405              	    def_irq_handler  NvicMux21_IRQHandler                    /* CM0 + NVIC Mux input 21 */
+ 406              	    def_irq_handler  NvicMux22_IRQHandler                    /* CM0 + NVIC Mux input 22 */
+ 407              	    def_irq_handler  NvicMux23_IRQHandler                    /* CM0 + NVIC Mux input 23 */
+ 408              	    def_irq_handler  NvicMux24_IRQHandler                    /* CM0 + NVIC Mux input 24 */
+ 409              	    def_irq_handler  NvicMux25_IRQHandler                    /* CM0 + NVIC Mux input 25 */
+ 410              	    def_irq_handler  NvicMux26_IRQHandler                    /* CM0 + NVIC Mux input 26 */
+ 411              	    def_irq_handler  NvicMux27_IRQHandler                    /* CM0 + NVIC Mux input 27 */
+ 412              	    def_irq_handler  NvicMux28_IRQHandler                    /* CM0 + NVIC Mux input 28 */
+ 413              	    def_irq_handler  NvicMux29_IRQHandler                    /* CM0 + NVIC Mux input 29 */
+ 414              	    def_irq_handler  NvicMux30_IRQHandler                    /* CM0 + NVIC Mux input 30 */
+ 415              	    def_irq_handler  NvicMux31_IRQHandler                    /* CM0 + NVIC Mux input 31 */
+ 416              	
+ 417              	    .end
