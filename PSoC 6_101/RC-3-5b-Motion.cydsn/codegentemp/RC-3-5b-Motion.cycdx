@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
+  <block name="CapSense" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_15" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Rx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Cmod" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="CintB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="IDACComp" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="IDACMod" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="CintA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Tx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Sns" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ModClk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_virtualmux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_9" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_noconnect_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_12" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_14" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="CSD" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="or_ModClk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_13" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="GROUP_CSDV2_CONFIG" address="0x40360000" bitWidth="32" desc="Configuration and Control" hidden="false">
+      <field name="IREF_SEL" from="0" to="0" access="RW" resetVal="" desc="Select Iref supply." hidden="false">
+        <value name="IREF_SRSS" value="0" desc="select SRSS Iref (default)" />
+        <value name="IREF_PASS" value="1" desc="select PASS.AREF Iref, only available if PASS IP is on the chip." />
+      </field>
+      <field name="FILTER_DELAY" from="8" to="4" access="RW" resetVal="" desc="This value determines the number of cycles that the digital filter makes the CSDCMP output ignored while the counter counts and IDAC is on. &#xA;When set to 0 the digital filter is off. When set to any other value the ignoring will last for FILTER_DELAY clk_csd cycles after the start of each measurement and from the first comparator trip to the end of each measurement." hidden="false" />
+      <field name="SHIELD_DELAY" from="11" to="10" access="RW" resetVal="" desc="Selects the delay by which csd_shield is delayed relative to csd_sense." hidden="false">
+        <value name="OFF" value="0" desc="Delay line is off, csd_shield=csd_sense" />
+        <value name="D5NS" value="1" desc="Introduces a 5ns delay (typ)" />
+        <value name="D10NS" value="10" desc="Introduces a 10ns delay (typ)" />
+        <value name="D20NS" value="11" desc="Introduces a 20ns delay (typ)" />
+      </field>
+      <field name="SENSE_EN" from="12" to="12" access="RW" resetVal="" desc="Enables the sense modulator output. &#xA;0: all switches, static or dynamic, are open and IDAC in CSD mode is off&#xA;1: switches and IDAC can be closed/on as per MMIO setting and CSD sequencer." hidden="false" />
+      <field name="FULL_WAVE" from="17" to="17" access="RW" resetVal="" desc="Enables full wave cap sensing mode" hidden="false">
+        <value name="HALFWAVE" value="0" desc="Half Wave mode (normal).&#xA;In this mode the comparator always trips in the same direction (positive or negative edge) and the same Vref, i.e. no polarity change." />
+        <value name="FULLWAVE" value="1" desc="Full Wave mode.&#xA;In this mode the comparator trips in opposite direction and with different Vref in each phase, i.e. the polarity flips." />
+      </field>
+      <field name="MUTUAL_CAP" from="18" to="18" access="RW" resetVal="" desc="Enables mutual cap sensing mode" hidden="false">
+        <value name="SELFCAP" value="0" desc="Self-cap mode (configure sense line as CSD_SENSE)" />
+        <value name="MUTUALCAP" value="1" desc="Mutual-cap mode (configure Tx line as CSD_SENSE, inverted Tx line as CSD_SHIELD and Rx Line as AMUXA). In this mode the polarity bit of the IDAC is controlled by csd_sense." />
+      </field>
+      <field name="CSX_DUAL_CNT" from="19" to="19" access="RW" resetVal="" desc="Enable the use of two counters for MUTUAL cap sensing mode (CSX), do not use when MUTUAL_CAP=0" hidden="false">
+        <value name="ONE" value="0" desc="Use one counter for both phases (source and sink)." />
+        <value name="TWO" value="1" desc="Use two counters, separate count for when csd_sense is high and when csd_sense is low." />
+      </field>
+      <field name="DSI_COUNT_SEL" from="24" to="24" access="RW" resetVal="" desc="Select what to output  on the dsi_count bus." hidden="false">
+        <value name="CSD_RESULT" value="0" desc="depending on the dsi_count_val_sel input either output  RESULT_VAL1.VALUE (0) or RESULT_VAL2.VALUE (1) on the dsi_count bus. Note that dsi_count_val_sel is not synchronized, i.e. it controls the mux combinatorially." />
+        <value name="ADC_RESULT" value="1" desc="output ADC_RES.VIN_CNT on the dsi_count bus" />
+      </field>
+      <field name="DSI_SAMPLE_EN" from="25" to="25" access="RW" resetVal="" desc="Enables the use of the dsi_sample_in input instead of the comparator output to strobe COUNTER." hidden="false" />
+      <field name="SAMPLE_SYNC" from="26" to="26" access="RW" resetVal="" desc="Enables double synchronizing of sample input from DSI (only relevant when DSI_SAMPLE_EN=1)." hidden="false" />
+      <field name="DSI_SENSE_EN" from="27" to="27" access="RW" resetVal="" desc="Enables the use of the dsi_sense_in input instead of the internally generated modulation signal to drive csd_sense and csd_shield signals." hidden="false" />
+      <field name="LP_MODE" from="30" to="30" access="RW" resetVal="" desc="Select the power mode for the CSD components (REFGEN, AMBUF, CSDCMP, HSCMP):&#xA;0: High Power mode&#xA;1: Low Power mode" hidden="false" />
+      <field name="ENABLE" from="31" to="31" access="RW" resetVal="" desc="Master enable of the CSDv2 IP.  Must be set to 1 for any CSDv2, ADC or IDAC operation to function.&#xA;When 0 all analog components will be off and all switches will be open." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SPARE" address="0x40360004" bitWidth="32" desc="Spare MMIO" hidden="false">
+      <field name="SPARE" from="3" to="0" access="RW" resetVal="" desc="Spare MMIO" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_STATUS" address="0x40360080" bitWidth="32" desc="Status Register" hidden="false">
+      <field name="CSD_SENSE" from="1" to="1" access="R" resetVal="" desc="Signal used to drive the Cs switches." hidden="false" />
+      <field name="HSCMP_OUT" from="2" to="2" access="R" resetVal="" desc="Output of reference buffer comparator used to charge up Cmod and/or Csh_tank (synchronized)" hidden="false">
+        <value name="C_LT_VREF" value="0" desc="Vin &lt; Vref" />
+        <value name="C_GT_VREF" value="1" desc="Vin &gt; Vref" />
+      </field>
+      <field name="CSDCMP_OUT" from="3" to="3" access="R" resetVal="" desc="Output of main sensing comparator (synchronized)" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_STAT_SEQ" address="0x40360084" bitWidth="32" desc="Current Sequencer status" hidden="false">
+      <field name="SEQ_STATE" from="2" to="0" access="R" resetVal="" desc="CSD sequencer state" hidden="false" />
+      <field name="ADC_STATE" from="18" to="16" access="R" resetVal="" desc="ADC sequencer state (only relevant after SEQ_STATE has reached SAMPLE_NORM and ADC sequencer has started)" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_STAT_CNTS" address="0x40360088" bitWidth="32" desc="Current status counts" hidden="false">
+      <field name="NUM_CONV" from="15" to="0" access="R" resetVal="" desc="Current number of conversions remaining when in Sample_* states (note that in AutoZero* states the same down counter is reused to count the cycles)" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_RESULT_VAL1" address="0x403600D0" bitWidth="32" desc="Result CSD/CSX accumulation counter value 1" hidden="false">
+      <field name="VALUE" from="15" to="0" access="R" resetVal="" desc="Accumulated counter value for this result. In case of Mutual cap with two counters (CSX = config.mutual_cap &amp; config.csx_dual_cnt) this counter counts when csd_sense is high." hidden="false" />
+      <field name="BAD_CONVS" from="23" to="16" access="R" resetVal="" desc="Number of 'bad' conversion for which the CSD comparator did not trigger within the normal time window, either because Vref was not crossed at all, or if the Vref was already crossed before the window started. This counter is reset when the sequencer is started and will saturate at 255 when more than 255 conversions are bad." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_RESULT_VAL2" address="0x403600D4" bitWidth="32" desc="Result CSX accumulation counter value 2" hidden="false">
+      <field name="VALUE" from="15" to="0" access="R" resetVal="" desc="Only used in case of Mutual cap with two counters (CSX = config.mutual_cap &amp; config.csx_dual_cnt), this counter counts when csd_sense is low." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_ADC_RES" address="0x403600E0" bitWidth="32" desc="ADC measurement" hidden="false">
+      <field name="VIN_CNT" from="15" to="0" access="R" resetVal="" desc="Count to source/sink Cref1 + Cref2 from Vin to Vrefhi. This is also the current counter value for the HSCMP counter" hidden="false" />
+      <field name="HSCMP_POL" from="16" to="16" access="R" resetVal="" desc="Polarity used for IDACB for this last ADC result, 0= source, 1= sink" hidden="false" />
+      <field name="ADC_OVERFLOW" from="30" to="30" access="R" resetVal="" desc="This flag is set when the ADC counter overflows. This is an indication to the firmware that the IDACB current level is too low." hidden="false" />
+      <field name="ADC_ABORT" from="31" to="31" access="R" resetVal="" desc="This flag is set when the ADC sequencer was aborted before tripping HSCMP." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_INTR" address="0x403600F0" bitWidth="32" desc="CSD Interrupt Request Register" hidden="false">
+      <field name="SAMPLE" from="1" to="1" access="RW" resetVal="" desc="A normal sample is complete" hidden="false" />
+      <field name="INIT" from="2" to="2" access="RW" resetVal="" desc="Coarse initialization complete or Sample initialization complete (the latter is typically ignored)" hidden="false" />
+      <field name="ADC_RES" from="8" to="8" access="RW" resetVal="" desc="ADC Result ready" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_INTR_SET" address="0x403600F4" bitWidth="32" desc="CSD Interrupt set register" hidden="false">
+      <field name="SAMPLE" from="1" to="1" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
+      <field name="INIT" from="2" to="2" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
+      <field name="ADC_RES" from="8" to="8" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_INTR_MASK" address="0x403600F8" bitWidth="32" desc="CSD Interrupt mask register" hidden="false">
+      <field name="SAMPLE" from="1" to="1" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
+      <field name="INIT" from="2" to="2" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
+      <field name="ADC_RES" from="8" to="8" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_INTR_MASKED" address="0x403600FC" bitWidth="32" desc="CSD Interrupt masked register" hidden="false">
+      <field name="SAMPLE" from="1" to="1" access="R" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
+      <field name="INIT" from="2" to="2" access="R" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
+      <field name="ADC_RES" from="8" to="8" access="R" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_HSCMP" address="0x40360180" bitWidth="32" desc="High Speed Comparator configuration" hidden="false">
+      <field name="HSCMP_EN" from="0" to="0" access="RW" resetVal="" desc="High Speed Comparator enable" hidden="false">
+        <value name="OFF" value="0" desc="Disable comparator, output is zero" />
+        <value name="ON" value="1" desc="On, regular operation. Note that CONFIG.LP_MODE determines the power mode level" />
+      </field>
+      <field name="HSCMP_INVERT" from="4" to="4" access="RW" resetVal="" desc="Invert the HSCMP output before it is used to control switches and the CSD sequencer. This bit does not affect the ADC sequencer or the STATUS.HSCMP_OUT" hidden="false" />
+      <field name="AZ_EN" from="31" to="31" access="RW" resetVal="" desc="Auto-Zero enable, allow the Sequencer to Auto-Zero this component" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_AMBUF" address="0x40360184" bitWidth="32" desc="Reference Generator configuration" hidden="false">
+      <field name="PWR_MODE" from="1" to="0" access="RW" resetVal="" desc="Amux buffer power level" hidden="false">
+        <value name="OFF" value="0" desc="Disable buffer" />
+        <value name="NORM" value="1" desc="On, normal or low power level depending on CONFIG.LP_MODE." />
+        <value name="HI" value="10" desc="On, high or low power level depending on CONFIG.LP_MODE." />
+      </field>
+    </register>
+    <register name="GROUP_CSDV2_REFGEN" address="0x40360188" bitWidth="32" desc="Reference Generator configuration" hidden="false">
+      <field name="REFGEN_EN" from="0" to="0" access="RW" resetVal="" desc="Reference Generator Enable" hidden="false">
+        <value name="OFF" value="0" desc="Disable Reference Generator" />
+        <value name="ON" value="1" desc="On, regular operation. Note that CONFIG.LP_MODE determines the power mode level" />
+      </field>
+      <field name="BYPASS" from="4" to="4" access="RW" resetVal="" desc="Bypass selected input reference unbuffered to Vrefhi" hidden="false" />
+      <field name="VDDA_EN" from="5" to="5" access="RW" resetVal="" desc="Close Vdda switch to top of resistor string (or Vrefhi?)" hidden="false" />
+      <field name="RES_EN" from="6" to="6" access="RW" resetVal="" desc="Resistor string enable; 0= open switch on top of the resistor string (Vreflo=Vssa)" hidden="false" />
+      <field name="GAIN" from="12" to="8" access="RW" resetVal="" desc="Select resistor string tap for feedback, 0= minimum vout, 31= maximum vout = vrefhi -&gt; gain=1  (only works if the resistor string is enabled; RES_EN=1)" hidden="false" />
+      <field name="VREFLO_SEL" from="20" to="16" access="RW" resetVal="" desc="Select resistor string tap for Vreflo/Vreflo_int, 0= minimum vout, 31= maximum vout = vrefhi (only works if the resistor string is enabled; RES_EN=1)" hidden="false" />
+      <field name="VREFLO_INT" from="23" to="23" access="RW" resetVal="" desc="Ouput the resistor string tap either to Vreflo (0) or Vreflo_int (1)." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_CSDCMP" address="0x4036018C" bitWidth="32" desc="CSD Comparator configuration" hidden="false">
+      <field name="CSDCMP_EN" from="0" to="0" access="RW" resetVal="" desc="CSD Comparator Enable" hidden="false">
+        <value name="OFF" value="0" desc="Disable comparator, output is zero" />
+        <value name="ON" value="1" desc="On, regular operation. Note that CONFIG.LP_MODE determines the power mode level" />
+      </field>
+      <field name="POLARITY_SEL" from="5" to="4" access="RW" resetVal="" desc="Select which IDAC polarity to use to detect CSDCMP triggering" hidden="false">
+        <value name="IDACA_POL" value="0" desc="Use idaca_pol (firmware setting with CSX and optionally DSI mixed in) to determine the direction, this is the most common use-case, used for normal CSD and normal CSX" />
+        <value name="IDACB_POL" value="1" desc="Use idacb_pol (firmware setting with optional DSI mixed in) to determine the direction, this is only used for normal CSD if IDACB is used i.s.o. IDACA (not common)" />
+        <value name="DUAL_POL" value="10" desc="Use the expression (csd_sense ? idaca_pol : idacb_pol)  to determine the direction, this is only useful for the CSX with DUAL_IDAC use-case" />
+      </field>
+      <field name="CMP_PHASE" from="9" to="8" access="RW" resetVal="" desc="Select in what phase(s) the comparator is active, typically set to match the BAL_MODE of the used IDAC. Note, this also determines when a bad conversion is detected, namely at the beginning and end of the comparator active phase (also taking into account FILTER_DELAY and non-overlap)." hidden="false">
+        <value name="FULL" value="0" desc="Comparator is active from start of Phi2 and kept active into Phi1. Intended usage: legacy CSD for balancing over a full csd_sense period (non-overlap should be turned off)" />
+        <value name="PHI1" value="1" desc="Comparator is active during Phi1 only. Currently no known use-case." />
+        <value name="PHI2" value="10" desc="Comparator is active during Phi2 only. Intended usage: CSD Low EMI." />
+        <value name="PHI1_2" value="11" desc="Comparator is activated at the start of both Phi1 and Phi2 (non-overlap should be enabled). Intended usage: CSX, or Full-Wave." />
+      </field>
+      <field name="CMP_MODE" from="28" to="28" access="RW" resetVal="" desc="Select which signal to output on dsi_sample_out." hidden="false">
+        <value name="CSD" value="0" desc="CSD mode: output the filtered sample signal on dsi_sample_out" />
+        <value name="GP" value="1" desc="General Purpose mode: output the unfiltered sample unfiltered comparator output, either asynchronous or flopped." />
+      </field>
+      <field name="FEEDBACK_MODE" from="29" to="29" access="RW" resetVal="" desc="This bit controls whether the output directly from the comparator (csdcmp_out) or the flopped version (csdcmp_out_ff) is used. For CSD operation, the selected signal controls the IDAC(s), in GP mode the signal goes out on dsi_sample_out." hidden="false">
+        <value name="FLOP" value="0" desc="Use feedback from sampling flip-flop (used in most modes)." />
+        <value name="COMP" value="1" desc="Use feedback from comparator directly (used in single Cmod mutual cap sensing only)" />
+      </field>
+      <field name="AZ_EN" from="31" to="31" access="RW" resetVal="" desc="Auto-Zero enable, allow the Sequencer to Auto-Zero this component" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_RES" address="0x403601F0" bitWidth="32" desc="Switch Resistance configuration" hidden="false">
+      <field name="RES_HCAV" from="1" to="0" access="RW" resetVal="" desc="Select resistance or low EMI (slow ramp) for the HCAV switch" hidden="false">
+        <value name="LOW" value="0" desc="Low" />
+        <value name="MED" value="1" desc="Medium" />
+        <value name="HIGH" value="10" desc="High" />
+        <value name="LOWEMI" value="11" desc="Low EMI (slow ramp: 3 switches closed by fixed delay line)" />
+      </field>
+      <field name="RES_HCAG" from="3" to="2" access="RW" resetVal="" desc="Select resistance or low EMI for the corresponding switch" hidden="false" />
+      <field name="RES_HCBV" from="5" to="4" access="RW" resetVal="" desc="Select resistance or low EMI for the corresponding switch" hidden="false" />
+      <field name="RES_HCBG" from="7" to="6" access="RW" resetVal="" desc="Select resistance or low EMI for the corresponding switch" hidden="false" />
+      <field name="RES_F1PM" from="17" to="16" access="RW" resetVal="" desc="Select resistance for the corresponding  switch" hidden="false">
+        <value name="LOW" value="0" desc="Low" />
+        <value name="MED" value="1" desc="Medium" />
+        <value name="HIGH" value="10" desc="High" />
+        <value name="RESERVED" value="11" desc="reserved" />
+      </field>
+      <field name="RES_F2PT" from="19" to="18" access="RW" resetVal="" desc="Select resistance for the corresponding  switch" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SENSE_PERIOD" address="0x40360200" bitWidth="32" desc="Sense clock period" hidden="false">
+      <field name="SENSE_DIV" from="11" to="0" access="RW" resetVal="" desc="The length-1 of the Sense modulation 'clock' period in clk_csd cycles. For regular CSD one sense clock cycle = one conversion (=phi1+phi2) .&#xA;Note this is the base divider, clock dithering may change the actual period length.&#xA;Note that SENSE_DIV must be at least 1 and additionally also allow for one clk_hf of non overlap (if OVERLAP_HI1/2 is set) on both phases, i.e. if clk_csd=clk_hf then SENSE_DIV must be &gt;=3.&#xA;In addition the FILTER_DELAY needs to be added to the minimum allowed SENSE_DIV value." hidden="false" />
+      <field name="LFSR_SIZE" from="18" to="16" access="RW" resetVal="" desc="Selects the length of the LFSR which determines the LFSR repeat period. LFSR_BITS LSB of the LFSR are used  for the clock dithering variation on the base period (was PRS in CSDv1). Whenever the LFSR is used (non zero value in this field) the LFSR_CLEAR bit should also be set." hidden="false">
+        <value name="OFF" value="0" desc="Don't use clock dithering (=spreadspectrum) (LFSR output value is zero)" />
+        <value name="6B" value="1" desc="6-bit LFSR (G(x)=X^6  +X^4+X^3+    X+1, period= 63)" />
+        <value name="7B" value="10" desc="7-bit LFSR (G(x)=X^7  +X^4+X^3+X^2+1, period= 127)" />
+        <value name="9B" value="11" desc="9-bit LFSR (G(x)=X^9  +X^4+X^3+    X+1, period= 511)" />
+        <value name="10B" value="100" desc="10-bit LFSR (G(x)=X^10+X^4+X^3+    X+1, period= 1023)" />
+        <value name="8B" value="101" desc="8-bit LFSR (G(x)=X^8+X^4+X^3+X^2+1, period= 255)" />
+        <value name="12B" value="110" desc="12-bit LFSR (G(x)=X^12+X^7+X^4+X^3+1, period= 4095)" />
+      </field>
+      <field name="LFSR_SCALE" from="23" to="20" access="RW" resetVal="" desc="Shift the LFSR output left by LSFR_SCALE bits before adding to SENSE_DIV. This dithering is disabled when SEL_LSFR_MSB is set.&#xA;The clock divider to be used = (SENSE_DIV+1) + (SEL_LSFR_MSB ? 0 : (LFSR_OUT&lt;&lt;LFSR_SCALE)).&#xA;Note that the clock divider including the dithering term must fit in 12 bits, otherwise the result is undefined." hidden="false" />
+      <field name="LFSR_CLEAR" from="24" to="24" access="RW" resetVal="" desc="When set, forces the LFSR to it's initial state (all ones).  This bit is automatically cleared by hardware after the LFSR is cleared, which is at the next clk_csd positive edge. This bit should be set whenever this register is written and the LFSR is used.&#xA;Note that the LFSR will also get reset to all ones during the AutoZero_1/2 states." hidden="false" />
+      <field name="SEL_LFSR_MSB" from="25" to="25" access="RW" resetVal="" desc="Use the MSB of configured LSFR size as csd_sense signal. Intended to be used only with bit 8 or 12-bit LFSR size for CSDv1 backward compatibility (PRS). When this bit is set then clock divider dithering is disabled and SENSE_WIDTH is disabled." hidden="false" />
+      <field name="LFSR_BITS" from="27" to="26" access="RW" resetVal="" desc="Selects the number of LSB bits to use from the LSFR to provide the clock dithering variation on the base period.&#xA;Caveat make sure that SENSE_DIV &gt; the maximum absolute range (e.g. for 4B  SENSE_DIV &gt; 8), otherwise results are undefined." hidden="false">
+        <value name="2B" value="0" desc="use 2 bits: range = [-2,1]" />
+        <value name="3B" value="1" desc="use 3 bits: range = [-4,3]" />
+        <value name="4B" value="10" desc="use 4 bits: range = [-8,7]" />
+        <value name="5B" value="11" desc="use 5 bits: range = [-16,15] (default)" />
+      </field>
+    </register>
+    <register name="GROUP_CSDV2_SENSE_DUTY" address="0x40360204" bitWidth="32" desc="Sense clock duty cycle" hidden="false">
+      <field name="SENSE_WIDTH" from="11" to="0" access="RW" resetVal="" desc="Defines the length of the first phase of the sense clock in clk_csd cycles. &#xA;A value of 0 disables this feature and the duty cycle of csd_sense will be 50%, which is equal to SENSE_WIDTH = (SENSE_DIV+1)/2, or when clock dithering is used that becomes [(SENSE_DIV+1) + (LFSR_OUT &lt;&lt; LSFR_SCALE)]/2.  At all times it must be assured that the phases are at least 2 clk_csd cycles (1 for non overlap, if used), if this rule is violated the result is undefined.&#xA;Note that this feature is not available when SEL_LFSR_MSB (PRS) is selected." hidden="false" />
+      <field name="SENSE_POL" from="16" to="16" access="RW" resetVal="" desc="Polarity of the sense clock&#xA;0 = start with low phase (typical for regular negative transfer CSD)&#xA;1 = start with high phase" hidden="false" />
+      <field name="OVERLAP_PHI1" from="18" to="18" access="RW" resetVal="" desc="NonOverlap or not for Phi1 (csd_sense=0).&#xA;0 = Non-overlap for Phi1, the Phi1 signal is  csd_sense inverted except that the signal goes low 1 clk_sample before csd_sense goes high. Intended usage: new low EMI CSD/CSX with static GPIO.&#xA;1 = 'Overlap' (= not non-overlap) for Phi1, the Phi1 signal is  csd_sense inverted. Intended usage: legacy CSD with GPIO switching, the GPIO internal circuit ensures that the switches are non-overlapping." hidden="false" />
+      <field name="OVERLAP_PHI2" from="19" to="19" access="RW" resetVal="" desc="Same as OVERLAP_PHI1 but for Phi2 (csd_sense=1)." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_HS_P_SEL" address="0x40360280" bitWidth="32" desc="HSCMP Pos input switch Waveform selection" hidden="false">
+      <field name="SW_HMPM" from="0" to="0" access="RW" resetVal="" desc="Set HMPM switch&#xA;0: static open&#xA;1: static closed" hidden="false" />
+      <field name="SW_HMPT" from="4" to="4" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_HMPS" from="8" to="8" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_HMMA" from="12" to="12" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_HMMB" from="16" to="16" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_HMCA" from="20" to="20" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_HMCB" from="24" to="24" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_HMRH" from="28" to="28" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_HS_N_SEL" address="0x40360284" bitWidth="32" desc="HSCMP Neg input switch Waveform selection" hidden="false">
+      <field name="SW_HCCC" from="16" to="16" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_HCCD" from="20" to="20" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_HCRH" from="26" to="24" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_HCRL" from="30" to="28" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_SHIELD_SEL" address="0x40360288" bitWidth="32" desc="Shielding switches Waveform selection" hidden="false">
+      <field name="SW_HCAV" from="2" to="0" access="RW" resetVal="" desc="Select waveform for HCAV switch using csd_sense as base&#xA;0: static open&#xA;1: static closed&#xA;2: phi1&#xA;3: phi2&#xA;4: phi1 &amp; HSCMP&#xA;5: phi2 &amp; HSCMP&#xA;6: HSCMP (ignores phi1/2)&#xA;7: Reserved" hidden="false" />
+      <field name="SW_HCAG" from="6" to="4" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_HCBV" from="10" to="8" access="RW" resetVal="" desc="Select waveform for HCBV switch. The waveform for this switch follows the csd_shield signal, i.e. phi1 and phi2 are delayed with SHIELD_DELAY w.r.t. the csd_sense phases. Only this switch and HCBG use csd_shield as base all other switches use csd_sense as base.&#xA;0: static open&#xA;1: static closed&#xA;2: phi1_delay&#xA;3: phi2_delay&#xA;4: phi1_delay &amp; HSCMP&#xA;5: phi2_delay &amp; HSCMP&#xA;6: HSCMP (ignores phi1/2)&#xA;7: Reserved" hidden="false" />
+      <field name="SW_HCBG" from="14" to="12" access="RW" resetVal="" desc="Select waveform for corresponding switch, using csd_shield as base" hidden="false" />
+      <field name="SW_HCCV" from="16" to="16" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_HCCG" from="20" to="20" access="RW" resetVal="" desc="Set corresponding switch&#xA;If the ADC is enabled then this switch is directly controlled by the ADC sequencer." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_AMUXBUF_SEL" address="0x40360290" bitWidth="32" desc="Amuxbuffer switches Waveform selection" hidden="false">
+      <field name="SW_IRBY" from="4" to="4" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_IRLB" from="8" to="8" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_ICA" from="12" to="12" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_ICB" from="18" to="16" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_IRLI" from="20" to="20" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_IRH" from="24" to="24" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_IRL" from="28" to="28" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_BYP_SEL" address="0x40360294" bitWidth="32" desc="AMUXBUS bypass switches Waveform selection" hidden="false">
+      <field name="SW_BYA" from="12" to="12" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_BYB" from="16" to="16" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_CBCC" from="20" to="20" access="RW" resetVal="" desc="Set corresponding switch&#xA;If the ADC is enabled then this switch is directly controlled by the ADC sequencer." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_CMP_P_SEL" address="0x403602A0" bitWidth="32" desc="CSDCMP Pos Switch Waveform selection" hidden="false">
+      <field name="SW_SFPM" from="2" to="0" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_SFPT" from="6" to="4" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_SFPS" from="10" to="8" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_SFMA" from="12" to="12" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_SFMB" from="16" to="16" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_SFCA" from="20" to="20" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_SFCB" from="24" to="24" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_CMP_N_SEL" address="0x403602A4" bitWidth="32" desc="CSDCMP Neg Switch Waveform selection" hidden="false">
+      <field name="SW_SCRH" from="26" to="24" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_SCRL" from="30" to="28" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_REFGEN_SEL" address="0x403602A8" bitWidth="32" desc="Reference Generator Switch Waveform selection" hidden="false">
+      <field name="SW_IAIB" from="0" to="0" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_IBCB" from="4" to="4" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_SGMB" from="16" to="16" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_SGRP" from="20" to="20" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_SGRE" from="24" to="24" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_SGR" from="28" to="28" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_FW_MOD_SEL" address="0x403602B0" bitWidth="32" desc="Full Wave Cmod Switch Waveform selection" hidden="false">
+      <field name="SW_F1PM" from="0" to="0" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_F1MA" from="10" to="8" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_F1CA" from="18" to="16" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_C1CC" from="20" to="20" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_C1CD" from="24" to="24" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_C1F1" from="28" to="28" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_FW_TANK_SEL" address="0x403602B4" bitWidth="32" desc="Full Wave Csh_tank Switch Waveform selection" hidden="false">
+      <field name="SW_F2PT" from="4" to="4" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_F2MA" from="10" to="8" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_F2CA" from="14" to="12" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_F2CB" from="18" to="16" access="RW" resetVal="" desc="Select waveform for corresponding switch" hidden="false" />
+      <field name="SW_C2CC" from="20" to="20" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_C2CD" from="24" to="24" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+      <field name="SW_C2F2" from="28" to="28" access="RW" resetVal="" desc="Set corresponding switch" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SW_DSI_SEL" address="0x403602C0" bitWidth="32" desc="DSI output switch control Waveform selection" hidden="false">
+      <field name="DSI_CSH_TANK" from="3" to="0" access="RW" resetVal="" desc="Select waveform for dsi_csh_tank output signal&#xA;0: static open&#xA;1: static closed&#xA;2: phi1&#xA;3: phi2&#xA;4: phi1 &amp; HSCMP&#xA;5: phi2 &amp; HSCMP&#xA;6: HSCMP                       // ignores phi1/2&#xA;7: !sense                        // = phi1 but ignores OVERLAP_PHI1&#xA;&#xA;8: phi1_delay              // phi1 delayed with shield delay&#xA;9: phi2_delay              // phi2 delayed with shield delay&#xA;&#xA;10: !phi1&#xA;11: !phi2&#xA;12: !(phi1 &amp; HSCMP)&#xA;13: !(phi2 &amp; HSCMP)&#xA;14: !HSCMP                   // ignores phi1/2&#xA;15: sense                       // = phi2 but ignores OVERLAP_PHI2" hidden="false" />
+      <field name="DSI_CMOD" from="7" to="4" access="RW" resetVal="" desc="Select waveform for dsi_cmod output signal" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_IO_SEL" address="0x403602D0" bitWidth="32" desc="IO output control Waveform selection" hidden="false">
+      <field name="CSD_TX_OUT" from="3" to="0" access="RW" resetVal="" desc="Select waveform for csd_tx_out output signal" hidden="false" />
+      <field name="CSD_TX_OUT_EN" from="7" to="4" access="RW" resetVal="" desc="Select waveform for csd_tx_out_en output signal" hidden="false" />
+      <field name="CSD_TX_AMUXB_EN" from="15" to="12" access="RW" resetVal="" desc="Select waveform for csd_tx_amuxb_en output signal" hidden="false" />
+      <field name="CSD_TX_N_OUT" from="19" to="16" access="RW" resetVal="" desc="Select waveform for csd_tx_n_out output signal" hidden="false" />
+      <field name="CSD_TX_N_OUT_EN" from="23" to="20" access="RW" resetVal="" desc="Select waveform for csd_tx_n_out_en output signal" hidden="false" />
+      <field name="CSD_TX_N_AMUXA_EN" from="27" to="24" access="RW" resetVal="" desc="Select waveform for csd_tx_n_amuxa_en output signal" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SEQ_TIME" address="0x40360300" bitWidth="32" desc="Sequencer Timing" hidden="false">
+      <field name="AZ_TIME" from="7" to="0" access="RW" resetVal="" desc="Define Auto-Zero time in csd_sense cycles -1." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SEQ_INIT_CNT" address="0x40360310" bitWidth="32" desc="Sequencer Initial conversion and sample counts" hidden="false">
+      <field name="CONV_CNT" from="15" to="0" access="RW" resetVal="" desc="Number of conversion per Initialization sample, if set to 0 the Sample_init state will be skipped." hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_SEQ_NORM_CNT" address="0x40360314" bitWidth="32" desc="Sequencer Normal conversion and sample counts" hidden="false">
+      <field name="CONV_CNT" from="15" to="0" access="RW" resetVal="" desc="Number of conversion per sample, if set to 0 the Sample_norm state will be skipped.&#xA;Sample window size = SEQ_NORM_CNT.CONV_CNT * (SENSE_PERIOD.SENSE_DIV+1).&#xA;Note for CSDv1 Sample window size = PERIOD" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_ADC_CTL" address="0x40360320" bitWidth="32" desc="ADC Control" hidden="false">
+      <field name="ADC_TIME" from="7" to="0" access="RW" resetVal="" desc="ADC timing -1 in csd_sense clock cycles (actual time is ADC_TIME+1 cycles), either used to discharge Cref1&amp;2, or as the aperture to capture the input voltage on Cref1&amp;2" hidden="false" />
+      <field name="ADC_MODE" from="17" to="16" access="RW" resetVal="" desc="Enable ADC measurement. When enabled the ADC sequencer will be started when the main sequencer goes to the SAMPLE_NORM state" hidden="false">
+        <value name="OFF" value="0" desc="No ADC measurement" />
+        <value name="VREF_CNT" value="1" desc="Count time A to bring Cref1 + Cref2 up from Vssa to Vrefhi with IDACB" />
+        <value name="VREF_BY2_CNT" value="10" desc="Count time B to bring Cref1 + Cref2 back up to Vrefhi with IDACB (after bringing them down for time A/2 cycles with IDACB sinking)" />
+        <value name="VIN_CNT" value="11" desc="Determine HSCMP polarity and count time C to source/sink Cref1 + Cref2 from Vin to Vrefhi." />
+      </field>
+    </register>
+    <register name="GROUP_CSDV2_SEQ_START" address="0x40360340" bitWidth="32" desc="Sequencer start" hidden="false">
+      <field name="START" from="0" to="0" access="RW" resetVal="" desc="Start the CSD sequencer. The sequencer will clear this bit when it is done. Depending on the mode the sequencer is done when a sample has been accumulated, when the high speed comparator trips or if the sequencer is aborted. When the ADC is enabled the ADC sequencer will start when the CSD sequencer reaches the Sample_norm state (only with the regular CSD scan mode)." hidden="false" />
+      <field name="SEQ_MODE" from="1" to="1" access="RW" resetVal="" desc="0 = regular CSD scan + optional ADC &#xA;1 = coarse initialization, the Sequencer will go to the INIT_COARSE state." hidden="false" />
+      <field name="ABORT" from="3" to="3" access="RW" resetVal="" desc="When a 1 is written the CSD and ADC sequencers will be aborted (if they are running) and the START bit will be cleared. This bit always read as 0." hidden="false" />
+      <field name="DSI_START_EN" from="4" to="4" access="RW" resetVal="" desc="When this bit is set a positive edge on dsi_start will start the CSD sequencer and if enabled also the ADC sequencer." hidden="false" />
+      <field name="AZ0_SKIP" from="8" to="8" access="RW" resetVal="" desc="When set the AutoZero_0 state will be skipped" hidden="false" />
+      <field name="AZ1_SKIP" from="9" to="9" access="RW" resetVal="" desc="When set the AutoZero_1 state will be skipped" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_IDACA" address="0x40360400" bitWidth="32" desc="IDACA Configuration" hidden="false">
+      <field name="VAL" from="6" to="0" access="RW" resetVal="" desc="Current value setting for this IDAC (7 bits)." hidden="false" />
+      <field name="POL_DYN" from="7" to="7" access="RW" resetVal="" desc="Polarity is dynamic, this bit does not influence the logic in the SoftIP, it only goes to the HardIP." hidden="false">
+        <value name="STATIC" value="0" desc="Static polarity. Polarity is expected to be stable, so to save power this avoids the shunting of the unused polarity, at the expense of response time." />
+        <value name="DYNAMIC" value="1" desc="Dynamic polarity. Polarity is expected to change frequently (e.g. invert after every csd_sense phase), so to improve response time this keeps the shunt of the unused polarity on at the expense of power." />
+      </field>
+      <field name="POLARITY" from="9" to="8" access="RW" resetVal="" desc="Selects the polarity of the IDAC (sensing operation). Normally the actual polarity depends on this bit, optionally mixed with DSI (see DSI_CTRL_EN) and if LEG1_MODE==CSD also mixed with the CSD configuration and operation. However in mutual cap mode with one IDAC (config.mutual_cap=1 &amp; config.csx_dual_idac=0) the polarity of the IDAC is controlled by csd_sense." hidden="false">
+        <value name="VSSA_SRC" value="0" desc="Normal: switch between Vssa and Cmod.  For non-CSD application, IDAC will source current." />
+        <value name="VDDA_SNK" value="1" desc="Inverted: switch between Vdda and Cmod. For non-CSD application, IDAC will sink current." />
+        <value name="SENSE" value="10" desc="The polarity of the IDAC will follow the csd_sense signal (POL_DYN bit should be set too). The intended usage is for CSX using a single IDAC." />
+        <value name="SENSE_INV" value="11" desc="The polarity of the IDAC will follow the inverted csd_sense signal (POL_DYN bit should be set too). The intended usage is for CSX using a single IDAC." />
+      </field>
+      <field name="BAL_MODE" from="11" to="10" access="RW" resetVal="" desc="Balancing mode: only applies to legs configured as CSD." hidden="false">
+        <value name="FULL" value="0" desc="enabled from start of Phi2 until disabled by CSDCMP. Intended usage: legacy CSD for balancing over a full csd_sense period (non-overlap should be turned off)" />
+        <value name="PHI1" value="1" desc="enabled from start of Phi1 and disabled by CSDCMP or at end of Phi1. Enables dual IDAC CSX or Full-Wave, one for sourcing and the other for sinking." />
+        <value name="PHI2" value="10" desc="enabled from start of Phi2 and disabled by CSDCMP or at end of Phi2. Intended usage: CSD Low EMI or  dual IDAC CSX or Full-Wave." />
+        <value name="PHI1_2" value="11" desc="enabled from start of both Phi1 and Phi2 and disabled by CSDCMP or at end of Phi1 or Phi2 (if non-overlap enabled). Intended usage: single IDAC CSX, or Full-Wave." />
+      </field>
+      <field name="LEG1_MODE" from="17" to="16" access="RW" resetVal="" desc="Controls the usage mode of LEG1 and the Polarity bit" hidden="false">
+        <value name="GP_STATIC" value="0" desc="General Purpose static mode: LEG1 and POLARITY are controlled by MMIO and optionally mixed with DSI (see DSI_CTRL_EN). No shunting is used, this saves power when off but also any on/off switching will take longer." />
+        <value name="GP" value="1" desc="General Purpose dynamic mode: LEG1 and POLARITY are controlled by MMIO and optionally mixed with DSI (see DSI_CTRL_EN). Shunting is used, so on/off switching is faster, but power is wasted when the leg is disabled." />
+        <value name="CSD_STATIC" value="10" desc="CSD static mode: LEG1 can only be on when the CSD Sequencer is in the Sample_init or Sample_norm state. In those states LEG1 is controlled by LEG1_EN, csd_sense and the CSD configuration. Polarity is controlled by the CSD configuration and operation. In addition leg1 enable and polarity can optionally be mixed with DSI (see DSI_CTRL_EN). No shunting is used, this saves power when off but also any on/off switching will take longer." />
+        <value name="CSD" value="11" desc="CSD dynamic mode: LEG1 can only be on when the CSD Sequencer is in the Sample_init or Sample_norm state. In thoses states LEG1 is controlled by LEG1_EN, the CSD configuration, csd_sense and the flopped CSDCMP output (CSDCMP_OUT_FF). Polarity is controlled by the CSD configuration and operation. In addition leg1 enable and polarity can optionally be mixed with DSI (see DSI_CTRL_EN). Shunting is used, so on/off switching is faster, but power is wasted when the leg is disabled." />
+      </field>
+      <field name="LEG2_MODE" from="19" to="18" access="RW" resetVal="" desc="Controls the usage mode of LEG2" hidden="false">
+        <value name="GP_STATIC" value="0" desc="General Purpose static mode: LEG2 is controlled by MMIO and optionally mixed with DSI (see DSI_CTRL_EN).  No shunting is used, this saves power when off but also any on/off switching will take longer." />
+        <value name="GP" value="1" desc="General Purpose dynamic mode: LEG2 is controlled by MMIO and optionally mixed with DSI (see DSI_CTRL_EN). Shunting is used, so on/off switching is faster, but power is wasted when the leg is disabled." />
+        <value name="CSD_STATIC" value="10" desc="CSD static mode: LEG2 can only be on when the CSD Sequencer is in the Sample_init or Sample_norm state. In those states LEG2 is controlled by LEG2_EN, csd_sense and the CSD configuration. Polarity is controlled by the CSD configuration and operation. In addition leg2 enable and polarity can optionally be mixed with DSI (see DSI_CTRL_EN). No shunting is used, this saves power when off but also any on/off switching will take longer." />
+        <value name="CSD" value="11" desc="CSD dynamic mode: LEG2 can only be on when the CSD Sequencer is in the Sample_init or Sample_norm state. In those states LEG2 is controlled by LEG2_EN, the CSD configuration, csd_sense and the flopped CSDCMP output (CSDCMP_OUT_FF). In addition leg2 enable can optionally be mixed with DSI (see DSI_CTRL_EN). Shunting is used, so on/off switching is faster, but power is wasted when the leg is disabled." />
+      </field>
+      <field name="DSI_CTRL_EN" from="21" to="21" access="RW" resetVal="" desc="Mix DSI inputs with MMIO controls or not (before getting mixed with CSD controls if enabled).&#xA;0: no DSI control &#xA;     IDACA_POLARITY = IDACA.POLARITY &#xA;     IDACA_LEG1_EN =  IDACA.LEG1_EN &#xA;     IDACA_LEG2_EN = IDACA.LEG2_EN   &#xA;1: Mix MMIO with DSI control&#xA;     IDACA_POLARITY = IDACA.POLARITY EXOR dsi_idaca_pol&#xA;     IDACA_LEG1_EN =  IDACA.LEG1_EN AND dsi_idaca_leg1_en &#xA;     IDACA_LEG2_EN = IDACA.LEG2_EN AND dsi_idaca_leg2_en" hidden="false" />
+      <field name="RANGE" from="23" to="22" access="RW" resetVal="" desc="IDAC multiplier" hidden="false">
+        <value name="IDAC_LO" value="0" desc="1 LSB =   37.5 nA" />
+        <value name="IDAC_MED" value="1" desc="1 LSB =  300 nA" />
+        <value name="IDAC_HI" value="10" desc="1 LSB = 2400 nA" />
+      </field>
+      <field name="LEG1_EN" from="24" to="24" access="RW" resetVal="" desc="output enable for leg 1 to CSDBUSA" hidden="false" />
+      <field name="LEG2_EN" from="25" to="25" access="RW" resetVal="" desc="output enable for leg 2 to CSDBUSA" hidden="false" />
+    </register>
+    <register name="GROUP_CSDV2_IDACB" address="0x40360500" bitWidth="32" desc="IDACB Configuration" hidden="false">
+      <field name="VAL" from="6" to="0" access="RW" resetVal="" desc="Current value setting for this IDAC (7 bits)." hidden="false" />
+      <field name="POL_DYN" from="7" to="7" access="RW" resetVal="" desc="Polarity is dynamic, this bit does not influence the logic in the SoftIP, it only goes to the HardIP." hidden="false">
+        <value name="STATIC" value="0" desc="Static polarity. Polarity is expected to be stable, so to save power this avoids the shunting of the unused polarity, at the expense of response time." />
+        <value name="DYNAMIC" value="1" desc="Dynamic polarity. Polarity is expected to change frequently (e.g. invert after every csd_sense phase), so to improve response time this keeps the shunt of the unused polarity on at the expense of power." />
+      </field>
+      <field name="POLARITY" from="9" to="8" access="RW" resetVal="" desc="Selects the polarity of the IDAC (sensing operation). Normally the actual polarity depends on this bit, optionally mixed with DSI (see DSI_CTRL_EN) and if LEG1_EN==1 and LEG1_MODE==CSD also mixed with the CSD configuration and operation. In mutual cap mode however (see config.mutual_cap) the polarity of the IDAC is controlled by csd_sense. If LEG3_EN=1 (the other two legs must be off) then the ADC sequencer controls the IDACB polarity, optionally mixed with DSI." hidden="false">
+        <value name="VSSA_SRC" value="0" desc="Normal: switch between Vssa and Cmod.  For non-CSD application, IDAC will source current." />
+        <value name="VDDA_SNK" value="1" desc="Inverted: switch between Vdda and Cmod. For non-CSD application, IDAC will sink current." />
+        <value name="SENSE" value="10" desc="The polarity of the IDAC will follow the csd_sense signal (POL_DYN bit should be set too). The intended usage is for CSX using a single IDAC." />
+        <value name="SENSE_INV" value="11" desc="The polarity of the IDAC will follow the inverted csd_sense signal (POL_DYN bit should be set too). The intended usage is for CSX using a single IDAC." />
+      </field>
+      <field name="BAL_MODE" from="11" to="10" access="RW" resetVal="" desc="same as corresponding IDACA Balancing mode" hidden="false">
+        <value name="FULL" value="0" desc="same as corresponding IDACA Balancing mode" />
+        <value name="PHI1" value="1" desc="same as corresponding IDACA Balancing mode" />
+        <value name="PHI2" value="10" desc="same as corresponding IDACA Balancing mode" />
+        <value name="PHI1_2" value="11" desc="same as corresponding IDACA Balancing mode" />
+      </field>
+      <field name="LEG1_MODE" from="17" to="16" access="RW" resetVal="" desc="Controls the usage mode of LEG1 and the Polarity bit" hidden="false">
+        <value name="GP_STATIC" value="0" desc="same as corresponding IDACA.LEG1_MODE" />
+        <value name="GP" value="1" desc="same as corresponding IDACA.LEG1_MODE" />
+        <value name="CSD_STATIC" value="10" desc="same as corresponding IDACA.LEG1_MODE" />
+        <value name="CSD" value="11" desc="same as corresponding IDACA.LEG1_MODE" />
+      </field>
+      <field name="LEG2_MODE" from="19" to="18" access="RW" resetVal="" desc="Controls the usage mode of LEG2" hidden="false">
+        <value name="GP_STATIC" value="0" desc="same as corresponding IDACA.LEG2_MODE" />
+        <value name="GP" value="1" desc="same as corresponding IDACA.LEG2_MODE" />
+        <value name="CSD_STATIC" value="10" desc="same as corresponding IDACA.LEG2_MODE" />
+        <value name="CSD" value="11" desc="same as corresponding IDACA.LEG2_MODE" />
+      </field>
+      <field name="DSI_CTRL_EN" from="21" to="21" access="RW" resetVal="" desc="Mix DSI inputs with MMIO controls or not (before getting mixed with CSD controls if enabled)&#xA;0: no DSI control&#xA;     IDACB_POLARITY = IDACB.POLARITY &#xA;     IDACB_LEG1_EN =  IDACB.LEG1_EN &#xA;     IDACB_LEG2_EN = IDACB.LEG2_EN   &#xA;     IDACB_LEG3_EN = IDACB.LEG3_EN   &#xA;1: Mix MMIO with DSI control&#xA;     IDACB_POLARITY = IDACB.POLARITY EXOR dsi_idacb_pol&#xA;     IDACB_LEG1_EN =  IDACB.LEG1_EN AND dsi_idacb_leg1_en &#xA;     IDACB_LEG2_EN = IDACB.LEG2_EN AND dsi_idacb_leg2_en  &#xA;     IDACB_LEG3_EN = IDACB.LEG3_EN AND dsi_idacb_leg3_en" hidden="false" />
+      <field name="RANGE" from="23" to="22" access="RW" resetVal="" desc="IDAC multiplier" hidden="false">
+        <value name="IDAC_LO" value="0" desc="1 LSB =   37.5 nA" />
+        <value name="IDAC_MED" value="1" desc="1 LSB =  300 nA" />
+        <value name="IDAC_HI" value="10" desc="1 LSB = 2400 nA" />
+      </field>
+      <field name="LEG1_EN" from="24" to="24" access="RW" resetVal="" desc="output enable for leg 1 to CSDBUSB or CSDBUSA" hidden="false" />
+      <field name="LEG2_EN" from="25" to="25" access="RW" resetVal="" desc="output enable for leg 2 to CSDBUSB or CSDBUSA" hidden="false" />
+      <field name="LEG3_EN" from="26" to="26" access="RW" resetVal="" desc="output enable for leg3 to CSDBUSC, only allowed when RANGE = IDAC_LO. When this bit is set both other legs should be off.&#xA;Note that leg3 can only be used for ADC mode, not GP mode. Which means that leg3 can only be on when the ADC Sequencer is in the ADC_measure or Calib_measure state. In those states  leg3 is controlled by the ADC configuration and the HSCMP output. In addition this leg3 enable bit can optionally be mixed with DSI (see DSI_CTRL_EN).&#xA;When LEG3_EN=1 also the IDACB polarity is controlled by the ADC sequencer." hidden="false" />
+    </register>
+  </block>
+  <block name="I2C_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="SCB_IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="sda" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="scl" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="SCBCLK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="SCB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="clock_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  </block>
+  <block name="LED8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="BLE_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="IncludeBleLibs" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="bless_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_mxs40_ble" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  </block>
+  <block name="UART" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="rx_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="rx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cts_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="SCB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="SCB_IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="clock_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="SCBCLK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="tx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  </block>
+  <block name="LED9" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+</blockRegMap>
